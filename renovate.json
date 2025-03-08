@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "labels": ["renovate"],
+  "configMigration": true,
+  "extends": ["config:js-app", ":automergeMinor"],
+  "major": {
+    "minimumReleaseAge": "28 days"
+  },
+  "minor": {
+    "minimumReleaseAge": "14 days"
+  },
+  "patch": {
+    "minimumReleaseAge": "7 days"
+  }
+}
