@@ -3,10 +3,12 @@
 ## Tech Stack
 
 - Common
+  - [TypeScript](https://www.typescriptlang.org/)
   - [Bun](https://bun.sh/)
   - [Biome](https://biomejs.dev/)
 - Backend
   - [Hono](https://hono.dev/)
+  - [Swagger/OpenAPI](https://swagger.io/)
 
 ## Setup
 
