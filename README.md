@@ -1,4 +1,12 @@
-# hono-next-example
+# :rocket: hono-next-example
+
+## Tech Stack
+
+- Common
+  - [Bun](https://bun.sh/)
+  - [Biome](https://biomejs.dev/)
+- Backend
+  - [Hono](https://hono.dev/)
 
 ## Setup
 
