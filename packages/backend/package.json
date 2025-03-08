@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check src --write"
+  },
+  "dependencies": {
+    "@hono/swagger-ui": "0.5.1",
+    "@hono/zod-openapi": "0.19.2",
+    "hono": "4.7.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "1.2.4",
+    "typescript": "5.8.2"
+  }
+}
