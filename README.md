@@ -7,3 +7,15 @@
 ```bash
 brew install asdf
 ```
+
+- Install **Bun** by asdf
+
+```bash
+asdf install
+```
+
+- Install dependencies
+
+```bash
+bun install
+```
