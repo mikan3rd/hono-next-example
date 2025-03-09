@@ -33,7 +33,14 @@ bun install
 ## Run
 
 ```bash
-bun run backend dev
+bun backend dev
+```
+
+## Format & Lint & Test
+
+```bash
+bun backend lint:fix
+bun backend test
 ```
 
 ## Docker

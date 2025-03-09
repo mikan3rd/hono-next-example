@@ -4,7 +4,9 @@
     "dev": "bun run --hot src/server.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
-    "lint:fix": "biome check src --write"
+    "lint:fix": "biome check src --write",
+    "test": "bun test",
+    "export-openapi": "bun run src/scripts/export-openapi/index.ts && bun run lint:fix"
   },
   "dependencies": {
     "@hono/swagger-ui": "0.5.1",
