@@ -22,4 +22,4 @@ COPY packages/backend_app /app/packages/backend_app
 WORKDIR /app/packages/backend_app
 USER bun
 EXPOSE ${BACKEND_APP_PORT}/tcp
-ENTRYPOINT [ "bun", "run", "src/index.ts" ]
+ENTRYPOINT [ "bun", "run", "src/server.ts" ]
