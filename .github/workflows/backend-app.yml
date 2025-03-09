@@ -30,6 +30,8 @@ jobs:
 
       - run: bun run typecheck
 
+      - run: bun test
+
   build:
     runs-on: ubuntu-latest
 
