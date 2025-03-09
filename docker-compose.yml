@@ -3,12 +3,6 @@ services:
   backend_app:
     build:
       context: .
-      dockerfile: packages/backend/Dockerfile
+      dockerfile: packages/backend_app/Dockerfile
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
-    volumes:
-      - .:/usr/src/app
-      - backend_app_node_modules:/usr/src/app/node_modules
-
-volumes:
-  backend_app_node_modules:
