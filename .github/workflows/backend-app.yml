@@ -1,4 +1,4 @@
-name: Bun Format & Lint & Test
+name: Backend App
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./packages/backend
+        working-directory: ./packages/backend_app
 
     steps:
       - uses: actions/checkout@v4
@@ -29,3 +29,19 @@ jobs:
       - run: bun run lint
 
       - run: bun run typecheck
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: packages/backend_app/Dockerfile
+          push: false

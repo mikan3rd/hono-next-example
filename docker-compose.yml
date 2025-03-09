@@ -1,0 +1,8 @@
+services:
+
+  backend_app:
+    build:
+      context: .
+      dockerfile: packages/backend_app/Dockerfile
+    ports:
+      - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
