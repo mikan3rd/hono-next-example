@@ -29,3 +29,10 @@ asdf install
 ```bash
 bun install
 ```
+
+## Docker
+
+```bash
+docker compose build
+docker compose up -d
+```
