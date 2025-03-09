@@ -1,6 +1,7 @@
-import { app } from "@/index";
+import { app } from "@/apps/index.js";
+import { env } from "./env.js";
 
 export default {
-  port: Number(process.env.BACKEND_APP_PORT),
+  port: env.BACKEND_APP_PORT,
   fetch: app.fetch,
 };

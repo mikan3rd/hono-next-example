@@ -30,6 +30,19 @@ asdf install
 bun install
 ```
 
+## Run
+
+```bash
+bun backend dev
+```
+
+## Format & Lint & Test
+
+```bash
+bun backend lint:fix
+bun backend test
+```
+
 ## Docker
 
 ```bash
