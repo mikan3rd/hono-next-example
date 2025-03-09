@@ -30,6 +30,12 @@ asdf install
 bun install
 ```
 
+## Run
+
+```bash
+bun run backend dev
+```
+
 ## Docker
 
 ```bash
