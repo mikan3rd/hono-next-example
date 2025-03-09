@@ -1,4 +1,4 @@
-import { helloApp } from "@/apps/hellos";
+import { helloApp } from "@/apps/hellos/index.js";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
 
