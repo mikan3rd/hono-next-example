@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./packages/backend
+        working-directory: ./packages/backend_app
 
     steps:
       - uses: actions/checkout@v4
@@ -43,5 +43,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: packages/backend/Dockerfile
+          file: packages/backend_app/Dockerfile
           push: false
