@@ -2,7 +2,7 @@
   "name": "backend_app",
   "type": "module",
   "scripts": {
-    "dev": "bun run --hot src/server.ts",
+    "dev": "bun --env-file=../../.env run --hot src/server.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check src --write",

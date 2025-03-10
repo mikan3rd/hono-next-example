@@ -5,6 +5,6 @@ export const env = createEnv({
   runtimeEnv: process.env,
 
   server: {
-    BACKEND_APP_PORT: z.number().min(1),
+    BACKEND_APP_PORT: z.coerce.number().min(1),
   },
 });
