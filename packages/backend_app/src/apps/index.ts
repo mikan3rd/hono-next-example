@@ -8,7 +8,7 @@ const app = new OpenAPIHono()
     openapi: "3.0.0",
     info: {
       version: "1.0.0",
-      title: "bfw-credit OpenAPI",
+      title: "backend_app OpenAPI",
     },
   })
   .get("/ui", swaggerUI({ url: "/doc" }));

@@ -54,3 +54,9 @@ bun backend test
 docker compose build
 docker compose up -d
 ```
+
+## Generate OpenAPI JSON
+
+```bash
+bun run export-openapi
+```

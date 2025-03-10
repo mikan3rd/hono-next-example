@@ -30,6 +30,11 @@ jobs:
 
       - run: bun run typecheck
 
+      - name: Check export-openapi diff
+        run: |
+          bun run export-openapi
+          git diff --exit-code openapi.json
+
       - run: bun test
 
   build:

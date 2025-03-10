@@ -1,0 +1,62 @@
+{
+  "openapi": "3.0.0",
+  "info": { "version": "1.0.0", "title": "backend_app OpenAPI" },
+  "components": {
+    "schemas": {
+      "Message": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "example": "Hello Hono!" }
+        },
+        "required": ["message"]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/hellos": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Hello message",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "mikan3rd"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hello message with name",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    }
+  }
+}
