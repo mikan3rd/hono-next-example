@@ -2,6 +2,9 @@
   "name": "hono-next-example",
   "workspaces": ["packages/*"],
   "scripts": {
-    "backend": "bun run --cwd packages/backend_app"
+    "backend": "bun run --cwd packages/backend_app",
+    "frontend": "bun run --cwd packages/frontend_app",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write"
   }
 }
