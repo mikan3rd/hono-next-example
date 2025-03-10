@@ -18,16 +18,34 @@
 brew install asdf
 ```
 
-- Install **Bun** by asdf
+- Install JavaScript runtime **Bun** by asdf
 
 ```bash
 asdf install
 ```
 
-- Install dependencies
+- Install dependencies by Bun
 
 ```bash
 bun install
+```
+
+## Environment Variables
+
+- Create `.env` file in the root directory, refer to `.env.example`
+- Otherwise an error will occur when running the development server
+
+## Run development server
+
+```bash
+bun backend dev
+```
+
+## Format & Lint & Test
+
+```bash
+bun backend lint:fix
+bun backend test
 ```
 
 ## Docker
