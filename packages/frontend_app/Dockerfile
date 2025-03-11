@@ -13,7 +13,6 @@ RUN bun install --frozen-lockfile --production
 
 # copy production dependencies and source code into final image
 FROM base AS builder
-ENV FRONTEND_APP_PORT="4400"
 COPY --from=install /app/node_modules node_modules
 COPY . /app/
 RUN bun --bun run build
@@ -21,6 +20,8 @@ RUN bun --bun run build
 # run the app
 FROM base AS runner
 ENV NODE_ENV="production"
+ENV FRONTEND_APP_PORT="4400"
+ENV PORT=${FRONTEND_APP_PORT}
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
