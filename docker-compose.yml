@@ -6,3 +6,10 @@ services:
       dockerfile: packages/backend_app/Dockerfile
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
+
+  frontend_app:
+    build:
+      context: .
+      dockerfile: packages/frontend_app/Dockerfile
+    ports:
+      - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
