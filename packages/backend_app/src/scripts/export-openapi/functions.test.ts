@@ -40,7 +40,7 @@ describe("exportOpenAPI", () => {
       });
     });
 
-    it("エラーがスローされること", async () => {
+    it("throw error", async () => {
       await expect(subject()).rejects.toThrow(
         "Failed to export OpenAPI: Internal Server Error",
       );
