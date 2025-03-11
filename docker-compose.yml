@@ -2,7 +2,12 @@ services:
 
   backend_app:
     build:
-      context: .
-      dockerfile: packages/backend_app/Dockerfile
+      context: packages/backend_app
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
+
+  frontend_app:
+    build:
+      context: packages/frontend_app
+    ports:
+      - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"

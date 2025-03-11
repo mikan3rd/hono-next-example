@@ -10,12 +10,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: ./packages/backend_app
+
 jobs:
   check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/backend_app
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +41,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
@@ -49,6 +52,5 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: packages/backend_app/Dockerfile
+          context: packages/backend_app
           push: false

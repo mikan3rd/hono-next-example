@@ -1,4 +1,5 @@
 # ref: https://bun.sh/guides/ecosystem/docker
+# ref: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
@@ -11,13 +12,17 @@ COPY package.json bun.lock /app/
 RUN bun install --frozen-lockfile --production
 
 # copy production dependencies and source code into final image
-FROM base AS release
-ENV NODE_ENV="production"
-ENV BACKEND_APP_PORT="4300"
+FROM base AS builder
+ENV FRONTEND_APP_PORT="4400"
 COPY --from=install /app/node_modules node_modules
 COPY . /app/
+RUN bun --bun run build
 
 # run the app
-USER bun
-EXPOSE ${BACKEND_APP_PORT}/tcp
-ENTRYPOINT [ "bun", "run", "src/server.ts" ]
+FROM base AS runner
+ENV NODE_ENV="production"
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+EXPOSE ${FRONTEND_APP_PORT}
+ENTRYPOINT [ "bun", "run", "server.js" ]
