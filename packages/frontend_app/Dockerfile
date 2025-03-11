@@ -24,10 +24,9 @@ RUN bun --bun run build
 
 # run the app
 FROM base AS runner
-WORKDIR /app/packages/frontend_app
 ENV NODE_ENV="production"
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/packages/frontend_app/public ./public
+COPY --from=builder /app/packages/frontend_app/.next/standalone ./
+COPY --from=builder /app/packages/frontend_app/.next/static ./.next/static
 EXPOSE ${FRONTEND_APP_PORT}
 ENTRYPOINT [ "bun", "run", "server.js" ]
