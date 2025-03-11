@@ -26,4 +26,4 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 EXPOSE ${FRONTEND_APP_PORT}
-ENTRYPOINT [ "bun", "--bun", "run", "start" ]
+ENTRYPOINT [ "bun", "run", "server.js" ]
