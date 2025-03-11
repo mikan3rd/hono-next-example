@@ -9,6 +9,8 @@
 - Backend
   - [Hono](https://hono.dev/)
   - [Swagger/OpenAPI](https://swagger.io/)
+- Frontend
+  - [Next.js](https://nextjs.org/)
 
 ## Setup
 
@@ -39,7 +41,7 @@ bun install-all
 
 ```bash
 bun backend dev
-bun frontend dev
+bun --env-file=.env frontend dev
 ```
 
 ## Format & Lint & Test
