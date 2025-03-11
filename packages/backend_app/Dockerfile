@@ -7,8 +7,7 @@ WORKDIR /app
 
 # install with --production (exclude devDependencies)
 FROM base AS install
-COPY packages/backend_app/package.json /app/
-COPY packages/backend_app/bun.lock /app/
+COPY package.json bun.lock /app/
 RUN bun install --frozen-lockfile --production
 
 # copy production dependencies and source code into final image
@@ -16,7 +15,7 @@ FROM base AS release
 ENV NODE_ENV="production"
 ENV BACKEND_APP_PORT="4300"
 COPY --from=install /app/node_modules node_modules
-COPY packages/backend_app /app/
+COPY . /app/
 
 # run the app
 USER bun

@@ -10,14 +10,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: ./packages/frontend_app
+
 jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    defaults:
-      run:
-        working-directory: ./packages/frontend_app
-
     steps:
       - uses: actions/checkout@v4
 
@@ -44,6 +44,4 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: packages/frontend_app/Dockerfile
           push: false

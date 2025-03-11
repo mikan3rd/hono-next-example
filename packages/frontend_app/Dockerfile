@@ -8,15 +8,14 @@ WORKDIR /app
 
 # install with --production (exclude devDependencies)
 FROM base AS install
-COPY packages/frontend_app/package.json /app/
-COPY packages/frontend_app/bun.lock /app/
+COPY package.json bun.lock /app/
 RUN bun install --frozen-lockfile --production
 
 # copy production dependencies and source code into final image
 FROM base AS builder
 ENV FRONTEND_APP_PORT="4400"
 COPY --from=install /app/node_modules node_modules
-COPY packages/frontend_app /app/
+COPY . /app/
 RUN bun --bun run build
 
 # run the app

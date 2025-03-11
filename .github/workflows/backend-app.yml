@@ -10,6 +10,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: ./packages/backend_app
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -51,6 +55,4 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: packages/backend_app/Dockerfile
           push: false
