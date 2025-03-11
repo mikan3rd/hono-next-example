@@ -1,4 +1,5 @@
 # ref: https://bun.sh/guides/ecosystem/docker
+# ref: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
@@ -24,5 +25,7 @@ FROM base AS runner
 WORKDIR /app/packages/frontend_app
 ENV NODE_ENV="production"
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 EXPOSE ${FRONTEND_APP_PORT}
 ENTRYPOINT [ "bun", "run", "server.js" ]
