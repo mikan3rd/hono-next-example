@@ -17,6 +17,7 @@ RUN bun install --frozen-lockfile --production --filter './packages/frontend_app
 FROM base AS builder
 ENV FRONTEND_APP_PORT="4400"
 COPY --from=install /app/node_modules node_modules
+COPY package.json bun.lock /app/
 COPY packages/frontend_app /app/packages/frontend_app
 WORKDIR /app/packages/frontend_app
 RUN bun --bun run build
