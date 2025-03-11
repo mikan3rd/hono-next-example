@@ -9,6 +9,8 @@
 - Backend
   - [Hono](https://hono.dev/)
   - [Swagger/OpenAPI](https://swagger.io/)
+- Frontend
+  - [Next.js](https://nextjs.org/)
 
 ## Setup
 
@@ -27,7 +29,7 @@ asdf install
 - Install dependencies by Bun
 
 ```bash
-bun install
+bun install-all
 ```
 
 ## Environment Variables
@@ -39,6 +41,7 @@ bun install
 
 ```bash
 bun backend dev
+bun --env-file=.env frontend dev
 ```
 
 ## Format & Lint & Test
