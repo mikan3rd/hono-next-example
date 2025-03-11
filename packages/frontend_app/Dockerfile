@@ -18,6 +18,7 @@ FROM base AS builder
 ENV FRONTEND_APP_PORT="4400"
 COPY --from=install /app/node_modules node_modules
 COPY packages/frontend_app /app/packages/frontend_app
+WORKDIR /app/packages/frontend_app
 RUN bun --bun run build
 
 # run the app
