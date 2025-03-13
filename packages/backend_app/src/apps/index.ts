@@ -18,5 +18,5 @@ const routes = app
   })
   .get("/ui", swaggerUI({ url: "/doc" }));
 
-export { app };
+export { routes as app };
 export type AppType = typeof routes;
