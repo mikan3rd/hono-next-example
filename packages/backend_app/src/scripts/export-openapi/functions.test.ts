@@ -8,8 +8,8 @@ import {
   spyOn,
 } from "bun:test";
 import * as fs from "node:fs/promises";
-import { app } from "@/apps/index.js";
-import { exportOpenAPI } from "@/scripts/export-openapi/functions.js";
+import { app } from "@/backend/apps/index.js";
+import { exportOpenAPI } from "@/backend/scripts/export-openapi/functions.js";
 
 describe("exportOpenAPI", () => {
   beforeEach(() => {

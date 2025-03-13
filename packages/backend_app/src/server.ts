@@ -1,4 +1,4 @@
-import { app } from "@/apps/index.js";
+import { app } from "@/backend/apps/index.js";
 import { env } from "./env.js";
 
 export default {
