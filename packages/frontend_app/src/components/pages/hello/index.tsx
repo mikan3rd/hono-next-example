@@ -1,7 +1,7 @@
 "use client";
 
-import { hc } from "hono/client";
 import type { AppType } from "@/backend/apps";
+import { hc } from "hono/client";
 
 export const Index = () => {
   const client = hc<AppType>("http://localhost:4300/");
