@@ -1,7 +1,4 @@
-import {
-  messageSchema,
-  postHelloRequestSchema,
-} from "@/backend/schema/hellos/index.js";
+import { messageSchema, postHelloRequestSchema } from "@/schema/hellos";
 import { createRoute } from "@hono/zod-openapi";
 
 export const getHelloRoute = createRoute({

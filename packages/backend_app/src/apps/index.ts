@@ -1,4 +1,4 @@
-import { helloApp } from "@/backend/apps/hellos/index.js";
+import { helloApp } from "@/apps/hellos";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";

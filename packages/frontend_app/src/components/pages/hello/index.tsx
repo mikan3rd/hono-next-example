@@ -1,6 +1,6 @@
 "use client";
 
-import type { AppType } from "@/backend/apps";
+import type { AppType } from "backend_app/src/apps";
 import { hc } from "hono/client";
 
 export const Index = () => {

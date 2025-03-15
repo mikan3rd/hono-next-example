@@ -3,10 +3,6 @@
     "strict": true,
     "skipLibCheck": true,
     "noUncheckedIndexedAccess": true,
-    "noFallthroughCasesInSwitch": true,
-    "paths": {
-      "@/backend/*": ["./packages/backend_app/src/*"],
-      "@/frontend/*": ["./packages/frontend_app/src/*"]
-    }
+    "noFallthroughCasesInSwitch": true
   }
 }
