@@ -1,5 +1,8 @@
 "use client";
 
+// FIXME:
+// I get an error when I use absolute paths by setting paths in the import source tsconfig.
+// Also, if I prepare paths for absolute paths in the root tsconfig of monorepo, typecheck passes, but next build fails.
 import type { AppType } from "backend_app/src/apps";
 import { hc } from "hono/client";
 
