@@ -2,12 +2,14 @@ services:
 
   backend_app:
     build:
-      context: packages/backend_app
+      context: .
+      dockerfile: packages/backend_app/Dockerfile
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
 
   frontend_app:
     build:
-      context: packages/frontend_app
+      context: .
+      dockerfile: packages/frontend_app/Dockerfile
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"

@@ -52,5 +52,6 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
-          context: packages/backend_app
+          context: .
+          file: packages/backend_app/Dockerfile
           push: false
