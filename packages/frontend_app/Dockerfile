@@ -9,12 +9,16 @@ WORKDIR /app
 # install with --production (exclude devDependencies)
 FROM base AS install
 COPY package.json bun.lock /app/
+COPY packages/backend_app/package.json /app/packages/backend_app/
+COPY packages/frontend_app/package.json /app/packages/frontend_app/
 RUN bun install --frozen-lockfile --production
 
 # copy production dependencies and source code into final image
 FROM base AS builder
 COPY --from=install /app/node_modules node_modules
-COPY . /app/
+COPY package.json tsconfig.json /app/
+COPY packages/frontend_app /app/packages/frontend_app
+WORKDIR /app/packages/frontend_app
 RUN bun --bun run build
 
 # run the app
@@ -22,8 +26,8 @@ FROM base AS runner
 ENV NODE_ENV="production"
 ENV FRONTEND_APP_PORT="4400"
 ENV PORT=${FRONTEND_APP_PORT}
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/packages/frontend_app/public ./public
+COPY --from=builder /app/packages/frontend_app/.next/standalone ./
+COPY --from=builder /app/packages/frontend_app/.next/static ./.next/static
 EXPOSE ${FRONTEND_APP_PORT}
 ENTRYPOINT [ "bun", "run", "server.js" ]
