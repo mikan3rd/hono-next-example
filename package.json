@@ -1,8 +1,8 @@
 {
   "name": "hono-next-example",
+  "workspaces": ["packages/*"],
   "scripts": {
     "backend": "bun run --cwd packages/backend_app",
-    "frontend": "bun run --cwd packages/frontend_app",
-    "install-all": "cd packages/backend_app && bun install && cd ../frontend_app && bun install && cd ../.."
+    "frontend": "bun run --cwd packages/frontend_app"
   }
 }

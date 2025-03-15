@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p ${FRONTEND_APP_PORT}",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
@@ -15,7 +15,9 @@
     "@types/node": "22.13.10",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
+    "backend_app": "workspace:*",
     "biome": "0.3.3",
+    "hono": "4.7.4",
     "next": "15.2.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",

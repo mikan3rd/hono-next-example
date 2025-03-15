@@ -1,6 +1,5 @@
 {
   "name": "backend_app",
-  "type": "module",
   "scripts": {
     "dev": "bun --env-file=../../.env run --hot src/server.ts",
     "typecheck": "tsc --noEmit",

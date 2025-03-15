@@ -1,3 +1,5 @@
-import { exportOpenAPI } from "@/scripts/export-openapi/functions.js";
+import { exportOpenAPI } from "@/scripts/export-openapi/functions";
 
-await exportOpenAPI();
+(async () => {
+  await exportOpenAPI();
+})();

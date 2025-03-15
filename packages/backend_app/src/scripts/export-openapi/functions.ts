@@ -1,5 +1,5 @@
 import * as fs from "node:fs/promises";
-import { app } from "@/apps/index.js";
+import { app } from "@/apps";
 
 export const exportOpenAPI = async () => {
   const res = await app.request("/doc");
