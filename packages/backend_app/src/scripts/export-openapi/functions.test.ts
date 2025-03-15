@@ -9,7 +9,7 @@ import {
 } from "bun:test";
 import * as fs from "node:fs/promises";
 import { app } from "@/apps";
-import { exportOpenAPI } from "@/scripts/export-openapi/functions.js";
+import { exportOpenAPI } from "@/scripts/export-openapi/functions";
 
 describe("exportOpenAPI", () => {
   beforeEach(() => {

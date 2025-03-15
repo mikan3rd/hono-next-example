@@ -6,16 +6,12 @@
 FROM oven/bun:1.2.4 AS base
 WORKDIR /app
 
-# install with --production (exclude devDependencies)
-FROM base AS install
+# copy production dependencies and source code into final image
+FROM base AS builder
 COPY package.json bun.lock /app/
 COPY packages/backend_app/package.json /app/packages/backend_app/
 COPY packages/frontend_app/package.json /app/packages/frontend_app/
 RUN bun install --frozen-lockfile --production --filter frontend_app
-
-# copy production dependencies and source code into final image
-FROM base AS builder
-COPY --from=install /app/node_modules node_modules
 COPY package.json tsconfig.json /app/
 COPY packages/frontend_app /app/packages/frontend_app
 WORKDIR /app/packages/frontend_app
@@ -26,8 +22,14 @@ FROM base AS runner
 ENV NODE_ENV="production"
 ENV FRONTEND_APP_PORT="4400"
 ENV PORT=${FRONTEND_APP_PORT}
-COPY --from=builder /app/packages/frontend_app/public ./public
+
+# If you use bun workspace, a workspace will be created under .next/standalone
 COPY --from=builder /app/packages/frontend_app/.next/standalone ./
-COPY --from=builder /app/packages/frontend_app/.next/static ./.next/static
+
+# Copy static files to workspace
+COPY --from=builder /app/packages/frontend_app/public ./packages/frontend_app/public
+COPY --from=builder /app/packages/frontend_app/.next/static ./packages/frontend_app/.next/static
+
 EXPOSE ${FRONTEND_APP_PORT}
+WORKDIR /app/packages/frontend_app
 ENTRYPOINT [ "bun", "run", "server.js" ]
