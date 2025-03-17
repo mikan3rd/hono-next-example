@@ -54,4 +54,5 @@ jobs:
         with:
           context: .
           file: packages/backend_app/Dockerfile
+          target: release
           push: false
