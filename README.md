@@ -41,7 +41,7 @@ bun install-all
 
 ```bash
 bun backend dev
-bun frontend dev --port 4300
+bun frontend dev --port 4400
 ```
 
 ## Format & Lint & Test
