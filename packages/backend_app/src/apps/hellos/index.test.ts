@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "bun:test";
-import { app } from "@/apps";
 import { testClient } from "hono/testing";
+import { app } from "../../apps";
 
 describe("helloApp", () => {
   describe("getHelloRoute", () => {

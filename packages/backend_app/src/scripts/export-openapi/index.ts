@@ -1,4 +1,4 @@
-import { exportOpenAPI } from "@/scripts/export-openapi/functions";
+import { exportOpenAPI } from "./functions";
 
 (async () => {
   await exportOpenAPI();
