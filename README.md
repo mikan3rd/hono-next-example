@@ -32,7 +32,7 @@ asdf install
 bun install-all
 ```
 
-## Environment Variables
+### Environment Variables
 
 - Create `.env` file in the root directory, refer to `.env.example`
 - Otherwise an error will occur when running the development server
@@ -44,18 +44,27 @@ bun backend dev
 bun frontend dev --port 4400
 ```
 
-## Format & Lint & Test
+### Format & Lint & Test
 
 ```bash
 bun backend lint:fix
 bun backend test
 ```
 
-## Run Production by Docker
+## Run by Docker
+
+### Development Server
 
 ```bash
 docker compose build
 docker compose up -d
+```
+
+### Production
+
+```bash
+docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up -d
 ```
 
 ## Generate OpenAPI JSON

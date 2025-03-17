@@ -33,3 +33,11 @@ COPY --from=builder /app/packages/frontend_app/.next/static ./packages/frontend_
 EXPOSE ${FRONTEND_APP_PORT}
 WORKDIR /app/packages/frontend_app
 ENTRYPOINT [ "bun", "run", "server.js" ]
+
+
+FROM base AS dev
+COPY package.json bun.lock tsconfig.json /app/
+COPY packages/backend_app/package.json /app/packages/backend_app/
+COPY packages/frontend_app /app/packages/frontend_app
+RUN bun install --frozen-lockfile
+WORKDIR /app/packages/frontend_app
