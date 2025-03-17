@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "bun:test";
-import { app } from "@/apps";
+import { app } from "@/backend/apps";
 import { testClient } from "hono/testing";
 
 describe("helloApp", () => {

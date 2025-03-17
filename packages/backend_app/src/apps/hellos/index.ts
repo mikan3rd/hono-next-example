@@ -1,5 +1,5 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { getHelloRoute, postHelloRoute } from "../../routes/hellos";
+import { getHelloRoute, postHelloRoute } from "@/backend/routes/hellos";
 
 const helloApp = new OpenAPIHono()
   .openapi(getHelloRoute, (c) => {
