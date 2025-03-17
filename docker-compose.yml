@@ -13,7 +13,6 @@ services:
       dockerfile: packages/frontend_app/Dockerfile
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
-    tty: true
-    # bunの対話モード
-    # command: ["bun", "repl"]
-    command: ["bun", "run", "server.js"]
+    depends_on:
+      - backend_app
+
