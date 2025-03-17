@@ -1,4 +1,4 @@
-name: "hono-next-example--dev"
+name: "hono-next-example--prod"
 
 services:
 
@@ -6,11 +6,7 @@ services:
     build:
       context: .
       dockerfile: packages/backend_app/Dockerfile
-      target: dev
-    env_file:
-      - .env
-    command: |
-      bun run --hot src/server.ts
+      target: release
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
 
@@ -18,13 +14,8 @@ services:
     build:
       context: .
       dockerfile: packages/frontend_app/Dockerfile
-      target: dev
-    env_file:
-      - .env
-    command: |
-      bun run dev --port ${FRONTEND_APP_PORT}
+      target: runner
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
     depends_on:
       - backend_app
-
