@@ -7,6 +7,8 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getHello } from "../../components/pages/hello/client";
 import { Index } from "../../components/pages/hello/index";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(
   props: unknown,
   parent: ResolvingMetadata,
