@@ -3,7 +3,7 @@
 
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1.2.4 AS base
+FROM oven/bun:1.2.5 AS base
 WORKDIR /app
 
 # copy production dependencies and source code into final image
