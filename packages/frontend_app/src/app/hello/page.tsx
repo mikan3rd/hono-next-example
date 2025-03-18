@@ -8,7 +8,7 @@ import { getHello } from "../../components/pages/hello/client";
 import { Index } from "../../components/pages/hello/index";
 
 export async function generateMetadata(
-  _: unknown,
+  props: unknown,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { message } = await getHello();
