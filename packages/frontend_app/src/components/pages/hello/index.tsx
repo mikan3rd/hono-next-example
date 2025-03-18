@@ -1,13 +1,17 @@
 "use client";
 
-import type { AppType } from "backend_app/src/apps";
-import { hc } from "hono/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { baseClient } from "../../../baseClient";
+import { getHello } from "./client";
 
 export const Index = () => {
-  const client = hc<AppType>("http://localhost:4300/");
+  const { data } = useSuspenseQuery({
+    queryKey: ["hello"],
+    queryFn: getHello,
+  });
 
   const handleClickButton = async () => {
-    const res = await client.hellos.$get();
+    const res = await baseClient.hellos.$post({ json: { name: "frontend" } });
     const json = await res.json();
     // biome-ignore lint/suspicious/noConsole: 明示的に出力
     console.log(json);
@@ -15,7 +19,7 @@ export const Index = () => {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      TEST
+      TEST: {data.message}
       <button type="button" onClick={handleClickButton}>
         Click me
       </button>
