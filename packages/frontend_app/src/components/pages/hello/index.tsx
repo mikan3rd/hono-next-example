@@ -1,13 +1,10 @@
 "use client";
 
-import type { AppType } from "backend_app/src/apps";
-import { hc } from "hono/client";
+import { client } from "../../../client";
 
 export const Index = () => {
-  const client = hc<AppType>("http://localhost:4300/");
-
   const handleClickButton = async () => {
-    const res = await client.hellos.$get();
+    const res = await client.hellos.$post({ json: { name: "frontend" } });
     const json = await res.json();
     // biome-ignore lint/suspicious/noConsole: 明示的に出力
     console.log(json);
