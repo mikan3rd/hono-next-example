@@ -7,9 +7,3 @@ export const messageSchema = z
     }),
   })
   .openapi("Message");
-
-export const postHelloRequestSchema = z.object({
-  name: z.string().min(1).openapi({
-    example: "mikan3rd",
-  }),
-});
