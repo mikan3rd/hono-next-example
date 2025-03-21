@@ -6,7 +6,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "test": "bun test",
-    "export-openapi": "bun run src/scripts/export-openapi/index.ts && bun run lint:fix"
+    "export-openapi": "bun run src/scripts/export-openapi/index.ts"
   },
   "dependencies": {
     "@hono/swagger-ui": "0.5.1",
