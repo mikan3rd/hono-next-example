@@ -15,6 +15,9 @@ services:
       context: .
       dockerfile: packages/frontend_app/Dockerfile
       target: runner
+      args:
+        BACKEND_APP_SERVER_URL: http://backend_app:4300
+        NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
     depends_on:
