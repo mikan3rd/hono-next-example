@@ -5,10 +5,8 @@
 # see all versions at https://hub.docker.com/r/oven/bun/tags
 FROM oven/bun:1.2.5 AS base
 WORKDIR /app
-ARG BACKEND_APP_SERVER_URL
-ARG NEXT_PUBLIC_BACKEND_APP_URL
-ENV BACKEND_APP_SERVER_URL=${BACKEND_APP_SERVER_URL}
-ENV NEXT_PUBLIC_BACKEND_APP_URL=${NEXT_PUBLIC_BACKEND_APP_URL}
+ENV BACKEND_APP_SERVER_URL=""
+ENV NEXT_PUBLIC_BACKEND_APP_URL=""
 
 # copy production dependencies and source code into final image
 FROM base AS builder
