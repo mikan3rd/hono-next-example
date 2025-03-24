@@ -35,10 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    env:
-      BACKEND_APP_SERVER_URL: http://localhost:4300
-      NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
-
     steps:
       - uses: actions/checkout@v4
 
