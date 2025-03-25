@@ -4,12 +4,30 @@ import { app } from "../../apps";
 
 describe("helloApp", () => {
   describe("getHelloRoute", () => {
-    const subject = testClient(app).hellos.$get();
+    let name: string;
+    const subject = () => testClient(app).hellos.$get({ query: { name } });
 
-    it("should return 200 Response", async () => {
-      const res = await subject;
-      expect(res.status).toBe(200);
-      expect(await res.json()).toEqual({ message: "Hello Hono!" });
+    describe("when the name is provided", () => {
+      beforeEach(() => {
+        name = "Hono";
+      });
+
+      it("should return 200 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(200);
+        expect(await res.json()).toEqual({ message: `Hello ${name}!` });
+      });
+    });
+
+    describe("when the name is not provided", () => {
+      beforeEach(() => {
+        name = "";
+      });
+
+      it("should return 400 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(400);
+      });
     });
   });
 
@@ -19,7 +37,7 @@ describe("helloApp", () => {
 
     describe("when the name is provided", () => {
       beforeEach(() => {
-        name = "mikan3rd";
+        name = "Hono";
       });
 
       it("should return 200 Response", async () => {

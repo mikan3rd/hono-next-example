@@ -19,7 +19,13 @@ const routes = app
       title: "backend_app OpenAPI",
     },
   })
-  .get("/ui", swaggerUI({ url: "/doc" }));
+  .get(
+    "/ui",
+    swaggerUI({
+      url: "/doc",
+      docExpansion: "full",
+    }),
+  );
 
 export { routes as app };
 export type AppType = typeof routes;

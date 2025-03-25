@@ -12,6 +12,9 @@ export const Index = () => {
 
   const handleClickButton = async () => {
     const res = await baseClient.hellos.$post({ json: { name: "frontend" } });
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
     const json = await res.json();
     // biome-ignore lint/suspicious/noConsole: 明示的に出力
     console.log(json);

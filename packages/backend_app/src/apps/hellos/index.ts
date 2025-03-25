@@ -3,7 +3,8 @@ import { getHelloRoute, postHelloRoute } from "./route";
 
 const helloApp = new OpenAPIHono()
   .openapi(getHelloRoute, (c) => {
-    return c.json({ message: "Hello Hono!" });
+    const { name } = c.req.valid("query");
+    return c.json({ message: `Hello ${name}!` });
   })
   .openapi(postHelloRoute, (c) => {
     const { name } = c.req.valid("json");

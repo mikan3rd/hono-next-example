@@ -16,6 +16,16 @@
   "paths": {
     "/hellos": {
       "get": {
+        "tags": ["sample"],
+        "parameters": [
+          {
+            "schema": { "type": "string", "minLength": 1 },
+            "required": true,
+            "description": "Name",
+            "name": "name",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Hello message",
@@ -24,10 +34,12 @@
                 "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
-          }
+          },
+          "400": { "description": "Bad Request" }
         }
       },
       "post": {
+        "tags": ["sample"],
         "requestBody": {
           "content": {
             "application/json": {

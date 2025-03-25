@@ -40,8 +40,8 @@ ENTRYPOINT [ "bun", "run", "server.js" ]
 
 
 FROM base AS dev
-COPY package.json bun.lock tsconfig.json /app/
+COPY package.json bun.lock /app/
 COPY packages/backend_app/package.json /app/packages/backend_app/
-COPY packages/frontend_app /app/packages/frontend_app
+COPY packages/frontend_app/package.json /app/packages/frontend_app/
 RUN bun install --frozen-lockfile
 WORKDIR /app/packages/frontend_app
