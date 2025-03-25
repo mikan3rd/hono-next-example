@@ -1,10 +1,20 @@
-import { createRoute } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
 import { messageSchema } from "../../schema/output/hello";
 import { postHelloRequestSchema } from "./schema";
 
 export const getHelloRoute = createRoute({
+  tags: ["sample"],
   method: "get",
   path: "/",
+  request: {
+    query: z.object({
+      name: z.string().openapi({
+        param: {
+          description: "Name",
+        },
+      }),
+    }),
+  },
   responses: {
     200: {
       description: "Hello message",
@@ -18,6 +28,7 @@ export const getHelloRoute = createRoute({
 });
 
 export const postHelloRoute = createRoute({
+  tags: ["sample"],
   method: "post",
   path: "/",
   request: {
