@@ -11,6 +11,7 @@ import { exportOpenAPI } from "./functions";
     "openapi.json",
     "--write",
   ]);
+
   // biome-ignore lint/suspicious/noConsole: 明示的に出力
   console.log(stdout.toString());
 })();
