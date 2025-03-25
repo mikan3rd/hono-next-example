@@ -8,11 +8,14 @@ export const getHelloRoute = createRoute({
   path: "/",
   request: {
     query: z.object({
-      name: z.string().openapi({
-        param: {
-          description: "Name",
-        },
-      }),
+      name: z
+        .string()
+        .min(1)
+        .openapi({
+          param: {
+            description: "Name",
+          },
+        }),
     }),
   },
   responses: {
@@ -23,6 +26,9 @@ export const getHelloRoute = createRoute({
           schema: messageSchema,
         },
       },
+    },
+    400: {
+      description: "Bad Request",
     },
   },
 });
