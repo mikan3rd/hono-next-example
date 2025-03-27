@@ -2,6 +2,7 @@
   "name": "backend_app",
   "scripts": {
     "dev": "bun run --hot src/server.ts",
+    "db:push": "drizzle-kit push",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
