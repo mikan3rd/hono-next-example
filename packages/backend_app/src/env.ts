@@ -6,5 +6,6 @@ export const env = createEnv({
 
   server: {
     BACKEND_APP_PORT: z.coerce.number().min(1),
+    DATABASE_URL: z.string(),
   },
 });
