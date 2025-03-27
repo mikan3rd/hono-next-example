@@ -13,14 +13,6 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: example-db
 
-  adminer:
-    image: adminer:4.8.1
-    restart: always
-    ports:
-      - 8080:8080
-    depends_on:
-      - db
-
   backend_app:
     image: backend_app
     build:
