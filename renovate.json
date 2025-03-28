@@ -3,7 +3,9 @@
   "labels": ["renovate"],
   "configMigration": true,
   "extends": ["config:js-app", ":automergeMinor", "group:allNonMajor"],
-  "fileMatch": ["(^|/)bun\\.lock$"],
+  "bun": {
+    "fileMatch": ["(^|/)bun\\.lock$"]
+  },
   "major": {
     "minimumReleaseAge": "28 days"
   },
