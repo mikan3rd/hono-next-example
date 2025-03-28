@@ -3,10 +3,10 @@
   "scripts": {
     "dev": "bun run --hot src/server.ts",
     "db:studio": "drizzle-kit studio",
-    "db:push": "drizzle-kit push",
-    "typecheck": "tsc --noEmit",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write",
+    "db:push": "bun run --bun drizzle-kit push",
+    "typecheck": "bun run --bun tsc --noEmit",
+    "lint": "bun run --bun biome check .",
+    "lint:fix": "bun run lint --write",
     "test": "bun test",
     "export-openapi": "bun run src/scripts/export-openapi/index.ts"
   },
