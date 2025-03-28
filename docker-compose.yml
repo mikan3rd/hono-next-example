@@ -2,7 +2,7 @@ name: "hono-next-example--dev"
 
 services:
   db:
-    image: postgres:14.12
+    image: postgres:14.16
     restart: always
     env_file:
       - .env
