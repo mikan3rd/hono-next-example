@@ -6,6 +6,10 @@ export const env = createEnv({
 
   server: {
     BACKEND_APP_PORT: z.coerce.number().min(1),
-    DATABASE_URL: z.string(),
+    POSTGRES_USER: z.string(),
+    POSTGRES_PASSWORD: z.string(),
+    POSTGRES_DB: z.string(),
   },
 });
+
+export const DATABASE_URL = `postgresql://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@localhost:5432/${env.POSTGRES_DB}`;
