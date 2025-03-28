@@ -2,9 +2,11 @@
   "name": "backend_app",
   "scripts": {
     "dev": "bun run --hot src/server.ts",
-    "typecheck": "tsc --noEmit",
-    "lint": "biome check .",
-    "lint:fix": "biome check . --write",
+    "db:studio": "drizzle-kit studio",
+    "db:push": "bun run --bun drizzle-kit push",
+    "typecheck": "bun run --bun tsc --noEmit",
+    "lint": "bun run --bun biome check .",
+    "lint:fix": "bun run lint --write",
     "test": "bun test",
     "export-openapi": "bun run src/scripts/export-openapi/index.ts"
   },
@@ -12,11 +14,16 @@
     "@hono/swagger-ui": "0.5.1",
     "@hono/zod-openapi": "0.19.2",
     "@t3-oss/env-core": "0.12.0",
-    "hono": "4.7.4"
+    "drizzle-orm": "0.41.0",
+    "hono": "4.7.4",
+    "pg": "8.14.1"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/bun": "1.2.5",
+    "@types/node": "22.13.14",
+    "@types/pg": "8.11.11",
+    "drizzle-kit": "0.30.6",
     "typescript": "5.8.2"
   }
 }
