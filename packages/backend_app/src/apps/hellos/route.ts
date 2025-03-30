@@ -27,9 +27,10 @@ export const getHelloRoute = createRoute({
         },
       },
     },
-    400: {
-      description: "Bad Request",
-    },
+    // TODO: schema を設定しないと型定義が不完全
+    // 400: {
+    //   description: "Bad Request",
+    // },
   },
 });
 
@@ -55,8 +56,9 @@ export const postHelloRoute = createRoute({
         },
       },
     },
-    400: {
-      description: "Bad Request",
-    },
+    // TODO: schema を設定しないと型定義が不完全
+    // 400: {
+    //   description: "Bad Request",
+    // },
   },
 });
