@@ -12,6 +12,6 @@ export const postApp = new OpenAPIHono()
     const { content } = c.req.valid("json");
     const result = await db.insert(postsTable).values({ content }).returning();
     const post = result[0];
-    if (!post) throw new Error("Failed to create post");
+    if (!post) throw new Error("Failed to create post"); // TODO: 適切なエラーコードに置き換え
     return c.json({ post });
   });
