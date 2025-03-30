@@ -21,7 +21,7 @@ services:
       - .env
     command: |
       sh -c '
-        bun run db:push &&
+        bun db:push &&
         bun run --hot src/server.ts
       '
     ports:
