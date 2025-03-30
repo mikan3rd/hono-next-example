@@ -15,10 +15,10 @@ export const postApp = createApp()
     if (!post) {
       return c.json(
         {
-          code: 400,
-          message: "Failed to create post",
+          code: 500,
+          message: "Something went wrong",
         },
-        400,
+        500,
       );
     }
     return c.json({ post }, 200);

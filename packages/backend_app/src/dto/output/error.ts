@@ -20,4 +20,10 @@ export const ErrorResponses = {
       },
     },
   },
+  500: {
+    description: "Internal Server Error",
+    content: {
+      "application/json": { schema: ErrorSchema },
+    },
+  },
 };
