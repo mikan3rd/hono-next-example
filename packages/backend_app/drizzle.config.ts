@@ -1,7 +1,7 @@
 import { defineConfig } from "drizzle-kit";
 import { DATABASE_URL } from "./src/env";
 
-console.info(DATABASE_URL);
+console.info("DATABASE_URL", DATABASE_URL);
 
 export default defineConfig({
   out: "./drizzle",
