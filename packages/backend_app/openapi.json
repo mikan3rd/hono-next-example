@@ -23,27 +23,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "posts": {
-                    "_def": {
-                      "type": {
-                        "_def": {
-                          "unknownKeys": "strip",
-                          "catchall": {
-                            "_def": { "typeName": "ZodNever" },
-                            "~standard": { "version": 1, "vendor": "zod" }
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "minimum": -2147483648,
+                            "maximum": 2147483647
                           },
-                          "typeName": "ZodObject"
+                          "content": { "type": "string" },
+                          "created_at": { "type": "string" },
+                          "updated_at": { "type": "string" }
                         },
-                        "~standard": { "version": 1, "vendor": "zod" },
-                        "_cached": null
-                      },
-                      "minLength": null,
-                      "maxLength": null,
-                      "exactLength": null,
-                      "typeName": "ZodArray"
-                    },
-                    "~standard": { "version": 1, "vendor": "zod" }
-                  }
+                        "required": [
+                          "id",
+                          "content",
+                          "created_at",
+                          "updated_at"
+                        ]
+                      }
+                    }
+                  },
+                  "required": ["posts"]
                 }
               }
             }
