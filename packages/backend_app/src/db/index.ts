@@ -4,6 +4,5 @@ import { DATABASE_URL } from "../env";
 export const db = drizzle({
   connection: {
     connectionString: DATABASE_URL,
-    ssl: true,
   },
 });

@@ -3,6 +3,20 @@
   "info": { "version": "1.0.0", "title": "backend_app OpenAPI" },
   "components": {
     "schemas": {
+      "post": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          },
+          "content": { "type": "string" },
+          "created_at": { "type": "string" },
+          "updated_at": { "type": "string" }
+        },
+        "required": ["id", "content", "created_at", "updated_at"]
+      },
       "Message": {
         "type": "object",
         "properties": {
@@ -14,6 +28,62 @@
     "parameters": {}
   },
   "paths": {
+    "/posts": {
+      "get": {
+        "tags": ["posts"],
+        "responses": {
+          "200": {
+            "description": "Hello message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/post" }
+                    }
+                  },
+                  "required": ["posts"]
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      },
+      "post": {
+        "tags": ["posts"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "content": { "type": "string" } },
+                "required": ["content"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hello message with name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": { "$ref": "#/components/schemas/post" }
+                  },
+                  "required": ["post"]
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    },
     "/hellos": {
       "get": {
         "tags": ["sample"],

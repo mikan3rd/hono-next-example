@@ -11,17 +11,6 @@ services:
     volumes:
       - db-store:/var/lib/postgresql/data
 
-  db-migrate:
-    image: backend_app
-    env_file:
-      - .env
-    command: |
-      bun run db:push
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-
   backend_app:
     image: backend_app
     build:
@@ -31,15 +20,17 @@ services:
     env_file:
       - .env
     command: |
-      bun run --hot src/server.ts
+      sh -c '
+        bun db:push &&
+        bun run --hot src/server.ts
+      '
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
     depends_on:
       - db
-      - db-migrate
     volumes:
-      - node_modules:/app/node_modules
       - .:/app
+      - node_modules:/app/node_modules
 
   frontend_app:
     build:
@@ -55,13 +46,14 @@ services:
     depends_on:
       - backend_app
     volumes:
-      - node_modules:/app/node_modules
       - .:/app
+      - node_modules:/app/node_modules
 
   export-openapi:
     image: backend_app
     volumes:
       - .:/app
+      - node_modules:/app/node_modules
     command: |
       bun run --hot src/scripts/export-openapi/index.ts
 

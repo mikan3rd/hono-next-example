@@ -1,7 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { getHelloRoute, postHelloRoute } from "./route";
 
-const helloApp = new OpenAPIHono()
+export const helloApp = new OpenAPIHono()
   .openapi(getHelloRoute, (c) => {
     const { name } = c.req.valid("query");
     return c.json({ message: `Hello ${name}!` });
@@ -10,5 +10,3 @@ const helloApp = new OpenAPIHono()
     const { name } = c.req.valid("json");
     return c.json({ message: `Hello ${name}!` });
   });
-
-export { helloApp };

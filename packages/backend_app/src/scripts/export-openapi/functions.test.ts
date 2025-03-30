@@ -16,7 +16,7 @@ describe("exportOpenAPI", () => {
     mock.module("node:fs/promises", () => ({
       writeFile: mock(async () => {}),
     }));
-    spyOn(console, "log");
+    spyOn(console, "info");
     spyOn(app, "request");
   });
 
@@ -29,7 +29,7 @@ describe("exportOpenAPI", () => {
   it("", async () => {
     await subject();
     expect(fs.writeFile).toHaveBeenCalledTimes(1);
-    expect(console.log).toHaveBeenCalledWith("OpenAPI exported successfully");
+    expect(console.info).toHaveBeenCalledWith("OpenAPI exported successfully");
   });
 
   describe("app.request is not 200", () => {
@@ -45,7 +45,7 @@ describe("exportOpenAPI", () => {
         "Failed to export OpenAPI: Internal Server Error",
       );
       expect(fs.writeFile).not.toHaveBeenCalled();
-      expect(console.log).not.toHaveBeenCalled();
+      expect(console.info).not.toHaveBeenCalled();
     });
   });
 });

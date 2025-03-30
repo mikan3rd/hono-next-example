@@ -1,6 +1,6 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { messageSchema } from "../../schema/output/hello";
-import { postHelloRequestSchema } from "./schema";
+import { messageSchema } from "../../dto/output/hello";
+import { postHelloRequestSchema } from "./dto";
 
 export const getHelloRoute = createRoute({
   tags: ["sample"],
