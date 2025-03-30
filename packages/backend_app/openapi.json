@@ -63,14 +63,8 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "minLength": 1,
-                    "example": "mikan3rd"
-                  }
-                },
-                "required": ["name"]
+                "properties": { "content": { "type": "string" } },
+                "required": ["content"]
               }
             }
           }
@@ -80,7 +74,20 @@
             "description": "Hello message with name",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Message" }
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "minimum": -2147483648,
+                      "maximum": 2147483647
+                    },
+                    "content": { "type": "string" },
+                    "created_at": { "type": "string" },
+                    "updated_at": { "type": "string" }
+                  },
+                  "required": ["id", "content", "created_at", "updated_at"]
+                }
               }
             }
           },

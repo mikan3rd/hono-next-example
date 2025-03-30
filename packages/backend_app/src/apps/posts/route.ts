@@ -1,6 +1,9 @@
 import { createRoute } from "@hono/zod-openapi";
-import { messageSchema } from "../../dto/output/hello";
-import { getPostsResponseSchema, postPostRequestSchema } from "./dto";
+import {
+  getPostsResponseSchema,
+  postPostRequestSchema,
+  postPostResponseSchema,
+} from "./dto";
 
 export const getPostsRoute = createRoute({
   tags: ["posts"],
@@ -39,7 +42,7 @@ export const postPostRoute = createRoute({
       description: "Hello message with name",
       content: {
         "application/json": {
-          schema: messageSchema,
+          schema: postPostResponseSchema,
         },
       },
     },

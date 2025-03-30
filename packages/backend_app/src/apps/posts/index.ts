@@ -8,7 +8,9 @@ export const postApp = new OpenAPIHono()
     const posts = await db.select().from(postsTable);
     return c.json({ posts });
   })
-  .openapi(postPostRoute, (c) => {
-    const { name } = c.req.valid("json");
-    return c.json({ message: `Hello ${name}!` });
+  .openapi(postPostRoute, async (c) => {
+    const { content } = c.req.valid("json");
+    const result = await db.insert(postsTable).values({ content }).returning();
+    const post = result[0];
+    return c.json({ post });
   });
