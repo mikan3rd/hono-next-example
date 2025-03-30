@@ -11,18 +11,6 @@ services:
     volumes:
       - db-store:/var/lib/postgresql/data
 
-  db-migrate:
-    image: backend_app
-    env_file:
-      - .env
-    command: |
-      bun run db:push
-    volumes:
-      - .:/app
-      - node_modules:/app/node_modules
-    depends_on:
-      - db
-
   backend_app:
     image: backend_app
     build:
@@ -32,12 +20,14 @@ services:
     env_file:
       - .env
     command: |
-      bun run --hot src/server.ts
+      sh -c '
+        bun run db:push &&
+        bun run --hot src/server.ts
+      '
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
     depends_on:
       - db
-      - db-migrate
     volumes:
       - .:/app
       - node_modules:/app/node_modules
