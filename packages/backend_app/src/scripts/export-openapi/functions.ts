@@ -9,6 +9,5 @@ export const exportOpenAPI = async () => {
   }
   await fs.writeFile("openapi.json", text);
 
-  // biome-ignore lint/suspicious/noConsole: 明示的に出力
-  console.log("OpenAPI exported successfully");
+  console.info("OpenAPI exported successfully");
 };

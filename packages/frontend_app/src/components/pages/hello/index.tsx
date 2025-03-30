@@ -16,7 +16,7 @@ export const Index = () => {
       throw new Error(await res.text());
     }
     const json = await res.json();
-    // biome-ignore lint/suspicious/noConsole: 明示的に出力
+    // biome-ignore lint/suspicious/noConsole: 削除予定
     console.log(json);
   };
 

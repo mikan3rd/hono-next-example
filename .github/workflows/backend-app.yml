@@ -19,7 +19,7 @@ env:
   POSTGRES_PASSWORD: password
   POSTGRES_DB: example-db
   BACKEND_APP_PORT: 4300
-  DATABASE_HOST: localhost
+  DATABASE_HOST: 127.0.0.1
 
 jobs:
   check:
