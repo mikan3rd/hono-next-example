@@ -4,6 +4,7 @@ export const createApp = () => {
   return new OpenAPIHono({
     defaultHook: (result, c) => {
       if (!result.success) {
+        // TODO: 詳細なエラーを返す
         console.warn(result);
         return c.json(
           {
