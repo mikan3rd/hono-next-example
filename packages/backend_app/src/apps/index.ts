@@ -3,6 +3,7 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { helloApp } from "./hellos";
+import { postApp } from "./posts";
 
 const app = new OpenAPIHono();
 
@@ -11,6 +12,7 @@ app.use(logger());
 app.use("*", cors());
 
 const routes = app
+  .route("/posts", postApp)
   .route("/hellos", helloApp)
   .doc("/doc", {
     openapi: "3.0.0",
