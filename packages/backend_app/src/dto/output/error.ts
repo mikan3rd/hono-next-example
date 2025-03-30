@@ -1,6 +1,6 @@
 import { z } from "@hono/zod-openapi";
 
-export const ErrorSchema = z
+const ErrorSchema = z
   .object({
     code: z.number().openapi({
       example: 400,
@@ -10,3 +10,14 @@ export const ErrorSchema = z
     }),
   })
   .openapi("Error");
+
+export const ErrorResponses = {
+  400: {
+    description: "Bad Request",
+    content: {
+      "application/json": {
+        schema: ErrorSchema,
+      },
+    },
+  },
+};

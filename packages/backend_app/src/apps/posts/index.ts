@@ -3,7 +3,7 @@ import { postsTable } from "../../db/schema";
 import { createApp } from "../factory";
 import { getPostsRoute, postPostRoute } from "./route";
 
-const postApp = createApp()
+export const postApp = createApp()
   .openapi(getPostsRoute, async (c) => {
     const posts = await db.select().from(postsTable);
     return c.json({ posts });
@@ -23,5 +23,3 @@ const postApp = createApp()
     }
     return c.json({ post }, 200);
   });
-
-export { postApp };
