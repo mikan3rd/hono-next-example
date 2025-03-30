@@ -1,29 +1,23 @@
-import { createRoute, z } from "@hono/zod-openapi";
+import { createRoute } from "@hono/zod-openapi";
+import { createSelectSchema } from "drizzle-zod";
+import { postsTable } from "../../db/schema";
 import { messageSchema } from "../../dto/output/hello";
 import { postPostRequestSchema } from "./dto";
+
+const postSelectSchema = createSelectSchema(postsTable);
 
 export const getPostsRoute = createRoute({
   tags: ["posts"],
   method: "get",
   path: "/",
-  request: {
-    query: z.object({
-      name: z
-        .string()
-        .min(1)
-        .openapi({
-          param: {
-            description: "Name",
-          },
-        }),
-    }),
-  },
   responses: {
     200: {
       description: "Hello message",
       content: {
         "application/json": {
-          schema: messageSchema,
+          schema: {
+            posts: postSelectSchema.array(),
+          },
         },
       },
     },

@@ -14,6 +14,75 @@
     "parameters": {}
   },
   "paths": {
+    "/posts": {
+      "get": {
+        "tags": ["posts"],
+        "responses": {
+          "200": {
+            "description": "Hello message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "posts": {
+                    "_def": {
+                      "type": {
+                        "_def": {
+                          "unknownKeys": "strip",
+                          "catchall": {
+                            "_def": { "typeName": "ZodNever" },
+                            "~standard": { "version": 1, "vendor": "zod" }
+                          },
+                          "typeName": "ZodObject"
+                        },
+                        "~standard": { "version": 1, "vendor": "zod" },
+                        "_cached": null
+                      },
+                      "minLength": null,
+                      "maxLength": null,
+                      "exactLength": null,
+                      "typeName": "ZodArray"
+                    },
+                    "~standard": { "version": 1, "vendor": "zod" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      },
+      "post": {
+        "tags": ["posts"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "mikan3rd"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hello message with name",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    },
     "/hellos": {
       "get": {
         "tags": ["sample"],
