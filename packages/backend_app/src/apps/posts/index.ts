@@ -1,9 +1,9 @@
-import { OpenAPIHono } from "@hono/zod-openapi";
 import { db } from "../../db";
 import { postsTable } from "../../db/schema";
+import { createApp } from "../factory";
 import { getPostsRoute, postPostRoute } from "./route";
 
-export const postApp = new OpenAPIHono()
+export const postApp = createApp()
   .openapi(getPostsRoute, async (c) => {
     const posts = await db.select().from(postsTable);
     return c.json({ posts });
@@ -12,5 +12,14 @@ export const postApp = new OpenAPIHono()
     const { content } = c.req.valid("json");
     const result = await db.insert(postsTable).values({ content }).returning();
     const post = result[0];
-    return c.json({ post });
+    if (!post) {
+      return c.json(
+        {
+          code: 500,
+          message: "Something went wrong",
+        },
+        500,
+      );
+    }
+    return c.json({ post }, 200);
   });

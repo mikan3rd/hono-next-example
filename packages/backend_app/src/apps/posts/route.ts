@@ -1,4 +1,5 @@
 import { createRoute } from "@hono/zod-openapi";
+import { ErrorResponses } from "../../dto/output/error";
 import {
   getPostsResponseSchema,
   postPostRequestSchema,
@@ -17,9 +18,6 @@ export const getPostsRoute = createRoute({
           schema: getPostsResponseSchema,
         },
       },
-    },
-    400: {
-      description: "Bad Request",
     },
   },
 });
@@ -46,8 +44,6 @@ export const postPostRoute = createRoute({
         },
       },
     },
-    400: {
-      description: "Bad Request",
-    },
+    ...ErrorResponses,
   },
 });

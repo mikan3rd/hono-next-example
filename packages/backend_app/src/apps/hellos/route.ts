@@ -1,4 +1,5 @@
 import { createRoute, z } from "@hono/zod-openapi";
+import { ErrorResponses } from "../../dto/output/error";
 import { messageSchema } from "../../dto/output/hello";
 import { postHelloRequestSchema } from "./dto";
 
@@ -27,9 +28,7 @@ export const getHelloRoute = createRoute({
         },
       },
     },
-    400: {
-      description: "Bad Request",
-    },
+    ...ErrorResponses,
   },
 });
 
@@ -55,8 +54,6 @@ export const postHelloRoute = createRoute({
         },
       },
     },
-    400: {
-      description: "Bad Request",
-    },
+    ...ErrorResponses,
   },
 });
