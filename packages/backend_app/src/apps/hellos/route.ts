@@ -1,4 +1,5 @@
 import { createRoute, z } from "@hono/zod-openapi";
+import { ErrorSchema } from "../../dto/output/error";
 import { messageSchema } from "../../dto/output/hello";
 import { postHelloRequestSchema } from "./dto";
 
@@ -27,10 +28,14 @@ export const getHelloRoute = createRoute({
         },
       },
     },
-    // TODO: schema を設定しないと型定義が不完全
-    // 400: {
-    //   description: "Bad Request",
-    // },
+    400: {
+      description: "Bad Request",
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+    },
   },
 });
 
@@ -56,9 +61,13 @@ export const postHelloRoute = createRoute({
         },
       },
     },
-    // TODO: schema を設定しないと型定義が不完全
-    // 400: {
-    //   description: "Bad Request",
-    // },
+    400: {
+      description: "Bad Request",
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+    },
   },
 });

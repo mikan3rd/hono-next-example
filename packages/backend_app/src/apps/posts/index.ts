@@ -1,22 +1,9 @@
-import { OpenAPIHono } from "@hono/zod-openapi";
 import { db } from "../../db";
 import { postsTable } from "../../db/schema";
+import { createApp } from "../factory";
 import { getPostsRoute, postPostRoute } from "./route";
 
-export const postApp = new OpenAPIHono({
-  defaultHook: (result, c) => {
-    if (!result.success) {
-      console.warn(result);
-      return c.json(
-        {
-          code: 400,
-          message: "Validation Error",
-        },
-        400,
-      );
-    }
-  },
-})
+const postApp = createApp()
   .openapi(getPostsRoute, async (c) => {
     const posts = await db.select().from(postsTable);
     return c.json({ posts });
@@ -36,3 +23,5 @@ export const postApp = new OpenAPIHono({
     }
     return c.json({ post }, 200);
   });
+
+export { postApp };

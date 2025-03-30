@@ -1,11 +1,11 @@
 import { swaggerUI } from "@hono/swagger-ui";
-import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { createApp } from "./factory";
 import { helloApp } from "./hellos";
 import { postApp } from "./posts";
 
-const app = new OpenAPIHono();
+const app = createApp();
 
 app.use(logger());
 
