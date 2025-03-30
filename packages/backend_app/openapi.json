@@ -3,6 +3,20 @@
   "info": { "version": "1.0.0", "title": "backend_app OpenAPI" },
   "components": {
     "schemas": {
+      "post": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          },
+          "content": { "type": "string" },
+          "created_at": { "type": "string" },
+          "updated_at": { "type": "string" }
+        },
+        "required": ["id", "content", "created_at", "updated_at"]
+      },
       "Message": {
         "type": "object",
         "properties": {
@@ -27,25 +41,7 @@
                   "properties": {
                     "posts": {
                       "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer",
-                            "minimum": -2147483648,
-                            "maximum": 2147483647
-                          },
-                          "content": { "type": "string" },
-                          "created_at": { "type": "string" },
-                          "updated_at": { "type": "string" }
-                        },
-                        "required": [
-                          "id",
-                          "content",
-                          "created_at",
-                          "updated_at"
-                        ]
-                      }
+                      "items": { "$ref": "#/components/schemas/post" }
                     }
                   },
                   "required": ["posts"]
@@ -77,16 +73,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer",
-                      "minimum": -2147483648,
-                      "maximum": 2147483647
-                    },
-                    "content": { "type": "string" },
-                    "created_at": { "type": "string" },
-                    "updated_at": { "type": "string" }
+                    "post": { "$ref": "#/components/schemas/post" }
                   },
-                  "required": ["id", "content", "created_at", "updated_at"]
+                  "required": ["post"]
                 }
               }
             }
