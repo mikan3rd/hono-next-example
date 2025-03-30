@@ -1,4 +1,5 @@
 import { createRoute } from "@hono/zod-openapi";
+import { ErrorSchema } from "../../dto/output/error";
 import {
   getPostsResponseSchema,
   postPostRequestSchema,
@@ -18,10 +19,6 @@ export const getPostsRoute = createRoute({
         },
       },
     },
-    // TODO: schema を設定しないと型定義が不完全
-    // 400: {
-    //   description: "Bad Request",
-    // },
   },
 });
 
@@ -47,9 +44,13 @@ export const postPostRoute = createRoute({
         },
       },
     },
-    // TODO: schema を設定しないと型定義が不完全
-    // 400: {
-    //   description: "Bad Request",
-    // },
+    400: {
+      description: "Bad Request",
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+    },
   },
 });
