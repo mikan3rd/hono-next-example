@@ -51,6 +51,10 @@ jobs:
     services:
       postgres:
         image: postgres:14.16
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: example-db
         ports:
           - 5432:5432
 
