@@ -31,6 +31,8 @@ services:
       target: dev
     env_file:
       - .env
+    environment:
+      DATABASE_HOST: db
     command: |
       sh -c '
         bun db:push &&
