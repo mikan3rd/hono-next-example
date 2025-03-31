@@ -6,10 +6,22 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      PGPORT: ${POSTGRES_PORT}
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - db-store:/var/lib/postgresql/data
+
+  test_db:
+    image: postgres:14.16
+    restart: always
+    env_file:
+      - .env
+    environment:
+      PGPORT: ${TEST_POSTGRES_PORT}
+    ports:
+      - ${TEST_POSTGRES_PORT}:${TEST_POSTGRES_PORT}
 
   backend_app:
     image: backend_app
@@ -48,6 +60,27 @@ services:
     volumes:
       - .:/app
       - node_modules:/app/node_modules
+
+  test_backend_app:
+    image: backend_app
+    env_file:
+      - .env
+    environment:
+      APP_PORT: ${TEST_BACKEND_APP_PORT}
+      DATABASE_HOST: ${TEST_DATABASE_HOST}
+      POSTGRES_PORT: ${TEST_POSTGRES_PORT}
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    command: |
+      sh -c '
+        bun db:push &&
+        bun test
+      '
+    ports:
+      - "${TEST_BACKEND_APP_PORT}:${TEST_BACKEND_APP_PORT}"
+    depends_on:
+      - test_db
 
   export-openapi:
     image: backend_app

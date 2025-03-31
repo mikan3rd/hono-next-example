@@ -18,6 +18,7 @@ env:
   POSTGRES_USER: user
   POSTGRES_PASSWORD: password
   POSTGRES_DB: example-db
+  POSTGRES_PORT: 5432
   BACKEND_APP_PORT: 4300
   DATABASE_HOST: 127.0.0.1
 
@@ -55,6 +56,7 @@ jobs:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          PGPORT: ${{ env.POSTGRES_PORT }}
         ports:
           - 5432:5432
 
