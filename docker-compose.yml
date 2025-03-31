@@ -66,7 +66,6 @@ services:
     env_file:
       - .env
     environment:
-      APP_PORT: ${TEST_BACKEND_APP_PORT}
       DATABASE_HOST: ${TEST_DATABASE_HOST}
       POSTGRES_PORT: ${TEST_POSTGRES_PORT}
     volumes:
@@ -75,10 +74,9 @@ services:
     command: |
       sh -c '
         bun db:push &&
-        bun test
+        bun test &&
+        tail -f /dev/null
       '
-    ports:
-      - "${TEST_BACKEND_APP_PORT}:${TEST_BACKEND_APP_PORT}"
     depends_on:
       - test_db
 
