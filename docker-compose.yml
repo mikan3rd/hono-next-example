@@ -65,25 +65,6 @@ services:
       - .:/app
       - node_modules:/app/node_modules
 
-  test_backend_app:
-    image: backend_app
-    env_file:
-      - .env
-    environment:
-      DATABASE_HOST: ${TEST_DATABASE_HOST}
-      POSTGRES_PORT: ${TEST_POSTGRES_PORT}
-    volumes:
-      - .:/app
-      - node_modules:/app/node_modules
-    command: |
-      sh -c '
-        bun db:push &&
-        bun test &&
-        tail -f /dev/null
-      '
-    depends_on:
-      - test_db
-
   export-openapi:
     image: backend_app
     volumes:
