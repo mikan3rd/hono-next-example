@@ -71,7 +71,7 @@ jobs:
 
       - run: bun db:push
 
-      - run: bun test
+      - run: bun test --coverage
 
   build:
     runs-on: ubuntu-latest

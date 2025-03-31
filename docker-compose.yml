@@ -36,12 +36,14 @@ services:
     command: |
       sh -c '
         bun db:push &&
+        bun db:push:test &&
         bun run --hot src/server.ts
       '
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
     depends_on:
       - db
+      - test_db
     volumes:
       - .:/app
       - node_modules:/app/node_modules
