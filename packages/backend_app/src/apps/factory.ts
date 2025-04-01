@@ -1,4 +1,5 @@
-import { OpenAPIHono } from "@hono/zod-openapi";
+import { OpenAPIHono, z } from "@hono/zod-openapi";
+import { createSchemaFactory } from "drizzle-zod";
 
 export const createApp = () => {
   return new OpenAPIHono({
@@ -15,3 +16,7 @@ export const createApp = () => {
     },
   });
 };
+
+export const { createSelectSchema, createInsertSchema } = createSchemaFactory({
+  zodInstance: z,
+});
