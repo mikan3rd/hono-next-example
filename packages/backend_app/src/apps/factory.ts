@@ -1,11 +1,10 @@
-import { OpenAPIHono } from "@hono/zod-openapi";
+import { OpenAPIHono, z } from "@hono/zod-openapi";
+import { createSchemaFactory } from "drizzle-zod";
 
 export const createApp = () => {
   return new OpenAPIHono({
     defaultHook: (result, c) => {
       if (!result.success) {
-        // TODO: 詳細なエラーを返す
-        console.warn(result);
         return c.json(
           {
             code: 400,
@@ -17,3 +16,7 @@ export const createApp = () => {
     },
   });
 };
+
+export const { createSelectSchema, createInsertSchema } = createSchemaFactory({
+  zodInstance: z,
+});

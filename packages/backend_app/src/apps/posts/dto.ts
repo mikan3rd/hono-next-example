@@ -1,15 +1,31 @@
 import { z } from "@hono/zod-openapi";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { postsTable } from "../../db/schema";
+import { createInsertSchema, createSelectSchema } from "../factory";
 
-const postSelectSchema = createSelectSchema(postsTable).openapi("post");
-const postInsertSchema = createInsertSchema(postsTable);
+const postSelectSchema = createSelectSchema(postsTable, {
+  id: (schema) =>
+    schema.openapi({
+      description: "Primary ID",
+      example: 1,
+    }),
+  content: (schema) =>
+    schema.openapi({
+      description: "The content of the post",
+      example: "test",
+    }),
+}).openapi("post");
 
 export const getPostsResponseSchema = z.object({
   posts: postSelectSchema.array(),
 });
 
-export const postPostRequestSchema = postInsertSchema.pick({
+export const postPostRequestSchema = createInsertSchema(postsTable, {
+  content: (schema) =>
+    schema.min(1).openapi({
+      description: "The content of the post",
+      example: "test",
+    }),
+}).pick({
   content: true,
 });
 

@@ -1,3 +1,4 @@
+import { desc } from "drizzle-orm";
 import { db } from "../../db";
 import { postsTable } from "../../db/schema";
 import { createApp } from "../factory";
@@ -5,7 +6,10 @@ import { getPostsRoute, postPostRoute } from "./route";
 
 export const postApp = createApp()
   .openapi(getPostsRoute, async (c) => {
-    const posts = await db.select().from(postsTable);
+    const posts = await db
+      .select()
+      .from(postsTable)
+      .orderBy(desc(postsTable.id));
     return c.json({ posts });
   })
   .openapi(postPostRoute, async (c) => {

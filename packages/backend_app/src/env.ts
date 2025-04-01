@@ -10,7 +10,8 @@ export const env = createEnv({
     POSTGRES_USER: z.string(),
     POSTGRES_PASSWORD: z.string(),
     POSTGRES_DB: z.string(),
+    POSTGRES_PORT: z.coerce.number().min(1),
   },
 });
 
-export const DATABASE_URL = `postgresql://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@${env.DATABASE_HOST}:5432/${env.POSTGRES_DB}`;
+export const DATABASE_URL = `postgresql://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@${env.DATABASE_HOST}:${env.POSTGRES_PORT}/${env.POSTGRES_DB}`;

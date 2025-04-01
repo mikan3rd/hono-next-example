@@ -7,7 +7,8 @@
     "typecheck": "bun run --bun tsc --noEmit",
     "lint": "bun run --bun biome check .",
     "lint:fix": "bun run lint --write",
-    "test": "bun test",
+    "test:db:push": "bun --env-file=.env.test run --bun drizzle-kit push",
+    "test:local": "bun --env-file=.env.test test",
     "export-openapi": "bun run src/scripts/export-openapi/index.ts"
   },
   "dependencies": {
