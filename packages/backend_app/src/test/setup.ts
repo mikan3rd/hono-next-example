@@ -16,7 +16,6 @@ const truncateAllTables = async () => {
     );
     await db.execute(query);
   }
-  console.info("All tables truncated");
 };
 
 beforeEach(async () => {
