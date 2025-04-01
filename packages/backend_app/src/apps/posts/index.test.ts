@@ -6,12 +6,30 @@ import { postsTable } from "../../db/schema";
 
 describe("postsApp", () => {
   describe("getPostsRoute", () => {
-    it("should return 200 Response", async () => {
-      const res = await testClient(app).posts.$get();
-      expect(res.status).toBe(200);
+    const subject = () => testClient(app).posts.$get();
 
-      const json = await res.json();
-      expect(json).toEqual({ posts: [] });
+    describe("when there are no posts", () => {
+      it("should return 200 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(200);
+
+        const json = await res.json();
+        expect(json).toEqual({ posts: [] });
+      });
+    });
+
+    describe("when there are posts", () => {
+      beforeEach(async () => {
+        await db.insert(postsTable).values({ content: "test" });
+      });
+
+      it("should return 200 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(200);
+
+        const json = await res.json();
+        expect(json.posts).toHaveLength(1);
+      });
     });
   });
 
