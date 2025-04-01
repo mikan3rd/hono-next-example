@@ -20,24 +20,37 @@ describe("postsApp", () => {
 
     const subject = () => testClient(app).posts.$post({ json: { content } });
 
-    beforeEach(() => {
-      content = "test";
+    describe("when required fields are provided", () => {
+      beforeEach(() => {
+        content = "test";
+      });
+
+      it("should return 200 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(200);
+
+        if (!res.ok) throw new Error("res is not ok");
+        const json = await res.json();
+        expect(json.post.content).toBe(content);
+
+        const posts = await db.select().from(postsTable);
+        expect(posts).toHaveLength(1);
+
+        const post = posts[0];
+        if (!post) throw new Error("post is undefined");
+        expect(post.content).toBe(content);
+      });
     });
 
-    it("should return 200 Response", async () => {
-      const res = await subject();
-      expect(res.status).toBe(200);
+    describe("when required fields are not provided", () => {
+      beforeEach(() => {
+        content = "";
+      });
 
-      if (!res.ok) throw new Error("res is not ok");
-      const json = await res.json();
-      expect(json.post.content).toBe(content);
-
-      const posts = await db.select().from(postsTable);
-      expect(posts).toHaveLength(1);
-
-      const post = posts[0];
-      if (!post) throw new Error("post is undefined");
-      expect(post.content).toBe(content);
+      it("should return 400 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(400);
+      });
     });
   });
 });

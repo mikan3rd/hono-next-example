@@ -3,13 +3,14 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { postsTable } from "../../db/schema";
 
 const postSelectSchema = createSelectSchema(postsTable).openapi("post");
-const postInsertSchema = createInsertSchema(postsTable);
 
 export const getPostsResponseSchema = z.object({
   posts: postSelectSchema.array(),
 });
 
-export const postPostRequestSchema = postInsertSchema.pick({
+export const postPostRequestSchema = createInsertSchema(postsTable, {
+  content: (schema) => schema.min(1),
+}).pick({
   content: true,
 });
 
