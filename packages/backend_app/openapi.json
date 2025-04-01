@@ -9,9 +9,15 @@
           "id": {
             "type": "integer",
             "minimum": -2147483648,
-            "maximum": 2147483647
+            "maximum": 2147483647,
+            "description": "Primary ID",
+            "example": 1
           },
-          "content": { "type": "string" },
+          "content": {
+            "type": "string",
+            "description": "The content of the post",
+            "example": "test"
+          },
           "created_at": { "type": "string" },
           "updated_at": { "type": "string" }
         },
@@ -66,7 +72,14 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": { "content": { "type": "string" } },
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The content of the post",
+                    "example": "test"
+                  }
+                },
                 "required": ["content"]
               }
             }
