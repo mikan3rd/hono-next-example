@@ -14,7 +14,7 @@ describe("postsApp", () => {
         expect(res.status).toBe(200);
 
         const json = await res.json();
-        expect(json).toEqual({ posts: [] });
+        expect(json.posts).toHaveLength(0);
       });
     });
 
@@ -30,8 +30,14 @@ describe("postsApp", () => {
 
         const json = await res.json();
         expect(json.posts).toHaveLength(2);
-        expect(json.posts[0]?.content).toBe("test2");
-        expect(json.posts[1]?.content).toBe("test");
+        expect(json.posts[0]).toMatchObject({
+          id: 2,
+          content: "test2",
+        });
+        expect(json.posts[1]).toMatchObject({
+          id: 1,
+          content: "test",
+        });
       });
     });
   });
