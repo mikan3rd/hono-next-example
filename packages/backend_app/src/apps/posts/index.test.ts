@@ -18,9 +18,10 @@ describe("postsApp", () => {
       });
     });
 
-    describe("when there are posts", () => {
+    describe("when there are some posts", () => {
       beforeEach(async () => {
         await db.insert(postsTable).values({ content: "test" });
+        await db.insert(postsTable).values({ content: "test2" });
       });
 
       it("should return 200 Response", async () => {
@@ -28,7 +29,9 @@ describe("postsApp", () => {
         expect(res.status).toBe(200);
 
         const json = await res.json();
-        expect(json.posts).toHaveLength(1);
+        expect(json.posts).toHaveLength(2);
+        expect(json.posts[0]?.content).toBe("test2");
+        expect(json.posts[1]?.content).toBe("test");
       });
     });
   });
@@ -55,8 +58,7 @@ describe("postsApp", () => {
         expect(posts).toHaveLength(1);
 
         const post = posts[0];
-        if (!post) throw new Error("post is undefined");
-        expect(post.content).toBe(content);
+        expect(post?.content).toBe(content);
       });
     });
 
