@@ -117,5 +117,17 @@ describe("postsApp", () => {
         });
       });
     });
+
+    describe("when required fields are not provided", () => {
+      beforeEach(() => {
+        id = 1;
+        content = "";
+      });
+
+      it("should return 400 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(400);
+      });
+    });
   });
 });
