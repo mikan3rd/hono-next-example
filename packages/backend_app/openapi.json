@@ -161,7 +161,20 @@
           }
         },
         "responses": {
-          "200": { "description": "update a post" },
+          "200": {
+            "description": "update a post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": { "$ref": "#/components/schemas/post" }
+                  },
+                  "required": ["post"]
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request",
             "content": {

@@ -54,3 +54,5 @@ export const updatePostRequestSchema = createUpdateSchema(postsTable, {
 }).pick({
   content: true,
 });
+
+export const updatePostResponseSchema = postPostResponseSchema;

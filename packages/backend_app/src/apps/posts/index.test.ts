@@ -97,6 +97,25 @@ describe("postsApp", () => {
         const res = await subject();
         expect(res.status).toBe(500); // TODO: 404にしたい
       });
+
+      describe("when post is found", () => {
+        beforeEach(async () => {
+          await db.insert(postsTable).values({ content: "test" });
+        });
+
+        it("should return 200 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(200);
+
+          if (!res.ok) throw new Error("res is not ok");
+          const json = await res.json();
+          expect(json.post.content).toBe(content);
+
+          const posts = await db.select().from(postsTable);
+          expect(posts).toHaveLength(1);
+          expect(posts[0]?.content).toBe(content);
+        });
+      });
     });
   });
 });

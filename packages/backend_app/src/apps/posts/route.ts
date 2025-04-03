@@ -6,6 +6,7 @@ import {
   postPostResponseSchema,
   updatePostParamsSchema,
   updatePostRequestSchema,
+  updatePostResponseSchema,
 } from "./dto";
 
 export const getPostsRoute = createRoute({
@@ -67,6 +68,11 @@ export const updatePostRoute = createRoute({
   responses: {
     200: {
       description: "update a post",
+      content: {
+        "application/json": {
+          schema: updatePostResponseSchema,
+        },
+      },
     },
     ...ErrorResponses,
   },
