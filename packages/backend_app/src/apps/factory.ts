@@ -17,6 +17,7 @@ export const createApp = () => {
   });
 };
 
-export const { createSelectSchema, createInsertSchema } = createSchemaFactory({
-  zodInstance: z,
-});
+export const { createSelectSchema, createInsertSchema, createUpdateSchema } =
+  createSchemaFactory({
+    zodInstance: z,
+  });

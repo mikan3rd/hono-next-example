@@ -47,7 +47,7 @@
         "tags": ["posts"],
         "responses": {
           "200": {
-            "description": "Hello message",
+            "description": "get posts",
             "content": {
               "application/json": {
                 "schema": {
@@ -87,7 +87,7 @@
         },
         "responses": {
           "200": {
-            "description": "Hello message with name",
+            "description": "create a post",
             "content": {
               "application/json": {
                 "schema": {
@@ -100,6 +100,61 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/:id": {
+      "put": {
+        "tags": ["posts"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647,
+              "description": "Primary ID",
+              "example": 1
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The content of the post",
+                    "example": "test"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "update a post" },
           "400": {
             "description": "Bad Request",
             "content": {
