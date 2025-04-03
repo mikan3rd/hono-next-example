@@ -37,7 +37,13 @@ export const postPostResponseSchema = z.object({
   post: postSelectSchema,
 });
 
-export const updatePostParamsSchema = postSelectSchema.pick({ id: true });
+export const updatePostParamsSchema = z.object({
+  // FIXME: coerce を使うと nullable になってしまう
+  id: z.coerce.number().openapi({
+    description: "Primary ID",
+    example: 1,
+  }),
+});
 
 export const updatePostRequestSchema = createUpdateSchema(postsTable, {
   content: (schema) =>

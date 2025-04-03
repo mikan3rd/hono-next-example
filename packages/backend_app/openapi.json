@@ -108,6 +108,14 @@
               }
             }
           },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -125,13 +133,12 @@
         "parameters": [
           {
             "schema": {
-              "type": "integer",
-              "minimum": -2147483648,
-              "maximum": 2147483647,
+              "type": "number",
+              "nullable": true,
               "description": "Primary ID",
               "example": 1
             },
-            "required": true,
+            "required": false,
             "name": "id",
             "in": "path"
           }
@@ -157,6 +164,14 @@
           "200": { "description": "update a post" },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Error" }
@@ -203,6 +218,14 @@
               }
             }
           },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "content": {
@@ -243,6 +266,14 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Error" }

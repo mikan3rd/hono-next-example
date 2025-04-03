@@ -22,12 +22,27 @@ export const postApp = createApp()
   .openapi(updatePostRoute, async (c) => {
     const { id } = c.req.valid("param");
     const { content } = c.req.valid("json");
-    const result = await db
-      .update(postsTable)
-      .set({ content })
-      .where(eq(postsTable.id, id))
-      .returning();
-    const post = result[0];
-    if (!post) throw new Error("Post is undefined");
+
+    const post = await db.transaction(async (tx) => {
+      const targets = await tx
+        .select()
+        .from(postsTable)
+        .where(eq(postsTable.id, id));
+
+      if (targets.length === 0) {
+        throw new Error("Post is not found");
+      }
+
+      const result = await tx
+        .update(postsTable)
+        .set({ content })
+        .where(eq(postsTable.id, id))
+        .returning();
+
+      const post = result[0];
+      if (!post) throw new Error("Post is undefined");
+      return post;
+    });
+
     return c.json({ post }, 200);
   });

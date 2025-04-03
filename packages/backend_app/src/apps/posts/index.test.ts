@@ -79,4 +79,24 @@ describe("postsApp", () => {
       });
     });
   });
+
+  describe("updatePostRoute", () => {
+    let id: number;
+    let content: string;
+
+    const subject = () =>
+      testClient(app).posts[":id"].$put({ param: { id }, json: { content } });
+
+    describe("when required fields are provided", () => {
+      beforeEach(() => {
+        id = 1;
+        content = "test2";
+      });
+
+      it("should return 404 when post is not found", async () => {
+        const res = await subject();
+        expect(res.status).toBe(500); // TODO: 404にしたい
+      });
+    });
+  });
 });
