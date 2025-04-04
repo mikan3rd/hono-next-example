@@ -54,7 +54,7 @@ export const postPostRoute = createRoute({
 export const updatePostRoute = createRoute({
   tags: ["posts"],
   method: "put",
-  path: "/:id",
+  path: "/{id}",
   request: {
     params: updatePostParamsSchema,
     body: {

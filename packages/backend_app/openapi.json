@@ -127,7 +127,7 @@
         }
       }
     },
-    "/posts/:id": {
+    "/posts/{id}": {
       "put": {
         "tags": ["posts"],
         "parameters": [
