@@ -85,7 +85,10 @@ describe("postsApp", () => {
     let content: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$put({ param: { id }, json: { content } });
+      testClient(app).posts[":id"].$put({
+        param: { id: id.toString() },
+        json: { content },
+      });
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
