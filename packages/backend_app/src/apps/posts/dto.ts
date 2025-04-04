@@ -38,11 +38,10 @@ export const postPostResponseSchema = z.object({
 });
 
 export const updatePostParamsSchema = z.object({
-  id: z.string().pipe(z.coerce.number().int().min(1)).openapi({
-    param: {
-      description: "Primary ID",
-    },
-    example: "123", 
+  id: z.string().pipe(z.coerce.number().int().positive()).openapi({
+    example: "1",
+    type: "integer",
+    format: "int64",
   }),
 });
 
