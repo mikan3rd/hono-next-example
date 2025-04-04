@@ -132,13 +132,9 @@
         "tags": ["posts"],
         "parameters": [
           {
-            "schema": {
-              "type": "number",
-              "nullable": true,
-              "description": "Primary ID",
-              "example": 1
-            },
-            "required": false,
+            "schema": { "type": "string", "example": "123" },
+            "required": true,
+            "description": "Primary ID",
             "name": "id",
             "in": "path"
           }

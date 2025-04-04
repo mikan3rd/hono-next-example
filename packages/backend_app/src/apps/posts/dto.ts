@@ -38,10 +38,11 @@ export const postPostResponseSchema = z.object({
 });
 
 export const updatePostParamsSchema = z.object({
-  // FIXME: coerce を使うと nullable になってしまう
-  id: z.coerce.number().openapi({
-    description: "Primary ID",
-    example: 1,
+  id: z.string().pipe(z.coerce.number().int().min(1)).openapi({
+    param: {
+      description: "Primary ID",
+    },
+    example: "123", 
   }),
 });
 
