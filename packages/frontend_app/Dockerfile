@@ -3,7 +3,7 @@
 
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1.2.6 AS base
+FROM oven/bun:1.2.7 AS base
 WORKDIR /app
 ARG BACKEND_APP_SERVER_URL
 ARG NEXT_PUBLIC_BACKEND_APP_URL
