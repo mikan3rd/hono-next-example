@@ -20,6 +20,12 @@ export const ErrorResponses = {
       },
     },
   },
+  404: {
+    description: "Not Found",
+    content: {
+      "application/json": { schema: ErrorSchema },
+    },
+  },
   500: {
     description: "Internal Server Error",
     content: {

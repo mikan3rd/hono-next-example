@@ -4,6 +4,9 @@ import {
   getPostsResponseSchema,
   postPostRequestSchema,
   postPostResponseSchema,
+  updatePostParamsSchema,
+  updatePostRequestSchema,
+  updatePostResponseSchema,
 } from "./dto";
 
 export const getPostsRoute = createRoute({
@@ -12,7 +15,7 @@ export const getPostsRoute = createRoute({
   path: "/",
   responses: {
     200: {
-      description: "Hello message",
+      description: "get posts",
       content: {
         "application/json": {
           schema: getPostsResponseSchema,
@@ -37,10 +40,37 @@ export const postPostRoute = createRoute({
   },
   responses: {
     200: {
-      description: "Hello message with name",
+      description: "create a post",
       content: {
         "application/json": {
           schema: postPostResponseSchema,
+        },
+      },
+    },
+    ...ErrorResponses,
+  },
+});
+
+export const updatePostRoute = createRoute({
+  tags: ["posts"],
+  method: "put",
+  path: "/{id}",
+  request: {
+    params: updatePostParamsSchema,
+    body: {
+      content: {
+        "application/json": {
+          schema: updatePostRequestSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: "update a post",
+      content: {
+        "application/json": {
+          schema: updatePostResponseSchema,
         },
       },
     },
