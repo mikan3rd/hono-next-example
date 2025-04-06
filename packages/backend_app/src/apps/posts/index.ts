@@ -2,7 +2,12 @@ import { desc, eq } from "drizzle-orm";
 import { db } from "../../db";
 import { postsTable } from "../../db/schema";
 import { createApp } from "../factory";
-import { getPostsRoute, postPostRoute, updatePostRoute } from "./route";
+import {
+  deletePostRoute,
+  getPostsRoute,
+  postPostRoute,
+  updatePostRoute,
+} from "./route";
 
 export const postApp = createApp()
   .openapi(getPostsRoute, async (c) => {
@@ -45,4 +50,9 @@ export const postApp = createApp()
     });
 
     return c.json({ post }, 200);
+  })
+  .openapi(deletePostRoute, async (c) => {
+    const { id } = c.req.valid("param");
+    await db.delete(postsTable).where(eq(postsTable.id, id));
+    return c.json(null, 200);
   });

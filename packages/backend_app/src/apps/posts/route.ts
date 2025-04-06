@@ -1,6 +1,7 @@
 import { createRoute } from "@hono/zod-openapi";
 import { ErrorResponses } from "../../dto/output/error";
 import {
+  deletePostParamsSchema,
   getPostsResponseSchema,
   postPostRequestSchema,
   postPostResponseSchema,
@@ -73,6 +74,21 @@ export const updatePostRoute = createRoute({
           schema: updatePostResponseSchema,
         },
       },
+    },
+    ...ErrorResponses,
+  },
+});
+
+export const deletePostRoute = createRoute({
+  tags: ["posts"],
+  method: "delete",
+  path: "/{id}",
+  request: {
+    params: deletePostParamsSchema,
+  },
+  responses: {
+    200: {
+      description: "delete a post",
     },
     ...ErrorResponses,
   },
