@@ -56,3 +56,5 @@ export const updatePostRequestSchema = createUpdateSchema(postsTable, {
 });
 
 export const updatePostResponseSchema = postPostResponseSchema;
+
+export const deletePostParamsSchema = updatePostParamsSchema;
