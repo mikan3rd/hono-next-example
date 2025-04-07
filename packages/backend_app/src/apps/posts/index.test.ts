@@ -133,4 +133,47 @@ describe("postsApp", () => {
       });
     });
   });
+
+  describe("deletePostRoute", () => {
+    let id: string;
+
+    const subject = () =>
+      testClient(app).posts[":id"].$delete({ param: { id } });
+
+    describe("when required fields are provided", () => {
+      beforeEach(() => {
+        id = Number(1).toString();
+      });
+
+      it("should return 404 when post is not found", async () => {
+        const res = await subject();
+        expect(res.status).toBe(500); // TODO: 404にしたい
+      });
+
+      describe("when post is found", () => {
+        beforeEach(async () => {
+          await db.insert(postsTable).values({ content: "test" });
+        });
+
+        it("should return 200 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(200);
+
+          const posts = await db.select().from(postsTable);
+          expect(posts).toHaveLength(0);
+        });
+      });
+    });
+
+    describe("when id is not a number", () => {
+      beforeEach(() => {
+        id = "aaaa";
+      });
+
+      it("should return 400 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(400);
+      });
+    });
+  });
 });

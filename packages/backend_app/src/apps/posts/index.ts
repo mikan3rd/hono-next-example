@@ -53,6 +53,19 @@ export const postApp = createApp()
   })
   .openapi(deletePostRoute, async (c) => {
     const { id } = c.req.valid("param");
-    await db.delete(postsTable).where(eq(postsTable.id, id));
+
+    await db.transaction(async (tx) => {
+      const targets = await tx
+        .select()
+        .from(postsTable)
+        .where(eq(postsTable.id, id));
+
+      if (targets.length === 0) {
+        throw new Error("Post is not found");
+      }
+
+      await tx.delete(postsTable).where(eq(postsTable.id, id));
+    });
+
     return c.json(null, 200);
   });
