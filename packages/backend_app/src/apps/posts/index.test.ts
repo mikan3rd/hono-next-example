@@ -81,7 +81,7 @@ describe("postsApp", () => {
   });
 
   describe("updatePostRoute", () => {
-    let id: number;
+    let id: string;
     let content: string;
 
     const subject = () =>
@@ -92,7 +92,7 @@ describe("postsApp", () => {
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
-        id = 1;
+        id = Number(1).toString();
         content = "test2";
       });
 
@@ -123,8 +123,19 @@ describe("postsApp", () => {
 
     describe("when required fields are not provided", () => {
       beforeEach(() => {
-        id = 1;
+        id = Number(1).toString();
         content = "";
+      });
+
+      it("should return 400 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(400);
+      });
+    });
+
+    describe("when id is not a number", () => {
+      beforeEach(() => {
+        id = "test";
       });
 
       it("should return 400 Response", async () => {
@@ -167,7 +178,7 @@ describe("postsApp", () => {
 
     describe("when id is not a number", () => {
       beforeEach(() => {
-        id = "aaaa";
+        id = "test";
       });
 
       it("should return 400 Response", async () => {
