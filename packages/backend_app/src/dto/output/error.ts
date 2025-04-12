@@ -1,17 +1,17 @@
 import { z } from "@hono/zod-openapi";
 
-const errorCode = [
+const errorCodes = [
   "Bad Request",
   "Not Found",
   "Internal Server Error",
 ] as const;
 
-export type ErrorCode = (typeof errorCode)[number];
+export type ErrorCode = (typeof errorCodes)[number];
 
 const errorSchemaFactory = (code: ErrorCode) => {
   return z
     .object({
-      code: z.enum(errorCode).openapi({
+      code: z.enum(errorCodes).openapi({
         example: code,
       }),
       message: z.string().openapi({ description: "explanation" }),

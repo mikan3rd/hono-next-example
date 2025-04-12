@@ -30,6 +30,7 @@ export const createApp = () => {
             return "Internal Server Error";
         }
       })();
+      console.error("Unhandled error", err);
       return c.json<ErrorResponse>(
         {
           code,
