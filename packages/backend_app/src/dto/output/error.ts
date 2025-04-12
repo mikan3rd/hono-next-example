@@ -1,35 +1,49 @@
 import { z } from "@hono/zod-openapi";
 
-const ErrorSchema = z
-  .object({
-    code: z.number().openapi({
-      example: 400,
-    }),
-    message: z.string().openapi({
-      example: "Bad Request",
-    }),
-  })
-  .openapi("Error");
+const errorCodes = [
+  "Bad Request",
+  "Not Found",
+  "Internal Server Error",
+] as const;
+
+export type ErrorCode = (typeof errorCodes)[number];
+
+const errorSchemaFactory = (code: ErrorCode) => {
+  return z
+    .object({
+      code: z.enum(errorCodes).openapi({
+        example: code,
+      }),
+      message: z.string().openapi({ description: "explanation" }),
+    })
+    .openapi("Error");
+};
+
+export type ErrorResponse = z.infer<ReturnType<typeof errorSchemaFactory>>;
 
 export const ErrorResponses = {
   400: {
     description: "Bad Request",
     content: {
       "application/json": {
-        schema: ErrorSchema,
+        schema: errorSchemaFactory("Bad Request"),
       },
     },
   },
   404: {
     description: "Not Found",
     content: {
-      "application/json": { schema: ErrorSchema },
+      "application/json": {
+        schema: errorSchemaFactory("Not Found"),
+      },
     },
   },
   500: {
     description: "Internal Server Error",
     content: {
-      "application/json": { schema: ErrorSchema },
+      "application/json": {
+        schema: errorSchemaFactory("Internal Server Error"),
+      },
     },
   },
 };

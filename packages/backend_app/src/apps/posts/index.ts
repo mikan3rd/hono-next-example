@@ -1,4 +1,5 @@
 import { desc, eq } from "drizzle-orm";
+import { HTTPException } from "hono/http-exception";
 import { db } from "../../db";
 import { postsTable } from "../../db/schema";
 import { createApp } from "../factory";
@@ -21,7 +22,10 @@ export const postApp = createApp()
     const { content } = c.req.valid("json");
     const result = await db.insert(postsTable).values({ content }).returning();
     const post = result[0];
-    if (!post) throw new Error("Post is undefined");
+    if (!post)
+      throw new HTTPException(500, {
+        message: "Failed to create post",
+      });
     return c.json({ post }, 200);
   })
   .openapi(updatePostRoute, async (c) => {
@@ -35,7 +39,9 @@ export const postApp = createApp()
         .where(eq(postsTable.id, id));
 
       if (targets.length === 0) {
-        throw new Error("Post is not found");
+        throw new HTTPException(404, {
+          message: "Post is not found",
+        });
       }
 
       const result = await tx
@@ -45,7 +51,10 @@ export const postApp = createApp()
         .returning();
 
       const post = result[0];
-      if (!post) throw new Error("Post is undefined");
+      if (!post)
+        throw new HTTPException(500, {
+          message: "Failed to update post",
+        });
       return post;
     });
 
@@ -61,7 +70,9 @@ export const postApp = createApp()
         .where(eq(postsTable.id, id));
 
       if (targets.length === 0) {
-        throw new Error("Post is not found");
+        throw new HTTPException(404, {
+          message: "Post is not found",
+        });
       }
 
       await tx.delete(postsTable).where(eq(postsTable.id, id));

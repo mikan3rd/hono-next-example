@@ -26,8 +26,12 @@
       "Error": {
         "type": "object",
         "properties": {
-          "code": { "type": "number", "example": 400 },
-          "message": { "type": "string", "example": "Bad Request" }
+          "code": {
+            "type": "string",
+            "enum": ["Bad Request", "Not Found", "Internal Server Error"],
+            "example": "Bad Request"
+          },
+          "message": { "type": "string", "description": "explanation" }
         },
         "required": ["code", "message"]
       },
@@ -112,7 +116,28 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Not Found"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -120,7 +145,28 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Internal Server Error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -182,7 +228,28 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Not Found"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -190,7 +257,28 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Internal Server Error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -220,7 +308,28 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Not Found"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -228,7 +337,28 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Internal Server Error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -268,7 +398,28 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Not Found"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -276,7 +427,28 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Internal Server Error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -322,7 +494,28 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Not Found"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -330,7 +523,28 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Error" }
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Internal Server Error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
