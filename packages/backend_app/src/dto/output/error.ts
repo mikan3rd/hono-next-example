@@ -6,7 +6,9 @@ const errorCode = [
   "Internal Server Error",
 ] as const;
 
-const errorSchemaFactory = (code: (typeof errorCode)[number]) => {
+export type ErrorCode = (typeof errorCode)[number];
+
+const errorSchemaFactory = (code: ErrorCode) => {
   return z
     .object({
       code: z.enum(errorCode).openapi({
