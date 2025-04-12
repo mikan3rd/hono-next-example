@@ -99,6 +99,10 @@ describe("postsApp", () => {
       it("should return 404 when post is not found", async () => {
         const res = await subject();
         expect(res.status).toBe(404);
+
+        if (res.ok) throw new Error("res is ok");
+        const json = await res.json();
+        expect(json.message).toBe("Post is not found");
       });
 
       describe("when post is found", () => {
@@ -159,6 +163,10 @@ describe("postsApp", () => {
       it("should return 404 when post is not found", async () => {
         const res = await subject();
         expect(res.status).toBe(404);
+
+        if (res.ok) throw new Error("res is ok");
+        const json = await res.json();
+        expect(json.message).toBe("Post is not found");
       });
 
       describe("when post is found", () => {

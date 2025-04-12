@@ -1,24 +1,19 @@
 import { z } from "@hono/zod-openapi";
 
-// biome-ignore lint/suspicious/noExplicitAny:
-const errorSchemaFactory = (code: z.ZodEnum<any>) => {
-  return z
-    .object({
-      code: code.openapi({
-        description: "error code.",
-        example: code._def.values.at(0),
-      }),
-      message: z.string().openapi({ description: "explanation" }),
-    })
-    .openapi("Error");
-};
+const ErrorSchema = z
+  .object({
+    message: z.string().openapi({ description: "explanation" }),
+  })
+  .openapi("Error");
+
+export type ErrorResponse = z.infer<typeof ErrorSchema>;
 
 export const ErrorResponses = {
   400: {
     description: "Bad Request",
     content: {
       "application/json": {
-        schema: errorSchemaFactory(z.enum(["BAD_REQUEST"])),
+        schema: ErrorSchema,
       },
     },
   },
@@ -26,7 +21,7 @@ export const ErrorResponses = {
     description: "Not Found",
     content: {
       "application/json": {
-        schema: errorSchemaFactory(z.enum(["NOT_FOUND"])),
+        schema: ErrorSchema,
       },
     },
   },
@@ -34,7 +29,7 @@ export const ErrorResponses = {
     description: "Internal Server Error",
     content: {
       "application/json": {
-        schema: errorSchemaFactory(z.enum(["INTERNAL_SERVER_ERROR"])),
+        schema: ErrorSchema,
       },
     },
   },

@@ -1,6 +1,7 @@
 import { OpenAPIHono, z } from "@hono/zod-openapi";
 import { createSchemaFactory } from "drizzle-zod";
 import { HTTPException } from "hono/http-exception";
+import type { ErrorResponse } from "../dto/output/error";
 
 export const createApp = () => {
   const app = new OpenAPIHono({
@@ -19,11 +20,17 @@ export const createApp = () => {
 
   app.onError((err, c) => {
     if (err instanceof HTTPException) {
-      return err.getResponse();
+      return c.json<ErrorResponse>(
+        {
+          message: err.message,
+        },
+        {
+          status: err.status,
+        },
+      );
     }
-    return c.json(
+    return c.json<ErrorResponse>(
       {
-        code: 500,
         message: "Internal Server Error",
       },
       500,
