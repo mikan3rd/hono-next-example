@@ -98,7 +98,7 @@ describe("postsApp", () => {
 
       it("should return 404 when post is not found", async () => {
         const res = await subject();
-        expect(res.status).toBe(500); // TODO: 404にしたい
+        expect(res.status).toBe(404);
       });
 
       describe("when post is found", () => {
@@ -158,7 +158,7 @@ describe("postsApp", () => {
 
       it("should return 404 when post is not found", async () => {
         const res = await subject();
-        expect(res.status).toBe(500); // TODO: 404にしたい
+        expect(res.status).toBe(404);
       });
 
       describe("when post is found", () => {

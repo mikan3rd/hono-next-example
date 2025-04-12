@@ -9,8 +9,11 @@
 - Backend
   - [Hono](https://hono.dev/)
   - [Swagger/OpenAPI](https://swagger.io/)
+  - [Drizzle ORM](https://orm.drizzle.team/)
 - Frontend
   - [Next.js](https://nextjs.org/)
+  - [Tailwind CSS](https://tailwindcss.com)
+  - [Shadcn UI](https://ui.shadcn.com)
 
 ## Setup
 

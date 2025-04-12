@@ -1,4 +1,5 @@
 import { desc, eq } from "drizzle-orm";
+import { HTTPException } from "hono/http-exception";
 import { db } from "../../db";
 import { postsTable } from "../../db/schema";
 import { createApp } from "../factory";
@@ -35,7 +36,9 @@ export const postApp = createApp()
         .where(eq(postsTable.id, id));
 
       if (targets.length === 0) {
-        throw new Error("Post is not found");
+        throw new HTTPException(404, {
+          message: "Post is not found",
+        });
       }
 
       const result = await tx
@@ -61,7 +64,9 @@ export const postApp = createApp()
         .where(eq(postsTable.id, id));
 
       if (targets.length === 0) {
-        throw new Error("Post is not found");
+        throw new HTTPException(404, {
+          message: "Post is not found",
+        });
       }
 
       await tx.delete(postsTable).where(eq(postsTable.id, id));
