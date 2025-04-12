@@ -22,7 +22,10 @@ export const postApp = createApp()
     const { content } = c.req.valid("json");
     const result = await db.insert(postsTable).values({ content }).returning();
     const post = result[0];
-    if (!post) throw new Error("Post is undefined");
+    if (!post)
+      throw new HTTPException(500, {
+        message: "Failed to create post",
+      });
     return c.json({ post }, 200);
   })
   .openapi(updatePostRoute, async (c) => {
@@ -48,7 +51,10 @@ export const postApp = createApp()
         .returning();
 
       const post = result[0];
-      if (!post) throw new Error("Post is undefined");
+      if (!post)
+        throw new HTTPException(500, {
+          message: "Failed to update post",
+        });
       return post;
     });
 
