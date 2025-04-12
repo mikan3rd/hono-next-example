@@ -23,9 +23,9 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/bun": "1.2.8",
-    "@types/node": "22.13.14",
+    "@types/node": "22.13.17",
     "@types/pg": "8.11.11",
     "drizzle-kit": "0.30.6",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   }
 }
