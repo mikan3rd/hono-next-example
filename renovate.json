@@ -2,7 +2,8 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "labels": ["renovate"],
   "configMigration": true,
-  "extends": ["config:js-app", ":automergeMinor"],
+  "schedule": ["every weekend"],
+  "extends": ["config:js-app", ":automergeMinor", "group:allNonMajor"],
   "major": {
     "minimumReleaseAge": "28 days"
   },
