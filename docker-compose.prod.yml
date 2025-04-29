@@ -53,6 +53,25 @@ services:
       db_migrate:
         condition: service_completed_successfully
 
+  backend_health_check:
+    image: curlimages/curl
+    command:
+      - sh
+      - -c
+      - |
+        for i in $(seq 1 3); do
+          if curl -sf "http://backend_app:${BACKEND_APP_PORT}/healthz"; then
+            echo "App is healthy."
+            exit 0
+          fi
+          echo "Waiting for app... (attempt $$i/3)"
+          sleep 2
+        done
+        echo "Healthcheck failed after 3 attempts"
+        exit 1
+    depends_on:
+      - backend_app
+
   frontend_app:
     build:
       context: .
@@ -64,4 +83,4 @@ services:
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
     depends_on:
-      - backend_app
+      - backend_health_check
