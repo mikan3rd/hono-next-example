@@ -2,13 +2,56 @@ name: "hono-next-example--prod"
 
 services:
 
+  db:
+    image: postgres:14.17
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGPORT: ${POSTGRES_PORT}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+  db-migrate:
+    build:
+      context: .
+      dockerfile: packages/backend_app/Dockerfile
+      target: release
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      DATABASE_HOST: db
+    command: |
+      bun db:push
+    depends_on:
+      db:
+        condition: service_healthy
+
   backend_app:
     build:
       context: .
       dockerfile: packages/backend_app/Dockerfile
       target: release
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      DATABASE_HOST: db
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
+    depends_on:
+      db-migrate:
+        condition: service_completed_successfully
 
   frontend_app:
     build:

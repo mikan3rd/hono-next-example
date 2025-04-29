@@ -1,0 +1,36 @@
+name: E2E
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  POSTGRES_USER: user
+  POSTGRES_PASSWORD: password
+  POSTGRES_DB: example-db
+  POSTGRES_PORT: 5432
+  BACKEND_APP_PORT: 4300
+  FRONTEND_APP_PORT: 4400
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: docker compose build
+        run: docker compose -f docker-compose.prod.yml build
+
+      - name: docker compose up
+        run: docker compose -f docker-compose.prod.yml up -d
+
+      - name: docker compose down
+        if: always()
+        run: docker compose -f docker-compose.prod.yml down
