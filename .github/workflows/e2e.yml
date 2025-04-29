@@ -31,5 +31,8 @@ jobs:
 
       - name: docker compose up
         run: docker compose -f docker-compose.prod.yml up -d
+      
+      - name: docker compose down
+        run: docker compose -f docker-compose.prod.yml down
 
 
