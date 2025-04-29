@@ -6,9 +6,18 @@ services:
     image: postgres:14.17
     restart: always
     environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       PGPORT: ${POSTGRES_PORT}
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
 
   db-migrate:
     build:
@@ -20,7 +29,8 @@ services:
     command: |
       bun db:push
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   backend_app:
     build:
@@ -30,7 +40,8 @@ services:
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
     depends_on:
-      - db-migrate
+      db-migrate:
+        condition: service_completed_successfully
 
   frontend_app:
     build:
