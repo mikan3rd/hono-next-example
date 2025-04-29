@@ -83,4 +83,5 @@ services:
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
     depends_on:
-      - backend_health_check
+      backend_health_check:
+        condition: service_completed_successfully
