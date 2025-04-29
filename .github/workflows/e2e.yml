@@ -1,0 +1,26 @@
+name: E2E
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: docker compose build
+        run: docker compose -f docker-compose.prod.yml build
+
+      - name: docker compose up
+        run: docker compose -f docker-compose.prod.yml up -d
+
+

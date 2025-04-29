@@ -25,7 +25,7 @@ env:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 3
 
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 3
 
     services:
       postgres:
@@ -72,21 +72,3 @@ jobs:
       - run: bun db:push
 
       - run: bun test --coverage
-
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: packages/backend_app/Dockerfile
-          target: release
-          push: false
