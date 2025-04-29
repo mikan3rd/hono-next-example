@@ -10,6 +10,13 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
 
+  db-migrate:
+    image: backend_app
+    command: |
+      bun db:push
+    depends_on:
+      - db
+
   backend_app:
     build:
       context: .
@@ -18,7 +25,7 @@ services:
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
     depends_on:
-      - db
+      - db-migrate
 
   frontend_app:
     build:
