@@ -5,8 +5,6 @@ services:
   db:
     image: postgres:14.17
     restart: always
-    env_file:
-      - .env
     environment:
       PGPORT: ${POSTGRES_PORT}
     ports:
