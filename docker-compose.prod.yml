@@ -2,6 +2,16 @@ name: "hono-next-example--prod"
 
 services:
 
+  db:
+    image: postgres:14.17
+    restart: always
+    env_file:
+      - .env
+    environment:
+      PGPORT: ${POSTGRES_PORT}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+
   backend_app:
     build:
       context: .
@@ -9,6 +19,8 @@ services:
       target: release
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
+    depends_on:
+      - db
 
   frontend_app:
     build:
