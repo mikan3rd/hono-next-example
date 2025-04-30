@@ -2,7 +2,7 @@ name: "hono-next-example--dev"
 
 services:
   db:
-    image: postgres:14.17
+    image: postgres:17.3
     restart: always
     env_file:
       - .env
@@ -14,7 +14,7 @@ services:
       - db-store:/var/lib/postgresql/data
 
   test_db:
-    image: postgres:14.17
+    image: postgres:17.3
     restart: always
     env_file:
       - .env
