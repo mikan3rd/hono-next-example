@@ -3,7 +3,7 @@ name: "hono-next-example--prod"
 services:
 
   db:
-    image: postgres:17.3
+    image: postgres:17.4
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
