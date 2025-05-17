@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/bun": "1.2.12",
+    "@types/bun": "1.2.10",
     "@types/node": "22.15.17",
     "@types/pg": "8.11.15",
     "typescript": "5.8.3"
