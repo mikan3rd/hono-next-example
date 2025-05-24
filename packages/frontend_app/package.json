@@ -18,7 +18,7 @@
     "@types/react": "19.1.4",
     "@types/react-dom": "19.1.5",
     "backend_app": "workspace:*",
-    "hono": "4.7.9",
+    "hono": "4.7.10",
     "next": "15.3.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
