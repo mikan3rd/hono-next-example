@@ -3,7 +3,7 @@ import { exportOpenAPI } from "./functions";
 (async () => {
   await exportOpenAPI();
 
-  const { success, stdout, stderr } = Bun.spawnSync([
+  const { success, stdout } = Bun.spawnSync([
     "bun",
     "--bun",
     "biome",
@@ -15,6 +15,6 @@ import { exportOpenAPI } from "./functions";
   if (success) {
     console.info(stdout.toString());
   } else {
-    console.error(stderr.toString());
+    console.error("biome check failed");
   }
 })();
