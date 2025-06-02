@@ -2,8 +2,8 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "labels": ["renovate"],
   "configMigration": true,
-  "schedule": ["every weekend"],
-  "extends": ["config:js-app", ":automergeMinor", "group:allNonMajor"],
+  "timezone": "Asia/Tokyo",
+  "extends": ["config:js-app", ":automergeMinor"],
   "major": {
     "minimumReleaseAge": "28 days"
   },
@@ -17,6 +17,10 @@
     {
       "groupName": "all patch dependencies",
       "matchUpdateTypes": ["patch"]
+    },
+    {
+      "groupName": "all minor dependencies",
+      "matchUpdateTypes": ["minor"]
     }
   ]
 }
