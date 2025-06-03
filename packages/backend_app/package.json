@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@hono/swagger-ui": "0.5.1",
-    "@hono/zod-openapi": "0.19.6",
-    "@t3-oss/env-core": "0.13.4",
+    "@hono/zod-openapi": "0.19.7",
+    "@t3-oss/env-core": "0.13.6",
     "drizzle-kit": "0.31.1",
     "drizzle-orm": "0.43.1",
     "drizzle-zod": "0.7.1",
