@@ -12,9 +12,9 @@
     "export-openapi": "bun run src/scripts/export-openapi/index.ts"
   },
   "dependencies": {
-    "@hono/swagger-ui": "0.5.1",
+    "@hono/swagger-ui": "0.5.2",
     "@hono/zod-openapi": "0.19.8",
-    "@t3-oss/env-core": "0.13.6",
+    "@t3-oss/env-core": "0.13.8",
     "drizzle-kit": "0.31.1",
     "drizzle-orm": "0.43.1",
     "drizzle-zod": "0.7.1",
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/bun": "1.2.15",
-    "@types/node": "22.15.30",
+    "@types/node": "22.15.31",
     "@types/pg": "8.15.4",
     "typescript": "5.8.3"
   }
