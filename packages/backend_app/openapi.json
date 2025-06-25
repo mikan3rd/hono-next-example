@@ -18,7 +18,7 @@
             "description": "The content of the post",
             "example": "test"
           },
-          "created_at": { "type": "string" },
+          "created_at": { "type": "string", "format": "date" },
           "updated_at": { "type": "string" }
         },
         "required": ["id", "content", "created_at", "updated_at"]
