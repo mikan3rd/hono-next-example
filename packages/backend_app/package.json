@@ -1,7 +1,7 @@
 {
   "name": "backend_app",
   "scripts": {
-    "dev": "bun run --hot src/server.ts",
+    "dev": "bun run --hot --no-clear-screen src/server.ts",
     "db:studio": "drizzle-kit studio",
     "db:push": "bun run --bun drizzle-kit push",
     "typecheck": "bun run --bun tsc --noEmit",
