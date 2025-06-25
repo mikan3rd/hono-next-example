@@ -17,7 +17,6 @@ const onError: Parameters<Hono<HonoEnv>["onError"]>[0] = (err, c) => {
           return "Internal Server Error";
       }
     })();
-    console.error("Unhandled error", err);
     return c.json<ErrorResponse>(
       {
         code,
@@ -28,6 +27,7 @@ const onError: Parameters<Hono<HonoEnv>["onError"]>[0] = (err, c) => {
       },
     );
   }
+  console.error("Unhandled error", err);
   return c.json<ErrorResponse>(
     {
       code: "Internal Server Error",
