@@ -1,12 +1,11 @@
 import { beforeEach, describe, expect, it } from "bun:test";
-import { testClient } from "hono/testing";
 import { app } from "../../apps";
 import { db } from "../../db";
 import { postsTable } from "../../db/schema";
 
 describe("postsApp", () => {
   describe("getPostsRoute", () => {
-    const subject = () => testClient(app).posts.$get();
+    const subject = () => app.request("/posts");
 
     describe("when there are no posts", () => {
       it("should return 200 Response", async () => {
@@ -45,7 +44,14 @@ describe("postsApp", () => {
   describe("postPostRoute", () => {
     let content: string;
 
-    const subject = () => testClient(app).posts.$post({ json: { content } });
+    const subject = () =>
+      app.request("/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
+      });
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
@@ -85,9 +91,12 @@ describe("postsApp", () => {
     let content: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$put({
-        param: { id: id.toString() },
-        json: { content },
+      app.request(`/posts/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
       });
 
     describe("when required fields are provided", () => {
@@ -153,7 +162,9 @@ describe("postsApp", () => {
     let id: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$delete({ param: { id } });
+      app.request(`/posts/${id}`, {
+        method: "DELETE",
+      });
 
     describe("when required fields are provided", () => {
       beforeEach(() => {

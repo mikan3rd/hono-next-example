@@ -4,5 +4,8 @@
   "scripts": {
     "backend": "bun run --cwd packages/backend_app",
     "frontend": "bun run --cwd packages/frontend_app"
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^7.3.4"
   }
 }

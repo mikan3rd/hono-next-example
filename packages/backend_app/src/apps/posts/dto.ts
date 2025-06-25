@@ -1,36 +1,18 @@
-import { z } from "@hono/zod-openapi";
-import { postsTable } from "../../db/schema";
-import {
-  createInsertSchema,
-  createSelectSchema,
-  createUpdateSchema,
-} from "../factory";
+import { z } from "zod";
 
-const postSelectSchema = createSelectSchema(postsTable, {
-  id: (schema) =>
-    schema.openapi({
-      description: "Primary ID",
-      example: 1,
-    }),
-  content: (schema) =>
-    schema.openapi({
-      description: "The content of the post",
-      example: "test",
-    }),
-}).openapi("post");
+const postSelectSchema = z.object({
+  id: z.number(),
+  content: z.string(),
+  created_at: z.date(),
+  updated_at: z.string(),
+});
 
 export const getPostsResponseSchema = z.object({
   posts: postSelectSchema.array(),
 });
 
-export const postPostRequestSchema = createInsertSchema(postsTable, {
-  content: (schema) =>
-    schema.min(1).openapi({
-      description: "The content of the post",
-      example: "test",
-    }),
-}).pick({
-  content: true,
+export const postPostRequestSchema = z.object({
+  content: z.string().min(1),
 });
 
 export const postPostResponseSchema = z.object({
@@ -38,21 +20,11 @@ export const postPostResponseSchema = z.object({
 });
 
 export const updatePostParamsSchema = z.object({
-  id: z.string().pipe(z.coerce.number().int().positive()).openapi({
-    example: "1",
-    type: "integer",
-    format: "int64",
-  }),
+  id: z.string().pipe(z.coerce.number().int().positive()),
 });
 
-export const updatePostRequestSchema = createUpdateSchema(postsTable, {
-  content: (schema) =>
-    schema.min(1).openapi({
-      description: "The content of the post",
-      example: "test",
-    }),
-}).pick({
-  content: true,
+export const updatePostRequestSchema = z.object({
+  content: z.string().min(1),
 });
 
 export const updatePostResponseSchema = postPostResponseSchema;

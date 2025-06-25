@@ -1,4 +1,4 @@
-import { OpenAPIHono, z } from "@hono/zod-openapi";
+import { z } from "zod";
 import { createSchemaFactory } from "drizzle-zod";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
@@ -38,19 +38,7 @@ const onError: Parameters<Hono<HonoEnv>["onError"]>[0] = (err, c) => {
 };
 
 export const createApp = () => {
-  const app = new OpenAPIHono<HonoEnv>({
-    defaultHook: (result, c) => {
-      if (!result.success) {
-        return c.json(
-          {
-            code: 400,
-            message: "Validation Error",
-          },
-          400,
-        );
-      }
-    },
-  });
+  const app = new Hono<HonoEnv>();
 
   app.onError(onError);
 

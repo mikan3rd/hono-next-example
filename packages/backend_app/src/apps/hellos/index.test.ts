@@ -1,11 +1,10 @@
 import { beforeEach, describe, expect, it } from "bun:test";
-import { testClient } from "hono/testing";
 import { app } from "../../apps";
 
 describe("helloApp", () => {
   describe("getHelloRoute", () => {
     let name: string;
-    const subject = () => testClient(app).hellos.$get({ query: { name } });
+    const subject = () => app.request(`/hellos?name=${name}`);
 
     describe("when the name is provided", () => {
       beforeEach(() => {
@@ -33,7 +32,14 @@ describe("helloApp", () => {
 
   describe("postHelloRoute", () => {
     let name: string;
-    const subject = () => testClient(app).hellos.$post({ json: { name } });
+    const subject = () =>
+      app.request("/hellos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name }),
+      });
 
     describe("when the name is provided", () => {
       beforeEach(() => {

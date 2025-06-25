@@ -1,4 +1,4 @@
-import { z } from "@hono/zod-openapi";
+import { z } from "zod";
 
 const errorCodes = [
   "Bad Request",
@@ -9,14 +9,10 @@ const errorCodes = [
 export type ErrorCode = (typeof errorCodes)[number];
 
 const errorSchemaFactory = (code: ErrorCode) => {
-  return z
-    .object({
-      code: z.enum(errorCodes).openapi({
-        example: code,
-      }),
-      message: z.string().openapi({ description: "explanation" }),
-    })
-    .openapi("Error");
+  return z.object({
+    code: z.enum(errorCodes),
+    message: z.string(),
+  });
 };
 
 export type ErrorResponse = z.infer<ReturnType<typeof errorSchemaFactory>>;
