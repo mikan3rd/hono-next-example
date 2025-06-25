@@ -178,7 +178,11 @@
         "tags": ["posts"],
         "parameters": [
           {
-            "schema": { "type": "integer", "example": "1", "format": "int64" },
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMinimum": true
+            },
             "required": true,
             "name": "id",
             "in": "path"
@@ -288,7 +292,11 @@
         "tags": ["posts"],
         "parameters": [
           {
-            "schema": { "type": "integer", "example": "1", "format": "int64" },
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMinimum": true
+            },
             "required": true,
             "name": "id",
             "in": "path"

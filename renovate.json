@@ -21,9 +21,6 @@
     {
       "groupName": "all minor dependencies",
       "matchUpdateTypes": ["minor"]
-    },
-    {
-      "matchPackageNames": ["drizzle-zod"]
     }
   ]
 }
