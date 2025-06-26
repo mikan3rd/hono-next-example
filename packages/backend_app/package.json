@@ -20,7 +20,7 @@
     "drizzle-orm": "0.44.2",
     "drizzle-zod": "0.8.2",
     "hono": "4.7.11",
-    "pg": "8.16.1"
+    "pg": "8.16.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
