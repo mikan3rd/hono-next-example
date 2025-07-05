@@ -30,7 +30,7 @@
       "dependencies": {
         "@t3-oss/env-nextjs": "0.13.8",
         "@tailwindcss/postcss": "4.1.11",
-        "@tanstack/react-query": "5.80.12",
+        "@tanstack/react-query": "5.81.0",
         "@types/node": "22.15.34",
         "@types/react": "19.1.8",
         "@types/react-dom": "19.1.6",
@@ -249,9 +249,9 @@
 
     "@tailwindcss/postcss": ["@tailwindcss/postcss@4.1.11", "", { "dependencies": { "@alloc/quick-lru": "^5.2.0", "@tailwindcss/node": "4.1.11", "@tailwindcss/oxide": "4.1.11", "postcss": "^8.4.41", "tailwindcss": "4.1.11" } }, "sha512-q/EAIIpF6WpLhKEuQSEVMZNMIY8KhWoAemZ9eylNAih9jxMGAYPPWBn3I9QL/2jZ+e7OEz/tZkX5HwbBR4HohA=="],
 
-    "@tanstack/query-core": ["@tanstack/query-core@5.80.12", "", {}, "sha512-Cy+l+jNuII87oGpzkJ+nGDydzWJeq+gDr72lGURHXjD0UqZh5yRXcLg0Ix7jG+0Tn/ayGnR9+yph7Vbf1j8QZA=="],
+    "@tanstack/query-core": ["@tanstack/query-core@5.81.0", "", {}, "sha512-lFsd8NBhkh26vzaq8uOOM2o3r4NtJros7kASI+TTMBmKT8C43HVN/2mOI9PFX9kzmxLThBzOLa4NI8ORhX8N9g=="],
 
-    "@tanstack/react-query": ["@tanstack/react-query@5.80.12", "", { "dependencies": { "@tanstack/query-core": "5.80.12" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-hCtE5hw4rSqMcHSlkVLhM6jXy55rQsCE8qmgLq2MIqf/r4dRFrVlSqMczmO5w0ZQMYWeeHCYMrdRxtadajQK/Q=="],
+    "@tanstack/react-query": ["@tanstack/react-query@5.81.0", "", { "dependencies": { "@tanstack/query-core": "5.81.0" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-nutU/X1xrgMJXui61oi5j0gXKs2ZlHnI9f/C128CNha/MRi9i/E5tN3pcUIjvQZzNQnOxp1Uv90SZs3kmcecgw=="],
 
     "@types/bun": ["@types/bun@1.2.17", "", { "dependencies": { "bun-types": "1.2.17" } }, "sha512-l/BYs/JYt+cXA/0+wUhulYJB6a6p//GTPiJ7nV+QHa8iiId4HZmnu/3J/SowP5g0rTiERY2kfGKXEK5Ehltx4Q=="],
 
