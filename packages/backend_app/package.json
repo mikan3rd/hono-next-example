@@ -25,7 +25,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/bun": "1.2.18",
-    "@types/node": "22.15.35",
+    "@types/node": "22.16.0",
     "@types/pg": "8.15.4",
     "typescript": "5.8.3"
   }
