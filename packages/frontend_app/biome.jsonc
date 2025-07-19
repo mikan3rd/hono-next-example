@@ -1,6 +1,7 @@
 {
-  "extends": ["../../biome.jsonc"],
+  "root": false,
+  "extends": "//",
   "files": {
-    "ignore": [".next"]
+    "includes": ["!**/.next"]
   }
 }
