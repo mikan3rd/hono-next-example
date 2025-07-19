@@ -10,7 +10,7 @@ import { Index } from "../../components/pages/hello/index";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(
-  props: unknown,
+  _props: unknown,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { message } = await getHello();
