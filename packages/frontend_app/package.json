@@ -13,7 +13,7 @@
   "dependencies": {
     "@t3-oss/env-nextjs": "0.13.8",
     "@tailwindcss/postcss": "4.1.11",
-    "@tanstack/react-query": "5.81.5",
+    "@tanstack/react-query": "5.82.0",
     "@types/node": "24.0.14",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
