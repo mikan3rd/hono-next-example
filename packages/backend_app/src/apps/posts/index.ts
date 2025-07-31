@@ -44,18 +44,18 @@ export const postApp = createApp()
         });
       }
 
-      const result = await tx
+      const results = await tx
         .update(postsTable)
         .set({ content })
         .where(eq(postsTable.id, id))
         .returning();
 
-      const post = result[0];
-      if (!post)
+      const result = results[0];
+      if (!result)
         throw new HTTPException(500, {
           message: "Failed to update post",
         });
-      return post;
+      return result;
     });
 
     return c.json({ post }, 200);
