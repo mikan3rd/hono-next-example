@@ -5,6 +5,7 @@ const server = Bun.serve({
   port: env.BACKEND_APP_PORT,
   fetch: app.fetch,
   development: false,
+  idleTimeout: 30,
 });
 
 const shutdown = async () => {
