@@ -8,8 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "bun run --bun biome check . --error-on-warnings",
-    "lint:fix": "bun run --bun biome check . --write",
-    "test:e2e": "bun run --env-file=.env playwright test"
+    "lint:fix": "bun run --bun biome check . --write"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "0.13.8",
