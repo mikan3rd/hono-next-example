@@ -10,6 +10,7 @@ FROM base AS install
 COPY package.json bun.lock /app/
 COPY packages/backend_app/package.json /app/packages/backend_app/
 COPY packages/frontend_app/package.json /app/packages/frontend_app/
+COPY packages/playwright/package.json /app/packages/playwright/
 RUN bun install --frozen-lockfile --production --filter backend_app
 
 # copy production dependencies and source code into final image
@@ -31,5 +32,6 @@ FROM base AS dev
 COPY package.json bun.lock /app/
 COPY packages/backend_app/package.json /app/packages/backend_app/
 COPY packages/frontend_app/package.json /app/packages/frontend_app/
+COPY packages/playwright/package.json /app/packages/playwright/
 RUN bun install --frozen-lockfile
 WORKDIR /app/packages/backend_app
