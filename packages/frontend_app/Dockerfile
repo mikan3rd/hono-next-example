@@ -9,6 +9,7 @@ ARG BACKEND_APP_SERVER_URL
 ARG NEXT_PUBLIC_BACKEND_APP_URL
 ENV BACKEND_APP_SERVER_URL=${BACKEND_APP_SERVER_URL}
 ENV NEXT_PUBLIC_BACKEND_APP_URL=${NEXT_PUBLIC_BACKEND_APP_URL}
+ENV FRONTEND_APP_PORT="4400"
 
 # copy production dependencies and source code into final image
 FROM base AS builder
@@ -24,7 +25,6 @@ RUN bun --bun run build
 # run the app
 FROM base AS runner
 ENV NODE_ENV="production"
-ENV FRONTEND_APP_PORT="4400"
 ENV PORT=${FRONTEND_APP_PORT}
 
 # If you use bun workspace, a workspace will be created under .next/standalone
