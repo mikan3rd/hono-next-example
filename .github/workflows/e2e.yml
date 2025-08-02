@@ -19,6 +19,25 @@ env:
   FRONTEND_APP_PORT: 4400
 
 jobs:
+  check:
+    defaults:
+      run:
+        working-directory: ./packages/e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun run lint
+
+      - run: bun run typecheck
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 5
