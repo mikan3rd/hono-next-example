@@ -13,7 +13,7 @@
         "drizzle-kit": "0.31.4",
         "drizzle-orm": "0.44.3",
         "drizzle-zod": "0.8.2",
-        "hono": "4.8.8",
+        "hono": "4.8.9",
         "pg": "8.16.3",
       },
       "devDependencies": {
@@ -35,7 +35,7 @@
         "@types/react": "19.1.8",
         "@types/react-dom": "19.1.6",
         "backend_app": "workspace:*",
-        "hono": "4.8.8",
+        "hono": "4.8.9",
         "next": "15.4.4",
         "react": "19.1.0",
         "react-dom": "19.1.0",
@@ -305,7 +305,7 @@
 
     "graceful-fs": ["graceful-fs@4.2.11", "", {}, "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="],
 
-    "hono": ["hono@4.8.8", "", {}, "sha512-GbxTGB93Y+MOwCL2tnf9nE6L2Bn3s9D0pS+Mh1FoU4gkuecMVmg8VvHHLO702tq8y9N2fcrlcP8eCm7/feucng=="],
+    "hono": ["hono@4.8.9", "", {}, "sha512-ERIxkXMRhUxGV7nS/Af52+j2KL60B1eg+k6cPtgzrGughS+espS9KQ7QO0SMnevtmRlBfAcN0mf1jKtO6j/doA=="],
 
     "is-arrayish": ["is-arrayish@0.3.2", "", {}, "sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ=="],
 
