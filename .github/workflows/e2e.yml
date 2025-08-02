@@ -22,7 +22,7 @@ jobs:
   check:
     defaults:
       run:
-        working-directory: ./packages/frontend_app
+        working-directory: ./packages/e2e
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
