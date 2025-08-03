@@ -8,4 +8,8 @@ COPY packages/e2e/package.json /app/packages/e2e/
 RUN bun install --frozen-lockfile --filter e2e
 RUN bunx playwright install --with-deps
 
+COPY package.json tsconfig.json /app/
+COPY packages/e2e /app/packages/e2e
+
+WORKDIR /app/packages/e2e
 CMD [ "bun", "run", "e2e" ]
