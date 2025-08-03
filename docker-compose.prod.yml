@@ -85,3 +85,10 @@ services:
     depends_on:
       backend_health_check:
         condition: service_completed_successfully
+
+  e2e:
+    build:
+      context: .
+      dockerfile: packages/e2e/Dockerfile
+    depends_on:
+      - frontend_app
