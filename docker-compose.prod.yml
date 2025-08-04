@@ -91,6 +91,7 @@ services:
       context: .
       dockerfile: packages/e2e/Dockerfile
     environment:
+      CI: true
       FRONTEND_APP_SERVER_URL: ${FRONTEND_APP_SERVER_URL}
       FRONTEND_APP_PORT: ${FRONTEND_APP_PORT}
     depends_on:
