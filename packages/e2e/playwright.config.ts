@@ -21,7 +21,7 @@ export default defineConfig({
     [
       "html",
       {
-        open: env.CI ? "never" : "always",
+        open: env.CI ? "never" : "on-failure",
       },
     ],
   ],
