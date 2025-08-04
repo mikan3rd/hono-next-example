@@ -16,6 +16,7 @@ env:
   POSTGRES_DB: example-db
   POSTGRES_PORT: 5432
   BACKEND_APP_PORT: 4300
+  FRONTEND_APP_SERVER_URL: http://frontend_app
   FRONTEND_APP_PORT: 4400
 
 jobs:
@@ -28,15 +29,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
         with:
-          bun-version-file: .tool-versions
+          node-version-file: .tool-versions
 
-      - run: bun install --frozen-lockfile
+      - run: npm ci
 
-      - run: bun run lint
+      - run: npm run lint
 
-      - run: bun run typecheck
+      - run: npm run typecheck
 
   build:
     runs-on: ubuntu-latest
@@ -47,9 +48,12 @@ jobs:
       - name: docker compose build
         run: docker compose -f docker-compose.prod.yml build
 
-      - name: docker compose up
-        run: docker compose -f docker-compose.prod.yml up -d
+      - name: docker compose up frontend_app
+        run: docker compose -f docker-compose.prod.yml up -d frontend_app
+
+      - name: docker compose up e2e
+        run: docker compose -f docker-compose.prod.yml up e2e
 
       - name: docker compose down
         if: always()
-        run: docker compose -f docker-compose.prod.yml down
+        run: docker compose -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans

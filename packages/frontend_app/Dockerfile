@@ -16,7 +16,6 @@ FROM base AS builder
 COPY package.json bun.lock /app/
 COPY packages/backend_app/package.json /app/packages/backend_app/
 COPY packages/frontend_app/package.json /app/packages/frontend_app/
-COPY packages/e2e/package.json /app/packages/e2e/
 RUN bun install --frozen-lockfile --production --filter frontend_app
 COPY package.json tsconfig.json /app/
 COPY packages/frontend_app /app/packages/frontend_app
@@ -44,6 +43,5 @@ FROM base AS dev
 COPY package.json bun.lock /app/
 COPY packages/backend_app/package.json /app/packages/backend_app/
 COPY packages/frontend_app/package.json /app/packages/frontend_app/
-COPY packages/e2e/package.json /app/packages/e2e/
 RUN bun install --frozen-lockfile
 WORKDIR /app/packages/frontend_app

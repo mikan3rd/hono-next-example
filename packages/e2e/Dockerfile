@@ -1,0 +1,10 @@
+# FIXME: bun do not support playwright
+FROM mcr.microsoft.com/playwright:v1.54.0-noble
+WORKDIR /app
+
+COPY package.json tsconfig.json /app/
+COPY packages/e2e /app/packages/e2e
+
+WORKDIR /app/packages/e2e
+RUN npm ci
+CMD ["npx", "playwright", "test"]

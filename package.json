@@ -1,11 +1,11 @@
 {
   "name": "hono-next-example",
   "workspaces": [
-    "packages/*"
+    "packages/backend_app",
+    "packages/frontend_app"
   ],
   "scripts": {
     "backend": "bun run --cwd packages/backend_app",
-    "frontend": "bun run --cwd packages/frontend_app",
-    "e2e": "bun run --cwd packages/e2e"
+    "frontend": "bun run --cwd packages/frontend_app"
   }
 }
