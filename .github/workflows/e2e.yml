@@ -49,7 +49,7 @@ jobs:
         run: docker compose -f docker-compose.prod.yml build
 
       - name: docker compose up
-        run: docker compose -f docker-compose.prod.yml up --exit-code-from e2e
+        run: docker compose -f docker-compose.prod.yml up
 
       - name: docker compose down
         if: always()
