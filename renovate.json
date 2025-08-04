@@ -3,6 +3,7 @@
   "labels": ["renovate"],
   "configMigration": true,
   "timezone": "Asia/Tokyo",
+  "schedule": ["* * * * 6"],
   "extends": ["config:js-app", ":automergeMinor"],
   "major": {
     "minimumReleaseAge": "28 days"
