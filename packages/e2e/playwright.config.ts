@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 import { env } from "./tests/env";
 
+const baseURL = `${env.FRONTEND_APP_SERVER_URL}:${env.FRONTEND_APP_PORT}`;
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -19,7 +21,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: `http://localhost:${env.FRONTEND_APP_PORT}`,
+    baseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
