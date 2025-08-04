@@ -2,7 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "labels": ["renovate"],
   "configMigration": true,
+  "rebaseWhen": "automerging",
   "timezone": "Asia/Tokyo",
+  "schedule": ["* * * * 6"],
   "extends": ["config:js-app", ":automergeMinor"],
   "major": {
     "minimumReleaseAge": "28 days"

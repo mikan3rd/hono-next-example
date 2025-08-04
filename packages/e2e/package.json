@@ -6,15 +6,15 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check . --error-on-warnings",
     "lint:fix": "biome check . --write",
-    "e2e:local": "npx playwright test",
+    "e2e:local": "dotenvx run -- npx playwright test",
     "e2e:docker": "npx playwright test"
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.2",
+    "@dotenvx/dotenvx": "1.48.4",
     "@playwright/test": "1.54.2",
     "@t3-oss/env-core": "0.13.8",
     "@types/node": "24.0.15",
-    "dotenv": "17.2.1",
     "typescript": "5.8.3",
     "zod": "4.0.14"
   }
