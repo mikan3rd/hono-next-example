@@ -1,5 +1,5 @@
 # FIXME: bun do not support playwright
-FROM mcr.microsoft.com/playwright:v1.54.0-noble
+FROM mcr.microsoft.com/playwright:v1.54.2-noble
 WORKDIR /app
 
 COPY package.json tsconfig.json /app/
