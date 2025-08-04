@@ -48,8 +48,11 @@ jobs:
       - name: docker compose build
         run: docker compose -f docker-compose.prod.yml build
 
-      - name: docker compose up
-        run: docker compose -f docker-compose.prod.yml up --exit-code-from e2e
+      - name: docker compose up frontend_app
+        run: docker compose -f docker-compose.prod.yml up -d frontend_app
+
+      - name: docker compose up e2e
+        run: docker compose -f docker-compose.prod.yml up e2e
 
       - name: docker compose down
         if: always()
