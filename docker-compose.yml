@@ -71,6 +71,10 @@ services:
       dockerfile: packages/e2e/Dockerfile
     env_file:
       - .env
+    command: |
+      npm run e2e:docker:screenshot
+    ports:
+      - "9323:9323"
     depends_on:
       - frontend_app
     volumes:
