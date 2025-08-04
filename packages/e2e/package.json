@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "bun run --bun tsc --noEmit",
     "lint": "bun run --bun biome check . --error-on-warnings",
     "lint:fix": "bun run --bun biome check . --write",
     "e2e": "bun run playwright test",
@@ -12,6 +12,7 @@
   "devDependencies": {
     "@t3-oss/env-core": "0.13.8",
     "@biomejs/biome": "2.1.2",
-    "@playwright/test": "1.54.2"
+    "@playwright/test": "1.54.2",
+    "@types/node": "24.0.15"
   }
 }
