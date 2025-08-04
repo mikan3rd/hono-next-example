@@ -16,6 +16,7 @@ env:
   POSTGRES_DB: example-db
   POSTGRES_PORT: 5432
   BACKEND_APP_PORT: 4300
+  FRONTEND_APP_SERVER_URL: http://frontend_app
   FRONTEND_APP_PORT: 4400
 
 jobs:
