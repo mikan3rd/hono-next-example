@@ -7,6 +7,8 @@
     "lint": "biome check . --error-on-warnings",
     "lint:fix": "biome check . --write",
     "e2e:local": "dotenvx run -- npx playwright test",
+    "e2e:local:ui": "dotenvx run -- npx playwright test --ui",
+    "e2e:local:screenshot": "dotenvx run -- npx playwright test --update-snapshots",
     "e2e:docker": "npx playwright test"
   },
   "devDependencies": {
