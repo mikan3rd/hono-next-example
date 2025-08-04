@@ -41,7 +41,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
 
@@ -52,7 +52,15 @@ jobs:
         run: docker compose -f docker-compose.prod.yml up -d frontend_app
 
       - name: docker compose up e2e
-        run: docker compose -f docker-compose.prod.yml up e2e
+        run: docker compose -f docker-compose.prod.yml up e2e --exit-code-from e2e
+
+      # NOTE: npx playwright show-report name-of-my-extracted-playwright-report
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: "playwright-report-${{ github.sha }}"
+          path: packages/e2e/playwright-report/
+          retention-days: 1
 
       - name: docker compose down
         if: always()

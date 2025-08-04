@@ -21,7 +21,7 @@ export default defineConfig({
     [
       "html",
       {
-        open: env.CI ? "never" : "always",
+        open: env.CI ? "never" : "on-failure",
       },
     ],
   ],
@@ -31,9 +31,9 @@ export default defineConfig({
     baseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
+    trace: env.CI ? "on-first-retry" : "on",
 
-    video: env.CI ? "off" : "on-first-retry",
+    video: env.CI ? "off" : "on",
     screenshot: "on",
   },
 
@@ -75,10 +75,6 @@ export default defineConfig({
     // },
   ],
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  snapshotPathTemplate:
+    "{testDir}/{testFileDir}/screenshots/{projectName}/{arg}{ext}",
 });
