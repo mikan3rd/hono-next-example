@@ -27,6 +27,6 @@
     "@types/bun": "1.2.19",
     "@types/node": "24.1.0",
     "@types/pg": "8.15.5",
-    "typescript": "5.8.3"
+    "typescript": "5.9.2"
   }
 }
