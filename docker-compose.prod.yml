@@ -107,7 +107,7 @@ services:
       FRONTEND_APP_SERVER_URL: ${FRONTEND_APP_SERVER_URL}
       FRONTEND_APP_PORT: ${FRONTEND_APP_PORT}
     command: |
-      npm run e2e:docker
+      npm run e2e:docker:screenshot
     depends_on:
       - frontend_app
     volumes:
