@@ -23,6 +23,7 @@ export const getPostsRoute = createRoute({
         },
       },
     },
+    ...ErrorResponses,
   },
 });
 

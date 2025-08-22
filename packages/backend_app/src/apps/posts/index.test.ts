@@ -13,6 +13,7 @@ describe("postsApp", () => {
         const res = await subject();
         expect(res.status).toBe(200);
 
+        if (!res.ok) throw new Error("res is not ok");
         const json = await res.json();
         expect(json.posts).toHaveLength(0);
       });
@@ -28,6 +29,7 @@ describe("postsApp", () => {
         const res = await subject();
         expect(res.status).toBe(200);
 
+        if (!res.ok) throw new Error("res is not ok");
         const json = await res.json();
         expect(json.posts).toHaveLength(2);
         expect(json.posts[0]).toMatchObject({
