@@ -66,6 +66,72 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Not Found"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Error" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Internal Server Error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         }
       },
