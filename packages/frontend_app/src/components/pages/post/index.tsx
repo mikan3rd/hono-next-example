@@ -1,13 +1,43 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { getPosts, queryKey } from "./client";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useState } from "react";
+import { createPost, getPosts, queryKey } from "./client";
 
 export const Index = () => {
+  const [content, setContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const queryClient = useQueryClient();
   const { data } = useSuspenseQuery({
     queryKey,
     queryFn: getPosts,
   });
+
+  const createPostMutation = useMutation({
+    mutationFn: createPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+      setContent("");
+      setIsSubmitting(false);
+    },
+    onError: (error) => {
+      console.error("Failed to create post:", error);
+      setIsSubmitting(false);
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!content.trim()) return;
+
+    setIsSubmitting(true);
+    createPostMutation.mutate(content.trim());
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString("en-US", {
@@ -23,8 +53,44 @@ export const Index = () => {
     <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Posts</h1>
-          <p className="text-gray-600">View the latest posts</p>
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Posts</h1>
+            <p className="text-gray-600">View the latest posts</p>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Create New Post
+            </h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="Write your post content here..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  rows={4}
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="submit"
+                  disabled={!content.trim() || isSubmitting}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "Creating..." : "Create Post"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setContent("")}
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md font-medium transition-colors duration-200"
+                >
+                  Clear
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
 
         {data.posts.length === 0 ? (
