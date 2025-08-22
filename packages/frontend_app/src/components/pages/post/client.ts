@@ -1,11 +1,12 @@
 import { baseClient } from "../../../baseClient";
 
-export const queryKey = ["post"];
+export const queryKey = ["posts"];
 
-export const getHello = async () => {
-  const res = await baseClient.hellos.$get({ query: { name: "Hono" } });
+export const getPosts = async () => {
+  const res = await baseClient.posts.$get();
   if (!res.ok) {
-    throw new Error(await res.text());
+    const body = await res.json();
+    throw new Error(body.message);
   }
   return res.json();
 };

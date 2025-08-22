@@ -16,7 +16,7 @@ export const postApp = createApp()
       .select()
       .from(postsTable)
       .orderBy(desc(postsTable.id));
-    return c.json({ posts });
+    return c.json({ posts }, 200);
   })
   .openapi(postPostRoute, async (c) => {
     const { content } = c.req.valid("json");
