@@ -30,9 +30,9 @@ export const Index = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!content.trim()) return;
-
-    createPostMutation.mutate(content.trim());
+    const trimmedContent = content.trim();
+    if (!trimmedContent) return;
+    createPostMutation.mutate(trimmedContent);
   };
 
   const formatDate = (dateString: string) => {
@@ -64,7 +64,7 @@ export const Index = () => {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Write your post content here..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900"
                   rows={4}
                   disabled={createPostMutation.isPending}
                 />
@@ -113,7 +113,7 @@ export const Index = () => {
                   </div>
 
                   <div className="mb-4">
-                    <p className="text-gray-900 text-sm leading-relaxed line-clamp-4">
+                    <p className="text-gray-900 text-sm leading-relaxed line-clamp-4 whitespace-pre-wrap">
                       {post.content}
                     </p>
                   </div>
