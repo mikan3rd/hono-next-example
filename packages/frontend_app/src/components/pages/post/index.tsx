@@ -10,7 +10,6 @@ import { createPost, getPosts, queryKey } from "./client";
 
 export const Index = () => {
   const [content, setContent] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const queryClient = useQueryClient();
   const { data } = useSuspenseQuery({
@@ -23,11 +22,9 @@ export const Index = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
       setContent("");
-      setIsSubmitting(false);
     },
     onError: (error) => {
       console.error("Failed to create post:", error);
-      setIsSubmitting(false);
     },
   });
 
@@ -35,7 +32,6 @@ export const Index = () => {
     e.preventDefault();
     if (!content.trim()) return;
 
-    setIsSubmitting(true);
     createPostMutation.mutate(content.trim());
   };
 
@@ -70,16 +66,16 @@ export const Index = () => {
                   placeholder="Write your post content here..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                   rows={4}
-                  disabled={isSubmitting}
+                  disabled={createPostMutation.isPending}
                 />
               </div>
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  disabled={!content.trim() || isSubmitting}
+                  disabled={!content.trim() || createPostMutation.isPending}
                   className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "Creating..." : "Create Post"}
+                  {createPostMutation.isPending ? "Creating..." : "Create Post"}
                 </button>
                 <button
                   type="button"
