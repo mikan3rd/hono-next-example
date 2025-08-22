@@ -47,7 +47,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    if: github.event.pull_request.draft == false || github.event.action == 'ready_for_review'
+    if: github.event.pull_request.draft != true
     steps:
       - uses: actions/checkout@v4
 
