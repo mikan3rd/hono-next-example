@@ -12,6 +12,12 @@ services:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - db-store:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
 
   test_db:
     image: postgres:17.5
@@ -22,6 +28,33 @@ services:
       PGPORT: ${TEST_POSTGRES_PORT}
     ports:
       - ${TEST_POSTGRES_PORT}:${TEST_POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+  db_migrate:
+    image: backend_app
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: db
+      TEST_DATABASE_HOST: test_db
+    command: |
+      sh -c '
+        bun db:push &&
+        bun test:db:push
+      '
+    depends_on:
+      db:
+        condition: service_healthy
+      test_db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
 
   backend_app:
     image: backend_app
@@ -34,16 +67,12 @@ services:
     environment:
       DATABASE_HOST: db
     command: |
-      sh -c '
-        bun db:push &&
-        bun test:db:push &&
-        bun run --hot src/server.ts
-      '
+      bun run --hot src/server.ts
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
     depends_on:
-      - db
-      - test_db
+      db_migrate:
+        condition: service_completed_successfully
     volumes:
       - .:/app
       - node_modules:/app/node_modules

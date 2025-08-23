@@ -19,7 +19,7 @@
             "example": "test"
           },
           "created_at": { "type": "string", "format": "date" },
-          "updated_at": { "type": "string" }
+          "updated_at": { "type": "string", "format": "date" }
         },
         "required": ["id", "content", "created_at", "updated_at"]
       },
