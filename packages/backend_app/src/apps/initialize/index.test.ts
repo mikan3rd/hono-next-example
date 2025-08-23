@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "bun:test";
 import { app } from "../../apps";
+import { env } from "../../env";
 
 describe("initializeApp", () => {
   describe("/", () => {
@@ -11,6 +12,8 @@ describe("initializeApp", () => {
       });
 
       it("should return 200 Response", async () => {
+        expect(env.ENABLE_DB_INITIALIZE).toBe(true);
+
         const res = await subject();
         expect(res.status).toBe(200);
       });
@@ -22,6 +25,8 @@ describe("initializeApp", () => {
       });
 
       it("should return 403 Response", async () => {
+        expect(env.ENABLE_DB_INITIALIZE).toBe(false);
+
         const res = await subject();
         expect(res.status).toBe(403);
       });
