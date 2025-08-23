@@ -11,7 +11,15 @@ export const env = createEnv({
     POSTGRES_PASSWORD: z.string(),
     POSTGRES_DB: z.string(),
     POSTGRES_PORT: z.coerce.number().min(1),
+    ENABLE_DB_INITIALIZE: z
+      .enum(["true", "false"])
+      .default("false")
+      .transform((val) => val === "true"),
   },
 });
 
 export const DATABASE_URL = `postgresql://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@${env.DATABASE_HOST}:${env.POSTGRES_PORT}/${env.POSTGRES_DB}`;
+
+if (env.ENABLE_DB_INITIALIZE) {
+  console.warn("ENABLE_DB_INITIALIZE is true");
+}

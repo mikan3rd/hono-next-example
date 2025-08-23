@@ -2,7 +2,7 @@ import { beforeEach } from "bun:test";
 import { sql } from "drizzle-orm";
 import { db } from "../db";
 
-const truncateAllTables = async () => {
+export const truncateAllTables = async () => {
   const tables = await db.execute(
     sql`
       SELECT table_name
