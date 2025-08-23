@@ -23,5 +23,6 @@ test("post page", async ({ page }, { project }) => {
     await page.getByRole("button", { name: "Create Post" }).click();
     await expect(textArea).toHaveValue("");
     await expect(page.getByText(postContent)).toBeVisible();
+    await expect(page).toHaveScreenshot();
   });
 });
