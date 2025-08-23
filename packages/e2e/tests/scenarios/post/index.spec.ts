@@ -8,16 +8,15 @@ test.beforeEach(async () => {
   expect(res.status).toBe(200);
 });
 
-test.describe("post page", () => {
-  test.skip("has title and message", async ({ page }) => {
+test("post page", async ({ page }, { project }) => {
+  await test.step("visit post page", async () => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
     await expect(page.getByText("No posts yet")).toBeVisible();
     await expect(page).toHaveScreenshot();
   });
 
-  test("post content is displayed", async ({ page }, { project }) => {
-    await page.goto("/post");
+  await test.step("create post", async () => {
     const postContent = `This is test content for ${project.name}`;
     const textArea = page.getByPlaceholder("Write your post content here...");
     await textArea.fill(postContent);
