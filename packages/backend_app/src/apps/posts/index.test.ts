@@ -124,7 +124,13 @@ describe("postsApp", () => {
 
           const posts = await db.select().from(postsTable);
           expect(posts).toHaveLength(1);
-          expect(posts[0]?.content).toBe(content);
+
+          const post = posts[0];
+          if (!post) throw new Error("post is not found");
+          expect(post.content).toBe(content);
+          expect(post.created_at.getTime()).toBeLessThan(
+            post.updated_at.getTime(),
+          );
         });
       });
     });
