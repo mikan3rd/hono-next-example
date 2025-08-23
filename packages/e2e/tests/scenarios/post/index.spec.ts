@@ -1,7 +1,14 @@
 import { expect, test } from "@playwright/test";
+import { env } from "../../env";
+
+test.beforeEach(async () => {
+  const res = await fetch(`${env.BACKEND_APP_SERVER_URL}/initialize`, {
+    method: "POST",
+  });
+  expect(res.status).toBe(200);
+});
 
 test.describe("post page", () => {
-  // TODO: データを初期化した状態でテストする
   test.skip("has title and message", async ({ page }) => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
