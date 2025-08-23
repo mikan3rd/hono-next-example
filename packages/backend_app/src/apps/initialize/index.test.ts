@@ -1,10 +1,14 @@
-import { beforeEach, describe, expect, it, mock } from "bun:test";
+import { afterEach, beforeEach, describe, expect, it, mock } from "bun:test";
 import { app } from "../../apps";
 import { env } from "../../env";
 
 describe("initializeApp", () => {
   describe("/", () => {
     const subject = () => app.request("/initialize", { method: "POST" });
+
+    afterEach(() => {
+      mock.restore();
+    });
 
     describe("when ENABLE_DB_INITIALIZE is true", () => {
       beforeEach(() => {
