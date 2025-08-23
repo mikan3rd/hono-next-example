@@ -1,14 +1,11 @@
-import { sql } from "drizzle-orm";
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 const timestamps = {
   created_at: timestamp().defaultNow().notNull(),
-  updated_at: timestamp("updated_at", {
-    mode: "string",
-  })
+  updated_at: timestamp()
     .defaultNow()
     .notNull()
-    .$onUpdate(() => sql`CURRENT_TIMESTAMP`),
+    .$onUpdate(() => new Date()),
 };
 
 export const postsTable = pgTable("posts", {

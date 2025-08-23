@@ -67,6 +67,7 @@ describe("postsApp", () => {
 
         const post = posts[0];
         expect(post?.content).toBe(content);
+        expect(post?.created_at).toEqual(post?.updated_at);
       });
     });
 
