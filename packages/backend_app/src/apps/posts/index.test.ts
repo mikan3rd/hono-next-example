@@ -66,8 +66,9 @@ describe("postsApp", () => {
         expect(posts).toHaveLength(1);
 
         const post = posts[0];
-        expect(post?.content).toBe(content);
-        expect(post?.created_at).toEqual(post?.updated_at);
+        if (!post) throw new Error("post is not found");
+        expect(post.content).toBe(content);
+        expect(post.created_at).toEqual(post.updated_at);
       });
     });
 
