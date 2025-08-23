@@ -71,7 +71,8 @@ services:
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
     depends_on:
-      - db_migrate
+      db_migrate:
+        condition: service_completed_successfully
     volumes:
       - .:/app
       - node_modules:/app/node_modules
