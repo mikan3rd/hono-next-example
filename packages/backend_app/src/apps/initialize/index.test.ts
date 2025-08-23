@@ -4,7 +4,7 @@ import { env } from "../../env";
 
 describe("initializeApp", () => {
   describe("/", () => {
-    const subject = () => app.request("/initialize");
+    const subject = () => app.request("/initialize", { method: "POST" });
 
     describe("when ENABLE_DB_INITIALIZE is true", () => {
       beforeEach(() => {
