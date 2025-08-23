@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "bun:test";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
 import { app } from "../../apps";
 import { env } from "../../env";
 
@@ -8,7 +8,11 @@ describe("initializeApp", () => {
 
     describe("when ENABLE_DB_INITIALIZE is true", () => {
       beforeEach(() => {
-        process.env.ENABLE_DB_INITIALIZE = "true";
+        mock.module("../../env", () => ({
+          env: {
+            ENABLE_DB_INITIALIZE: true,
+          },
+        }));
       });
 
       it("should return 200 Response", async () => {
@@ -21,7 +25,11 @@ describe("initializeApp", () => {
 
     describe("when ENABLE_DB_INITIALIZE is false", () => {
       beforeEach(() => {
-        process.env.ENABLE_DB_INITIALIZE = "false";
+        mock.module("../../env", () => ({
+          env: {
+            ENABLE_DB_INITIALIZE: false,
+          },
+        }));
       });
 
       it("should return 403 Response", async () => {
