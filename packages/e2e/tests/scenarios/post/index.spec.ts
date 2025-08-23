@@ -12,13 +12,10 @@ test.describe("post page", () => {
   test("post content is displayed", async ({ page }, { project }) => {
     await page.goto("/post");
     const postContent = `This is test content for ${project.name}`;
-    await page
-      .getByPlaceholder("Write your post content here...")
-      .fill(postContent);
+    const textArea = page.getByPlaceholder("Write your post content here...");
+    await textArea.fill(postContent);
     await page.getByRole("button", { name: "Create Post" }).click();
-    await expect(
-      page.getByRole("button", { name: "Create Post" }),
-    ).toBeDisabled();
+    await expect(textArea).toHaveValue("");
     await expect(page.getByText(postContent)).toBeVisible();
   });
 });
