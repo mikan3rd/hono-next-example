@@ -9,9 +9,9 @@ test.describe("post page", () => {
     await expect(page).toHaveScreenshot();
   });
 
-  test("post content is displayed", async ({ page }) => {
+  test("post content is displayed", async ({ page }, { project }) => {
     await page.goto("/post");
-    const postContent = "This is test content";
+    const postContent = `This is test content for ${project.name}`;
     await page
       .getByPlaceholder("Write your post content here...")
       .fill(postContent);
