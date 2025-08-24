@@ -17,6 +17,18 @@ const postSelectSchema = createSelectSchema(postsTable, {
       description: "The content of the post",
       example: "test",
     }),
+  created_at: (schema) =>
+    schema.openapi({
+      description: "The date and time the post was created",
+      example: "2025-01-01T00:00:00Z",
+      format: "date-time",
+    }),
+  updated_at: (schema) =>
+    schema.openapi({
+      description: "The date and time the post was updated",
+      example: "2025-01-01T00:00:00Z",
+      format: "date-time",
+    }),
 }).openapi("post");
 
 export const getPostsResponseSchema = z.object({
