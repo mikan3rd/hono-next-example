@@ -18,8 +18,18 @@
             "description": "The content of the post",
             "example": "test"
           },
-          "created_at": { "type": "string", "format": "date" },
-          "updated_at": { "type": "string", "format": "date" }
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the post was created",
+            "example": "2025-01-01T00:00:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the post was updated",
+            "example": "2025-01-01T00:00:00Z"
+          }
         },
         "required": ["id", "content", "created_at", "updated_at"]
       },
