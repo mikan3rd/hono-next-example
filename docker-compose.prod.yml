@@ -79,8 +79,8 @@ services:
       dockerfile: packages/frontend_app/Dockerfile
       target: runner
       args:
-        BACKEND_APP_SERVER_URL: http://backend_app:4300
-        NEXT_PUBLIC_BACKEND_APP_URL: http://backend_app:4300
+        BACKEND_APP_SERVER_URL: ${BACKEND_APP_SERVER_URL}
+        NEXT_PUBLIC_BACKEND_APP_URL: ${NEXT_PUBLIC_BACKEND_APP_URL}
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
     depends_on:
@@ -106,7 +106,7 @@ services:
       context: .
       dockerfile: packages/e2e/Dockerfile
     environment:
-      BACKEND_APP_SERVER_URL: http://backend_app:4300
+      BACKEND_APP_SERVER_URL: ${BACKEND_APP_SERVER_URL}
       FRONTEND_APP_SERVER_URL: ${FRONTEND_APP_SERVER_URL}
       FRONTEND_APP_PORT: ${FRONTEND_APP_PORT}
     command: |
