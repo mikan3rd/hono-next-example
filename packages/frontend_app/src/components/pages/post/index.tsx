@@ -1,5 +1,6 @@
 "use client";
 
+import { Temporal } from "@js-temporal/polyfill";
 import {
   useMutation,
   useQueryClient,
@@ -36,7 +37,7 @@ export const Index = () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString("en-US", {
+    return Temporal.Instant.from(dateString).toLocaleString(undefined, {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
