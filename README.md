@@ -6,6 +6,8 @@
   - [TypeScript](https://www.typescriptlang.org/)
   - [Bun](https://bun.sh/)
   - [Biome](https://biomejs.dev/)
+  - [Zod](https://zod.dev/)
+  - [JS-Temporal](https://github.com/tc39/proposal-temporal)
 - Backend
   - [Hono](https://hono.dev/)
   - [Swagger/OpenAPI](https://swagger.io/)
@@ -14,6 +16,9 @@
   - [Next.js](https://nextjs.org/)
   - [Tailwind CSS](https://tailwindcss.com)
   - [Shadcn UI](https://ui.shadcn.com)
+  - [Tanstack Query](https://tanstack.com/query/latest)
+- E2E
+  - [Playwright](https://playwright.dev/)
 
 ## Setup
 
