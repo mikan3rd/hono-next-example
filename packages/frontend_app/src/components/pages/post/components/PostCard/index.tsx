@@ -35,6 +35,7 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
   const deletePostMutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
+      setIsEditing(false);
       invalidatePostsQuery();
     },
     onError: (error) => {
@@ -59,7 +60,6 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
       id: post.id.toString(),
       content: trimmedContent,
     });
-    setIsEditing(false);
   };
 
   const handleDelete = () => {
