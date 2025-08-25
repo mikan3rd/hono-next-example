@@ -22,6 +22,14 @@ export const createPost = async (content: string) => {
   return res.json();
 };
 
+export const updatePost = async (args: { id: string; content: string }) => {
+  const res = await baseClient.posts[":id"].$put({
+    param: { id: args.id.toString() },
+    json: { content: args.content },
+  });
+  return res.json();
+};
+
 export const deletePost = async (id: number) => {
   const res = await baseClient.posts[":id"].$delete({
     param: { id: id.toString() },
