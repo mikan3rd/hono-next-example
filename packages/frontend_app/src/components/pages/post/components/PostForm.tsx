@@ -1,21 +1,25 @@
 "use client";
 
-import { useState } from "react";
-
-interface PostFormProps {
+type PostFormProps = {
+  content: string;
+  onContentChange: (content: string) => void;
   onSubmit: (content: string) => void;
+  onClear: () => void;
   isPending: boolean;
-}
+};
 
-export const PostForm = ({ onSubmit, isPending }: PostFormProps) => {
-  const [content, setContent] = useState("");
-
+export const PostForm = ({
+  content,
+  onContentChange,
+  onSubmit,
+  onClear,
+  isPending,
+}: PostFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedContent = content.trim();
     if (!trimmedContent) return;
     onSubmit(trimmedContent);
-    setContent("");
   };
 
   return (
@@ -27,7 +31,7 @@ export const PostForm = ({ onSubmit, isPending }: PostFormProps) => {
         <div className="mb-4">
           <textarea
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => onContentChange(e.target.value)}
             placeholder="Write your post content here..."
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900"
             rows={4}
@@ -44,7 +48,7 @@ export const PostForm = ({ onSubmit, isPending }: PostFormProps) => {
           </button>
           <button
             type="button"
-            onClick={() => setContent("")}
+            onClick={onClear}
             className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md font-medium transition-colors duration-200"
           >
             Clear

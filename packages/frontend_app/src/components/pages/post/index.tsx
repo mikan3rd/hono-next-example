@@ -5,13 +5,14 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { formatDate } from "../../../app/utils/dateUtils";
+import { useState } from "react";
 import { createPost, deletePost, getPosts, queryKey } from "./client";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
 export const Index = () => {
+  const [content, setContent] = useState("");
   const queryClient = useQueryClient();
   const { data } = useSuspenseQuery({
     queryKey,
@@ -22,6 +23,7 @@ export const Index = () => {
     mutationFn: createPost,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
+      handleClearForm();
     },
     onError: (error) => {
       console.error("Failed to create post:", error);
@@ -38,14 +40,16 @@ export const Index = () => {
     },
   });
 
-  const handleCreatePost = (content: string) => {
-    createPostMutation.mutate(content);
+  const handleCreatePost = (postContent: string) => {
+    createPostMutation.mutate(postContent);
   };
 
   const handleDeletePost = (id: number) => {
-    if (window.confirm("Are you sure you want to delete this post?")) {
-      deletePostMutation.mutate(id);
-    }
+    deletePostMutation.mutate(id);
+  };
+
+  const handleClearForm = () => {
+    setContent("");
   };
 
   return (
@@ -58,7 +62,10 @@ export const Index = () => {
           </div>
 
           <PostForm
+            content={content}
+            onContentChange={setContent}
             onSubmit={handleCreatePost}
+            onClear={handleClearForm}
             isPending={createPostMutation.isPending}
           />
         </div>
@@ -73,7 +80,6 @@ export const Index = () => {
                 post={post}
                 onDelete={handleDeletePost}
                 isDeleting={deletePostMutation.isPending}
-                formatDate={formatDate}
               />
             ))}
           </div>

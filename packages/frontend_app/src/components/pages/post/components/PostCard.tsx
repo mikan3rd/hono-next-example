@@ -1,25 +1,21 @@
 "use client";
 
-interface Post {
+import { formatDate } from "../utils/dateUtils";
+
+type Post = {
   id: number;
   content: string;
   created_at: string;
   updated_at: string;
-}
+};
 
-interface PostCardProps {
+type PostCardProps = {
   post: Post;
   onDelete: (id: number) => void;
   isDeleting: boolean;
-  formatDate: (dateString: string) => string;
-}
+};
 
-export const PostCard = ({
-  post,
-  onDelete,
-  isDeleting,
-  formatDate,
-}: PostCardProps) => {
+export const PostCard = ({ post, onDelete, isDeleting }: PostCardProps) => {
   const isUpdated = post.updated_at !== post.created_at;
 
   return (
