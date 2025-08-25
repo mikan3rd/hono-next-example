@@ -1,19 +1,12 @@
 "use client";
 
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import { useState } from "react";
-import { createPost, getPosts, queryKey } from "./client";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { getPosts, queryKey } from "./client";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
 export const Index = () => {
-  const [content, setContent] = useState("");
-
   const queryClient = useQueryClient();
   const { data } = useSuspenseQuery({
     queryKey,
@@ -22,25 +15,6 @@ export const Index = () => {
 
   const invalidatePostsQuery = () => {
     queryClient.invalidateQueries({ queryKey });
-  };
-
-  const createPostMutation = useMutation({
-    mutationFn: createPost,
-    onSuccess: () => {
-      invalidatePostsQuery();
-      handleClearForm();
-    },
-    onError: (error) => {
-      console.error("Failed to create post:", error);
-    },
-  });
-
-  const handleCreatePost = (postContent: string) => {
-    createPostMutation.mutate(postContent);
-  };
-
-  const handleClearForm = () => {
-    setContent("");
   };
 
   return (
@@ -52,13 +26,7 @@ export const Index = () => {
             <p className="text-gray-600">View the latest posts</p>
           </div>
 
-          <PostForm
-            content={content}
-            onContentChange={setContent}
-            onSubmit={handleCreatePost}
-            onClear={handleClearForm}
-            isPending={createPostMutation.isPending}
-          />
+          <PostForm invalidatePostsQuery={invalidatePostsQuery} />
         </div>
 
         {data.posts.length === 0 ? (
