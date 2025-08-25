@@ -15,7 +15,7 @@ test.beforeEach(async () => {
 test("post page", async ({ page }) => {
   const screenshotOptions: PageAssertionsToHaveScreenshotOptions = {
     fullPage: true,
-    mask: [page.getByText(/Created:/)],
+    mask: [page.getByText(/Created:/), page.getByText(/Updated:/)],
   };
 
   await test.step("visit post page", async () => {
@@ -25,10 +25,10 @@ test("post page", async ({ page }) => {
     await expect.soft(page).toHaveScreenshot(screenshotOptions);
   });
 
+  const textArea = page.getByPlaceholder("Write your post content here...");
   const firstPostContent = `This is first post content`;
   await test.step("create posts", async () => {
     await test.step("create first post", async () => {
-      const textArea = page.getByPlaceholder("Write your post content here...");
       await textArea.fill(firstPostContent);
       await page.getByRole("button", { name: "Create Post" }).click();
       await expect(textArea).toHaveValue("");
@@ -38,13 +38,21 @@ test("post page", async ({ page }) => {
 
     await test.step("create second post", async () => {
       const secondPostContent = `This is second post content`;
-      const textArea = page.getByPlaceholder("Write your post content here...");
       await textArea.fill(secondPostContent);
       await page.getByRole("button", { name: "Create Post" }).click();
       await expect(textArea).toHaveValue("");
       await expect(page.getByText(secondPostContent)).toBeVisible();
       await expect.soft(page).toHaveScreenshot(screenshotOptions);
     });
+  });
+
+  await test.step("update first post", async () => {
+    const updatedPostContent = `This is updated post content`;
+    await page.getByRole("button", { name: "Edit" }).nth(1).click();
+    await page.getByRole("textbox").nth(1).fill(updatedPostContent);
+    await page.getByRole("button", { name: "Save" }).click();
+    await expect(page.getByText(updatedPostContent)).toBeVisible();
+    await expect.soft(page).toHaveScreenshot(screenshotOptions);
   });
 
   await test.step("delete first post", async () => {
