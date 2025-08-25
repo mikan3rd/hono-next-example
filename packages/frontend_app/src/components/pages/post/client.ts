@@ -21,3 +21,14 @@ export const createPost = async (content: string) => {
   }
   return res.json();
 };
+
+export const deletePost = async (id: number) => {
+  const res = await baseClient.posts[":id"].$delete({
+    param: { id: id.toString() },
+  });
+  if (!res.ok) {
+    const body = await res.json();
+    throw new Error(body.message);
+  }
+  return res.json();
+};
