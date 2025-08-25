@@ -8,7 +8,7 @@ test.beforeEach(async () => {
   expect(res.status).toBe(200);
 });
 
-test("post page", async ({ page }, { project }) => {
+test("post page", async ({ page }) => {
   await test.step("visit post page", async () => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
@@ -17,13 +17,12 @@ test("post page", async ({ page }, { project }) => {
   });
 
   await test.step("create post", async () => {
-    const postContent = `This is test content for ${project.name}`;
+    const postContent = `This is test content`;
     const textArea = page.getByPlaceholder("Write your post content here...");
     await textArea.fill(postContent);
     await page.getByRole("button", { name: "Create Post" }).click();
     await expect(textArea).toHaveValue("");
     await expect(page.getByText(postContent)).toBeVisible();
-    // created_at はマスクする
     await expect(page).toHaveScreenshot({
       mask: [page.getByText(/Created:/)],
     });
