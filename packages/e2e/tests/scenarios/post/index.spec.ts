@@ -9,6 +9,8 @@ test.beforeEach(async () => {
 });
 
 test("post page", async ({ page }) => {
+  const createdLocator = page.getByText(/Created:/);
+
   await test.step("visit post page", async () => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
@@ -16,15 +18,37 @@ test("post page", async ({ page }) => {
     await expect.soft(page).toHaveScreenshot();
   });
 
-  await test.step("create post", async () => {
-    const postContent = `This is test content`;
-    const textArea = page.getByPlaceholder("Write your post content here...");
-    await textArea.fill(postContent);
-    await page.getByRole("button", { name: "Create Post" }).click();
-    await expect(textArea).toHaveValue("");
-    await expect(page.getByText(postContent)).toBeVisible();
+  const firstPostContent = `This is first post content`;
+  await test.step("create posts", async () => {
+    await test.step("create first post", async () => {
+      const textArea = page.getByPlaceholder("Write your post content here...");
+      await textArea.fill(firstPostContent);
+      await page.getByRole("button", { name: "Create Post" }).click();
+      await expect(textArea).toHaveValue("");
+      await expect(page.getByText(firstPostContent)).toBeVisible();
+      await expect.soft(page).toHaveScreenshot({
+        mask: [createdLocator],
+      });
+    });
+
+    await test.step("create second post", async () => {
+      const secondPostContent = `This is second post content`;
+      const textArea = page.getByPlaceholder("Write your post content here...");
+      await textArea.fill(secondPostContent);
+      await page.getByRole("button", { name: "Create Post" }).click();
+      await expect(textArea).toHaveValue("");
+      await expect(page.getByText(secondPostContent)).toBeVisible();
+      await expect.soft(page).toHaveScreenshot({
+        mask: [createdLocator],
+      });
+    });
+  });
+
+  await test.step("delete first post", async () => {
+    await page.getByRole("button", { name: "Delete" }).nth(1).click();
+    await expect(page.getByText(firstPostContent)).not.toBeVisible();
     await expect.soft(page).toHaveScreenshot({
-      mask: [page.getByText(/Created:/)],
+      mask: [createdLocator],
     });
   });
 });
