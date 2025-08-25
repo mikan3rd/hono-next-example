@@ -99,7 +99,7 @@ services:
     depends_on:
       - frontend_app
     volumes:
-      - ./packages/e2e/playwright-report:/app/packages/e2e/playwright-report
+      - ./packages/e2e:/app/packages/e2e
 
   e2e_screenshot:
     build:
