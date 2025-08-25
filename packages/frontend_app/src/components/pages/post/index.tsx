@@ -7,7 +7,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useState } from "react";
-import { createPost, getPosts, queryKey } from "./client";
+import { createPost, deletePost, getPosts, queryKey } from "./client";
 
 export const Index = () => {
   const [content, setContent] = useState("");
@@ -26,6 +26,16 @@ export const Index = () => {
     },
     onError: (error) => {
       console.error("Failed to create post:", error);
+    },
+  });
+
+  const deletePostMutation = useMutation({
+    mutationFn: deletePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+    },
+    onError: (error) => {
+      console.error("Failed to delete post:", error);
     },
   });
 
@@ -110,8 +120,20 @@ export const Index = () => {
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                       ID: {post.id}
                     </span>
-                    <div className="text-xs text-gray-400">
-                      {post.updated_at !== post.created_at ? "Updated" : "New"}
+                    <div className="flex items-center gap-2">
+                      <div className="text-xs text-gray-400">
+                        {post.updated_at !== post.created_at
+                          ? "Updated"
+                          : "New"}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => deletePostMutation.mutate(post.id)}
+                        disabled={deletePostMutation.isPending}
+                        className="text-red-500 hover:text-red-700 disabled:text-red-300 border border-red-300 hover:border-red-500 disabled:border-red-200 transition-colors duration-200 px-2 py-1 text-xs font-medium rounded"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
 

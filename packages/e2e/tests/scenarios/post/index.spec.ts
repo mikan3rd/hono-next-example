@@ -1,4 +1,8 @@
-import { expect, test } from "@playwright/test";
+import {
+  expect,
+  type PageAssertionsToHaveScreenshotOptions,
+  test,
+} from "@playwright/test";
 import { env } from "../../env";
 
 test.beforeEach(async () => {
@@ -8,24 +12,44 @@ test.beforeEach(async () => {
   expect(res.status).toBe(200);
 });
 
-test("post page", async ({ page }, { project }) => {
+test("post page", async ({ page }) => {
+  const screenshotOptions: PageAssertionsToHaveScreenshotOptions = {
+    fullPage: true,
+    mask: [page.getByText(/Created:/)],
+  };
+
   await test.step("visit post page", async () => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
     await expect(page.getByText("No posts yet")).toBeVisible();
-    await expect(page).toHaveScreenshot();
+    await expect.soft(page).toHaveScreenshot(screenshotOptions);
   });
 
-  await test.step("create post", async () => {
-    const postContent = `This is test content for ${project.name}`;
-    const textArea = page.getByPlaceholder("Write your post content here...");
-    await textArea.fill(postContent);
-    await page.getByRole("button", { name: "Create Post" }).click();
-    await expect(textArea).toHaveValue("");
-    await expect(page.getByText(postContent)).toBeVisible();
-    // created_at はマスクする
-    await expect(page).toHaveScreenshot({
-      mask: [page.getByText(/Created:/)],
+  const firstPostContent = `This is first post content`;
+  await test.step("create posts", async () => {
+    await test.step("create first post", async () => {
+      const textArea = page.getByPlaceholder("Write your post content here...");
+      await textArea.fill(firstPostContent);
+      await page.getByRole("button", { name: "Create Post" }).click();
+      await expect(textArea).toHaveValue("");
+      await expect(page.getByText(firstPostContent)).toBeVisible();
+      await expect.soft(page).toHaveScreenshot(screenshotOptions);
     });
+
+    await test.step("create second post", async () => {
+      const secondPostContent = `This is second post content`;
+      const textArea = page.getByPlaceholder("Write your post content here...");
+      await textArea.fill(secondPostContent);
+      await page.getByRole("button", { name: "Create Post" }).click();
+      await expect(textArea).toHaveValue("");
+      await expect(page.getByText(secondPostContent)).toBeVisible();
+      await expect.soft(page).toHaveScreenshot(screenshotOptions);
+    });
+  });
+
+  await test.step("delete first post", async () => {
+    await page.getByRole("button", { name: "Delete" }).nth(1).click();
+    await expect(page.getByText(firstPostContent)).not.toBeVisible();
+    await expect.soft(page).toHaveScreenshot(screenshotOptions);
   });
 });
