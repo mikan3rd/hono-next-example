@@ -1,55 +1,20 @@
 "use client";
 
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import { useState } from "react";
-import { createPost, deletePost, getPosts, queryKey } from "./client";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { getPosts, queryKey } from "./client";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
 export const Index = () => {
-  const [content, setContent] = useState("");
   const queryClient = useQueryClient();
   const { data } = useSuspenseQuery({
     queryKey,
     queryFn: getPosts,
   });
 
-  const createPostMutation = useMutation({
-    mutationFn: createPost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
-      handleClearForm();
-    },
-    onError: (error) => {
-      console.error("Failed to create post:", error);
-    },
-  });
-
-  const deletePostMutation = useMutation({
-    mutationFn: deletePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
-    },
-    onError: (error) => {
-      console.error("Failed to delete post:", error);
-    },
-  });
-
-  const handleCreatePost = (postContent: string) => {
-    createPostMutation.mutate(postContent);
-  };
-
-  const handleDeletePost = (id: number) => {
-    deletePostMutation.mutate(id);
-  };
-
-  const handleClearForm = () => {
-    setContent("");
+  const invalidatePostsQuery = () => {
+    queryClient.invalidateQueries({ queryKey });
   };
 
   return (
@@ -61,13 +26,7 @@ export const Index = () => {
             <p className="text-gray-600">View the latest posts</p>
           </div>
 
-          <PostForm
-            content={content}
-            onContentChange={setContent}
-            onSubmit={handleCreatePost}
-            onClear={handleClearForm}
-            isPending={createPostMutation.isPending}
-          />
+          <PostForm invalidatePostsQuery={invalidatePostsQuery} />
         </div>
 
         {data.posts.length === 0 ? (
@@ -78,8 +37,7 @@ export const Index = () => {
               <PostCard
                 key={post.id}
                 post={post}
-                onDelete={handleDeletePost}
-                isDeleting={deletePostMutation.isPending}
+                invalidatePostsQuery={invalidatePostsQuery}
               />
             ))}
           </div>
