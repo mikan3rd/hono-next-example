@@ -6,13 +6,20 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useState } from "react";
-import { createPost, deletePost, getPosts, queryKey } from "./client";
+import {
+  createPost,
+  deletePost,
+  getPosts,
+  queryKey,
+  updatePost,
+} from "./client";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
 export const Index = () => {
   const [content, setContent] = useState("");
+
   const queryClient = useQueryClient();
   const { data } = useSuspenseQuery({
     queryKey,
@@ -30,6 +37,16 @@ export const Index = () => {
     },
   });
 
+  const updatePostMutation = useMutation({
+    mutationFn: updatePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey });
+    },
+    onError: (error) => {
+      console.error("Failed to update post:", error);
+    },
+  });
+
   const deletePostMutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
@@ -42,6 +59,10 @@ export const Index = () => {
 
   const handleCreatePost = (postContent: string) => {
     createPostMutation.mutate(postContent);
+  };
+
+  const handleUpdatePost = (id: number, postContent: string) => {
+    updatePostMutation.mutate({ id: id.toString(), content: postContent });
   };
 
   const handleDeletePost = (id: number) => {
@@ -79,7 +100,9 @@ export const Index = () => {
                 key={post.id}
                 post={post}
                 onDelete={handleDeletePost}
+                onUpdate={handleUpdatePost}
                 isDeleting={deletePostMutation.isPending}
+                isUpdating={updatePostMutation.isPending}
               />
             ))}
           </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { formatDate } from "../../../../utils/dateUtils";
 
 type Post = {
@@ -12,11 +13,42 @@ type Post = {
 type PostCardProps = {
   post: Post;
   onDelete: (id: number) => void;
+  onUpdate: (id: number, content: string) => void;
   isDeleting: boolean;
+  isUpdating: boolean;
 };
 
-export const PostCard = ({ post, onDelete, isDeleting }: PostCardProps) => {
+export const PostCard = ({
+  post,
+  onDelete,
+  onUpdate,
+  isDeleting,
+  isUpdating,
+}: PostCardProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(post.content);
   const isUpdated = post.updated_at !== post.created_at;
+
+  const handleEdit = () => {
+    setIsEditing(true);
+    setEditContent(post.content);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditContent(post.content);
+  };
+
+  const handleSave = () => {
+    const trimmedContent = editContent.trim();
+    if (!trimmedContent) return;
+    onUpdate(post.id, trimmedContent);
+    setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    onDelete(post.id);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 overflow-hidden">
@@ -29,21 +61,62 @@ export const PostCard = ({ post, onDelete, isDeleting }: PostCardProps) => {
             <div className="text-xs text-gray-400">
               {isUpdated ? "Updated" : "New"}
             </div>
-            <button
-              type="button"
-              onClick={() => onDelete(post.id)}
-              disabled={isDeleting}
-              className="text-red-500 hover:text-red-700 disabled:text-red-300 border border-red-300 hover:border-red-500 disabled:border-red-200 transition-colors duration-200 px-2 py-1 text-xs font-medium rounded"
-            >
-              Delete
-            </button>
+            {isEditing ? (
+              <>
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  disabled={isUpdating || !editContent.trim()}
+                  className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
+                >
+                  {isUpdating ? "Saving..." : "Save"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  disabled={isUpdating}
+                  className="bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700 px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={handleEdit}
+                  disabled={isDeleting || isUpdating}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={isDeleting || isUpdating}
+                  className="text-red-500 hover:text-red-700 disabled:text-red-300 border border-red-300 hover:border-red-500 disabled:border-red-200 transition-colors duration-200 px-2 py-1 text-xs font-medium rounded"
+                >
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         </div>
 
         <div className="mb-4">
-          <p className="text-gray-900 text-sm leading-relaxed line-clamp-4 whitespace-pre-wrap">
-            {post.content}
-          </p>
+          {isEditing ? (
+            <textarea
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 text-sm"
+              rows={4}
+              disabled={isUpdating}
+            />
+          ) : (
+            <p className="text-gray-900 text-sm leading-relaxed line-clamp-4 whitespace-pre-wrap">
+              {post.content}
+            </p>
+          )}
         </div>
 
         <div className="border-t border-gray-100 pt-4">
