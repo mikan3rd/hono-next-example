@@ -29,6 +29,7 @@ test("post page", async ({ page }) => {
     "Write your post content here...",
   );
   const firstPostContent = `This is first post content`;
+  const secondPostContent = `This is second post content`;
   await test.step("create posts", async () => {
     await test.step("create first post", async () => {
       await createTextArea.fill(firstPostContent);
@@ -39,7 +40,6 @@ test("post page", async ({ page }) => {
     });
 
     await test.step("create second post", async () => {
-      const secondPostContent = `This is second post content`;
       await createTextArea.fill(secondPostContent);
       await page.getByRole("button", { name: "Create Post" }).click();
       await expect(createTextArea).toHaveValue("");
@@ -80,9 +80,9 @@ test("post page", async ({ page }) => {
     });
   });
 
-  await test.step("delete first post", async () => {
-    await page.getByRole("button", { name: "Delete" }).nth(1).click();
-    await expect(page.getByText(updatedPostContent)).not.toBeVisible();
+  await test.step("delete second post", async () => {
+    await page.getByRole("button", { name: "Delete" }).first().click();
+    await expect(page.getByText(secondPostContent)).not.toBeVisible();
     await expect.soft(page).toHaveScreenshot(screenshotOptions);
   });
 });
