@@ -1,7 +1,9 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { formatDate } from "../../../../utils/dateUtils";
+import { formatDate } from "../../../../../utils/dateUtils";
+import { deletePost, updatePost } from "./client";
 
 type Post = {
   id: number;
@@ -12,22 +14,33 @@ type Post = {
 
 type PostCardProps = {
   post: Post;
-  onDelete: (id: number) => void;
-  onUpdate: (id: number, content: string) => void;
-  isDeleting: boolean;
-  isUpdating: boolean;
+  invalidatePostsQuery: () => void;
 };
 
-export const PostCard = ({
-  post,
-  onDelete,
-  onUpdate,
-  isDeleting,
-  isUpdating,
-}: PostCardProps) => {
+export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(post.content);
   const isUpdated = post.updated_at !== post.created_at;
+
+  const updatePostMutation = useMutation({
+    mutationFn: updatePost,
+    onSuccess: () => {
+      invalidatePostsQuery();
+    },
+    onError: (error) => {
+      console.error("Failed to update post:", error);
+    },
+  });
+
+  const deletePostMutation = useMutation({
+    mutationFn: deletePost,
+    onSuccess: () => {
+      invalidatePostsQuery();
+    },
+    onError: (error) => {
+      console.error("Failed to delete post:", error);
+    },
+  });
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -42,12 +55,15 @@ export const PostCard = ({
   const handleSave = () => {
     const trimmedContent = editContent.trim();
     if (!trimmedContent) return;
-    onUpdate(post.id, trimmedContent);
+    updatePostMutation.mutate({
+      id: post.id.toString(),
+      content: trimmedContent,
+    });
     setIsEditing(false);
   };
 
   const handleDelete = () => {
-    onDelete(post.id);
+    deletePostMutation.mutate(post.id);
   };
 
   return (
@@ -66,15 +82,15 @@ export const PostCard = ({
                 <button
                   type="button"
                   onClick={handleSave}
-                  disabled={isUpdating || !editContent.trim()}
+                  disabled={updatePostMutation.isPending || !editContent.trim()}
                   className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
                 >
-                  {isUpdating ? "Saving..." : "Save"}
+                  {updatePostMutation.isPending ? "Saving..." : "Save"}
                 </button>
                 <button
                   type="button"
                   onClick={handleCancel}
-                  disabled={isUpdating}
+                  disabled={updatePostMutation.isPending}
                   className="bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700 px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
                 >
                   Cancel
@@ -85,7 +101,7 @@ export const PostCard = ({
                 <button
                   type="button"
                   onClick={handleEdit}
-                  disabled={isDeleting || isUpdating}
+                  disabled={updatePostMutation.isPending}
                   className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
                 >
                   Edit
@@ -93,7 +109,7 @@ export const PostCard = ({
                 <button
                   type="button"
                   onClick={handleDelete}
-                  disabled={isDeleting || isUpdating}
+                  disabled={deletePostMutation.isPending}
                   className="text-red-500 hover:text-red-700 disabled:text-red-300 border border-red-300 hover:border-red-500 disabled:border-red-200 transition-colors duration-200 px-2 py-1 text-xs font-medium rounded"
                 >
                   Delete
@@ -110,7 +126,7 @@ export const PostCard = ({
               onChange={(e) => setEditContent(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 text-sm"
               rows={4}
-              disabled={isUpdating}
+              disabled={updatePostMutation.isPending}
             />
           ) : (
             <p className="text-gray-900 text-sm leading-relaxed line-clamp-4 whitespace-pre-wrap">

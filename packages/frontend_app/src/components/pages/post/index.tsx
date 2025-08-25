@@ -6,13 +6,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useState } from "react";
-import {
-  createPost,
-  deletePost,
-  getPosts,
-  queryKey,
-  updatePost,
-} from "./client";
+import { createPost, getPosts, queryKey } from "./client";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
@@ -26,10 +20,14 @@ export const Index = () => {
     queryFn: getPosts,
   });
 
+  const invalidatePostsQuery = () => {
+    queryClient.invalidateQueries({ queryKey });
+  };
+
   const createPostMutation = useMutation({
     mutationFn: createPost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
+      invalidatePostsQuery();
       handleClearForm();
     },
     onError: (error) => {
@@ -37,36 +35,8 @@ export const Index = () => {
     },
   });
 
-  const updatePostMutation = useMutation({
-    mutationFn: updatePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
-    },
-    onError: (error) => {
-      console.error("Failed to update post:", error);
-    },
-  });
-
-  const deletePostMutation = useMutation({
-    mutationFn: deletePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
-    },
-    onError: (error) => {
-      console.error("Failed to delete post:", error);
-    },
-  });
-
   const handleCreatePost = (postContent: string) => {
     createPostMutation.mutate(postContent);
-  };
-
-  const handleUpdatePost = (id: number, postContent: string) => {
-    updatePostMutation.mutate({ id: id.toString(), content: postContent });
-  };
-
-  const handleDeletePost = (id: number) => {
-    deletePostMutation.mutate(id);
   };
 
   const handleClearForm = () => {
@@ -99,10 +69,7 @@ export const Index = () => {
               <PostCard
                 key={post.id}
                 post={post}
-                onDelete={handleDeletePost}
-                onUpdate={handleUpdatePost}
-                isDeleting={deletePostMutation.isPending}
-                isUpdating={updatePostMutation.isPending}
+                invalidatePostsQuery={invalidatePostsQuery}
               />
             ))}
           </div>
