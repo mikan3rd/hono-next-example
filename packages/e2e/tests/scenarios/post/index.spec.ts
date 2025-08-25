@@ -1,4 +1,8 @@
-import { expect, test } from "@playwright/test";
+import {
+  expect,
+  type PageAssertionsToHaveScreenshotOptions,
+  test,
+} from "@playwright/test";
 import { env } from "../../env";
 
 test.beforeEach(async () => {
@@ -9,13 +13,16 @@ test.beforeEach(async () => {
 });
 
 test("post page", async ({ page }) => {
-  const createdLocator = page.getByText(/Created:/);
+  const screenshotOptions: PageAssertionsToHaveScreenshotOptions = {
+    fullPage: true,
+    mask: [page.getByText(/Created:/)],
+  };
 
   await test.step("visit post page", async () => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
     await expect(page.getByText("No posts yet")).toBeVisible();
-    await expect.soft(page).toHaveScreenshot();
+    await expect.soft(page).toHaveScreenshot(screenshotOptions);
   });
 
   const firstPostContent = `This is first post content`;
@@ -26,9 +33,7 @@ test("post page", async ({ page }) => {
       await page.getByRole("button", { name: "Create Post" }).click();
       await expect(textArea).toHaveValue("");
       await expect(page.getByText(firstPostContent)).toBeVisible();
-      await expect.soft(page).toHaveScreenshot({
-        mask: [createdLocator],
-      });
+      await expect.soft(page).toHaveScreenshot(screenshotOptions);
     });
 
     await test.step("create second post", async () => {
@@ -38,17 +43,13 @@ test("post page", async ({ page }) => {
       await page.getByRole("button", { name: "Create Post" }).click();
       await expect(textArea).toHaveValue("");
       await expect(page.getByText(secondPostContent)).toBeVisible();
-      await expect.soft(page).toHaveScreenshot({
-        mask: [createdLocator],
-      });
+      await expect.soft(page).toHaveScreenshot(screenshotOptions);
     });
   });
 
   await test.step("delete first post", async () => {
     await page.getByRole("button", { name: "Delete" }).nth(1).click();
     await expect(page.getByText(firstPostContent)).not.toBeVisible();
-    await expect.soft(page).toHaveScreenshot({
-      mask: [createdLocator],
-    });
+    await expect.soft(page).toHaveScreenshot(screenshotOptions);
   });
 });
