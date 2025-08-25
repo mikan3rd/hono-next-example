@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDate } from "../utils/dateUtils";
+import { formatDate } from "../../../../utils/dateUtils";
 
 type Post = {
   id: number;
