@@ -46,13 +46,23 @@ test("post page", async ({ page }) => {
     });
   });
 
+  const updatedPostContent = `This is updated post content`;
   await test.step("update first post", async () => {
-    const updatedPostContent = `This is updated post content`;
     await page.getByRole("button", { name: "Edit" }).nth(1).click();
     await page.getByRole("textbox").nth(1).fill(updatedPostContent);
     await page.getByRole("button", { name: "Save" }).click();
     await expect(page.getByText(updatedPostContent)).toBeVisible();
     await expect.soft(page).toHaveScreenshot(screenshotOptions);
+  });
+
+  await test.step("cancel update first post", async () => {
+    await page.getByRole("button", { name: "Edit" }).nth(1).click();
+    await page
+      .getByRole("textbox")
+      .nth(1)
+      .fill("This is not updated post content");
+    await page.getByRole("button", { name: "Cancel" }).click();
+    await expect(page.getByText(updatedPostContent)).toBeVisible();
   });
 
   await test.step("delete first post", async () => {
