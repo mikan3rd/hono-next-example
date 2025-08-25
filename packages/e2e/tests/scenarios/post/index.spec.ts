@@ -13,7 +13,7 @@ test("post page", async ({ page }) => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
     await expect(page.getByText("No posts yet")).toBeVisible();
-    await expect(page).toHaveScreenshot();
+    await expect.soft(page).toHaveScreenshot();
   });
 
   await test.step("create post", async () => {
@@ -23,7 +23,7 @@ test("post page", async ({ page }) => {
     await page.getByRole("button", { name: "Create Post" }).click();
     await expect(textArea).toHaveValue("");
     await expect(page.getByText(postContent)).toBeVisible();
-    await expect(page).toHaveScreenshot({
+    await expect.soft(page).toHaveScreenshot({
       mask: [page.getByText(/Created:/)],
     });
   });
