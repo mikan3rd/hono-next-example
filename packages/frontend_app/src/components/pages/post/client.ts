@@ -27,6 +27,10 @@ export const updatePost = async (args: { id: string; content: string }) => {
     param: { id: args.id.toString() },
     json: { content: args.content },
   });
+  if (!res.ok) {
+    const body = await res.json();
+    throw new Error(body.message);
+  }
   return res.json();
 };
 
