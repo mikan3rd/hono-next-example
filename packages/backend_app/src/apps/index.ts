@@ -4,7 +4,6 @@ import { logger } from "hono/logger";
 import { requestId } from "hono/request-id";
 import { createApp } from "./factory";
 import { healthzApp } from "./healthz";
-import { helloApp } from "./hellos";
 import { initializeApp } from "./initialize";
 import { postApp } from "./posts";
 
@@ -21,7 +20,6 @@ app.route("/initialize", initializeApp);
 
 const routes = app
   .route("/posts", postApp)
-  .route("/hellos", helloApp)
   .doc("/doc", {
     openapi: "3.0.0",
     info: {
