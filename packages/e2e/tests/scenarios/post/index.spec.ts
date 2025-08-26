@@ -31,14 +31,16 @@ test("post page", async ({ page }) => {
   const firstPostContent = `This is first post content`;
   const secondPostContent = `This is second post content`;
 
+  const postCards = page.getByTestId("postCard");
+  const firstPostCard = postCards.filter({ hasText: firstPostContent });
+  const secondPostCard = postCards.filter({ hasText: secondPostContent });
+
   await test.step("create posts", async () => {
     await test.step("create first post", async () => {
       await createTextArea.fill(firstPostContent);
       await page.getByRole("button", { name: "Create Post" }).click();
       await expect(createTextArea).toHaveValue("");
 
-      const postCards = page.getByTestId("postCard");
-      const firstPostCard = postCards.filter({ hasText: firstPostContent });
       await expect(postCards).toHaveCount(1);
       await expect(firstPostCard).toBeVisible();
       await expect.soft(page).toHaveScreenshot(screenshotOptions);
@@ -49,16 +51,10 @@ test("post page", async ({ page }) => {
       await page.getByRole("button", { name: "Create Post" }).click();
       await expect(createTextArea).toHaveValue("");
 
-      const postCards = page.getByTestId("postCard");
-      const secondPostCard = postCards.filter({ hasText: secondPostContent });
       await expect(secondPostCard).toBeVisible();
       await expect.soft(page).toHaveScreenshot(screenshotOptions);
     });
   });
-
-  const postCards = page.getByTestId("postCard");
-  const firstPostCard = postCards.filter({ hasText: firstPostContent });
-  const secondPostCard = postCards.filter({ hasText: secondPostContent });
 
   const updatedPostContent = `This is updated post content`;
   await test.step("update post", async () => {
