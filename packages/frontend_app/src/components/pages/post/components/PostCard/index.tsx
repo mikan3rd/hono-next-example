@@ -68,7 +68,7 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
 
   return (
     <div
-      data-testid="postCard"
+      data-testid={`postCard${post.id}`}
       className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 overflow-hidden"
     >
       <div className="p-6">
