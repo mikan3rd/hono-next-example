@@ -25,6 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install required tools
+        run: |
+          apt-get update
+          apt-get install -y unzip
+
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .tool-versions
