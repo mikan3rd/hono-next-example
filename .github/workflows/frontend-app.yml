@@ -18,6 +18,22 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun run lint
+
+      - run: bun run typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
     container:
       # Make sure to grab the latest version of the Playwright image
       # https://playwright.dev/docs/docker#pull-the-image
@@ -35,10 +51,6 @@ jobs:
           bun-version-file: .tool-versions
 
       - run: bun install --frozen-lockfile
-
-      - run: bun run lint
-
-      - run: bun run typecheck
 
       - run: bun run build-storybook
 
