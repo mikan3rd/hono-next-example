@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "bun run --bun biome check . --error-on-warnings",
     "lint:fix": "bun run --bun biome check . --write",
-    "dev-storybook": "bun run storybook dev -p 6006",
-    "build-storybook": "bun run storybook build",
+    "dev-storybook": "bun run --bun storybook dev -p 6006",
+    "build-storybook": "bun run --bun storybook build",
     "test-storybook": "bun run vitest --project=storybook"
   },
   "dependencies": {
