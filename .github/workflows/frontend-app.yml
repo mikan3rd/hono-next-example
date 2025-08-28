@@ -31,4 +31,27 @@ jobs:
 
       - run: bun run typecheck
 
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    container:
+      # Make sure to grab the latest version of the Playwright image
+      # https://playwright.dev/docs/docker#pull-the-image
+      image: mcr.microsoft.com/playwright:v1.55.0-noble
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install required tools
+        run: |
+          apt-get update
+          apt-get install -y unzip
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - run: bun install --frozen-lockfile
+
       - run: bun run build-storybook
+
+      - run: bun run test-storybook --coverage
