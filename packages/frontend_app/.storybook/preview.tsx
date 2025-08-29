@@ -20,7 +20,7 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <Providers >
+      <Providers>
         <Story />
       </Providers>
     ),
