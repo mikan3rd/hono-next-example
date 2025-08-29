@@ -103,7 +103,7 @@ services:
     env_file:
       - .env
     command: |
-      npm run e2e:docker:screenshot
+      npm run e2e:docker
     network_mode: host
     ports:
       - "9323:9323"
