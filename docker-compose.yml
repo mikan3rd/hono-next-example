@@ -86,6 +86,7 @@ services:
       - .env
     command: |
       bun run dev --port ${FRONTEND_APP_PORT}
+    network_mode: host
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
     depends_on:
