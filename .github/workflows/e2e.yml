@@ -25,6 +25,7 @@ env:
   NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
   FRONTEND_APP_SERVER_URL: http://localhost
   FRONTEND_APP_PORT: 4400
+  HOSTNAME: localhost
 
 jobs:
   check:
