@@ -36,6 +36,8 @@ COPY --from=builder /app/packages/frontend_app/.next/static ./packages/frontend_
 
 EXPOSE ${FRONTEND_APP_PORT}
 WORKDIR /app/packages/frontend_app
+ARG HOSTNAME
+ENV HOSTNAME=${HOSTNAME}
 ENTRYPOINT [ "bun", "run", "server.js" ]
 
 
