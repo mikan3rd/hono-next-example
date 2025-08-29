@@ -66,6 +66,7 @@ services:
       - .env
     environment:
       DATABASE_HOST: db
+      ENABLE_DB_INITIALIZE: true
     command: |
       bun run --hot src/server.ts
     ports:
