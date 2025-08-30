@@ -15,7 +15,7 @@ test.beforeEach(async () => {
 test("post page", async ({ page }) => {
   const screenshotOptions: PageAssertionsToHaveScreenshotOptions = {
     fullPage: true,
-    mask: [page.getByText(/Created:/), page.getByText(/Updated:/)],
+    mask: [page.getByTestId("PostCard-date")],
   };
 
   await test.step("visit post page", async () => {
