@@ -2,6 +2,10 @@
   "root": false,
   "extends": "//",
   "files": {
-    "includes": ["!**/.next", "!**/storybook-static"]
+    "includes": [
+      "!**/.next",
+      "!**/storybook-static",
+      "!**/public/mockServiceWorker.js"
+    ]
   }
 }
