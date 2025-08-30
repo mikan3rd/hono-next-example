@@ -26,5 +26,9 @@ export const Default: Story = {
 
     await userEvent.type(input, "test");
     expect(createPostButton).toBeEnabled();
+    await userEvent.click(createPostButton);
+
+    expect(input).toHaveValue("");
+    expect(createPostButton).toBeDisabled();
   },
 };
