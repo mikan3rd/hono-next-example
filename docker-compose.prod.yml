@@ -79,8 +79,9 @@ services:
       dockerfile: packages/frontend_app/Dockerfile
       target: runner
       args:
-        BACKEND_APP_SERVER_URL: ${BACKEND_APP_SERVER_URL}
         NEXT_PUBLIC_BACKEND_APP_URL: ${NEXT_PUBLIC_BACKEND_APP_URL}
+        HOSTNAME: ${HOSTNAME}
+    network_mode: host
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
     depends_on:
@@ -96,6 +97,7 @@ services:
       BACKEND_APP_SERVER_URL: ${BACKEND_APP_SERVER_URL}
       FRONTEND_APP_SERVER_URL: ${FRONTEND_APP_SERVER_URL}
       FRONTEND_APP_PORT: ${FRONTEND_APP_PORT}
+    network_mode: host
     depends_on:
       - frontend_app
     volumes:
@@ -112,6 +114,7 @@ services:
       FRONTEND_APP_PORT: ${FRONTEND_APP_PORT}
     command: |
       npm run e2e:docker:screenshot
+    network_mode: host
     depends_on:
       - frontend_app
     volumes:
