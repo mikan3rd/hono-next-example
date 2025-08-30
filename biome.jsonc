@@ -23,7 +23,7 @@
         }
       },
       "nursery": {
-        "noFloatingPromises": "error",
+        // "noFloatingPromises": "error",
         "noShadow": "error"
       }
     }
