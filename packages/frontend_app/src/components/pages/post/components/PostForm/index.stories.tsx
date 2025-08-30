@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { HttpResponse, http } from "msw";
-import { expect, fn, waitFor, within } from "storybook/test";
+import { expect, fn, within } from "storybook/test";
 import { env } from "../../../../../env";
 import { PostForm } from ".";
 
@@ -20,7 +20,7 @@ export const Default: Story = {
     msw: {
       handlers: [
         http.post(`${env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`, async () => {
-          return HttpResponse.json();
+          return HttpResponse.json({});
         }),
       ],
     },
@@ -37,11 +37,9 @@ export const Default: Story = {
 
     await userEvent.type(input, "test");
     expect(createPostButton).toBeEnabled();
-    await userEvent.click(createPostButton);
 
-    await waitFor(() => {
-      expect(input).toHaveValue("");
-      expect(createPostButton).toBeDisabled();
-    });
+    await userEvent.click(createPostButton);
+    expect(input).toHaveValue("");
+    expect(createPostButton).toBeDisabled();
   },
 };
