@@ -15,8 +15,7 @@ defaults:
     working-directory: ./packages/frontend_app
 
 env:
-  BACKEND_APP_SERVER_URL: http://backend_app:4300
-  NEXT_PUBLIC_BACKEND_APP_URL: http://backend_app:4300
+  NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
 
 jobs:
   check:
