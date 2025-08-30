@@ -138,7 +138,7 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
           )}
         </div>
 
-        <div className="border-t border-gray-100 pt-4">
+        <div data-testid={`PostCard-date`} className="border-t border-gray-100 pt-4">
           <div className="flex justify-between text-xs text-gray-500">
             <span>Created: {formatDate(post.created_at)}</span>
             {isUpdated && <span>Updated: {formatDate(post.updated_at)}</span>}
