@@ -21,10 +21,11 @@ env:
   POSTGRES_DB: example-db
   POSTGRES_PORT: 5432
   BACKEND_APP_PORT: 4300
-  BACKEND_APP_SERVER_URL: http://backend_app:4300
-  NEXT_PUBLIC_BACKEND_APP_URL: http://backend_app:4300
-  FRONTEND_APP_SERVER_URL: http://frontend_app
+  BACKEND_APP_SERVER_URL: http://localhost:4300
+  NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
+  FRONTEND_APP_SERVER_URL: http://localhost
   FRONTEND_APP_PORT: 4400
+  HOSTNAME: localhost
 
 jobs:
   check:
