@@ -187,22 +187,25 @@ export const EditAndCancelPost: Story = {
     const postCard = canvas.getByTestId("PostCard-6");
     await expect(postCard).toBeVisible();
 
-    const content = within(postCard).getByTestId("PostCard-content");
-    await expect(content).toBeVisible();
-    const editButton = within(content).getByRole("button", { name: "Edit" });
+    const header = within(postCard).getByTestId("PostCard-header");
+    await expect(header).toBeVisible();
+    const editButton = within(header).getByRole("button", { name: "Edit" });
     await expect(editButton).toBeEnabled();
     await userEvent.click(editButton);
 
+    const content = within(postCard).getByTestId("PostCard-content");
     const textarea = within(content).getByRole("textbox");
     await expect(textarea).toBeVisible();
     await expect(textarea).toHaveValue("Original content for cancel test");
-    const cancelButton = within(content).getByRole("button", {
+
+    const cancelButton = within(header).getByRole("button", {
       name: "Cancel",
     });
     await expect(cancelButton).toBeEnabled();
     await userEvent.click(cancelButton);
 
     await expect(textarea).not.toBeVisible();
+
     await expect(
       within(content).getByText("Original content for cancel test"),
     ).toBeVisible();
