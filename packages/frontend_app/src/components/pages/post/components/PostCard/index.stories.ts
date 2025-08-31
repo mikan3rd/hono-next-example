@@ -213,6 +213,18 @@ export const EditAndCancelPost: Story = {
 };
 
 export const DeletePost: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        http.delete(
+          `${env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/:id`,
+          async () => {
+            return HttpResponse.json({});
+          },
+        ),
+      ],
+    },
+  },
   args: {
     post: {
       id: 7,
@@ -227,13 +239,15 @@ export const DeletePost: Story = {
 
     const postCard = canvas.getByTestId("PostCard-7");
     await expect(postCard).toBeVisible();
-    const content = within(postCard).getByTestId("PostCard-content");
-    await expect(content).toBeVisible();
-    const deleteButton = within(content).getByRole("button", {
+    const header = within(postCard).getByTestId("PostCard-header");
+    await expect(header).toBeVisible();
+    const deleteButton = within(header).getByRole("button", {
       name: "Delete",
     });
     await expect(deleteButton).toBeEnabled();
     await userEvent.click(deleteButton);
-    await expect(args.invalidatePostsQuery).toBeCalledTimes(1);
+    await waitFor(async () => {
+      await expect(args.invalidatePostsQuery).toHaveBeenCalledOnce();
+    });
   },
 };
