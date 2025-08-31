@@ -19,7 +19,7 @@ const createMockPost = (
   overrides: Partial<Props["post"]> = {},
 ): Props["post"] => ({
   id: postId,
-  content: "Hello, world!",
+  content: "Test post content",
   created_at: "2025-01-01T00:00:00.000Z",
   updated_at: "2025-01-01T00:00:00.000Z",
   ...overrides,
@@ -73,7 +73,7 @@ export const CreatedPost: Story = {
     post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const { header, content, date } = getPostCardElements(canvas);
 
@@ -87,7 +87,7 @@ export const CreatedPost: Story = {
     ).toBeVisible();
 
     await expect(content).toBeVisible();
-    await expect(within(content).getByText("Hello, world!")).toBeVisible();
+    await expect(within(content).getByText(args.post.content)).toBeVisible();
 
     await expect(date).toBeVisible();
     await verifyDateDisplay(date, false);
@@ -97,8 +97,6 @@ export const CreatedPost: Story = {
 export const UpdatedPost: Story = {
   args: {
     post: createMockPost({
-      content:
-        "This is an updated post with longer content that should demonstrate the line-clamp functionality and show the updated status.",
       updated_at: "2025-01-02T12:00:00.000Z",
     }),
     invalidatePostsQuery: fn(),
@@ -114,12 +112,10 @@ export const UpdatedPost: Story = {
 
 export const EditPost: Story = {
   args: {
-    post: createMockPost({
-      content: "Original content",
-    }),
+    post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement, userEvent, args }) => {
     const canvas = within(canvasElement);
     const { header, content } = getPostCardElements(canvas);
 
@@ -129,7 +125,7 @@ export const EditPost: Story = {
 
     const textarea = within(content).getByRole("textbox");
     await expect(textarea).toBeVisible();
-    await expect(textarea).toHaveValue("Original content");
+    await expect(textarea).toHaveValue(args.post.content);
 
     const saveButton = within(header).getByRole("button", { name: "Save" });
     await expect(saveButton).toBeEnabled();
@@ -146,9 +142,7 @@ export const EditAndSavePost: Story = {
     },
   },
   args: {
-    post: createMockPost({
-      content: "Test content for save/cancel",
-    }),
+    post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
   play: async ({ canvasElement, userEvent, args }) => {
@@ -160,7 +154,7 @@ export const EditAndSavePost: Story = {
     await userEvent.click(editButton);
 
     const textarea = within(content).getByRole("textbox");
-    await expect(textarea).toHaveValue("Test content for save/cancel");
+    await expect(textarea).toHaveValue(args.post.content);
 
     const saveButton = within(header).getByRole("button", { name: "Save" });
     await expect(saveButton).toBeEnabled();
@@ -184,12 +178,10 @@ export const EditAndSavePost: Story = {
 
 export const EditAndCancelPost: Story = {
   args: {
-    post: createMockPost({
-      content: "Original content for cancel test",
-    }),
+    post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement, userEvent, args }) => {
     const canvas = within(canvasElement);
     const { header, content } = getPostCardElements(canvas);
 
@@ -198,16 +190,14 @@ export const EditAndCancelPost: Story = {
     await userEvent.click(editButton);
 
     const textarea = within(content).getByRole("textbox");
-    await expect(textarea).toHaveValue("Original content for cancel test");
+    await expect(textarea).toHaveValue(args.post.content);
 
     const cancelButton = within(header).getByRole("button", { name: "Cancel" });
     await expect(cancelButton).toBeEnabled();
     await userEvent.click(cancelButton);
 
     await expect(textarea).not.toBeVisible();
-    await expect(
-      within(content).getByText("Original content for cancel test"),
-    ).toBeVisible();
+    await expect(within(content).getByText(args.post.content)).toBeVisible();
   },
 };
 
@@ -218,9 +208,7 @@ export const DeletePost: Story = {
     },
   },
   args: {
-    post: createMockPost({
-      content: "Post to be deleted",
-    }),
+    post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
   play: async ({ canvasElement, userEvent, args }) => {
