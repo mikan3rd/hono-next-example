@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { HttpResponse, http } from "msw";
 import type { ComponentProps } from "react";
-import { expect, fn, waitFor, within } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { env } from "../../../../../env";
 import { PostCard } from ".";
 
@@ -15,11 +15,12 @@ type Story = StoryObj<typeof meta>;
 
 type Props = ComponentProps<typeof PostCard>;
 const postId: Props["post"]["id"] = 1;
+const postContent: Props["post"]["content"] = "Test post content";
 const createMockPost = (
   overrides: Partial<Props["post"]> = {},
 ): Props["post"] => ({
   id: postId,
-  content: "Test post content",
+  content: postContent,
   created_at: "2025-01-01T00:00:00.000Z",
   updated_at: "2025-01-01T00:00:00.000Z",
   ...overrides,
@@ -32,6 +33,20 @@ const getPostCardElements = (canvas: ReturnType<typeof within>) => {
   const date = within(postCard).getByTestId("PostCard-date");
 
   return { postCard, header, content, date };
+};
+
+const enterEditMode = async (canvas: ReturnType<typeof within>) => {
+  const { header, content } = getPostCardElements(canvas);
+
+  const editButton = within(header).getByRole("button", { name: "Edit" });
+  await expect(editButton).toBeEnabled();
+  await userEvent.click(editButton);
+
+  const textarea = within(content).getByRole("textbox");
+  await expect(textarea).toBeVisible();
+  await expect(textarea).toHaveValue(postContent);
+
+  return { header, content, textarea };
 };
 
 const verifyPostStatus = async (header: HTMLElement, isUpdated: boolean) => {
@@ -115,17 +130,9 @@ export const EditPost: Story = {
     post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement, userEvent, args }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { header, content } = getPostCardElements(canvas);
-
-    const editButton = within(header).getByRole("button", { name: "Edit" });
-    await expect(editButton).toBeEnabled();
-    await userEvent.click(editButton);
-
-    const textarea = within(content).getByRole("textbox");
-    await expect(textarea).toBeVisible();
-    await expect(textarea).toHaveValue(args.post.content);
+    const { header } = await enterEditMode(canvas);
 
     const saveButton = within(header).getByRole("button", { name: "Save" });
     await expect(saveButton).toBeEnabled();
@@ -145,16 +152,9 @@ export const EditAndSavePost: Story = {
     post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement, userEvent, args }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    const { header, content } = getPostCardElements(canvas);
-
-    const editButton = within(header).getByRole("button", { name: "Edit" });
-    await expect(editButton).toBeEnabled();
-    await userEvent.click(editButton);
-
-    const textarea = within(content).getByRole("textbox");
-    await expect(textarea).toHaveValue(args.post.content);
+    const { header, textarea } = await enterEditMode(canvas);
 
     const saveButton = within(header).getByRole("button", { name: "Save" });
     await expect(saveButton).toBeEnabled();
@@ -181,16 +181,9 @@ export const EditAndCancelPost: Story = {
     post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement, userEvent, args }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    const { header, content } = getPostCardElements(canvas);
-
-    const editButton = within(header).getByRole("button", { name: "Edit" });
-    await expect(editButton).toBeEnabled();
-    await userEvent.click(editButton);
-
-    const textarea = within(content).getByRole("textbox");
-    await expect(textarea).toHaveValue(args.post.content);
+    const { header, content, textarea } = await enterEditMode(canvas);
 
     const cancelButton = within(header).getByRole("button", { name: "Cancel" });
     await expect(cancelButton).toBeEnabled();
@@ -211,7 +204,7 @@ export const DeletePost: Story = {
     post: createMockPost(),
     invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement, userEvent, args }) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const { header } = getPostCardElements(canvas);
 
