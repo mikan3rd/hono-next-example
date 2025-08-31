@@ -39,7 +39,7 @@ export const Default: Story = {
     await expect(createPostButton).toBeEnabled();
 
     await userEvent.click(createPostButton);
-    await expect(args.invalidatePostsQuery).toHaveBeenCalled();
+    await expect(args.invalidatePostsQuery).toBeCalledTimes(1);
     await expect(input).toHaveValue("");
     await expect(createPostButton).toBeDisabled();
   },
