@@ -5,6 +5,11 @@ on:
     branches:
       - main
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,8 +20,7 @@ defaults:
     working-directory: ./packages/frontend_app
 
 env:
-  BACKEND_APP_SERVER_URL: http://backend_app:4300
-  NEXT_PUBLIC_BACKEND_APP_URL: http://backend_app:4300
+  NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
 
 jobs:
   check:
@@ -38,6 +42,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    if: github.event.pull_request.draft != true
     container:
       # Make sure to grab the latest version of the Playwright image
       # https://playwright.dev/docs/docker#pull-the-image
@@ -55,7 +60,5 @@ jobs:
           bun-version-file: .tool-versions
 
       - run: bun install --frozen-lockfile
-
-      - run: bun run build-storybook
 
       - run: bun run test-storybook --coverage

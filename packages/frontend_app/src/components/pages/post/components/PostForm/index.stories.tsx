@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { fn } from "storybook/test";
+import { HttpResponse, http } from "msw";
+import { expect, fn, waitFor, within } from "storybook/test";
+import { env } from "../../../../../env";
 import { PostForm } from ".";
 
 const meta = {
@@ -13,5 +15,33 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     invalidatePostsQuery: fn(),
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        http.post(`${env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`, async () => {
+          return HttpResponse.json({});
+        }),
+      ],
+    },
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+
+    const input = canvas.getByRole("textbox");
+    expect(input).toHaveValue("");
+    const createPostButton = canvas.getByRole("button", {
+      name: "Create Post",
+    });
+    expect(createPostButton).toBeDisabled();
+
+    await userEvent.type(input, "test");
+    expect(createPostButton).toBeEnabled();
+
+    await userEvent.click(createPostButton);
+    await waitFor(() => {
+      expect(input).toHaveValue("");
+    });
+    expect(createPostButton).toBeDisabled();
   },
 };
