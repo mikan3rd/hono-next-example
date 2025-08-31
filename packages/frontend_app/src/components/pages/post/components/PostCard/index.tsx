@@ -72,7 +72,10 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
       className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 overflow-hidden"
     >
       <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
+        <div
+          data-testid="PostCard-header"
+          className="flex items-start justify-between mb-4"
+        >
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
             ID: {post.id}
           </span>
@@ -122,7 +125,7 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
           </div>
         </div>
 
-        <div className="mb-4">
+        <div data-testid="PostCard-content" className="mb-4">
           {isEditing ? (
             <textarea
               value={editContent}

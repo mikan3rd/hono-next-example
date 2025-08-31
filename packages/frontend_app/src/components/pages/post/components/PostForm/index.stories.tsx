@@ -25,23 +25,24 @@ export const Default: Story = {
       ],
     },
   },
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement, userEvent, args }) => {
     const canvas = within(canvasElement);
 
     const input = canvas.getByRole("textbox");
-    expect(input).toHaveValue("");
+    await expect(input).toHaveValue("");
     const createPostButton = canvas.getByRole("button", {
       name: "Create Post",
     });
-    expect(createPostButton).toBeDisabled();
+    await expect(createPostButton).toBeDisabled();
 
     await userEvent.type(input, "test");
-    expect(createPostButton).toBeEnabled();
+    await expect(createPostButton).toBeEnabled();
 
     await userEvent.click(createPostButton);
-    await waitFor(() => {
-      expect(input).toHaveValue("");
+    await waitFor(async () => {
+      await expect(args.invalidatePostsQuery).toHaveBeenCalledOnce();
     });
-    expect(createPostButton).toBeDisabled();
+    await expect(input).toHaveValue("");
+    await expect(createPostButton).toBeDisabled();
   },
 };
