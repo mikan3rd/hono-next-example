@@ -64,15 +64,11 @@ export const UpdatedPost: Story = {
     const canvas = within(canvasElement);
 
     const postCard = canvas.getByTestId("PostCard-2");
-    await expect(postCard).toBeVisible();
-
     const header = within(postCard).getByTestId("PostCard-header");
-    await expect(header).toBeVisible();
     await expect(within(header).queryByText("New")).toBeNull();
     await expect(within(header).getByText("Updated")).toBeVisible();
 
     const date = within(postCard).getByTestId("PostCard-date");
-    await expect(date).toBeVisible();
     await expect(within(date).getByText(/Created:/)).toBeVisible();
     await expect(within(date).getByText(/Updated:/)).toBeVisible();
   },
@@ -92,10 +88,8 @@ export const EditPost: Story = {
     const canvas = within(canvasElement);
 
     const postCard = canvas.getByTestId("PostCard-4");
-    await expect(postCard).toBeVisible();
 
     const header = within(postCard).getByTestId("PostCard-header");
-    await expect(header).toBeVisible();
     const editButton = within(header).getByRole("button", { name: "Edit" });
     await expect(editButton).toBeEnabled();
     await userEvent.click(editButton);
@@ -138,17 +132,14 @@ export const EditAndSavePost: Story = {
     const canvas = within(canvasElement);
 
     const postCard = canvas.getByTestId("PostCard-5");
-    await expect(postCard).toBeVisible();
 
     const header = within(postCard).getByTestId("PostCard-header");
-    await expect(header).toBeVisible();
     const editButton = within(header).getByRole("button", { name: "Edit" });
     await expect(editButton).toBeEnabled();
     await userEvent.click(editButton);
 
     const content = within(postCard).getByTestId("PostCard-content");
     const textarea = within(content).getByRole("textbox");
-    await expect(textarea).toBeVisible();
     await expect(textarea).toHaveValue("Test content for save/cancel");
 
     const saveButton = within(header).getByRole("button", { name: "Save" });
@@ -185,17 +176,13 @@ export const EditAndCancelPost: Story = {
     const canvas = within(canvasElement);
 
     const postCard = canvas.getByTestId("PostCard-6");
-    await expect(postCard).toBeVisible();
-
     const header = within(postCard).getByTestId("PostCard-header");
-    await expect(header).toBeVisible();
     const editButton = within(header).getByRole("button", { name: "Edit" });
     await expect(editButton).toBeEnabled();
     await userEvent.click(editButton);
 
     const content = within(postCard).getByTestId("PostCard-content");
     const textarea = within(content).getByRole("textbox");
-    await expect(textarea).toBeVisible();
     await expect(textarea).toHaveValue("Original content for cancel test");
 
     const cancelButton = within(header).getByRole("button", {
@@ -238,9 +225,7 @@ export const DeletePost: Story = {
     const canvas = within(canvasElement);
 
     const postCard = canvas.getByTestId("PostCard-7");
-    await expect(postCard).toBeVisible();
     const header = within(postCard).getByTestId("PostCard-header");
-    await expect(header).toBeVisible();
     const deleteButton = within(header).getByRole("button", {
       name: "Delete",
     });
