@@ -29,14 +29,14 @@ export const Default: Story = {
     const canvas = within(canvasElement);
 
     const input = canvas.getByRole("textbox");
-    expect(input).toHaveValue("");
+    await expect(input).toHaveValue("");
     const createPostButton = canvas.getByRole("button", {
       name: "Create Post",
     });
-    expect(createPostButton).toBeDisabled();
+    await expect(createPostButton).toBeDisabled();
 
     await userEvent.type(input, "test");
-    expect(createPostButton).toBeEnabled();
+    await expect(createPostButton).toBeEnabled();
 
     await userEvent.click(createPostButton);
     await expect(args.invalidatePostsQuery).toHaveBeenCalled();
