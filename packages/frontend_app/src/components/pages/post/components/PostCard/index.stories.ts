@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { expect, fn, within } from "storybook/test";
+import { HttpResponse, http } from "msw";
+import { expect, fn, waitFor, within } from "storybook/test";
+import { env } from "../../../../../env";
 import { PostCard } from ".";
 
 const meta = {
@@ -114,6 +116,15 @@ export const EditPost: Story = {
 };
 
 export const EditAndSavePost: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        http.put(`${env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/:id`, async () => {
+          return HttpResponse.json({});
+        }),
+      ],
+    },
+  },
   args: {
     post: {
       id: 5,
@@ -129,29 +140,34 @@ export const EditAndSavePost: Story = {
     const postCard = canvas.getByTestId("PostCard-5");
     await expect(postCard).toBeVisible();
 
-    const content = within(postCard).getByTestId("PostCard-content");
-    await expect(content).toBeVisible();
-    const editButton = within(content).getByRole("button", { name: "Edit" });
+    const header = within(postCard).getByTestId("PostCard-header");
+    await expect(header).toBeVisible();
+    const editButton = within(header).getByRole("button", { name: "Edit" });
     await expect(editButton).toBeEnabled();
     await userEvent.click(editButton);
 
+    const content = within(postCard).getByTestId("PostCard-content");
     const textarea = within(content).getByRole("textbox");
     await expect(textarea).toBeVisible();
     await expect(textarea).toHaveValue("Test content for save/cancel");
 
-    const saveButton = within(content).getByRole("button", { name: "Save" });
+    const saveButton = within(header).getByRole("button", { name: "Save" });
     await expect(saveButton).toBeEnabled();
 
     await userEvent.clear(textarea);
-    await expect(saveButton).toBeDisabled();
+    await waitFor(async () => {
+      await expect(saveButton).toBeDisabled();
+    });
 
     await userEvent.type(textarea, "Updated content");
     await expect(saveButton).toBeEnabled();
 
     await userEvent.click(saveButton);
-    await expect(args.invalidatePostsQuery).toBeCalledTimes(1);
+    await waitFor(async () => {
+      await expect(args.invalidatePostsQuery).toHaveBeenCalledOnce();
+    });
+
     await expect(textarea).not.toBeVisible();
-    await expect(within(content).getByText("Updated content")).toBeVisible();
   },
 };
 

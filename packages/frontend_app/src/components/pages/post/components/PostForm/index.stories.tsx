@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { HttpResponse, http } from "msw";
-import { expect, fn, within } from "storybook/test";
+import { expect, fn, waitFor, within } from "storybook/test";
 import { env } from "../../../../../env";
 import { PostForm } from ".";
 
@@ -39,7 +39,9 @@ export const Default: Story = {
     await expect(createPostButton).toBeEnabled();
 
     await userEvent.click(createPostButton);
-    await expect(args.invalidatePostsQuery).toBeCalledTimes(1);
+    await waitFor(async () => {
+      await expect(args.invalidatePostsQuery).toHaveBeenCalledOnce();
+    });
     await expect(input).toHaveValue("");
     await expect(createPostButton).toBeDisabled();
   },
