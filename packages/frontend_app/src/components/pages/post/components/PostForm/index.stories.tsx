@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { HttpResponse, http } from "msw";
-import { expect, fn, waitFor, within } from "storybook/test";
+import { expect, fn, within } from "storybook/test";
 import { env } from "../../../../../env";
 import { PostForm } from ".";
 
@@ -25,7 +25,7 @@ export const Default: Story = {
       ],
     },
   },
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement, userEvent, args }) => {
     const canvas = within(canvasElement);
 
     const input = canvas.getByRole("textbox");
@@ -39,9 +39,8 @@ export const Default: Story = {
     expect(createPostButton).toBeEnabled();
 
     await userEvent.click(createPostButton);
-    await waitFor(() => {
-      expect(input).toHaveValue("");
-    });
-    expect(createPostButton).toBeDisabled();
+    await expect(args.invalidatePostsQuery).toHaveBeenCalled();
+    await expect(input).toHaveValue("");
+    await expect(createPostButton).toBeDisabled();
   },
 };
