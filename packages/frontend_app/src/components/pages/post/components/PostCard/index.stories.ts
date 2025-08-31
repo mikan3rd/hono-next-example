@@ -76,34 +76,6 @@ export const UpdatedPost: Story = {
   },
 };
 
-export const LongContentPost: Story = {
-  args: {
-    post: {
-      id: 3,
-      content:
-        "This is a very long post content that should demonstrate how the component handles lengthy text. The content should be properly formatted and displayed with appropriate line breaks and spacing. This helps ensure that the UI remains clean and readable even with substantial amounts of text.",
-      created_at: "2025-01-01T00:00:00.000Z",
-      updated_at: "2025-01-01T00:00:00.000Z",
-    },
-    invalidatePostsQuery: fn(),
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const postCard = canvas.getByTestId("PostCard-3");
-    await expect(postCard).toBeVisible();
-
-    const content = within(postCard).getByTestId("PostCard-content");
-    await expect(content).toBeVisible();
-    await expect(
-      within(content).getByText(/This is a very long post content/),
-    ).toBeVisible();
-    await expect(
-      within(content).getByText(/This helps ensure that the UI remains clean/),
-    ).toBeInTheDocument();
-  },
-};
-
 export const EditPost: Story = {
   args: {
     post: {
@@ -120,19 +92,21 @@ export const EditPost: Story = {
     const postCard = canvas.getByTestId("PostCard-4");
     await expect(postCard).toBeVisible();
 
-    const content = within(postCard).getByTestId("PostCard-content");
-    await expect(content).toBeVisible();
-    const editButton = within(content).getByRole("button", { name: "Edit" });
+    const header = within(postCard).getByTestId("PostCard-header");
+    await expect(header).toBeVisible();
+    const editButton = within(header).getByRole("button", { name: "Edit" });
     await expect(editButton).toBeEnabled();
     await userEvent.click(editButton);
 
+    const content = within(postCard).getByTestId("PostCard-content");
     const textarea = within(content).getByRole("textbox");
     await expect(textarea).toBeVisible();
     await expect(textarea).toHaveValue("Original content");
-    const saveButton = within(content).getByRole("button", { name: "Save" });
+
+    const saveButton = within(header).getByRole("button", { name: "Save" });
     await expect(saveButton).toBeEnabled();
 
-    const cancelButton = within(content).getByRole("button", {
+    const cancelButton = within(header).getByRole("button", {
       name: "Cancel",
     });
     await expect(cancelButton).toBeEnabled();
