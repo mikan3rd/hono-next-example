@@ -78,6 +78,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Build storybook
+        run: bun run build-storybook
+
       - name: Run Chromatic
         uses: chromaui/action@v13
         with:
