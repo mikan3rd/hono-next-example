@@ -67,6 +67,7 @@ jobs:
     name: Run Chromatic
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    if: github.event.pull_request.draft != true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -85,3 +86,4 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/frontend_app
+          exitZeroOnChanges: false
