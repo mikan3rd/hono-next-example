@@ -2,7 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { formatDate } from "../../../../../utils/dateUtils";
+import { formatDate } from "../../../../../lib/dateUtils";
 import { deletePost, updatePost } from "./client";
 
 type Post = {
