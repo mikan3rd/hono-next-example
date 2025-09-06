@@ -20,7 +20,7 @@ RUN bun install --frozen-lockfile --production --filter frontend_app
 COPY package.json tsconfig.json /app/
 COPY packages/frontend_app /app/packages/frontend_app
 WORKDIR /app/packages/frontend_app
-RUN bun --bun run build
+RUN bun next:build
 
 # run the app
 FROM base AS runner
