@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { ChevronRightIcon, Loader2Icon } from "lucide-react";
+import Link from "next/link";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from ".";
 
@@ -87,5 +88,12 @@ export const Loading: Story = {
         Please wait
       </>
     ),
+  },
+};
+
+export const LinkAsButton: Story = {
+  args: {
+    asChild: true,
+    children: <Link href="/">Link</Link>,
   },
 };
