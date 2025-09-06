@@ -2,7 +2,8 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { formatDate } from "../../../../../utils/dateUtils";
+import { formatDate } from "../../../../../lib/dateUtils";
+import { Button } from "../../../../ui/Button";
 import { deletePost, updatePost } from "./client";
 
 type Post = {
@@ -85,41 +86,46 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
             </div>
             {isEditing ? (
               <>
-                <button
+                <Button
                   type="button"
                   onClick={handleSave}
                   disabled={updatePostMutation.isPending || !editContent.trim()}
-                  className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
+                  variant="default"
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700 disabled:bg-green-400"
                 >
                   {updatePostMutation.isPending ? "Saving..." : "Save"}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   onClick={handleCancel}
                   disabled={updatePostMutation.isPending}
-                  className="bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-700 px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
+                  variant="secondary"
+                  size="sm"
                 >
                   Cancel
-                </button>
+                </Button>
               </>
             ) : (
               <>
-                <button
+                <Button
                   type="button"
                   onClick={handleEdit}
                   disabled={updatePostMutation.isPending}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-2 py-1 text-xs font-medium rounded transition-colors duration-200 disabled:cursor-not-allowed"
+                  variant="secondary"
+                  size="sm"
                 >
                   Edit
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
                   onClick={handleDelete}
                   disabled={deletePostMutation.isPending}
-                  className="text-red-500 hover:text-red-700 disabled:text-red-300 border border-red-300 hover:border-red-500 disabled:border-red-200 transition-colors duration-200 px-2 py-1 text-xs font-medium rounded"
+                  variant="destructive"
+                  size="sm"
                 >
                   Delete
-                </button>
+                </Button>
               </>
             )}
           </div>
