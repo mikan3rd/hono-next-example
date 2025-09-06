@@ -19,6 +19,6 @@
     "@t3-oss/env-core": "0.13.8",
     "@types/node": "24.3.0",
     "typescript": "5.9.2",
-    "zod": "4.0.17"
+    "zod": "4.1.0"
   }
 }
