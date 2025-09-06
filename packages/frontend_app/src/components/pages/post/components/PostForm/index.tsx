@@ -2,6 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { Button } from "../../../../ui/Button";
 import { createPost } from "./client";
 
 type PostFormProps = {
@@ -50,20 +51,15 @@ export const PostForm = ({ invalidatePostsQuery }: PostFormProps) => {
           />
         </div>
         <div className="flex gap-3">
-          <button
+          <Button
             type="submit"
             disabled={!content.trim() || createPostMutation.isPending}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 disabled:cursor-not-allowed"
           >
             {createPostMutation.isPending ? "Creating..." : "Create Post"}
-          </button>
-          <button
-            type="button"
-            onClick={handleClearForm}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md font-medium transition-colors duration-200"
-          >
+          </Button>
+          <Button type="button" onClick={handleClearForm} variant="secondary">
             Clear
-          </button>
+          </Button>
         </div>
       </form>
     </div>
