@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { toast } from "sonner";
-import { fn } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../Button";
 import { Toaster } from ".";
 
@@ -27,6 +27,14 @@ export const DefaultToast: Story = {
       </>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole("button");
+    await userEvent.click(button);
+    await waitFor(async () => {
+      await expect(canvas.getByText("Event has been created")).toBeVisible();
+    });
+  },
 };
 
 export const SuccessToast: Story = {
@@ -40,6 +48,14 @@ export const SuccessToast: Story = {
         <Toaster />
       </>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole("button");
+    await userEvent.click(button);
+    await waitFor(async () => {
+      await expect(canvas.getByText("Event has been created")).toBeVisible();
+    });
   },
 };
 
