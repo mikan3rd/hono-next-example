@@ -33,7 +33,7 @@ export default function RootLayout({
         <Suspense fallback={<div>Loading...</div>}>
           <Providers>{children}</Providers>
         </Suspense>
-        <Toaster />
+        <Toaster duration={1000 * 10} />
       </body>
     </html>
   );
