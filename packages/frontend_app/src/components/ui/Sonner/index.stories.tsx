@@ -15,6 +15,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const testToastDisplay = async (canvas: ReturnType<typeof within>) => {
+  const button = canvas.getByRole("button");
+  await userEvent.click(button);
+  await waitFor(async () => {
+    await expect(canvas.getByText("Event has been created")).toBeVisible();
+  });
+};
+
 export const DefaultToast: Story = {
   render: () => {
     const showToast = () => {
@@ -29,11 +37,7 @@ export const DefaultToast: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole("button");
-    await userEvent.click(button);
-    await waitFor(async () => {
-      await expect(canvas.getByText("Event has been created")).toBeVisible();
-    });
+    await testToastDisplay(canvas);
   },
 };
 
@@ -51,11 +55,7 @@ export const SuccessToast: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole("button");
-    await userEvent.click(button);
-    await waitFor(async () => {
-      await expect(canvas.getByText("Event has been created")).toBeVisible();
-    });
+    await testToastDisplay(canvas);
   },
 };
 
@@ -71,6 +71,10 @@ export const ErrorToast: Story = {
       </>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await testToastDisplay(canvas);
+  },
 };
 
 export const WarningToast: Story = {
@@ -85,6 +89,10 @@ export const WarningToast: Story = {
       </>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await testToastDisplay(canvas);
+  },
 };
 
 export const InfoToast: Story = {
@@ -98,6 +106,10 @@ export const InfoToast: Story = {
         <Toaster />
       </>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await testToastDisplay(canvas);
   },
 };
 
@@ -118,5 +130,13 @@ export const DefaultToastWithOptions: Story = {
         <Toaster />
       </>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await testToastDisplay(canvas);
+    await expect(
+      canvas.getByText("Sunday, December 03, 2023 at 9:00 AM"),
+    ).toBeVisible();
+    await expect(canvas.getByText("Undo")).toBeVisible();
   },
 };
