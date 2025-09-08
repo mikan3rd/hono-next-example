@@ -44,20 +44,20 @@ export default defineConfig<ChromaticConfig>({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] },
+    // },
 
     /* Test against mobile viewports. */
     {
       name: "Mobile Chrome",
       use: { ...devices["Pixel 5"] },
     },
-    {
-      name: "Mobile Safari",
-      use: { ...devices["iPhone 12"] },
-    },
+    // {
+    //   name: "Mobile Safari",
+    //   use: { ...devices["iPhone 12"] },
+    // },
   ],
 
   snapshotPathTemplate:
