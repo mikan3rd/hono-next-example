@@ -1,6 +1,11 @@
 import { expect, takeSnapshot, test } from "@chromatic-com/playwright";
 import { env } from "../../env";
 
+test.use({
+  disableAutoSnapshot: true,
+  ignoreSelectors: [`[data-testid="PostCard-date"]`],
+});
+
 test.beforeEach(async () => {
   const res = await fetch(`${env.BACKEND_APP_SERVER_URL}/initialize`, {
     method: "POST",
@@ -9,11 +14,6 @@ test.beforeEach(async () => {
 });
 
 test("post page", async ({ page }, testInfo) => {
-  test.use({
-    disableAutoSnapshot: true,
-    ignoreSelectors: [`[data-testid="PostCard-date"]`],
-  });
-
   await test.step("visit post page", async () => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
