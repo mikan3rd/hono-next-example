@@ -1,8 +1,5 @@
-import {
-  expect,
-  type PageAssertionsToHaveScreenshotOptions,
-  test,
-} from "@playwright/test";
+import { expect, test } from "@chromatic-com/playwright";
+import type { PageAssertionsToHaveScreenshotOptions } from "@playwright/test";
 import { env } from "../../env";
 
 test.beforeEach(async () => {

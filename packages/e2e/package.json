@@ -14,10 +14,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.2",
+    "@chromatic-com/playwright": "0.12.7",
     "@dotenvx/dotenvx": "1.49.0",
     "@playwright/test": "1.55.0",
     "@t3-oss/env-core": "0.13.8",
     "@types/node": "24.3.0",
+    "chromatic": "13.1.4",
     "typescript": "5.9.2",
     "zod": "4.1.5"
   }
