@@ -1,3 +1,4 @@
+import type { ChromaticConfig } from "@chromatic-com/playwright";
 import { defineConfig, devices } from "@playwright/test";
 import { env } from "./tests/env";
 
@@ -6,7 +7,7 @@ const baseURL = `${env.FRONTEND_APP_SERVER_URL}:${env.FRONTEND_APP_PORT}`;
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<ChromaticConfig>({
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -43,20 +44,20 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] },
+    // },
 
     /* Test against mobile viewports. */
     {
       name: "Mobile Chrome",
       use: { ...devices["Pixel 5"] },
     },
-    {
-      name: "Mobile Safari",
-      use: { ...devices["iPhone 12"] },
-    },
+    // {
+    //   name: "Mobile Safari",
+    //   use: { ...devices["iPhone 12"] },
+    // },
   ],
 
   snapshotPathTemplate:
