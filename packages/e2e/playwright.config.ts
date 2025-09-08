@@ -1,3 +1,4 @@
+import type { ChromaticConfig } from "@chromatic-com/playwright";
 import { defineConfig, devices } from "@playwright/test";
 import { env } from "./tests/env";
 
@@ -6,7 +7,7 @@ const baseURL = `${env.FRONTEND_APP_SERVER_URL}:${env.FRONTEND_APP_PORT}`;
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<ChromaticConfig>({
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,

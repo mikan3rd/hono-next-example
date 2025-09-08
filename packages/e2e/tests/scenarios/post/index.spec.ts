@@ -1,5 +1,4 @@
-import { expect, test } from "@chromatic-com/playwright";
-import type { PageAssertionsToHaveScreenshotOptions } from "@playwright/test";
+import { expect, takeSnapshot, test } from "@chromatic-com/playwright";
 import { env } from "../../env";
 
 test.beforeEach(async () => {
@@ -9,17 +8,17 @@ test.beforeEach(async () => {
   expect(res.status).toBe(200);
 });
 
-test("post page", async ({ page }) => {
-  const screenshotOptions: PageAssertionsToHaveScreenshotOptions = {
-    fullPage: true,
-    mask: [page.getByTestId("PostCard-date")],
-  };
+test("post page", async ({ page }, testInfo) => {
+  test.use({
+    disableAutoSnapshot: true,
+    ignoreSelectors: [`[data-testid="PostCard-date"]`],
+  });
 
   await test.step("visit post page", async () => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);
     await expect(page.getByText("No posts yet")).toBeVisible();
-    await expect.soft(page).toHaveScreenshot(screenshotOptions);
+    await takeSnapshot(page, testInfo);
   });
 
   const firstPostContent = `This is first post content`;
@@ -40,7 +39,7 @@ test("post page", async ({ page }) => {
       await expect(createTextArea).toHaveValue("");
 
       await expect(firstPostCard).toBeVisible();
-      await expect.soft(page).toHaveScreenshot(screenshotOptions);
+      await takeSnapshot(page, testInfo);
     });
 
     await test.step("create second post", async () => {
@@ -49,7 +48,7 @@ test("post page", async ({ page }) => {
       await expect(createTextArea).toHaveValue("");
 
       await expect(secondPostCard).toBeVisible();
-      await expect.soft(page).toHaveScreenshot(screenshotOptions);
+      await takeSnapshot(page, testInfo);
     });
   });
 
@@ -60,7 +59,7 @@ test("post page", async ({ page }) => {
     await test.step("check first post edit button", async () => {
       await firstPostCard.getByRole("button", { name: "Edit" }).click();
       await expect(editTextArea).toBeVisible();
-      await expect.soft(page).toHaveScreenshot(screenshotOptions);
+      await takeSnapshot(page, testInfo);
     });
 
     await test.step("update first post", async () => {
@@ -71,7 +70,7 @@ test("post page", async ({ page }) => {
       await firstPostCard.getByRole("button", { name: "Save" }).click();
       await expect(firstPostCard.getByText(updatedPostContent)).toBeVisible();
       await expect(firstPostCard.getByText("New")).not.toBeVisible();
-      await expect.soft(page).toHaveScreenshot(screenshotOptions);
+      await takeSnapshot(page, testInfo);
     });
 
     await test.step("cancel update second post", async () => {
@@ -87,6 +86,6 @@ test("post page", async ({ page }) => {
   await test.step("delete second post", async () => {
     await secondPostCard.getByRole("button", { name: "Delete" }).click();
     await expect(secondPostCard).not.toBeVisible();
-    await expect.soft(page).toHaveScreenshot(screenshotOptions);
+    await takeSnapshot(page, testInfo);
   });
 });
