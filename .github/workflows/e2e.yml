@@ -112,4 +112,4 @@ jobs:
           workingDir: packages/e2e
           exitZeroOnChanges: false
         env:
-          CHROMATIC_ARCHIVE_LOCATION: ./packages/e2e/test-results
+          CHROMATIC_ARCHIVE_LOCATION: ./test-results
