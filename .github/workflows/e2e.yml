@@ -108,7 +108,7 @@ jobs:
         uses: chromaui/action@v13
         with:
           playwright: true
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_E2E }}
           workingDir: packages/e2e
           exitZeroOnChanges: false
         env:
