@@ -2,6 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "../../../../ui/Button";
 import { createPost } from "./client";
 
@@ -15,11 +16,12 @@ export const PostForm = ({ invalidatePostsQuery }: PostFormProps) => {
   const createPostMutation = useMutation({
     mutationFn: createPost,
     onSuccess: () => {
+      toast.success("Post created successfully");
       invalidatePostsQuery();
       handleClearForm();
     },
     onError: (error) => {
-      console.error("Failed to create post:", error);
+      toast.error(`Failed to create post: ${error.message}`);
     },
   });
 

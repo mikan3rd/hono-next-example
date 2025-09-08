@@ -11,15 +11,15 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    // For shadcn
+    // "paths": {
+    //   "@/*": ["./src/*"]
+    // },
     "plugins": [
       {
         "name": "next"
       }
     ]
-    // For shadcn
-    // "paths": {
-    //   "@/*": ["./src/*"]
-    // }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

@@ -2,6 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 import { formatDate } from "../../../../../lib/dateUtils";
 import { Button } from "../../../../ui/Button";
 import { deletePost, updatePost } from "./client";
@@ -26,21 +27,23 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
   const updatePostMutation = useMutation({
     mutationFn: updatePost,
     onSuccess: () => {
+      toast.success("Post updated successfully");
       setIsEditing(false);
       invalidatePostsQuery();
     },
     onError: (error) => {
-      console.error("Failed to update post:", error);
+      toast.error(`Failed to update post: ${error.message}`);
     },
   });
 
   const deletePostMutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
+      toast.success("Post deleted successfully");
       invalidatePostsQuery();
     },
     onError: (error) => {
-      console.error("Failed to delete post:", error);
+      toast.error(`Failed to delete post: ${error.message}`);
     },
   });
 
