@@ -28,12 +28,39 @@ env:
   HOSTNAME: localhost
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'packages/backend_app/**'
+              - 'packages/frontend_app/**'
+            e2e:
+              - '.github/workflows/e2e.yml'
+              - 'packages/e2e/**'
+              - '.dockerignore'
+              - '.tool-versions'
+              - 'biome.jsonc'
+              - 'docker-compose.prod.yml'
+              - 'tsconfig.json'
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
+      e2e: ${{ steps.filter.outputs.e2e }}
+
   check:
     defaults:
       run:
         working-directory: ./packages/e2e
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    needs: changes
+    if: needs.changes.outputs.e2e == 'true'
     steps:
       - uses: actions/checkout@v4
 
@@ -50,7 +77,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    if: github.event.pull_request.draft != true
+    needs: 
+      - changes
+      - check
+    if: >-
+      github.event.pull_request.draft != true
+       && (needs.changes.outputs.e2e == 'true' || needs.changes.outputs.app == 'true')
+       && needs.check.result == 'success'
     steps:
       - uses: actions/checkout@v4
 
@@ -87,9 +120,10 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/e2e
-    needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    needs: build
+    if: needs.build.result == 'success'
     steps:
       - uses: actions/checkout@v4
         with:
