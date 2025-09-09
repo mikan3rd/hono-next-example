@@ -69,7 +69,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    needs: check
+    needs: 
+      - changes
+      - check
     if: ${{ needs.changes.outputs.backend == 'true' }}
 
     services:
