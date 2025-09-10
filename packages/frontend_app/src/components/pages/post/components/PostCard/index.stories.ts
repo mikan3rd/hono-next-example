@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { HttpResponse, http } from "msw";
 import type { ComponentProps } from "react";
-import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { env } from "../../../../../env";
 import { PostCard } from ".";
 
@@ -86,7 +86,6 @@ const mswHandlers = {
 export const CreatedPost: Story = {
   args: {
     post: createMockPost(),
-    invalidatePostsQuery: fn(),
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
@@ -114,7 +113,6 @@ export const UpdatedPost: Story = {
     post: createMockPost({
       updated_at: "2025-01-02T12:00:00.000Z",
     }),
-    invalidatePostsQuery: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -128,7 +126,6 @@ export const UpdatedPost: Story = {
 export const EditPost: Story = {
   args: {
     post: createMockPost(),
-    invalidatePostsQuery: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -150,9 +147,8 @@ export const EditAndSavePost: Story = {
   },
   args: {
     post: createMockPost(),
-    invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { header, textarea } = await enterEditMode(canvas);
 
@@ -169,17 +165,14 @@ export const EditAndSavePost: Story = {
 
     await userEvent.click(saveButton);
     await waitFor(async () => {
-      await expect(args.invalidatePostsQuery).toHaveBeenCalledOnce();
+      await expect(textarea).not.toBeVisible();
     });
-
-    await expect(textarea).not.toBeVisible();
   },
 };
 
 export const EditAndCancelPost: Story = {
   args: {
     post: createMockPost(),
-    invalidatePostsQuery: fn(),
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
@@ -202,18 +195,13 @@ export const DeletePost: Story = {
   },
   args: {
     post: createMockPost(),
-    invalidatePostsQuery: fn(),
   },
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { header } = getPostCardElements(canvas);
 
     const deleteButton = within(header).getByRole("button", { name: "Delete" });
     await expect(deleteButton).toBeEnabled();
     await userEvent.click(deleteButton);
-
-    await waitFor(async () => {
-      await expect(args.invalidatePostsQuery).toHaveBeenCalledOnce();
-    });
   },
 };

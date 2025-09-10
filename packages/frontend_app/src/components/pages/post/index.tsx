@@ -1,21 +1,17 @@
 "use client";
 
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { getPosts, queryKey } from "./client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { QueryKey } from "../../../queryKey";
+import { getPosts } from "./client";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
 export const Index = () => {
-  const queryClient = useQueryClient();
   const { data } = useSuspenseQuery({
-    queryKey,
+    queryKey: QueryKey.posts.all,
     queryFn: getPosts,
   });
-
-  const invalidatePostsQuery = () => {
-    queryClient.invalidateQueries({ queryKey });
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
@@ -26,7 +22,7 @@ export const Index = () => {
             <p className="text-gray-600">View the latest posts</p>
           </div>
 
-          <PostForm invalidatePostsQuery={invalidatePostsQuery} />
+          <PostForm />
         </div>
 
         {data.posts.length === 0 ? (
@@ -34,11 +30,7 @@ export const Index = () => {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {data.posts.map((post) => (
-              <PostCard
-                key={post.id}
-                post={post}
-                invalidatePostsQuery={invalidatePostsQuery}
-              />
+              <PostCard key={post.id} post={post} />
             ))}
           </div>
         )}

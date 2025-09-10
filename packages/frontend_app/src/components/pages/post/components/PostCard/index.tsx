@@ -1,9 +1,10 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { formatDate } from "../../../../../lib/dateUtils";
+import { QueryKey } from "../../../../../queryKey";
 import { Button } from "../../../../ui/Button";
 import { deletePost, updatePost } from "./client";
 
@@ -16,10 +17,11 @@ type Post = {
 
 type PostCardProps = {
   post: Post;
-  invalidatePostsQuery: () => void;
 };
 
-export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
+export const PostCard = ({ post }: PostCardProps) => {
+  const queryClient = useQueryClient();
+
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(post.content);
   const isUpdated = post.updated_at !== post.created_at;
@@ -29,7 +31,7 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
     onSuccess: () => {
       toast.success("Post updated successfully");
       setIsEditing(false);
-      invalidatePostsQuery();
+      queryClient.invalidateQueries({ queryKey: QueryKey.posts.all });
     },
     onError: (error) => {
       toast.error(`Failed to update post: ${error.message}`);
@@ -40,7 +42,7 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
     mutationFn: deletePost,
     onSuccess: () => {
       toast.success("Post deleted successfully");
-      invalidatePostsQuery();
+      queryClient.invalidateQueries({ queryKey: QueryKey.posts.all });
     },
     onError: (error) => {
       toast.error(`Failed to delete post: ${error.message}`);
