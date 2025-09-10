@@ -4,8 +4,9 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import type { Metadata, ResolvingMetadata } from "next";
-import { getPosts, queryKey } from "../../components/pages/post/client";
+import { getPosts } from "../../components/pages/post/client";
 import { Index } from "../../components/pages/post/index";
+import { QueryKey } from "../../queryKey";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +25,7 @@ export default async function Hello() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey,
+    queryKey: QueryKey.posts.all,
     queryFn: getPosts,
   });
 
