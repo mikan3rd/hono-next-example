@@ -14,6 +14,14 @@ test.beforeEach(async () => {
 });
 
 test("post page", async ({ page }, testInfo) => {
+  page.on("console", (msg) => {
+    if (msg.type() === "error") {
+      const error = new Error(msg.text());
+      error.name = "ConsoleError";
+      throw error;
+    }
+  });
+
   await test.step("visit post page", async () => {
     await page.goto("/post");
     await expect(page).toHaveTitle(/posts: 0/);

@@ -44,6 +44,7 @@ services:
       TEST_DATABASE_HOST: test_db
     command: |
       sh -c '
+        bun install --frozen-lockfile &&
         bun db:push &&
         bun test:db:push
       '
@@ -68,7 +69,10 @@ services:
       DATABASE_HOST: db
       ENABLE_DB_INITIALIZE: true
     command: |
-      bun run --hot src/server.ts
+      sh -c '
+        bun install --frozen-lockfile &&
+        bun run --hot src/server.ts
+      '
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
     depends_on:
@@ -86,7 +90,10 @@ services:
     env_file:
       - .env
     command: |
-      bun run dev --port ${FRONTEND_APP_PORT}
+      sh -c '
+        bun install --frozen-lockfile &&
+        bun run dev --port ${FRONTEND_APP_PORT}
+      '
     network_mode: host
     ports:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"

@@ -155,8 +155,14 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
           className="border-t border-gray-100 pt-4"
         >
           <div className="flex justify-between text-xs text-gray-500">
-            <span>Created: {formatDate(post.created_at)}</span>
-            {isUpdated && <span>Updated: {formatDate(post.updated_at)}</span>}
+            <span suppressHydrationWarning>
+              Created: {formatDate(post.created_at)}
+            </span>
+            {isUpdated && (
+              <span suppressHydrationWarning>
+                Updated: {formatDate(post.updated_at)}
+              </span>
+            )}
           </div>
         </div>
       </div>
