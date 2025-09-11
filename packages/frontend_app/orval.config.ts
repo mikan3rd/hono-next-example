@@ -11,7 +11,6 @@ export default defineConfig({
       mock: {
         type: "msw",
         delay: false,
-        generateEachHttpStatus: true,
       },
       biome: true,
     },
