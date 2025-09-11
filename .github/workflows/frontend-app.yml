@@ -59,6 +59,11 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
+      - name: Check gen:client diff
+        run: |
+          bun run gen:client
+          git diff --exit-code src/client/index.ts
+
       - run: bun run lint
 
       - run: bun run typecheck
