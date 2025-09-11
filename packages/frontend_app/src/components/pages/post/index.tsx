@@ -1,8 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useGetPostsSuspense } from "../../../client";
-import { queryKey } from "./client";
+import { getGetPostsQueryKey, useGetPostsSuspense } from "../../../client";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
@@ -17,7 +16,7 @@ export const Index = () => {
   } = useGetPostsSuspense();
 
   const invalidatePostsQuery = () => {
-    queryClient.invalidateQueries({ queryKey });
+    queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
   };
 
   return (
