@@ -15,6 +15,11 @@ export default defineConfig({
         delay: false,
       },
       biome: true,
+      override: {
+        query: {
+          useSuspenseQuery: true,
+        },
+      },
     },
   },
 });
