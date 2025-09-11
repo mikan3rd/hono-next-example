@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { HttpResponse, http } from "msw";
 import type { ComponentProps } from "react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
-import { env } from "../../../../../env";
 import { PostCard } from ".";
 
 const meta = {
@@ -68,21 +66,6 @@ const verifyDateDisplay = async (date: HTMLElement, isUpdated: boolean) => {
   }
 };
 
-const mswHandlers = {
-  updatePost: http.put(
-    `${env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/:id`,
-    async () => {
-      return HttpResponse.json({});
-    },
-  ),
-  deletePost: http.delete(
-    `${env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/:id`,
-    async () => {
-      return HttpResponse.json({});
-    },
-  ),
-};
-
 export const CreatedPost: Story = {
   args: {
     post: createMockPost(),
@@ -143,11 +126,6 @@ export const EditPost: Story = {
 };
 
 export const EditAndSavePost: Story = {
-  parameters: {
-    msw: {
-      handlers: [mswHandlers.updatePost],
-    },
-  },
   args: {
     post: createMockPost(),
     invalidatePostsQuery: fn(),
@@ -195,11 +173,6 @@ export const EditAndCancelPost: Story = {
 };
 
 export const DeletePost: Story = {
-  parameters: {
-    msw: {
-      handlers: [mswHandlers.deletePost],
-    },
-  },
   args: {
     post: createMockPost(),
     invalidatePostsQuery: fn(),

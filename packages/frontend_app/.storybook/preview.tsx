@@ -2,13 +2,14 @@ import type { Preview } from "@storybook/nextjs-vite";
 import "../src/app/globals.css";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import Providers from "../src/app/providers";
+import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
 
 /*
  * Initializes MSW
  * See https://github.com/mswjs/msw-storybook-addon#configuring-msw
  * to learn how to customize it
  */
-initialize();
+initialize({}, getBackendAppOpenAPIMock());
 
 const preview: Preview = {
   parameters: {
