@@ -8,7 +8,8 @@ export default defineConfig({
       target: "./src/client/index.ts",
       // biome-ignore lint/suspicious/noTemplateCurlyInString: Embedding env variable
       baseUrl: "${process.env.NEXT_PUBLIC_BACKEND_APP_URL}",
-      httpClient: "fetch",
+      // FIXME: fetch does not work with useSuspenseQuery/usePrefetch
+      httpClient: "axios",
       mode: "split",
       mock: {
         type: "msw",
@@ -18,6 +19,7 @@ export default defineConfig({
       override: {
         query: {
           useSuspenseQuery: true,
+          usePrefetch: true,
         },
       },
     },

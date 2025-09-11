@@ -10,15 +10,11 @@ import { PostForm } from "./components/PostForm";
 export const Index = () => {
   const queryClient = useQueryClient();
 
-  const { data } = useGetPostsSuspense();
-
-  if (data.status !== 200) {
-    throw new Error("Failed to fetch posts");
-  }
-
   const {
-    data: { posts },
-  } = data;
+    data: {
+      data: { posts },
+    },
+  } = useGetPostsSuspense();
 
   const invalidatePostsQuery = () => {
     queryClient.invalidateQueries({ queryKey });
