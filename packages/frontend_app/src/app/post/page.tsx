@@ -25,6 +25,7 @@ export default async function Hello() {
 
   await queryClient.prefetchQuery({
     queryKey: getGetPostsQueryKey(),
+    // FIXME: Uncaught RangeError: Maximum call stack size exceeded.
     queryFn: async () => ({ data: (await getPosts()).data }),
   });
 
