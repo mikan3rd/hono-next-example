@@ -1,11 +1,10 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useDeletePostsId, usePutPostsId } from "../../../../../client";
 import { formatDate } from "../../../../../lib/dateUtils";
 import { Button } from "../../../../ui/Button";
-import { deletePost, updatePost } from "./client";
 
 type Post = {
   id: number;
@@ -24,26 +23,28 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
   const [editContent, setEditContent] = useState(post.content);
   const isUpdated = post.updated_at !== post.created_at;
 
-  const updatePostMutation = useMutation({
-    mutationFn: updatePost,
-    onSuccess: () => {
-      toast.success("Post updated successfully");
-      setIsEditing(false);
-      invalidatePostsQuery();
-    },
-    onError: (error) => {
-      toast.error(`Failed to update post: ${error.message}`);
+  const updatePostMutation = usePutPostsId({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Post updated successfully");
+        setIsEditing(false);
+        invalidatePostsQuery();
+      },
+      onError: (error) => {
+        toast.error(`Failed to update post: ${error.message}`);
+      },
     },
   });
 
-  const deletePostMutation = useMutation({
-    mutationFn: deletePost,
-    onSuccess: () => {
-      toast.success("Post deleted successfully");
-      invalidatePostsQuery();
-    },
-    onError: (error) => {
-      toast.error(`Failed to delete post: ${error.message}`);
+  const deletePostMutation = useDeletePostsId({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Post deleted successfully");
+        invalidatePostsQuery();
+      },
+      onError: (error) => {
+        toast.error(`Failed to delete post: ${error.message}`);
+      },
     },
   });
 
@@ -61,13 +62,13 @@ export const PostCard = ({ post, invalidatePostsQuery }: PostCardProps) => {
     const trimmedContent = editContent.trim();
     if (!trimmedContent) return;
     updatePostMutation.mutate({
-      id: post.id.toString(),
-      content: trimmedContent,
+      id: post.id,
+      data: { content: trimmedContent },
     });
   };
 
   const handleDelete = () => {
-    deletePostMutation.mutate(post.id);
+    deletePostMutation.mutate({ id: post.id });
   };
 
   return (

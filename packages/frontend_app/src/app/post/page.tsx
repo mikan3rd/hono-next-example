@@ -4,7 +4,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import type { Metadata, ResolvingMetadata } from "next";
-import { getPosts, queryKey } from "../../components/pages/post/client";
+import { getGetPostsQueryKey, getPosts } from "../../client";
 import { Index } from "../../components/pages/post/index";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +16,7 @@ export async function generateMetadata(
   const result = await getPosts();
   const metadata = await parent;
   return {
-    title: `posts: ${result.posts.length} | ${metadata.title?.absolute}`,
+    title: `posts: ${result.data.posts.length} | ${metadata.title?.absolute}`,
   };
 }
 
@@ -24,8 +24,9 @@ export default async function Hello() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey,
-    queryFn: getPosts,
+    queryKey: getGetPostsQueryKey(),
+    // FIXME: Uncaught RangeError: Maximum call stack size exceeded.
+    queryFn: async () => ({ data: (await getPosts()).data }),
   });
 
   return (

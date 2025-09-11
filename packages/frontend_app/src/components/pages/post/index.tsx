@@ -1,20 +1,22 @@
 "use client";
 
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { getPosts, queryKey } from "./client";
+import { useQueryClient } from "@tanstack/react-query";
+import { getGetPostsQueryKey, useGetPostsSuspense } from "../../../client";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
 export const Index = () => {
   const queryClient = useQueryClient();
-  const { data } = useSuspenseQuery({
-    queryKey,
-    queryFn: getPosts,
-  });
+
+  const {
+    data: {
+      data: { posts },
+    },
+  } = useGetPostsSuspense();
 
   const invalidatePostsQuery = () => {
-    queryClient.invalidateQueries({ queryKey });
+    queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
   };
 
   return (
@@ -29,11 +31,11 @@ export const Index = () => {
           <PostForm invalidatePostsQuery={invalidatePostsQuery} />
         </div>
 
-        {data.posts.length === 0 ? (
+        {posts.length === 0 ? (
           <EmptyState />
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {data.posts.map((post) => (
+            {posts.map((post) => (
               <PostCard
                 key={post.id}
                 post={post}

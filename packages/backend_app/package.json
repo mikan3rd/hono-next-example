@@ -10,8 +10,8 @@
     "test:db:push": "bun --env-file=.env.test run --bun drizzle-kit push",
     "test:local": "bun --env-file=.env.test test",
     "test:db:studio": "bun --env-file=.env.test drizzle-kit studio",
-    "export-openapi": "bun run src/scripts/export-openapi/index.ts",
-    "check:all": "bun run lint:fix && bun run typecheck && bun run export-openapi && bun run test:local"
+    "gen:openapi": "bun run src/scripts/export-openapi/index.ts",
+    "check:all": "bun run lint:fix && bun run typecheck && bun run gen:openapi && bun run test:local"
   },
   "dependencies": {
     "@hono/swagger-ui": "0.5.2",

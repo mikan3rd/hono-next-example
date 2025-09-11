@@ -16,7 +16,7 @@ const errorSchemaFactory = (code: ErrorCode) => {
       }),
       message: z.string().openapi({ description: "explanation" }),
     })
-    .openapi("Error");
+    .openapi("ErrorResponse");
 };
 
 export type ErrorResponse = z.infer<ReturnType<typeof errorSchemaFactory>>;
