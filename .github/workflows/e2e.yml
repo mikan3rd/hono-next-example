@@ -79,7 +79,6 @@ jobs:
     timeout-minutes: 3
     needs: 
       - changes
-      - check
     if: >-
       github.event.pull_request.draft != true
        && (needs.changes.outputs.e2e == 'true' || needs.changes.outputs.app == 'true')
