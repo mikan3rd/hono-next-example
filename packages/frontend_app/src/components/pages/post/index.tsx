@@ -9,11 +9,15 @@ import { PostForm } from "./components/PostForm";
 export const Index = () => {
   const queryClient = useQueryClient();
 
+  const { data } = useGetPostsSuspense();
+
+  if (data.status !== 200) {
+    throw new Error("Failed to get posts");
+  }
+
   const {
-    data: {
-      data: { posts },
-    },
-  } = useGetPostsSuspense();
+    data: { posts },
+  } = data;
 
   const invalidatePostsQuery = () => {
     queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
