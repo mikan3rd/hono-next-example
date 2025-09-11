@@ -1,10 +1,9 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
+import { usePostPosts } from "../../../../../client";
 import { Button } from "../../../../ui/Button";
-import { createPost } from "./client";
 
 type PostFormProps = {
   invalidatePostsQuery: () => void;
@@ -13,15 +12,16 @@ type PostFormProps = {
 export const PostForm = ({ invalidatePostsQuery }: PostFormProps) => {
   const [content, setContent] = useState("");
 
-  const createPostMutation = useMutation({
-    mutationFn: createPost,
-    onSuccess: () => {
-      toast.success("Post created successfully");
-      invalidatePostsQuery();
-      handleClearForm();
-    },
-    onError: (error) => {
-      toast.error(`Failed to create post: ${error.message}`);
+  const createPostMutation = usePostPosts({
+    mutation: {
+      onSuccess: () => {
+        toast.success("Post created successfully");
+        invalidatePostsQuery();
+        handleClearForm();
+      },
+      onError: (error) => {
+        toast.error(`Failed to create post: ${error.message}`);
+      },
     },
   });
 
@@ -33,7 +33,7 @@ export const PostForm = ({ invalidatePostsQuery }: PostFormProps) => {
     e.preventDefault();
     const trimmedContent = content.trim();
     if (!trimmedContent) return;
-    createPostMutation.mutate(trimmedContent);
+    createPostMutation.mutate({ data: { content: trimmedContent } });
   };
 
   return (
