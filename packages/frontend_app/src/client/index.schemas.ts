@@ -19,17 +19,18 @@ export interface Post {
   updated_at: string;
 }
 
-export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
+export type ErrorResponseCode =
+  (typeof ErrorResponseCode)[keyof typeof ErrorResponseCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ErrorCode = {
+export const ErrorResponseCode = {
   Bad_Request: "Bad Request",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export interface Error {
-  code: ErrorCode;
+export interface ErrorResponse {
+  code: ErrorResponseCode;
   /** explanation */
   message: string;
 }
@@ -54,7 +55,7 @@ export type GetPosts404AllOf = {
   message?: string;
 };
 
-export type GetPosts404 = Error & GetPosts404AllOf;
+export type GetPosts404 = ErrorResponse & GetPosts404AllOf;
 
 export type GetPosts500AllOfCode =
   (typeof GetPosts500AllOfCode)[keyof typeof GetPosts500AllOfCode];
@@ -72,7 +73,7 @@ export type GetPosts500AllOf = {
   message?: string;
 };
 
-export type GetPosts500 = Error & GetPosts500AllOf;
+export type GetPosts500 = ErrorResponse & GetPosts500AllOf;
 
 export type PostPostsBody = {
   /**
@@ -102,7 +103,7 @@ export type PostPosts404AllOf = {
   message?: string;
 };
 
-export type PostPosts404 = Error & PostPosts404AllOf;
+export type PostPosts404 = ErrorResponse & PostPosts404AllOf;
 
 export type PostPosts500AllOfCode =
   (typeof PostPosts500AllOfCode)[keyof typeof PostPosts500AllOfCode];
@@ -120,7 +121,7 @@ export type PostPosts500AllOf = {
   message?: string;
 };
 
-export type PostPosts500 = Error & PostPosts500AllOf;
+export type PostPosts500 = ErrorResponse & PostPosts500AllOf;
 
 export type PutPostsIdBody = {
   /**
@@ -150,7 +151,7 @@ export type PutPostsId404AllOf = {
   message?: string;
 };
 
-export type PutPostsId404 = Error & PutPostsId404AllOf;
+export type PutPostsId404 = ErrorResponse & PutPostsId404AllOf;
 
 export type PutPostsId500AllOfCode =
   (typeof PutPostsId500AllOfCode)[keyof typeof PutPostsId500AllOfCode];
@@ -168,7 +169,7 @@ export type PutPostsId500AllOf = {
   message?: string;
 };
 
-export type PutPostsId500 = Error & PutPostsId500AllOf;
+export type PutPostsId500 = ErrorResponse & PutPostsId500AllOf;
 
 export type DeletePostsId404AllOfCode =
   (typeof DeletePostsId404AllOfCode)[keyof typeof DeletePostsId404AllOfCode];
@@ -186,7 +187,7 @@ export type DeletePostsId404AllOf = {
   message?: string;
 };
 
-export type DeletePostsId404 = Error & DeletePostsId404AllOf;
+export type DeletePostsId404 = ErrorResponse & DeletePostsId404AllOf;
 
 export type DeletePostsId500AllOfCode =
   (typeof DeletePostsId500AllOfCode)[keyof typeof DeletePostsId500AllOfCode];
@@ -204,4 +205,4 @@ export type DeletePostsId500AllOf = {
   message?: string;
 };
 
-export type DeletePostsId500 = Error & DeletePostsId500AllOf;
+export type DeletePostsId500 = ErrorResponse & DeletePostsId500AllOf;

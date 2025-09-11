@@ -11,7 +11,7 @@ import { HttpResponse, http } from "msw";
 import type {
   DeletePostsId404,
   DeletePostsId500,
-  Error,
+  ErrorResponse,
   GetPosts200,
   GetPosts404,
   GetPosts500,
@@ -62,8 +62,8 @@ export const getGetPostsResponseMock200 = (
 });
 
 export const getGetPostsResponseMock400 = (
-  overrideResponse: Partial<Error> = {},
-): Error => ({
+  overrideResponse: Partial<ErrorResponse> = {},
+): ErrorResponse => ({
   code: faker.helpers.arrayElement([
     "Bad Request",
     "Not Found",
@@ -156,8 +156,8 @@ export const getPostPostsResponseMock200 = (
 });
 
 export const getPostPostsResponseMock400 = (
-  overrideResponse: Partial<Error> = {},
-): Error => ({
+  overrideResponse: Partial<ErrorResponse> = {},
+): ErrorResponse => ({
   code: faker.helpers.arrayElement([
     "Bad Request",
     "Not Found",
@@ -250,8 +250,8 @@ export const getPutPostsIdResponseMock200 = (
 });
 
 export const getPutPostsIdResponseMock400 = (
-  overrideResponse: Partial<Error> = {},
-): Error => ({
+  overrideResponse: Partial<ErrorResponse> = {},
+): ErrorResponse => ({
   code: faker.helpers.arrayElement([
     "Bad Request",
     "Not Found",
@@ -312,8 +312,8 @@ export const getPutPostsIdResponseMock500 = (): PutPostsId500 => ({
 });
 
 export const getDeletePostsIdResponseMock400 = (
-  overrideResponse: Partial<Error> = {},
-): Error => ({
+  overrideResponse: Partial<ErrorResponse> = {},
+): ErrorResponse => ({
   code: faker.helpers.arrayElement([
     "Bad Request",
     "Not Found",
@@ -417,10 +417,10 @@ export const getGetPostsMockHandler200 = (
 
 export const getGetPostsMockHandler400 = (
   overrideResponse?:
-    | Error
+    | ErrorResponse
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<Error> | Error),
+      ) => Promise<ErrorResponse> | ErrorResponse),
 ) => {
   return http.get("*/posts", async (info) => {
     return new HttpResponse(
@@ -522,10 +522,10 @@ export const getPostPostsMockHandler200 = (
 
 export const getPostPostsMockHandler400 = (
   overrideResponse?:
-    | Error
+    | ErrorResponse
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<Error> | Error),
+      ) => Promise<ErrorResponse> | ErrorResponse),
 ) => {
   return http.post("*/posts", async (info) => {
     return new HttpResponse(
@@ -627,10 +627,10 @@ export const getPutPostsIdMockHandler200 = (
 
 export const getPutPostsIdMockHandler400 = (
   overrideResponse?:
-    | Error
+    | ErrorResponse
     | ((
         info: Parameters<Parameters<typeof http.put>[1]>[0],
-      ) => Promise<Error> | Error),
+      ) => Promise<ErrorResponse> | ErrorResponse),
 ) => {
   return http.put("*/posts/:id", async (info) => {
     return new HttpResponse(
@@ -720,10 +720,10 @@ export const getDeletePostsIdMockHandler200 = (
 
 export const getDeletePostsIdMockHandler400 = (
   overrideResponse?:
-    | Error
+    | ErrorResponse
     | ((
         info: Parameters<Parameters<typeof http.delete>[1]>[0],
-      ) => Promise<Error> | Error),
+      ) => Promise<ErrorResponse> | ErrorResponse),
 ) => {
   return http.delete("*/posts/:id", async (info) => {
     return new HttpResponse(

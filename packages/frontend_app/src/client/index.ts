@@ -24,7 +24,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DeletePostsId404,
   DeletePostsId500,
-  Error,
+  ErrorResponse,
   GetPosts200,
   GetPosts404,
   GetPosts500,
@@ -44,7 +44,7 @@ export type getPostsResponse200 = {
 };
 
 export type getPostsResponse400 = {
-  data: Error;
+  data: ErrorResponse;
   status: 400;
 };
 
@@ -92,7 +92,7 @@ export const getGetPostsQueryKey = () => {
 
 export const getGetPostsQueryOptions = <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = Error | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(options?: {
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
@@ -117,11 +117,11 @@ export const getGetPostsQueryOptions = <
 export type GetPostsQueryResult = NonNullable<
   Awaited<ReturnType<typeof getPosts>>
 >;
-export type GetPostsQueryError = Error | GetPosts404 | GetPosts500;
+export type GetPostsQueryError = ErrorResponse | GetPosts404 | GetPosts500;
 
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = Error | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options: {
     query: Partial<
@@ -143,7 +143,7 @@ export function useGetPosts<
 };
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = Error | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -165,7 +165,7 @@ export function useGetPosts<
 };
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = Error | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -180,7 +180,7 @@ export function useGetPosts<
 
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = Error | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -210,7 +210,7 @@ export type postPostsResponse200 = {
 };
 
 export type postPostsResponse400 = {
-  data: Error;
+  data: ErrorResponse;
   status: 400;
 };
 
@@ -260,7 +260,7 @@ export const postPosts = async (
 };
 
 export const getPostPostsMutationOptions = <
-  TError = Error | PostPosts404 | PostPosts500,
+  TError = ErrorResponse | PostPosts404 | PostPosts500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -301,10 +301,13 @@ export type PostPostsMutationResult = NonNullable<
   Awaited<ReturnType<typeof postPosts>>
 >;
 export type PostPostsMutationBody = PostPostsBody;
-export type PostPostsMutationError = Error | PostPosts404 | PostPosts500;
+export type PostPostsMutationError =
+  | ErrorResponse
+  | PostPosts404
+  | PostPosts500;
 
 export const usePostPosts = <
-  TError = Error | PostPosts404 | PostPosts500,
+  TError = ErrorResponse | PostPosts404 | PostPosts500,
   TContext = unknown,
 >(
   options?: {
@@ -334,7 +337,7 @@ export type putPostsIdResponse200 = {
 };
 
 export type putPostsIdResponse400 = {
-  data: Error;
+  data: ErrorResponse;
   status: 400;
 };
 
@@ -385,7 +388,7 @@ export const putPostsId = async (
 };
 
 export const getPutPostsIdMutationOptions = <
-  TError = Error | PutPostsId404 | PutPostsId500,
+  TError = ErrorResponse | PutPostsId404 | PutPostsId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -426,10 +429,13 @@ export type PutPostsIdMutationResult = NonNullable<
   Awaited<ReturnType<typeof putPostsId>>
 >;
 export type PutPostsIdMutationBody = PutPostsIdBody;
-export type PutPostsIdMutationError = Error | PutPostsId404 | PutPostsId500;
+export type PutPostsIdMutationError =
+  | ErrorResponse
+  | PutPostsId404
+  | PutPostsId500;
 
 export const usePutPostsId = <
-  TError = Error | PutPostsId404 | PutPostsId500,
+  TError = ErrorResponse | PutPostsId404 | PutPostsId500,
   TContext = unknown,
 >(
   options?: {
@@ -459,7 +465,7 @@ export type deletePostsIdResponse200 = {
 };
 
 export type deletePostsIdResponse400 = {
-  data: Error;
+  data: ErrorResponse;
   status: 400;
 };
 
@@ -507,7 +513,7 @@ export const deletePostsId = async (
 };
 
 export const getDeletePostsIdMutationOptions = <
-  TError = Error | DeletePostsId404 | DeletePostsId500,
+  TError = ErrorResponse | DeletePostsId404 | DeletePostsId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -549,12 +555,12 @@ export type DeletePostsIdMutationResult = NonNullable<
 >;
 
 export type DeletePostsIdMutationError =
-  | Error
+  | ErrorResponse
   | DeletePostsId404
   | DeletePostsId500;
 
 export const useDeletePostsId = <
-  TError = Error | DeletePostsId404 | DeletePostsId500,
+  TError = ErrorResponse | DeletePostsId404 | DeletePostsId500,
   TContext = unknown,
 >(
   options?: {
