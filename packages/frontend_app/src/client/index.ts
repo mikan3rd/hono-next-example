@@ -22,8 +22,6 @@ import type {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
-import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import axios from "axios";
 
 import type {
   DeletePostsId404,
@@ -42,10 +40,52 @@ import type {
   PutPostsIdBody,
 } from "./index.schemas";
 
-export const getPosts = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<GetPosts200>> => {
-  return axios.get(`${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`, options);
+export type getPostsResponse200 = {
+  data: GetPosts200;
+  status: 200;
+};
+
+export type getPostsResponse400 = {
+  data: ErrorResponse;
+  status: 400;
+};
+
+export type getPostsResponse404 = {
+  data: GetPosts404;
+  status: 404;
+};
+
+export type getPostsResponse500 = {
+  data: GetPosts500;
+  status: 500;
+};
+
+export type getPostsResponseComposite =
+  | getPostsResponse200
+  | getPostsResponse400
+  | getPostsResponse404
+  | getPostsResponse500;
+
+export type getPostsResponse = getPostsResponseComposite & {
+  headers: Headers;
+};
+
+export const getGetPostsUrl = () => {
+  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`;
+};
+
+export const getPosts = async (
+  options?: RequestInit,
+): Promise<getPostsResponse> => {
+  const res = await fetch(getGetPostsUrl(), {
+    ...options,
+    method: "GET",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: getPostsResponse["data"] = body ? JSON.parse(body) : {};
+
+  return { data, status: res.status, headers: res.headers } as getPostsResponse;
 };
 
 export const getGetPostsQueryKey = () => {
@@ -54,20 +94,20 @@ export const getGetPostsQueryKey = () => {
 
 export const getGetPostsQueryOptions = <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(options?: {
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
   >;
-  axios?: AxiosRequestConfig;
+  fetch?: RequestInit;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetPostsQueryKey();
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getPosts>>> = ({
     signal,
-  }) => getPosts({ signal, ...axiosOptions });
+  }) => getPosts({ signal, ...fetchOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getPosts>>,
@@ -79,13 +119,11 @@ export const getGetPostsQueryOptions = <
 export type GetPostsQueryResult = NonNullable<
   Awaited<ReturnType<typeof getPosts>>
 >;
-export type GetPostsQueryError = AxiosError<
-  ErrorResponse | GetPosts404 | GetPosts500
->;
+export type GetPostsQueryError = ErrorResponse | GetPosts404 | GetPosts500;
 
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options: {
     query: Partial<
@@ -99,7 +137,7 @@ export function useGetPosts<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
@@ -107,7 +145,7 @@ export function useGetPosts<
 };
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -121,7 +159,7 @@ export function useGetPosts<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
@@ -129,13 +167,13 @@ export function useGetPosts<
 };
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
@@ -144,13 +182,13 @@ export function useGetPosts<
 
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
@@ -170,14 +208,14 @@ export function useGetPosts<
 
 export const prefetchGetPostsQuery = async <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   queryClient: QueryClient,
   options?: {
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
 ): Promise<QueryClient> => {
   const queryOptions = getGetPostsQueryOptions(options);
@@ -189,20 +227,20 @@ export const prefetchGetPostsQuery = async <
 
 export const getGetPostsSuspenseQueryOptions = <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(options?: {
   query?: Partial<
     UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
   >;
-  axios?: AxiosRequestConfig;
+  fetch?: RequestInit;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetPostsQueryKey();
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getPosts>>> = ({
     signal,
-  }) => getPosts({ signal, ...axiosOptions });
+  }) => getPosts({ signal, ...fetchOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
     Awaited<ReturnType<typeof getPosts>>,
@@ -214,13 +252,14 @@ export const getGetPostsSuspenseQueryOptions = <
 export type GetPostsSuspenseQueryResult = NonNullable<
   Awaited<ReturnType<typeof getPosts>>
 >;
-export type GetPostsSuspenseQueryError = AxiosError<
-  ErrorResponse | GetPosts404 | GetPosts500
->;
+export type GetPostsSuspenseQueryError =
+  | ErrorResponse
+  | GetPosts404
+  | GetPosts500;
 
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options: {
     query: Partial<
@@ -230,7 +269,7 @@ export function useGetPostsSuspense<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
@@ -238,7 +277,7 @@ export function useGetPostsSuspense<
 };
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -248,7 +287,7 @@ export function useGetPostsSuspense<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
@@ -256,7 +295,7 @@ export function useGetPostsSuspense<
 };
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -266,7 +305,7 @@ export function useGetPostsSuspense<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
@@ -275,7 +314,7 @@ export function useGetPostsSuspense<
 
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = AxiosError<ErrorResponse | GetPosts404 | GetPosts500>,
+  TError = ErrorResponse | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -285,7 +324,7 @@ export function useGetPostsSuspense<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
@@ -305,19 +344,63 @@ export function useGetPostsSuspense<
   return query;
 }
 
-export const postPosts = (
+export type postPostsResponse200 = {
+  data: PostPosts200;
+  status: 200;
+};
+
+export type postPostsResponse400 = {
+  data: ErrorResponse;
+  status: 400;
+};
+
+export type postPostsResponse404 = {
+  data: PostPosts404;
+  status: 404;
+};
+
+export type postPostsResponse500 = {
+  data: PostPosts500;
+  status: 500;
+};
+
+export type postPostsResponseComposite =
+  | postPostsResponse200
+  | postPostsResponse400
+  | postPostsResponse404
+  | postPostsResponse500;
+
+export type postPostsResponse = postPostsResponseComposite & {
+  headers: Headers;
+};
+
+export const getPostPostsUrl = () => {
+  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`;
+};
+
+export const postPosts = async (
   postPostsBody: PostPostsBody,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<PostPosts200>> => {
-  return axios.post(
-    `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`,
-    postPostsBody,
-    options,
-  );
+  options?: RequestInit,
+): Promise<postPostsResponse> => {
+  const res = await fetch(getPostPostsUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postPostsBody),
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: postPostsResponse["data"] = body ? JSON.parse(body) : {};
+
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postPostsResponse;
 };
 
 export const getPostPostsMutationOptions = <
-  TError = AxiosError<ErrorResponse | PostPosts404 | PostPosts500>,
+  TError = ErrorResponse | PostPosts404 | PostPosts500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -326,7 +409,7 @@ export const getPostPostsMutationOptions = <
     { data: PostPostsBody },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  fetch?: RequestInit;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof postPosts>>,
   TError,
@@ -334,13 +417,13 @@ export const getPostPostsMutationOptions = <
   TContext
 > => {
   const mutationKey = ["postPosts"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
       options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
+    : { mutation: { mutationKey }, fetch: undefined };
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof postPosts>>,
@@ -348,7 +431,7 @@ export const getPostPostsMutationOptions = <
   > = (props) => {
     const { data } = props ?? {};
 
-    return postPosts(data, axiosOptions);
+    return postPosts(data, fetchOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -358,12 +441,13 @@ export type PostPostsMutationResult = NonNullable<
   Awaited<ReturnType<typeof postPosts>>
 >;
 export type PostPostsMutationBody = PostPostsBody;
-export type PostPostsMutationError = AxiosError<
-  ErrorResponse | PostPosts404 | PostPosts500
->;
+export type PostPostsMutationError =
+  | ErrorResponse
+  | PostPosts404
+  | PostPosts500;
 
 export const usePostPosts = <
-  TError = AxiosError<ErrorResponse | PostPosts404 | PostPosts500>,
+  TError = ErrorResponse | PostPosts404 | PostPosts500,
   TContext = unknown,
 >(
   options?: {
@@ -373,7 +457,7 @@ export const usePostPosts = <
       { data: PostPostsBody },
       TContext
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
@@ -387,20 +471,64 @@ export const usePostPosts = <
   return useMutation(mutationOptions, queryClient);
 };
 
-export const putPostsId = (
+export type putPostsIdResponse200 = {
+  data: PutPostsId200;
+  status: 200;
+};
+
+export type putPostsIdResponse400 = {
+  data: ErrorResponse;
+  status: 400;
+};
+
+export type putPostsIdResponse404 = {
+  data: PutPostsId404;
+  status: 404;
+};
+
+export type putPostsIdResponse500 = {
+  data: PutPostsId500;
+  status: 500;
+};
+
+export type putPostsIdResponseComposite =
+  | putPostsIdResponse200
+  | putPostsIdResponse400
+  | putPostsIdResponse404
+  | putPostsIdResponse500;
+
+export type putPostsIdResponse = putPostsIdResponseComposite & {
+  headers: Headers;
+};
+
+export const getPutPostsIdUrl = (id: number) => {
+  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/${id}`;
+};
+
+export const putPostsId = async (
   id: number,
   putPostsIdBody: PutPostsIdBody,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<PutPostsId200>> => {
-  return axios.put(
-    `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/${id}`,
-    putPostsIdBody,
-    options,
-  );
+  options?: RequestInit,
+): Promise<putPostsIdResponse> => {
+  const res = await fetch(getPutPostsIdUrl(id), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(putPostsIdBody),
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: putPostsIdResponse["data"] = body ? JSON.parse(body) : {};
+
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as putPostsIdResponse;
 };
 
 export const getPutPostsIdMutationOptions = <
-  TError = AxiosError<ErrorResponse | PutPostsId404 | PutPostsId500>,
+  TError = ErrorResponse | PutPostsId404 | PutPostsId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -409,7 +537,7 @@ export const getPutPostsIdMutationOptions = <
     { id: number; data: PutPostsIdBody },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  fetch?: RequestInit;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof putPostsId>>,
   TError,
@@ -417,13 +545,13 @@ export const getPutPostsIdMutationOptions = <
   TContext
 > => {
   const mutationKey = ["putPostsId"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
       options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
+    : { mutation: { mutationKey }, fetch: undefined };
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof putPostsId>>,
@@ -431,7 +559,7 @@ export const getPutPostsIdMutationOptions = <
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return putPostsId(id, data, axiosOptions);
+    return putPostsId(id, data, fetchOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -441,12 +569,13 @@ export type PutPostsIdMutationResult = NonNullable<
   Awaited<ReturnType<typeof putPostsId>>
 >;
 export type PutPostsIdMutationBody = PutPostsIdBody;
-export type PutPostsIdMutationError = AxiosError<
-  ErrorResponse | PutPostsId404 | PutPostsId500
->;
+export type PutPostsIdMutationError =
+  | ErrorResponse
+  | PutPostsId404
+  | PutPostsId500;
 
 export const usePutPostsId = <
-  TError = AxiosError<ErrorResponse | PutPostsId404 | PutPostsId500>,
+  TError = ErrorResponse | PutPostsId404 | PutPostsId500,
   TContext = unknown,
 >(
   options?: {
@@ -456,7 +585,7 @@ export const usePutPostsId = <
       { id: number; data: PutPostsIdBody },
       TContext
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
@@ -470,18 +599,61 @@ export const usePutPostsId = <
   return useMutation(mutationOptions, queryClient);
 };
 
-export const deletePostsId = (
+export type deletePostsIdResponse200 = {
+  data: null;
+  status: 200;
+};
+
+export type deletePostsIdResponse400 = {
+  data: ErrorResponse;
+  status: 400;
+};
+
+export type deletePostsIdResponse404 = {
+  data: DeletePostsId404;
+  status: 404;
+};
+
+export type deletePostsIdResponse500 = {
+  data: DeletePostsId500;
+  status: 500;
+};
+
+export type deletePostsIdResponseComposite =
+  | deletePostsIdResponse200
+  | deletePostsIdResponse400
+  | deletePostsIdResponse404
+  | deletePostsIdResponse500;
+
+export type deletePostsIdResponse = deletePostsIdResponseComposite & {
+  headers: Headers;
+};
+
+export const getDeletePostsIdUrl = (id: number) => {
+  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/${id}`;
+};
+
+export const deletePostsId = async (
   id: number,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<null>> => {
-  return axios.delete(
-    `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/${id}`,
-    options,
-  );
+  options?: RequestInit,
+): Promise<deletePostsIdResponse> => {
+  const res = await fetch(getDeletePostsIdUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: deletePostsIdResponse["data"] = body ? JSON.parse(body) : {};
+
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as deletePostsIdResponse;
 };
 
 export const getDeletePostsIdMutationOptions = <
-  TError = AxiosError<ErrorResponse | DeletePostsId404 | DeletePostsId500>,
+  TError = ErrorResponse | DeletePostsId404 | DeletePostsId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -490,7 +662,7 @@ export const getDeletePostsIdMutationOptions = <
     { id: number },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  fetch?: RequestInit;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof deletePostsId>>,
   TError,
@@ -498,13 +670,13 @@ export const getDeletePostsIdMutationOptions = <
   TContext
 > => {
   const mutationKey = ["deletePostsId"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
       options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
+    : { mutation: { mutationKey }, fetch: undefined };
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof deletePostsId>>,
@@ -512,7 +684,7 @@ export const getDeletePostsIdMutationOptions = <
   > = (props) => {
     const { id } = props ?? {};
 
-    return deletePostsId(id, axiosOptions);
+    return deletePostsId(id, fetchOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -522,12 +694,13 @@ export type DeletePostsIdMutationResult = NonNullable<
   Awaited<ReturnType<typeof deletePostsId>>
 >;
 
-export type DeletePostsIdMutationError = AxiosError<
-  ErrorResponse | DeletePostsId404 | DeletePostsId500
->;
+export type DeletePostsIdMutationError =
+  | ErrorResponse
+  | DeletePostsId404
+  | DeletePostsId500;
 
 export const useDeletePostsId = <
-  TError = AxiosError<ErrorResponse | DeletePostsId404 | DeletePostsId500>,
+  TError = ErrorResponse | DeletePostsId404 | DeletePostsId500,
   TContext = unknown,
 >(
   options?: {
@@ -537,7 +710,7 @@ export const useDeletePostsId = <
       { id: number },
       TContext
     >;
-    axios?: AxiosRequestConfig;
+    fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<

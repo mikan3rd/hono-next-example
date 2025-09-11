@@ -14,6 +14,9 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const result = await getPosts();
+  if (result.status !== 200) {
+    throw new Error("Failed to get posts");
+  }
   const metadata = await parent;
   return {
     title: `posts: ${result.data.posts.length} | ${metadata.title?.absolute}`,
@@ -25,8 +28,11 @@ export default async function Hello() {
 
   await queryClient.prefetchQuery({
     queryKey: getGetPostsQueryKey(),
-    // FIXME: Uncaught RangeError: Maximum call stack size exceeded.
-    queryFn: async () => ({ data: (await getPosts()).data }),
+    // FIXME: Only plain objects can be passed to Client Components from Server Components.
+    queryFn: async () => {
+      const { data, status } = await getPosts();
+      return { data, status };
+    },
   });
 
   return (
