@@ -60,6 +60,7 @@ jobs:
       - name: Check gen:openapi diff
         run: |
           bun run gen:openapi
+          git add -N openapi.json
           git diff --exit-code openapi.json
 
       - run: bun run lint

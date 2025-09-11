@@ -62,6 +62,7 @@ jobs:
       - name: Check gen:client diff
         run: |
           bun run gen:client
+          git add -N src/client
           git diff --exit-code src/client
 
       - run: bun run lint
