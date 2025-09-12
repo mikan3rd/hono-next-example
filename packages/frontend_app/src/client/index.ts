@@ -40,6 +40,10 @@ import type {
   PutPostsIdBody,
 } from "./index.schemas";
 
+type AwaitedInput<T> = PromiseLike<T> | T;
+
+type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
+
 export type getPostsResponse200 = {
   data: GetPosts200;
   status: 200;
