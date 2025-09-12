@@ -22,7 +22,6 @@
         "@types/node": "24.3.0",
         "@types/pg": "8.15.5",
         "@typescript/native-preview": "7.0.0-dev.20250912.1",
-        "typescript": "5.9.2",
       },
     },
     "packages/frontend_app": {
@@ -48,7 +47,6 @@
         "tailwind-merge": "3.3.1",
         "tailwindcss": "4.1.12",
         "tw-animate-css": "1.3.8",
-        "typescript": "5.9.2",
         "zod": "4.1.5",
       },
       "devDependencies": {
