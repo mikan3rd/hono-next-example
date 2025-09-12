@@ -1,22 +1,21 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { usePostPosts } from "../../../../../client";
+import { getGetPostsQueryKey, usePostPosts } from "../../../../../client";
 import { Button } from "../../../../ui/Button";
 
-type PostFormProps = {
-  invalidatePostsQuery: () => void;
-};
+export const PostForm = () => {
+  const queryClient = useQueryClient();
 
-export const PostForm = ({ invalidatePostsQuery }: PostFormProps) => {
   const [content, setContent] = useState("");
 
   const createPostMutation = usePostPosts({
     mutation: {
       onSuccess: () => {
         toast.success("Post created successfully");
-        invalidatePostsQuery();
+        queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
         handleClearForm();
       },
       onError: (error) => {
