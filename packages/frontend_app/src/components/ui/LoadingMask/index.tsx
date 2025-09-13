@@ -7,7 +7,7 @@ export const LoadingMask = () => {
       <DialogPortal data-slot="dialog-portal">
         <DialogOverlay />
         <div className="fixed inset-0 flex items-center justify-center">
-          <Loader2Icon className="animate-spin w-12 h-12 text-primary" />
+          <Loader2Icon className="animate-spin size-16 text-primary" />
         </div>
       </DialogPortal>
     </Dialog>

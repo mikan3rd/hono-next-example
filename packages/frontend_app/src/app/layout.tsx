@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
+import { LoadingMask } from "../components/ui/LoadingMask";
 import { Toaster } from "../components/ui/Sonner";
 import Providers from "./providers";
 
@@ -31,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<LoadingMask />}>
           <Providers>{children}</Providers>
         </Suspense>
         <Toaster duration={1000 * 10} />
