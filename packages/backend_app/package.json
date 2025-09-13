@@ -4,7 +4,7 @@
     "dev": "bun run --hot --no-clear-screen src/server.ts",
     "db:studio": "drizzle-kit studio",
     "db:push": "bun run --bun drizzle-kit push",
-    "typecheck": "bun run --bun tsc --noEmit",
+    "typecheck": "bun run --bun tsgo --noEmit",
     "lint": "bun run --bun biome check . --error-on-warnings",
     "lint:fix": "bun run lint --write",
     "test:db:push": "bun --env-file=.env.test run --bun drizzle-kit push",
@@ -28,6 +28,6 @@
     "@types/bun": "1.2.21",
     "@types/node": "24.3.0",
     "@types/pg": "8.15.5",
-    "typescript": "5.9.2"
+    "@typescript/native-preview": "7.0.0-dev.20250912.1"
   }
 }
