@@ -23,7 +23,7 @@ services:
   backend_app:
     image: backend_app
     build:
-      context: .
+      context: ..
       dockerfile: packages/backend_app/Dockerfile
       target: dev
     env_file:
@@ -47,7 +47,7 @@ services:
 
   frontend_app:
     build:
-      context: .
+      context: ..
       dockerfile: packages/frontend_app/Dockerfile
       target: dev
     env_file:
@@ -68,7 +68,7 @@ services:
 
   e2e:
     build:
-      context: .
+      context: ..
       dockerfile: packages/e2e/Dockerfile
     env_file:
       - .env
