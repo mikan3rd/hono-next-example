@@ -83,6 +83,6 @@ services:
     depends_on:
       - frontend_app
     volumes:
-      - ./packages/e2e/tests:/app/packages/e2e/tests
-      - ./packages/e2e/playwright-report:/app/packages/e2e/playwright-report
-      - ./packages/e2e/test-results:/app/packages/e2e/test-results
+      - ../packages/e2e/tests:/app/packages/e2e/tests
+      - ../packages/e2e/playwright-report:/app/packages/e2e/playwright-report
+      - ../packages/e2e/test-results:/app/packages/e2e/test-results
