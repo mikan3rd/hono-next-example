@@ -85,13 +85,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: docker compose build
-        run: docker compose -f docker-compose.prod.yml build
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml build
+        working-directory: ./docker
 
       - name: docker compose up frontend_app
-        run: docker compose -f docker-compose.prod.yml up -d frontend_app
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up -d frontend_app
+        working-directory: ./docker
 
       - name: docker compose up e2e
-        run: docker compose -f docker-compose.prod.yml up e2e --exit-code-from e2e
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up e2e --exit-code-from e2e
+        working-directory: ./docker
 
       # NOTE: npx playwright show-report name-of-my-extracted-playwright-report
       - uses: actions/upload-artifact@v4
@@ -110,7 +113,8 @@ jobs:
 
       - name: docker compose down
         if: always()
-        run: docker compose -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
+        working-directory: ./docker
 
   chromatic:
     name: Run Chromatic
