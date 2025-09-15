@@ -84,7 +84,7 @@ jobs:
         working-directory: ./docker
 
       - name: docker compose build
-        run: docker compose -f docker-compose.prod.yml build
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml build
         working-directory: ./docker
 
       - name: docker compose up frontend_app
