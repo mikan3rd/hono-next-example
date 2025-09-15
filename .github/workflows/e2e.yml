@@ -16,10 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  POSTGRES_USER: user
-  POSTGRES_PASSWORD: password
-  POSTGRES_DB: example-db
-  POSTGRES_PORT: 5432
   BACKEND_APP_PORT: 4300
   BACKEND_APP_SERVER_URL: http://localhost:4300
   NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
@@ -47,7 +43,7 @@ jobs:
               - '.dockerignore'
               - '.tool-versions'
               - 'biome.jsonc'
-              - 'docker-compose.prod.yml'
+              - 'docker/**'
               - 'tsconfig.json'
     outputs:
       app: ${{ steps.filter.outputs.app }}
@@ -76,7 +72,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
     needs: 
       - changes
     if: >-
@@ -84,14 +80,20 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - run: cp .env.example .env
+        working-directory: ./docker
+
       - name: docker compose build
-        run: docker compose -f docker-compose.prod.yml build
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml build
+        working-directory: ./docker
 
       - name: docker compose up frontend_app
-        run: docker compose -f docker-compose.prod.yml up -d frontend_app
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up -d frontend_app
+        working-directory: ./docker
 
       - name: docker compose up e2e
-        run: docker compose -f docker-compose.prod.yml up e2e --exit-code-from e2e
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up e2e --exit-code-from e2e
+        working-directory: ./docker
 
       # NOTE: npx playwright show-report name-of-my-extracted-playwright-report
       - uses: actions/upload-artifact@v4
@@ -110,7 +112,8 @@ jobs:
 
       - name: docker compose down
         if: always()
-        run: docker compose -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
+        working-directory: ./docker
 
   chromatic:
     name: Run Chromatic
