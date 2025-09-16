@@ -8,7 +8,7 @@
     "next:start": "bun run --bun next start",
     "typecheck": "bun run --bun tsgo --noEmit",
     "lint": "bun run --bun biome check . --error-on-warnings",
-    "lint:fix": "bun run --bun biome check . --write",
+    "lint:fix": "bun run --bun biome check . --write --unsafe",
     "dev-storybook": "bun run --bun storybook dev -p 6006",
     "build-storybook": "bun run --bun storybook build",
     "test-storybook": "bun run vitest --project=storybook",
@@ -17,6 +17,7 @@
   "dependencies": {
     "@js-temporal/polyfill": "0.5.1",
     "@radix-ui/react-dialog": "1.1.15",
+    "@radix-ui/react-label": "2.1.7",
     "@radix-ui/react-slot": "1.2.3",
     "@t3-oss/env-nextjs": "0.13.8",
     "@tailwindcss/postcss": "4.1.13",
