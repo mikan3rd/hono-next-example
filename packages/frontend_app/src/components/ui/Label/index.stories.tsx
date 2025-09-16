@@ -1,7 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { ChevronRightIcon, Loader2Icon } from "lucide-react";
-import Link from "next/link";
-import { expect, fn, userEvent, within } from "storybook/test";
 import { Label } from ".";
 
 const meta = {

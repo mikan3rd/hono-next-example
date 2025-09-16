@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { ChevronRightIcon, Loader2Icon } from "lucide-react";
-import Link from "next/link";
-import { expect, fn, userEvent, within } from "storybook/test";
-import { Input } from ".";
-import { Label } from "../Label";
+import { useId } from "react";
 import { Button } from "../Button";
+import { Label } from "../Label";
+import { Input } from ".";
 
 const meta = {
   component: Input,
@@ -18,50 +16,52 @@ export const Default: Story = {
   args: {
     type: "email",
     placeholder: "Email",
-  }
+  },
 };
 
 export const File: Story = {
   render: () => {
-    return(
-    <div className="grid w-full max-w-sm items-center gap-3">
-      <Label htmlFor="picture">Picture</Label>
-      <Input id="picture" type="file" />
-    </div>
+    const pictureId = useId();
+    return (
+      <div className="grid w-full max-w-sm items-center gap-3">
+        <Label htmlFor={pictureId}>Picture</Label>
+        <Input id={pictureId} type="file" />
+      </div>
     );
-  }
-}
+  },
+};
 
 export const Disabled: Story = {
   args: {
     disabled: true,
     type: "email",
     placeholder: "Email",
-  }
-}
+  },
+};
 
 export const WithLabel: Story = {
   render: () => {
+    const emailId = useId();
     return (
-    <div className="grid w-full max-w-sm items-center gap-3">
-      <Label htmlFor="email">Email</Label>
-      <Input type="email" id="email" placeholder="Email" />
-    </div>
-    )
-  }
-}
+      <div className="grid w-full max-w-sm items-center gap-3">
+        <Label htmlFor={emailId}>Email</Label>
+        <Input type="email" id={emailId} placeholder="Email" />
+      </div>
+    );
+  },
+};
 
 export const WithButton: Story = {
   render: () => {
     return (
-    <div className="flex w-full max-w-sm items-center gap-2">
-      <Input type="email" placeholder="Email" />
-      <Button type="submit" variant="outline">
-        Subscribe
-      </Button>
-    </div>
-    )
-  }
-}
+      <div className="flex w-full max-w-sm items-center gap-2">
+        <Input type="email" placeholder="Email" />
+        <Button type="submit" variant="outline">
+          Subscribe
+        </Button>
+      </div>
+    );
+  },
+};
 
 // TODO: Form
