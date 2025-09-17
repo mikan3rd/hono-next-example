@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import type { Metadata, ResolvingMetadata } from "next";
 import { getGetPostsQueryKey, getPosts } from "../../client";
-import { Index } from "../../components/pages/post/index";
+import { PostIndex } from "../../components/pages/post/index";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +23,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function Hello() {
+export default async function PostPage() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -37,7 +37,7 @@ export default async function Hello() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Index />
+      <PostIndex />
     </HydrationBoundary>
   );
 }
