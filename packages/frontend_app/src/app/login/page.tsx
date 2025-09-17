@@ -5,6 +5,8 @@ import {
 } from "@tanstack/react-query";
 import { SignUpDialog } from "../../components/features/SignUpDialog";
 
+export const dynamic = "force-dynamic";
+
 export default async function LoginPage() {
   const queryClient = new QueryClient();
 

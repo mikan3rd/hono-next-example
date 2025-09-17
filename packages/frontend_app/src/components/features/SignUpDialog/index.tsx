@@ -1,4 +1,7 @@
-import { useId } from "react";
+"use client";
+
+import { toast } from "sonner";
+import { createClient } from "../../../supabase/client";
 import { Button } from "../../ui/Button";
 import {
   Dialog,
@@ -10,41 +13,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../ui/Dialog";
-import { Input } from "../../ui/Input";
-import { Label } from "../../ui/Label";
 
 export const SignUpDialog = () => {
-  const nameId = useId();
-  const usernameId = useId();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const supabase = createClient();
+    const result = await supabase.auth.signInAnonymously();
+    if (result.error) {
+      toast.error(result.error.message);
+      return;
+    }
+    console.info(result.data);
+    toast.success("Signed up successfully");
+  };
+
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button variant="outline">Open Dialog</Button>
+          <Button variant="outline">Sign Up</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Sign Up</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
+              You can sign up to the app anonymously.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor={nameId}>Name</Label>
-              <Input id={nameId} name="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor={usernameId}>Username</Label>
-              <Input id={usernameId} name="username" defaultValue="@peduarte" />
-            </div>
-          </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" onClick={handleSubmit}>
+              Sign Up
+            </Button>
           </DialogFooter>
         </DialogContent>
       </form>
