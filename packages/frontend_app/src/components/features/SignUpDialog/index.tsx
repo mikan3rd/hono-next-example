@@ -16,6 +16,8 @@ import {
   DialogTrigger,
 } from "../../ui/Dialog";
 
+const supabase = createClient();
+
 export const SignUpDialog = () => {
   const router = useRouter();
 
@@ -23,7 +25,7 @@ export const SignUpDialog = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
+
     const result = await supabase.auth.signInAnonymously();
     if (result.error) {
       toast.error(result.error.message);
@@ -38,11 +40,11 @@ export const SignUpDialog = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <form>
-        <DialogTrigger asChild>
-          <Button variant="outline">Sign Up</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+      <DialogTrigger asChild>
+        <Button variant="outline">Sign Up</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Sign Up</DialogTitle>
             <DialogDescription>
@@ -53,12 +55,10 @@ export const SignUpDialog = () => {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit" onClick={handleSubmit}>
-              Sign Up
-            </Button>
+            <Button type="submit">Sign Up</Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 };
