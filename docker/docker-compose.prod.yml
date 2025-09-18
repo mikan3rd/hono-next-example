@@ -62,6 +62,8 @@ services:
       target: runner
       args:
         NEXT_PUBLIC_BACKEND_APP_URL: ${NEXT_PUBLIC_BACKEND_APP_URL}
+        NEXT_PUBLIC_SUPABASE_URL: ${API_EXTERNAL_URL}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${ANON_KEY}
         HOSTNAME: ${HOSTNAME}
     network_mode: host
     ports:

@@ -5,7 +5,7 @@ import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
-export const Index = () => {
+export const PostIndex = () => {
   const { data } = useGetPostsSuspense();
 
   if (data.status !== 200) {

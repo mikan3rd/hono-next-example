@@ -34,7 +34,7 @@ jobs:
         with:
           filters: |
             backend:
-              - 'packages/backend_app/**'
+              - 'packages/backend_app/openapi.json'
             frontend:
               - '.github/workflows/frontend-app.yml'
               - 'packages/frontend_app/**'
