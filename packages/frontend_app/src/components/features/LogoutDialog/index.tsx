@@ -1,6 +1,7 @@
 "use client";
 
 import type { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { createClient } from "../../../supabase/client";
@@ -19,6 +20,8 @@ import {
 const supabase = createClient();
 
 export const LogoutDialog = () => {
+  const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -32,6 +35,8 @@ export const LogoutDialog = () => {
     }
     toast.success("Signed out successfully");
     setIsOpen(false);
+
+    router.push("/login");
   };
 
   useEffect(() => {

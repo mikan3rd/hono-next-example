@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { createClient } from "../../../supabase/client";
@@ -16,6 +17,8 @@ import {
 } from "../../ui/Dialog";
 
 export const SignUpDialog = () => {
+  const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,6 +32,8 @@ export const SignUpDialog = () => {
     console.info(result.data);
     toast.success("Signed up successfully");
     setIsOpen(false);
+
+    router.push("/logout");
   };
 
   return (
