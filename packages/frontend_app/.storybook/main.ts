@@ -21,5 +21,13 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ["../public"],
+  viteFinal: async (viteConfig) => {
+    viteConfig.resolve ??= {};
+    viteConfig.resolve.alias = {
+      ...(viteConfig.resolve.alias as Record<string, string> | undefined),
+      "@supabase/ssr": join(__dirname, "../__mocks__/@supabase/ssr.ts"),
+    } as Record<string, string>;
+    return viteConfig;
+  },
 };
 export default config;
