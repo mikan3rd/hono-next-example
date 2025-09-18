@@ -2,7 +2,7 @@
 
 import type { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createClient } from "../../../supabase/client";
 import { Button } from "../../ui/Button";
@@ -23,20 +23,23 @@ export const LogoutDialog = () => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, startLoadingTransition] = useTransition();
   const [user, setUser] = useState<User | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    startLoadingTransition(async () => {
+      e.preventDefault();
 
-    const result = await supabase.auth.signOut();
-    if (result.error) {
-      toast.error(result.error.message);
-      return;
-    }
-    toast.success("Signed out successfully");
-    setIsOpen(false);
+      const result = await supabase.auth.signOut();
+      if (result.error) {
+        toast.error(result.error.message);
+        return;
+      }
+      toast.success("Signed out successfully");
+      setIsOpen(false);
 
-    router.push("/login");
+      router.push("/login");
+    });
   };
 
   useEffect(() => {
@@ -69,9 +72,11 @@ export const LogoutDialog = () => {
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" disabled={loading}>
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit" disabled={user === null}>
+            <Button type="submit" disabled={user === null || loading}>
               Sign Out
             </Button>
           </DialogFooter>

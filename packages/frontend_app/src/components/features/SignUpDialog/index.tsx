@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createClient } from "../../../supabase/client";
 import { Button } from "../../ui/Button";
@@ -22,20 +22,23 @@ export const SignUpDialog = () => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, startLoadingTransition] = useTransition();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    startLoadingTransition(async () => {
+      e.preventDefault();
 
-    const result = await supabase.auth.signInAnonymously();
-    if (result.error) {
-      toast.error(result.error.message);
-      return;
-    }
-    console.info(result.data);
-    toast.success("Signed up successfully");
-    setIsOpen(false);
+      const result = await supabase.auth.signInAnonymously();
+      if (result.error) {
+        toast.error(result.error.message);
+        return;
+      }
+      console.info(result.data);
+      toast.success("Signed up successfully");
+      setIsOpen(false);
 
-    router.push("/logout");
+      router.push("/logout");
+    });
   };
 
   return (
@@ -53,9 +56,13 @@ export const SignUpDialog = () => {
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" disabled={loading}>
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit">Sign Up</Button>
+            <Button type="submit" disabled={loading}>
+              Sign Up
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
