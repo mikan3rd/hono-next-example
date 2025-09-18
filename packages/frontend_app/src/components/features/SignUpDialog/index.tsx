@@ -16,9 +16,9 @@ import {
   DialogTrigger,
 } from "../../ui/Dialog";
 
-const supabase = createClient();
-
 export const SignUpDialog = () => {
+  const supabase = createClient();
+
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);

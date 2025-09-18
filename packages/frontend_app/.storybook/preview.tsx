@@ -4,6 +4,7 @@ import type { Preview } from "@storybook/nextjs-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import Providers from "../src/app/providers";
 import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
+import { Toaster } from "../src/components/ui/Sonner";
 
 /*
  * Initializes MSW
@@ -38,6 +39,7 @@ const preview: Preview = {
     (Story) => (
       <Providers>
         <Story />
+        <Toaster />
       </Providers>
     ),
   ],

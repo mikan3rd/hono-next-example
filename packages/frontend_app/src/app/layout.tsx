@@ -32,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* TODO: storybookと共通化 */}
         <Suspense fallback={<LoadingMask />}>
           <Providers>{children}</Providers>
         </Suspense>
