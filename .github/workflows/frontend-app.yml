@@ -21,6 +21,8 @@ defaults:
 
 env:
   NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
+  NEXT_PUBLIC_SUPABASE_URL: http://localhost:8000
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: test
 
 jobs:
   changes:
