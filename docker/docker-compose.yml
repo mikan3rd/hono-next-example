@@ -52,6 +52,9 @@ services:
       target: dev
     env_file:
       - .env
+    environment:
+      NEXT_PUBLIC_SUPABASE_URL: ${API_EXTERNAL_URL}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${ANON_KEY}
     command: |
       sh -c '
         bun install --frozen-lockfile &&
