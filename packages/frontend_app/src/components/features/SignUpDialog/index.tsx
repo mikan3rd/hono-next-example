@@ -33,7 +33,6 @@ export const SignUpDialog = () => {
         toast.error(result.error.message);
         return;
       }
-      console.info(result.data);
       toast.success("Signed up successfully");
       setIsOpen(false);
 
