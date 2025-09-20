@@ -28,6 +28,6 @@
     "@types/bun": "1.2.21",
     "@types/node": "24.3.3",
     "@types/pg": "8.15.5",
-    "@typescript/native-preview": "7.0.0-dev.20250912.1"
+    "@typescript/native-preview": "7.0.0-dev.20250913.1"
   }
 }
