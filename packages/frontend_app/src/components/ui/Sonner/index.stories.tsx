@@ -28,12 +28,7 @@ export const DefaultToast: Story = {
     const showToast = () => {
       toast("Event has been created");
     };
-    return (
-      <>
-        <Button onClick={showToast}>Show Toast</Button>
-        <Toaster />
-      </>
-    );
+    return <Button onClick={showToast}>Show Toast</Button>;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -46,12 +41,7 @@ export const SuccessToast: Story = {
     const showToast = () => {
       toast.success("Event has been created");
     };
-    return (
-      <>
-        <Button onClick={showToast}>Show Toast</Button>
-        <Toaster />
-      </>
-    );
+    return <Button onClick={showToast}>Show Toast</Button>;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -64,12 +54,7 @@ export const ErrorToast: Story = {
     const showToast = () => {
       toast.error("Event has been created");
     };
-    return (
-      <>
-        <Button onClick={showToast}>Show Toast</Button>
-        <Toaster />
-      </>
-    );
+    return <Button onClick={showToast}>Show Toast</Button>;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -82,12 +67,7 @@ export const WarningToast: Story = {
     const showToast = () => {
       toast.warning("Event has been created");
     };
-    return (
-      <>
-        <Button onClick={showToast}>Show Toast</Button>
-        <Toaster />
-      </>
-    );
+    return <Button onClick={showToast}>Show Toast</Button>;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -100,12 +80,7 @@ export const InfoToast: Story = {
     const showToast = () => {
       toast.info("Event has been created");
     };
-    return (
-      <>
-        <Button onClick={showToast}>Show Toast</Button>
-        <Toaster />
-      </>
-    );
+    return <Button onClick={showToast}>Show Toast</Button>;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -124,12 +99,7 @@ export const DefaultToastWithOptions: Story = {
         },
       });
     };
-    return (
-      <>
-        <Button onClick={showToast}>Show Toast</Button>
-        <Toaster />
-      </>
-    );
+    return <Button onClick={showToast}>Show Toast</Button>;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { createClient } from "../../../supabase/client";
+import { createClient } from "#src/supabase/client";
 import { Button } from "../../ui/Button";
 import {
   Dialog,
@@ -16,9 +16,9 @@ import {
   DialogTrigger,
 } from "../../ui/Dialog";
 
-const supabase = createClient();
-
 export const SignUpDialog = () => {
+  const supabase = createClient();
+
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +43,7 @@ export const SignUpDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Sign Up</Button>
+        <Button variant="outline">Sign Up Dialog</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>

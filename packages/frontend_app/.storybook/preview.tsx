@@ -4,6 +4,7 @@ import type { Preview } from "@storybook/nextjs-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import Providers from "../src/app/providers";
 import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
+import { Toaster } from "../src/components/ui/Sonner";
 
 /*
  * Initializes MSW
@@ -27,12 +28,18 @@ const preview: Preview = {
       // 'off' - skip a11y checks entirely
       test: "todo",
     },
+
+    nextjs: {
+      appDirectory: true,
+    },
   },
+
   loaders: [mswLoader],
   decorators: [
     (Story) => (
       <Providers>
         <Story />
+        <Toaster />
       </Providers>
     ),
   ],

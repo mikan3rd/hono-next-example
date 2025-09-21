@@ -2,6 +2,12 @@
   "name": "frontend_app",
   "version": "0.1.0",
   "private": true,
+  "imports": {
+    "#src/supabase/client": {
+      "storybook": "./src/supabase/client.mock.ts",
+      "default": "./src/supabase/client.ts"
+    }
+  },
   "scripts": {
     "dev": "bun run --bun next dev",
     "next:build": "bun run --bun next build",
