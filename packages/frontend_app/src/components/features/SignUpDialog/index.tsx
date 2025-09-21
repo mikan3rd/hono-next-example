@@ -43,7 +43,7 @@ export const SignUpDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Sign Up</Button>
+        <Button variant="outline">Sign Up Dialog</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
