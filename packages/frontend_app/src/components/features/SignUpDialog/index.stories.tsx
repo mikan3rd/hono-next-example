@@ -21,6 +21,20 @@ export const Default: Story = {
         screen.getByRole("button", { name: "Sign Up" }),
       ).toBeVisible();
     });
+  },
+};
+
+export const SignUpSuccess: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Sign Up Dialog" }),
+    );
+    await waitFor(async () => {
+      await expect(
+        screen.getByRole("button", { name: "Sign Up" }),
+      ).toBeVisible();
+    });
     await userEvent.click(screen.getByRole("button", { name: "Sign Up" }));
     await waitFor(async () => {
       await expect(screen.getByText("Signed up successfully")).toBeVisible();
