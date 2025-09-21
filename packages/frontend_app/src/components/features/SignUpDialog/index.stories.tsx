@@ -1,5 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { expect, screen, userEvent, waitFor, within } from "storybook/test";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import {
+  expect,
+  mocked,
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from "storybook/test";
+import { createClient } from "../../../supabase/client";
 import { SignUpDialog } from ".";
 
 const meta = {
@@ -11,6 +20,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  beforeEach: async () => {
+    mocked(createClient).mockReturnValue({
+      auth: {
+        signInAnonymously: () => Promise.resolve({ error: null }),
+      },
+    } as unknown as SupabaseClient);
+  },
+
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(
@@ -24,9 +41,9 @@ export const Default: Story = {
     await userEvent.click(screen.getByRole("button", { name: "Sign Up" }));
     await waitFor(async () => {
       await expect(screen.getByText("Signed up successfully")).toBeVisible();
+      await expect(
+        screen.getByRole("button", { name: "Sign Up" }),
+      ).not.toBeVisible();
     });
-    await expect(
-      screen.getByRole("button", { name: "Sign Up" }),
-    ).not.toBeVisible();
   },
 };

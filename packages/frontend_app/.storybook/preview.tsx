@@ -2,9 +2,12 @@ import "../src/app/globals.css";
 
 import type { Preview } from "@storybook/nextjs-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
+import { sb } from "storybook/test";
 import Providers from "../src/app/providers";
 import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
 import { Toaster } from "../src/components/ui/Sonner";
+
+sb.mock(import("../src/supabase/client"));
 
 /*
  * Initializes MSW
