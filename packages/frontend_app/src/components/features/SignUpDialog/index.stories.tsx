@@ -13,13 +13,15 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Sign Up Dialog" }),
-    );
+
+    const signUpDialogBtn = await canvas.findByRole("button", {
+      name: "Sign Up Dialog",
+    });
+    await userEvent.click(signUpDialogBtn);
+
+    const signUpBtn = await screen.findByRole("button", { name: "Sign Up" });
     await waitFor(async () => {
-      await expect(
-        screen.getByRole("button", { name: "Sign Up" }),
-      ).toBeVisible();
+      await expect(signUpBtn).toBeVisible();
     });
   },
 };
@@ -27,20 +29,23 @@ export const Default: Story = {
 export const SignUpSuccess: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Sign Up Dialog" }),
-    );
-    await waitFor(async () => {
-      await expect(
-        screen.getByRole("button", { name: "Sign Up" }),
-      ).toBeVisible();
+
+    const signUpDialogBtn = await canvas.findByRole("button", {
+      name: "Sign Up Dialog",
     });
-    await userEvent.click(screen.getByRole("button", { name: "Sign Up" }));
+    await userEvent.click(signUpDialogBtn);
+
+    const signUpBtn = await screen.findByRole("button", { name: "Sign Up" });
     await waitFor(async () => {
-      await expect(screen.getByText("Signed up successfully")).toBeVisible();
-      await expect(
-        screen.getByRole("button", { name: "Sign Up" }),
-      ).not.toBeVisible();
+      await expect(signUpBtn).toBeVisible();
+    });
+
+    await userEvent.click(signUpBtn);
+    const successToast = await screen.findByText("Signed up successfully");
+
+    await waitFor(async () => {
+      await expect(successToast).toBeVisible();
+      await expect(signUpBtn).not.toBeVisible();
     });
   },
 };
