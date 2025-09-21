@@ -7,7 +7,7 @@ import Providers from "../src/app/providers";
 import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
 import { Toaster } from "../src/components/ui/Sonner";
 
-sb.mock(import("../src/supabase/client"));
+sb.mock(import("@supabase/ssr"));
 
 /*
  * Initializes MSW
