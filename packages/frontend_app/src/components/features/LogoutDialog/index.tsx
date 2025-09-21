@@ -4,7 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { createClient } from "../../../supabase/client";
+import { createClient } from "#src/supabase/client";
 import { Button } from "../../ui/Button";
 import {
   Dialog,
