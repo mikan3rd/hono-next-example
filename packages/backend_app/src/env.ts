@@ -11,6 +11,8 @@ export const env = createEnv({
     POSTGRES_PASSWORD: z.string(),
     POSTGRES_DB: z.string(),
     POSTGRES_PORT: z.coerce.number().min(1),
+    SUPABASE_URL: z.url(),
+    SUPABASE_KEY: z.string(),
     ENABLE_DB_INITIALIZE: z
       .enum(["true", "false"])
       .default("false")
