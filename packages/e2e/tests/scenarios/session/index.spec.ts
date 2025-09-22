@@ -1,7 +1,7 @@
 import { expect, takeSnapshot, test } from "@chromatic-com/playwright";
 
 test.use({
-  ignoreSelectors: [`[data-testid="user-id"]`],
+  ignoreSelectors: [`[data-testid="LogoutDialog-description"]`],
 });
 
 test("session page", async ({ page }, testInfo) => {
