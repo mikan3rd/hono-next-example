@@ -1,3 +1,4 @@
+import { jwtMiddleware } from "../../middlewares/jwt";
 import { createApp } from "../factory";
 import { signupRoute } from "./route";
 
@@ -9,7 +10,9 @@ userApp.openAPIRegistry.registerComponent("securitySchemes", "bearerAuth", {
   bearerFormat: "JWT",
 });
 
-const routes = createApp().openapi(signupRoute, async (c) => {
+userApp.use(jwtMiddleware);
+
+const routes = userApp.openapi(signupRoute, async (c) => {
   return c.json({ status: "ok" }, 200);
 });
 
