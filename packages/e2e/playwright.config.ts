@@ -32,7 +32,7 @@ export default defineConfig<ChromaticConfig>({
     baseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: env.CI ? "on-first-retry" : "on",
+    trace: env.CI ? "retain-on-failure" : "on",
 
     video: env.CI ? "off" : "on",
     screenshot: "on",
