@@ -1,3 +1,4 @@
+// TODO: 型定義と一致することを確認
 export function createClient() {
   return {
     auth: {
