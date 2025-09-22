@@ -6,6 +6,7 @@ import { createApp } from "./factory";
 import { healthzApp } from "./healthz";
 import { initializeApp } from "./initialize";
 import { postApp } from "./posts";
+import { userApp } from "./user";
 
 const app = createApp();
 
@@ -19,6 +20,7 @@ app.route("/healthz", healthzApp);
 app.route("/initialize", initializeApp);
 
 const routes = app
+  .route("/user", userApp)
   .route("/posts", postApp)
   .doc("/doc", {
     openapi: "3.0.0",
