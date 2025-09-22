@@ -5,6 +5,7 @@ export const signupRoute = createRoute({
   tags: ["user"],
   method: "post",
   path: "/signup",
+  security: [{ bearerAuth: [] }],
   responses: {
     200: {
       description: "signup",

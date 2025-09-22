@@ -3,6 +3,18 @@
   "info": { "version": "1.0.0", "title": "backend_app OpenAPI" },
   "components": {
     "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": ["Bad Request", "Not Found", "Internal Server Error"],
+            "example": "Bad Request"
+          },
+          "message": { "type": "string", "description": "explanation" }
+        },
+        "required": ["code", "message"]
+      },
       "post": {
         "type": "object",
         "properties": {
@@ -32,23 +44,86 @@
           }
         },
         "required": ["id", "content", "created_at", "updated_at"]
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "enum": ["Bad Request", "Not Found", "Internal Server Error"],
-            "example": "Bad Request"
-          },
-          "message": { "type": "string", "description": "explanation" }
-        },
-        "required": ["code", "message"]
       }
     },
     "parameters": {}
   },
   "paths": {
+    "/user/signup": {
+      "post": {
+        "tags": ["user"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "signup" },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Not Found"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Internal Server Error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/posts": {
       "get": {
         "tags": ["posts"],
