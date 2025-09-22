@@ -36,6 +36,8 @@ export default defineConfig<ChromaticConfig>({
 
     video: env.CI ? "off" : "on",
     screenshot: "on",
+
+    disableAutoSnapshot: true,
   },
 
   /* Configure projects for major browsers */

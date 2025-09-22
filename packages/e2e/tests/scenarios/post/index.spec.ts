@@ -2,7 +2,6 @@ import { expect, takeSnapshot, test } from "@chromatic-com/playwright";
 import { env } from "../../env";
 
 test.use({
-  disableAutoSnapshot: true,
   ignoreSelectors: [`[data-testid="PostCard-date"]`],
 });
 
@@ -14,6 +13,7 @@ test.beforeEach(async () => {
 });
 
 test("post page", async ({ page }, testInfo) => {
+  // TODO: 共通化
   page.on("console", (msg) => {
     if (msg.type() === "error") {
       const error = new Error(msg.text());
