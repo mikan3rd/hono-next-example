@@ -13,6 +13,7 @@ userApp.openAPIRegistry.registerComponent("securitySchemes", "bearerAuth", {
 userApp.use(jwtMiddleware);
 
 const routes = userApp.openapi(signupRoute, async (c) => {
+  // TODO: ユーザー登録
   return c.json({ status: "ok" }, 200);
 });
 
