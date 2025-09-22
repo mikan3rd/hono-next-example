@@ -4,21 +4,6 @@
  * backend_app OpenAPI
  * OpenAPI spec version: 1.0.0
  */
-export interface Post {
-  /**
-   * Primary ID
-   * @minimum -2147483648
-   * @maximum 2147483647
-   */
-  id: number;
-  /** The content of the post */
-  content: string;
-  /** The date and time the post was created */
-  created_at: string;
-  /** The date and time the post was updated */
-  updated_at: string;
-}
-
 export type ErrorResponseCode =
   (typeof ErrorResponseCode)[keyof typeof ErrorResponseCode];
 
@@ -34,6 +19,57 @@ export interface ErrorResponse {
   /** explanation */
   message: string;
 }
+
+export interface Post {
+  /**
+   * Primary ID
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  id: number;
+  /** The content of the post */
+  content: string;
+  /** The date and time the post was created */
+  created_at: string;
+  /** The date and time the post was updated */
+  updated_at: string;
+}
+
+export type PostUserSignup404AllOfCode =
+  (typeof PostUserSignup404AllOfCode)[keyof typeof PostUserSignup404AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUserSignup404AllOfCode = {
+  Bad_Request: "Bad Request",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type PostUserSignup404AllOf = {
+  code?: PostUserSignup404AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type PostUserSignup404 = ErrorResponse & PostUserSignup404AllOf;
+
+export type PostUserSignup500AllOfCode =
+  (typeof PostUserSignup500AllOfCode)[keyof typeof PostUserSignup500AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUserSignup500AllOfCode = {
+  Bad_Request: "Bad Request",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type PostUserSignup500AllOf = {
+  code?: PostUserSignup500AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type PostUserSignup500 = ErrorResponse & PostUserSignup500AllOf;
 
 export type GetPosts200 = {
   posts: Post[];

@@ -61,6 +61,21 @@ export const getPutPostsIdResponseMock = (
   ...overrideResponse,
 });
 
+export const getPostUserSignupMockHandler = (
+  overrideResponse?:
+    | null
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<null> | null),
+) => {
+  return http.post("*/user/signup", async (info) => {
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
 export const getGetPostsMockHandler = (
   overrideResponse?:
     | GetPosts200
@@ -139,6 +154,7 @@ export const getDeletePostsIdMockHandler = (
   });
 };
 export const getBackendAppOpenAPIMock = () => [
+  getPostUserSignupMockHandler(),
   getGetPostsMockHandler(),
   getPostPostsMockHandler(),
   getPutPostsIdMockHandler(),

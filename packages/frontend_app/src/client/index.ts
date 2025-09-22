@@ -34,6 +34,8 @@ import type {
   PostPosts404,
   PostPosts500,
   PostPostsBody,
+  PostUserSignup404,
+  PostUserSignup500,
   PutPostsId200,
   PutPostsId404,
   PutPostsId500,
@@ -43,6 +45,128 @@ import type {
 type AwaitedInput<T> = PromiseLike<T> | T;
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
+
+export type postUserSignupResponse200 = {
+  data: null;
+  status: 200;
+};
+
+export type postUserSignupResponse400 = {
+  data: ErrorResponse;
+  status: 400;
+};
+
+export type postUserSignupResponse404 = {
+  data: PostUserSignup404;
+  status: 404;
+};
+
+export type postUserSignupResponse500 = {
+  data: PostUserSignup500;
+  status: 500;
+};
+
+export type postUserSignupResponseComposite =
+  | postUserSignupResponse200
+  | postUserSignupResponse400
+  | postUserSignupResponse404
+  | postUserSignupResponse500;
+
+export type postUserSignupResponse = postUserSignupResponseComposite & {
+  headers: Headers;
+};
+
+export const getPostUserSignupUrl = () => {
+  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/user/signup`;
+};
+
+export const postUserSignup = async (
+  options?: RequestInit,
+): Promise<postUserSignupResponse> => {
+  const res = await fetch(getPostUserSignupUrl(), {
+    ...options,
+    method: "POST",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: postUserSignupResponse["data"] = body ? JSON.parse(body) : {};
+
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postUserSignupResponse;
+};
+
+export const getPostUserSignupMutationOptions = <
+  TError = ErrorResponse | PostUserSignup404 | PostUserSignup500,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postUserSignup>>,
+    TError,
+    void,
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postUserSignup>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["postUserSignup"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postUserSignup>>,
+    void
+  > = () => {
+    return postUserSignup(fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostUserSignupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postUserSignup>>
+>;
+
+export type PostUserSignupMutationError =
+  | ErrorResponse
+  | PostUserSignup404
+  | PostUserSignup500;
+
+export const usePostUserSignup = <
+  TError = ErrorResponse | PostUserSignup404 | PostUserSignup500,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postUserSignup>>,
+      TError,
+      void,
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postUserSignup>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getPostUserSignupMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 export type getPostsResponse200 = {
   data: GetPosts200;
