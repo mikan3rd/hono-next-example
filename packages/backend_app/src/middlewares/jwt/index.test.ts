@@ -42,4 +42,21 @@ describe("jwtMiddleware", () => {
       });
     });
   });
+
+  describe("when Authorization header is not valid", () => {
+    beforeEach(() => {
+      header = { Authorization: "invalid" };
+    });
+
+    it("should return 401 Response", async () => {
+      const res = await subject();
+      expect(res.status).toBe(401);
+
+      const body = await res.json();
+      expect(body).toEqual({
+        code: "Unauthorized",
+        message: "Missing token",
+      });
+    });
+  });
 });
