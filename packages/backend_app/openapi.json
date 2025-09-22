@@ -2,13 +2,25 @@
   "openapi": "3.0.0",
   "info": { "version": "1.0.0", "title": "backend_app OpenAPI" },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "ErrorResponse": {
         "type": "object",
         "properties": {
           "code": {
             "type": "string",
-            "enum": ["Bad Request", "Not Found", "Internal Server Error"],
+            "enum": [
+              "Bad Request",
+              "Unauthorized",
+              "Not Found",
+              "Internal Server Error"
+            ],
             "example": "Bad Request"
           },
           "message": { "type": "string", "description": "explanation" }
@@ -63,6 +75,36 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -76,6 +118,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -105,6 +148,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -153,6 +197,36 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -166,6 +240,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -195,6 +270,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -256,6 +332,36 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -269,6 +375,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -298,6 +405,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -372,6 +480,36 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -385,6 +523,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -414,6 +553,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -456,6 +596,36 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -469,6 +639,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -498,6 +669,7 @@
                           "type": "string",
                           "enum": [
                             "Bad Request",
+                            "Unauthorized",
                             "Not Found",
                             "Internal Server Error"
                           ],
