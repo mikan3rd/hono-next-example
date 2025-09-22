@@ -71,6 +71,8 @@ services:
     depends_on:
       backend_health_check:
         condition: service_completed_successfully
+      auth:
+        condition: service_started
 
   e2e:
     build:
