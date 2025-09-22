@@ -33,6 +33,18 @@ export const SignUpDialog = () => {
         toast.error(result.error.message);
         return;
       }
+
+      const {
+        data: { session },
+      } = result;
+
+      if (!session) {
+        toast.error("Signed up Failed: No session");
+        return;
+      }
+
+      console.log(session.access_token);
+
       toast.success("Signed up successfully");
       setIsOpen(false);
 
