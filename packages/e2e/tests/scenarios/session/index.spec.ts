@@ -1,5 +1,9 @@
 import { expect, takeSnapshot, test } from "@chromatic-com/playwright";
 
+test.use({
+  ignoreSelectors: [`[data-testid="user-id"]`],
+});
+
 test("session page", async ({ page }, testInfo) => {
   await test.step("login", async () => {
     const signUpDialogBtn = page.getByRole("button", {

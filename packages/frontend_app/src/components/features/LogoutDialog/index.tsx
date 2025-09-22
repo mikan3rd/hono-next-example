@@ -64,7 +64,10 @@ export const LogoutDialog = () => {
             <DialogTitle>Sign Out</DialogTitle>
             <DialogDescription>
               {user !== null ? (
-                <>You are signed in as {user.id}.</>
+                <>
+                  You are signed in as{" "}
+                  <span data-testid="user-id">{user.id}</span>.
+                </>
               ) : (
                 "You are signed out."
               )}
