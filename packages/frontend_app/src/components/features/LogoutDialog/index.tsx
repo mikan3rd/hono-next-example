@@ -56,13 +56,13 @@ export const LogoutDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Sign Out</Button>
+        <Button variant="outline">Sign Out Dialog</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Sign Out</DialogTitle>
-            <DialogDescription>
+            <DialogDescription data-testid="LogoutDialog-description">
               {user !== null ? (
                 <>You are signed in as {user.id}.</>
               ) : (

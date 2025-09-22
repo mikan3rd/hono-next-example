@@ -14,7 +14,7 @@ export default defineConfig<ChromaticConfig>({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: env.CI,
   /* Retry on CI only */
-  retries: env.CI ? 1 : 0,
+  retries: 0,
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -22,7 +22,7 @@ export default defineConfig<ChromaticConfig>({
     [
       "html",
       {
-        open: env.CI ? "never" : "on-failure",
+        open: "never",
       },
     ],
   ],
@@ -32,10 +32,12 @@ export default defineConfig<ChromaticConfig>({
     baseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: env.CI ? "on-first-retry" : "on",
+    trace: env.CI ? "retain-on-failure" : "on",
 
     video: env.CI ? "off" : "on",
     screenshot: "on",
+
+    disableAutoSnapshot: true,
   },
 
   /* Configure projects for major browsers */
