@@ -4,6 +4,23 @@
  * backend_app OpenAPI
  * OpenAPI spec version: 1.0.0
  */
+export type ErrorResponseCode =
+  (typeof ErrorResponseCode)[keyof typeof ErrorResponseCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ErrorResponseCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export interface ErrorResponse {
+  code: ErrorResponseCode;
+  /** explanation */
+  message: string;
+}
+
 export interface Post {
   /**
    * Primary ID
@@ -19,25 +36,85 @@ export interface Post {
   updated_at: string;
 }
 
-export type ErrorResponseCode =
-  (typeof ErrorResponseCode)[keyof typeof ErrorResponseCode];
+export type PostUserSignup401AllOfCode =
+  (typeof PostUserSignup401AllOfCode)[keyof typeof PostUserSignup401AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ErrorResponseCode = {
+export const PostUserSignup401AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export interface ErrorResponse {
-  code: ErrorResponseCode;
+export type PostUserSignup401AllOf = {
+  code?: PostUserSignup401AllOfCode;
   /** explanation */
-  message: string;
-}
+  message?: string;
+};
+
+export type PostUserSignup401 = ErrorResponse & PostUserSignup401AllOf;
+
+export type PostUserSignup404AllOfCode =
+  (typeof PostUserSignup404AllOfCode)[keyof typeof PostUserSignup404AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUserSignup404AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type PostUserSignup404AllOf = {
+  code?: PostUserSignup404AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type PostUserSignup404 = ErrorResponse & PostUserSignup404AllOf;
+
+export type PostUserSignup500AllOfCode =
+  (typeof PostUserSignup500AllOfCode)[keyof typeof PostUserSignup500AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostUserSignup500AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type PostUserSignup500AllOf = {
+  code?: PostUserSignup500AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type PostUserSignup500 = ErrorResponse & PostUserSignup500AllOf;
 
 export type GetPosts200 = {
   posts: Post[];
 };
+
+export type GetPosts401AllOfCode =
+  (typeof GetPosts401AllOfCode)[keyof typeof GetPosts401AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetPosts401AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type GetPosts401AllOf = {
+  code?: GetPosts401AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type GetPosts401 = ErrorResponse & GetPosts401AllOf;
 
 export type GetPosts404AllOfCode =
   (typeof GetPosts404AllOfCode)[keyof typeof GetPosts404AllOfCode];
@@ -45,6 +122,7 @@ export type GetPosts404AllOfCode =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetPosts404AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
@@ -63,6 +141,7 @@ export type GetPosts500AllOfCode =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetPosts500AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
@@ -87,12 +166,32 @@ export type PostPosts200 = {
   post: Post;
 };
 
+export type PostPosts401AllOfCode =
+  (typeof PostPosts401AllOfCode)[keyof typeof PostPosts401AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PostPosts401AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type PostPosts401AllOf = {
+  code?: PostPosts401AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type PostPosts401 = ErrorResponse & PostPosts401AllOf;
+
 export type PostPosts404AllOfCode =
   (typeof PostPosts404AllOfCode)[keyof typeof PostPosts404AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostPosts404AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
@@ -111,6 +210,7 @@ export type PostPosts500AllOfCode =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostPosts500AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
@@ -135,12 +235,32 @@ export type PutPostsId200 = {
   post: Post;
 };
 
+export type PutPostsId401AllOfCode =
+  (typeof PutPostsId401AllOfCode)[keyof typeof PutPostsId401AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PutPostsId401AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type PutPostsId401AllOf = {
+  code?: PutPostsId401AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type PutPostsId401 = ErrorResponse & PutPostsId401AllOf;
+
 export type PutPostsId404AllOfCode =
   (typeof PutPostsId404AllOfCode)[keyof typeof PutPostsId404AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PutPostsId404AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
@@ -159,6 +279,7 @@ export type PutPostsId500AllOfCode =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PutPostsId500AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
@@ -171,12 +292,32 @@ export type PutPostsId500AllOf = {
 
 export type PutPostsId500 = ErrorResponse & PutPostsId500AllOf;
 
+export type DeletePostsId401AllOfCode =
+  (typeof DeletePostsId401AllOfCode)[keyof typeof DeletePostsId401AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeletePostsId401AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type DeletePostsId401AllOf = {
+  code?: DeletePostsId401AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type DeletePostsId401 = ErrorResponse & DeletePostsId401AllOf;
+
 export type DeletePostsId404AllOfCode =
   (typeof DeletePostsId404AllOfCode)[keyof typeof DeletePostsId404AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeletePostsId404AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;
@@ -195,6 +336,7 @@ export type DeletePostsId500AllOfCode =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeletePostsId500AllOfCode = {
   Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
   Not_Found: "Not Found",
   Internal_Server_Error: "Internal Server Error",
 } as const;

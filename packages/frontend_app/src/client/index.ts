@@ -24,17 +24,24 @@ import type {
 import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 import type {
+  DeletePostsId401,
   DeletePostsId404,
   DeletePostsId500,
   ErrorResponse,
   GetPosts200,
+  GetPosts401,
   GetPosts404,
   GetPosts500,
   PostPosts200,
+  PostPosts401,
   PostPosts404,
   PostPosts500,
   PostPostsBody,
+  PostUserSignup401,
+  PostUserSignup404,
+  PostUserSignup500,
   PutPostsId200,
+  PutPostsId401,
   PutPostsId404,
   PutPostsId500,
   PutPostsIdBody,
@@ -44,6 +51,143 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
 
+export type postUserSignupResponse200 = {
+  data: null;
+  status: 200;
+};
+
+export type postUserSignupResponse400 = {
+  data: ErrorResponse;
+  status: 400;
+};
+
+export type postUserSignupResponse401 = {
+  data: PostUserSignup401;
+  status: 401;
+};
+
+export type postUserSignupResponse404 = {
+  data: PostUserSignup404;
+  status: 404;
+};
+
+export type postUserSignupResponse500 = {
+  data: PostUserSignup500;
+  status: 500;
+};
+
+export type postUserSignupResponseComposite =
+  | postUserSignupResponse200
+  | postUserSignupResponse400
+  | postUserSignupResponse401
+  | postUserSignupResponse404
+  | postUserSignupResponse500;
+
+export type postUserSignupResponse = postUserSignupResponseComposite & {
+  headers: Headers;
+};
+
+export const getPostUserSignupUrl = () => {
+  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/user/signup`;
+};
+
+export const postUserSignup = async (
+  options?: RequestInit,
+): Promise<postUserSignupResponse> => {
+  const res = await fetch(getPostUserSignupUrl(), {
+    ...options,
+    method: "POST",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: postUserSignupResponse["data"] = body ? JSON.parse(body) : {};
+
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postUserSignupResponse;
+};
+
+export const getPostUserSignupMutationOptions = <
+  TError =
+    | ErrorResponse
+    | PostUserSignup401
+    | PostUserSignup404
+    | PostUserSignup500,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postUserSignup>>,
+    TError,
+    void,
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postUserSignup>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["postUserSignup"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postUserSignup>>,
+    void
+  > = () => {
+    return postUserSignup(fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostUserSignupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postUserSignup>>
+>;
+
+export type PostUserSignupMutationError =
+  | ErrorResponse
+  | PostUserSignup401
+  | PostUserSignup404
+  | PostUserSignup500;
+
+export const usePostUserSignup = <
+  TError =
+    | ErrorResponse
+    | PostUserSignup401
+    | PostUserSignup404
+    | PostUserSignup500,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postUserSignup>>,
+      TError,
+      void,
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postUserSignup>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getPostUserSignupMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
 export type getPostsResponse200 = {
   data: GetPosts200;
   status: 200;
@@ -52,6 +196,11 @@ export type getPostsResponse200 = {
 export type getPostsResponse400 = {
   data: ErrorResponse;
   status: 400;
+};
+
+export type getPostsResponse401 = {
+  data: GetPosts401;
+  status: 401;
 };
 
 export type getPostsResponse404 = {
@@ -67,6 +216,7 @@ export type getPostsResponse500 = {
 export type getPostsResponseComposite =
   | getPostsResponse200
   | getPostsResponse400
+  | getPostsResponse401
   | getPostsResponse404
   | getPostsResponse500;
 
@@ -98,7 +248,7 @@ export const getGetPostsQueryKey = () => {
 
 export const getGetPostsQueryOptions = <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(options?: {
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
@@ -123,11 +273,15 @@ export const getGetPostsQueryOptions = <
 export type GetPostsQueryResult = NonNullable<
   Awaited<ReturnType<typeof getPosts>>
 >;
-export type GetPostsQueryError = ErrorResponse | GetPosts404 | GetPosts500;
+export type GetPostsQueryError =
+  | ErrorResponse
+  | GetPosts401
+  | GetPosts404
+  | GetPosts500;
 
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   options: {
     query: Partial<
@@ -149,7 +303,7 @@ export function useGetPosts<
 };
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -171,7 +325,7 @@ export function useGetPosts<
 };
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -186,7 +340,7 @@ export function useGetPosts<
 
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -212,7 +366,7 @@ export function useGetPosts<
 
 export const prefetchGetPostsQuery = async <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   queryClient: QueryClient,
   options?: {
@@ -231,7 +385,7 @@ export const prefetchGetPostsQuery = async <
 
 export const getGetPostsSuspenseQueryOptions = <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(options?: {
   query?: Partial<
     UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
@@ -258,12 +412,13 @@ export type GetPostsSuspenseQueryResult = NonNullable<
 >;
 export type GetPostsSuspenseQueryError =
   | ErrorResponse
+  | GetPosts401
   | GetPosts404
   | GetPosts500;
 
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   options: {
     query: Partial<
@@ -281,7 +436,7 @@ export function useGetPostsSuspense<
 };
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -299,7 +454,7 @@ export function useGetPostsSuspense<
 };
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -318,7 +473,7 @@ export function useGetPostsSuspense<
 
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts404 | GetPosts500,
+  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -358,6 +513,11 @@ export type postPostsResponse400 = {
   status: 400;
 };
 
+export type postPostsResponse401 = {
+  data: PostPosts401;
+  status: 401;
+};
+
 export type postPostsResponse404 = {
   data: PostPosts404;
   status: 404;
@@ -371,6 +531,7 @@ export type postPostsResponse500 = {
 export type postPostsResponseComposite =
   | postPostsResponse200
   | postPostsResponse400
+  | postPostsResponse401
   | postPostsResponse404
   | postPostsResponse500;
 
@@ -404,7 +565,7 @@ export const postPosts = async (
 };
 
 export const getPostPostsMutationOptions = <
-  TError = ErrorResponse | PostPosts404 | PostPosts500,
+  TError = ErrorResponse | PostPosts401 | PostPosts404 | PostPosts500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -447,11 +608,12 @@ export type PostPostsMutationResult = NonNullable<
 export type PostPostsMutationBody = PostPostsBody;
 export type PostPostsMutationError =
   | ErrorResponse
+  | PostPosts401
   | PostPosts404
   | PostPosts500;
 
 export const usePostPosts = <
-  TError = ErrorResponse | PostPosts404 | PostPosts500,
+  TError = ErrorResponse | PostPosts401 | PostPosts404 | PostPosts500,
   TContext = unknown,
 >(
   options?: {
@@ -485,6 +647,11 @@ export type putPostsIdResponse400 = {
   status: 400;
 };
 
+export type putPostsIdResponse401 = {
+  data: PutPostsId401;
+  status: 401;
+};
+
 export type putPostsIdResponse404 = {
   data: PutPostsId404;
   status: 404;
@@ -498,6 +665,7 @@ export type putPostsIdResponse500 = {
 export type putPostsIdResponseComposite =
   | putPostsIdResponse200
   | putPostsIdResponse400
+  | putPostsIdResponse401
   | putPostsIdResponse404
   | putPostsIdResponse500;
 
@@ -532,7 +700,7 @@ export const putPostsId = async (
 };
 
 export const getPutPostsIdMutationOptions = <
-  TError = ErrorResponse | PutPostsId404 | PutPostsId500,
+  TError = ErrorResponse | PutPostsId401 | PutPostsId404 | PutPostsId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -575,11 +743,12 @@ export type PutPostsIdMutationResult = NonNullable<
 export type PutPostsIdMutationBody = PutPostsIdBody;
 export type PutPostsIdMutationError =
   | ErrorResponse
+  | PutPostsId401
   | PutPostsId404
   | PutPostsId500;
 
 export const usePutPostsId = <
-  TError = ErrorResponse | PutPostsId404 | PutPostsId500,
+  TError = ErrorResponse | PutPostsId401 | PutPostsId404 | PutPostsId500,
   TContext = unknown,
 >(
   options?: {
@@ -613,6 +782,11 @@ export type deletePostsIdResponse400 = {
   status: 400;
 };
 
+export type deletePostsIdResponse401 = {
+  data: DeletePostsId401;
+  status: 401;
+};
+
 export type deletePostsIdResponse404 = {
   data: DeletePostsId404;
   status: 404;
@@ -626,6 +800,7 @@ export type deletePostsIdResponse500 = {
 export type deletePostsIdResponseComposite =
   | deletePostsIdResponse200
   | deletePostsIdResponse400
+  | deletePostsIdResponse401
   | deletePostsIdResponse404
   | deletePostsIdResponse500;
 
@@ -657,7 +832,11 @@ export const deletePostsId = async (
 };
 
 export const getDeletePostsIdMutationOptions = <
-  TError = ErrorResponse | DeletePostsId404 | DeletePostsId500,
+  TError =
+    | ErrorResponse
+    | DeletePostsId401
+    | DeletePostsId404
+    | DeletePostsId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -700,11 +879,16 @@ export type DeletePostsIdMutationResult = NonNullable<
 
 export type DeletePostsIdMutationError =
   | ErrorResponse
+  | DeletePostsId401
   | DeletePostsId404
   | DeletePostsId500;
 
 export const useDeletePostsId = <
-  TError = ErrorResponse | DeletePostsId404 | DeletePostsId500,
+  TError =
+    | ErrorResponse
+    | DeletePostsId401
+    | DeletePostsId404
+    | DeletePostsId500,
   TContext = unknown,
 >(
   options?: {
