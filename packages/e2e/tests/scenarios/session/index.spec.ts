@@ -31,8 +31,6 @@ test("session page", async ({ page }, testInfo) => {
     const logoutBtn = page.getByRole("button", { name: "Sign Out" });
 
     await expect(page).toHaveURL("/logout");
-    await takeSnapshot(page, testInfo);
-
     await expect(logoutDialogBtn).toBeVisible();
     await takeSnapshot(page, testInfo);
 
