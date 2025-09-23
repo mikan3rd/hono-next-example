@@ -1,3 +1,5 @@
+import { env } from "../env";
+
 // NOTE: Supports cases where `content-type` is other than `json`
 const getBody = <T>(c: Response | Request): Promise<T> => {
   const contentType = c.headers.get("content-type");
@@ -18,10 +20,7 @@ const getUrl = (contextUrl: string): string => {
   const url = new URL(contextUrl);
   const pathname = url.pathname;
   const search = url.search;
-  const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? "productionBaseUrl"
-      : "http://localhost:3000";
+  const baseUrl = env.NEXT_PUBLIC_BACKEND_APP_URL;
 
   const requestUrl = new URL(`${baseUrl}${pathname}${search}`);
 
@@ -32,8 +31,7 @@ const getUrl = (contextUrl: string): string => {
 const getHeaders = (headers?: HeadersInit): HeadersInit => {
   return {
     ...headers,
-    Authorization: "token",
-    "Content-Type": "multipart/form-data",
+    // Authorization: "token", // TODO: Add token
   };
 };
 

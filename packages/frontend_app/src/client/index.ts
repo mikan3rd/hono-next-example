@@ -90,7 +90,7 @@ export type postUserSignupResponse = postUserSignupResponseComposite & {
 };
 
 export const getPostUserSignupUrl = () => {
-  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/user/signup`;
+  return `/user/signup`;
 };
 
 export const postUserSignup = async (
@@ -218,7 +218,7 @@ export type getPostsResponse = getPostsResponseComposite & {
 };
 
 export const getGetPostsUrl = () => {
-  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`;
+  return `/posts`;
 };
 
 export const getPosts = async (
@@ -231,7 +231,7 @@ export const getPosts = async (
 };
 
 export const getGetPostsQueryKey = () => {
-  return [`${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`] as const;
+  return [`/posts`] as const;
 };
 
 export const getGetPostsQueryOptions = <
@@ -528,7 +528,7 @@ export type postPostsResponse = postPostsResponseComposite & {
 };
 
 export const getPostPostsUrl = () => {
-  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts`;
+  return `/posts`;
 };
 
 export const postPosts = async (
@@ -653,7 +653,7 @@ export type putPostsIdResponse = putPostsIdResponseComposite & {
 };
 
 export const getPutPostsIdUrl = (id: number) => {
-  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/${id}`;
+  return `/posts/${id}`;
 };
 
 export const putPostsId = async (
@@ -779,7 +779,7 @@ export type deletePostsIdResponse = deletePostsIdResponseComposite & {
 };
 
 export const getDeletePostsIdUrl = (id: number) => {
-  return `${process.env.NEXT_PUBLIC_BACKEND_APP_URL}/posts/${id}`;
+  return `/posts/${id}`;
 };
 
 export const deletePostsId = async (
