@@ -12,6 +12,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PORT: ${POSTGRES_PORT}
       DATABASE_HOST: db
+      SUPABASE_URL: ${API_EXTERNAL_URL}
+      SUPABASE_KEY: ${ANON_KEY}
     command: |
       bun db:push
     depends_on:
@@ -29,6 +31,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PORT: ${POSTGRES_PORT}
       DATABASE_HOST: db
+      SUPABASE_URL: ${API_EXTERNAL_URL}
+      SUPABASE_KEY: ${ANON_KEY}
       ENABLE_DB_INITIALIZE: true
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
