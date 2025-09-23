@@ -22,7 +22,7 @@ import type {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
-
+import { customFetch } from "../lib/custom-fetch";
 import type {
   DeletePostsId401,
   DeletePostsId404,
@@ -50,6 +50,8 @@ import type {
 type AwaitedInput<T> = PromiseLike<T> | T;
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 export type postUserSignupResponse200 = {
   data: null;
@@ -94,19 +96,10 @@ export const getPostUserSignupUrl = () => {
 export const postUserSignup = async (
   options?: RequestInit,
 ): Promise<postUserSignupResponse> => {
-  const res = await fetch(getPostUserSignupUrl(), {
+  return customFetch<postUserSignupResponse>(getPostUserSignupUrl(), {
     ...options,
     method: "POST",
   });
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: postUserSignupResponse["data"] = body ? JSON.parse(body) : {};
-
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as postUserSignupResponse;
 };
 
 export const getPostUserSignupMutationOptions = <
@@ -123,7 +116,7 @@ export const getPostUserSignupMutationOptions = <
     void,
     TContext
   >;
-  fetch?: RequestInit;
+  request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof postUserSignup>>,
   TError,
@@ -131,19 +124,19 @@ export const getPostUserSignupMutationOptions = <
   TContext
 > => {
   const mutationKey = ["postUserSignup"];
-  const { mutation: mutationOptions, fetch: fetchOptions } = options
+  const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
       options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, fetch: undefined };
+    : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof postUserSignup>>,
     void
   > = () => {
-    return postUserSignup(fetchOptions);
+    return postUserSignup(requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -174,7 +167,7 @@ export const usePostUserSignup = <
       void,
       TContext
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
@@ -231,15 +224,10 @@ export const getGetPostsUrl = () => {
 export const getPosts = async (
   options?: RequestInit,
 ): Promise<getPostsResponse> => {
-  const res = await fetch(getGetPostsUrl(), {
+  return customFetch<getPostsResponse>(getGetPostsUrl(), {
     ...options,
     method: "GET",
   });
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: getPostsResponse["data"] = body ? JSON.parse(body) : {};
-
-  return { data, status: res.status, headers: res.headers } as getPostsResponse;
 };
 
 export const getGetPostsQueryKey = () => {
@@ -253,15 +241,15 @@ export const getGetPostsQueryOptions = <
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
   >;
-  fetch?: RequestInit;
+  request?: SecondParameter<typeof customFetch>;
 }) => {
-  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetPostsQueryKey();
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getPosts>>> = ({
     signal,
-  }) => getPosts({ signal, ...fetchOptions });
+  }) => getPosts({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getPosts>>,
@@ -295,7 +283,7 @@ export function useGetPosts<
         >,
         "initialData"
       >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
@@ -317,7 +305,7 @@ export function useGetPosts<
         >,
         "initialData"
       >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
@@ -331,7 +319,7 @@ export function useGetPosts<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
@@ -346,7 +334,7 @@ export function useGetPosts<
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
@@ -373,7 +361,7 @@ export const prefetchGetPostsQuery = async <
     query?: Partial<
       UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
 ): Promise<QueryClient> => {
   const queryOptions = getGetPostsQueryOptions(options);
@@ -390,15 +378,15 @@ export const getGetPostsSuspenseQueryOptions = <
   query?: Partial<
     UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
   >;
-  fetch?: RequestInit;
+  request?: SecondParameter<typeof customFetch>;
 }) => {
-  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getGetPostsQueryKey();
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getPosts>>> = ({
     signal,
-  }) => getPosts({ signal, ...fetchOptions });
+  }) => getPosts({ signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
     Awaited<ReturnType<typeof getPosts>>,
@@ -428,7 +416,7 @@ export function useGetPostsSuspense<
         TData
       >
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
@@ -446,7 +434,7 @@ export function useGetPostsSuspense<
         TData
       >
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
@@ -464,7 +452,7 @@ export function useGetPostsSuspense<
         TData
       >
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
@@ -483,7 +471,7 @@ export function useGetPostsSuspense<
         TData
       >
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseSuspenseQueryResult<TData, TError> & {
@@ -547,21 +535,12 @@ export const postPosts = async (
   postPostsBody: PostPostsBody,
   options?: RequestInit,
 ): Promise<postPostsResponse> => {
-  const res = await fetch(getPostPostsUrl(), {
+  return customFetch<postPostsResponse>(getPostPostsUrl(), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
     body: JSON.stringify(postPostsBody),
   });
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: postPostsResponse["data"] = body ? JSON.parse(body) : {};
-
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as postPostsResponse;
 };
 
 export const getPostPostsMutationOptions = <
@@ -574,7 +553,7 @@ export const getPostPostsMutationOptions = <
     { data: PostPostsBody },
     TContext
   >;
-  fetch?: RequestInit;
+  request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof postPosts>>,
   TError,
@@ -582,13 +561,13 @@ export const getPostPostsMutationOptions = <
   TContext
 > => {
   const mutationKey = ["postPosts"];
-  const { mutation: mutationOptions, fetch: fetchOptions } = options
+  const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
       options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, fetch: undefined };
+    : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof postPosts>>,
@@ -596,7 +575,7 @@ export const getPostPostsMutationOptions = <
   > = (props) => {
     const { data } = props ?? {};
 
-    return postPosts(data, fetchOptions);
+    return postPosts(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -623,7 +602,7 @@ export const usePostPosts = <
       { data: PostPostsBody },
       TContext
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
@@ -682,21 +661,12 @@ export const putPostsId = async (
   putPostsIdBody: PutPostsIdBody,
   options?: RequestInit,
 ): Promise<putPostsIdResponse> => {
-  const res = await fetch(getPutPostsIdUrl(id), {
+  return customFetch<putPostsIdResponse>(getPutPostsIdUrl(id), {
     ...options,
     method: "PUT",
     headers: { "Content-Type": "application/json", ...options?.headers },
     body: JSON.stringify(putPostsIdBody),
   });
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: putPostsIdResponse["data"] = body ? JSON.parse(body) : {};
-
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as putPostsIdResponse;
 };
 
 export const getPutPostsIdMutationOptions = <
@@ -709,7 +679,7 @@ export const getPutPostsIdMutationOptions = <
     { id: number; data: PutPostsIdBody },
     TContext
   >;
-  fetch?: RequestInit;
+  request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof putPostsId>>,
   TError,
@@ -717,13 +687,13 @@ export const getPutPostsIdMutationOptions = <
   TContext
 > => {
   const mutationKey = ["putPostsId"];
-  const { mutation: mutationOptions, fetch: fetchOptions } = options
+  const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
       options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, fetch: undefined };
+    : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof putPostsId>>,
@@ -731,7 +701,7 @@ export const getPutPostsIdMutationOptions = <
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return putPostsId(id, data, fetchOptions);
+    return putPostsId(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -758,7 +728,7 @@ export const usePutPostsId = <
       { id: number; data: PutPostsIdBody },
       TContext
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
@@ -816,19 +786,10 @@ export const deletePostsId = async (
   id: number,
   options?: RequestInit,
 ): Promise<deletePostsIdResponse> => {
-  const res = await fetch(getDeletePostsIdUrl(id), {
+  return customFetch<deletePostsIdResponse>(getDeletePostsIdUrl(id), {
     ...options,
     method: "DELETE",
   });
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: deletePostsIdResponse["data"] = body ? JSON.parse(body) : {};
-
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as deletePostsIdResponse;
 };
 
 export const getDeletePostsIdMutationOptions = <
@@ -845,7 +806,7 @@ export const getDeletePostsIdMutationOptions = <
     { id: number },
     TContext
   >;
-  fetch?: RequestInit;
+  request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof deletePostsId>>,
   TError,
@@ -853,13 +814,13 @@ export const getDeletePostsIdMutationOptions = <
   TContext
 > => {
   const mutationKey = ["deletePostsId"];
-  const { mutation: mutationOptions, fetch: fetchOptions } = options
+  const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
       options.mutation.mutationKey
       ? options
       : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, fetch: undefined };
+    : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof deletePostsId>>,
@@ -867,7 +828,7 @@ export const getDeletePostsIdMutationOptions = <
   > = (props) => {
     const { id } = props ?? {};
 
-    return deletePostsId(id, fetchOptions);
+    return deletePostsId(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -898,7 +859,7 @@ export const useDeletePostsId = <
       { id: number },
       TContext
     >;
-    fetch?: RequestInit;
+    request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<

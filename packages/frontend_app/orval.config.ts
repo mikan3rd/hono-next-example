@@ -20,6 +20,10 @@ export default defineConfig({
           useSuspenseQuery: true,
           usePrefetch: true,
         },
+        mutator: {
+          path: "./src/lib/custom-fetch.ts",
+          name: "customFetch",
+        },
       },
     },
   },
