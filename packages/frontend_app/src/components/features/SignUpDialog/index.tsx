@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createClient } from "#src/supabase/client";
+import { usePostUserSignup } from "../../../client";
 import { Button } from "../../ui/Button";
 import {
   Dialog,
@@ -21,6 +22,8 @@ export const SignUpDialog = () => {
 
   const router = useRouter();
 
+  const signupMutation = usePostUserSignup();
+
   const [isOpen, setIsOpen] = useState(false);
   const [loading, startLoadingTransition] = useTransition();
 
@@ -33,10 +36,17 @@ export const SignUpDialog = () => {
         toast.error(result.error.message);
         return;
       }
-      toast.success("Signed up successfully");
-      setIsOpen(false);
 
-      router.push("/logout");
+      signupMutation.mutate(undefined, {
+        onSuccess: () => {
+          toast.success("Signed up successfully");
+          setIsOpen(false);
+          router.push("/logout");
+        },
+        onError: (error) => {
+          toast.error(`Failed to sign up: ${error.message}`);
+        },
+      });
     });
   };
 
