@@ -1,9 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import { createMiddleware } from "hono/factory";
+import type { HonoEnv } from "../../apps/context";
 import type { ErrorResponse } from "../../dto/output/error";
 import { env } from "../../env";
 
-export const jwtMiddleware = createMiddleware(async (c, next) => {
+export const jwtMiddleware = createMiddleware<HonoEnv>(async (c, next) => {
   const credentials = c.req.header("Authorization");
   if (!credentials) {
     return c.json<ErrorResponse>(
@@ -29,7 +30,15 @@ export const jwtMiddleware = createMiddleware(async (c, next) => {
     );
   }
 
-  // TODO: jwtPayload にユーザー情報を追加
+  if (claims.data === null) {
+    return c.json<ErrorResponse>(
+      { code: "Unauthorized", message: "No claims found" },
+      401,
+    );
+  }
+
+  c.set("jwtToken", token);
+  c.set("jwtClaims", claims.data.claims);
 
   await next();
 });
