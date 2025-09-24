@@ -14,7 +14,7 @@ const timestamps = {
 
 export const usersTable = pgTable("users", {
   ...primaryKeys,
-  supabase_uid: uuid().notNull(),
+  supabase_uid: uuid().unique().notNull(),
   ...timestamps,
 });
 
