@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PORT: ${POSTGRES_PORT}
       DATABASE_HOST: db
-      SUPABASE_URL: ${API_EXTERNAL_URL}
+      SUPABASE_URL: http://kong:8000
       SUPABASE_KEY: ${ANON_KEY}
     command: |
       bun db:push
@@ -31,7 +31,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PORT: ${POSTGRES_PORT}
       DATABASE_HOST: db
-      SUPABASE_URL: ${API_EXTERNAL_URL}
+      SUPABASE_URL: http://kong:8000
       SUPABASE_KEY: ${ANON_KEY}
       ENABLE_DB_INITIALIZE: true
     ports:
