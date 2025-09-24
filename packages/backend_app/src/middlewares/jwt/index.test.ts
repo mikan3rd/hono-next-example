@@ -1,8 +1,10 @@
-import { beforeEach, describe, expect, it, mock } from "bun:test";
+import { beforeEach, describe, expect, it } from "bun:test";
+import { AuthError } from "@supabase/auth-js";
 import { Hono } from "hono";
 import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import type { ErrorResponse } from "../../dto/output/error";
+import { getClaims } from "../../test/supabase";
 import { jwtMiddleware } from ".";
 
 describe("jwtMiddleware", () => {
@@ -16,19 +18,6 @@ describe("jwtMiddleware", () => {
     );
     return testClient(routes).index.$get({ header });
   };
-
-  beforeEach(() => {
-    mock.module("@supabase/supabase-js", () => ({
-      createClient: mock(() => ({
-        auth: {
-          getClaims: mock(async () => ({
-            data: { claims: { sub: "test" } },
-            error: null,
-          })),
-        },
-      })),
-    }));
-  });
 
   beforeEach(() => {
     header = { Authorization: "Bearer test" };
@@ -75,15 +64,9 @@ describe("jwtMiddleware", () => {
 
   describe("when getClaims returns an error", () => {
     beforeEach(() => {
-      mock.module("@supabase/supabase-js", () => ({
-        createClient: mock(() => ({
-          auth: {
-            getClaims: mock(async () => ({
-              data: null,
-              error: new Error("test"),
-            })),
-          },
-        })),
+      getClaims.mockImplementationOnce(async () => ({
+        data: null,
+        error: new AuthError("test"),
       }));
     });
 
@@ -101,10 +84,9 @@ describe("jwtMiddleware", () => {
 
   describe("when getClaims returns null", () => {
     beforeEach(() => {
-      mock.module("@supabase/supabase-js", () => ({
-        createClient: mock(() => ({
-          auth: { getClaims: mock(async () => ({ data: null, error: null })) },
-        })),
+      getClaims.mockImplementationOnce(async () => ({
+        data: null,
+        error: null,
       }));
     });
 
