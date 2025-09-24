@@ -4,8 +4,6 @@ import type { HonoEnv } from "../../apps/context";
 import type { ErrorResponse } from "../../dto/output/error";
 import { env } from "../../env";
 
-const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
-
 export const jwtMiddleware = createMiddleware<HonoEnv>(async (c, next) => {
   const credentials = c.req.header("Authorization");
   if (!credentials) {
@@ -23,6 +21,7 @@ export const jwtMiddleware = createMiddleware<HonoEnv>(async (c, next) => {
     );
   }
 
+  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
   const claims = await supabase.auth.getClaims(token);
   if (claims.error !== null) {
     return c.json<ErrorResponse>(

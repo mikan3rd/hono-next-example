@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "bun:test";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
 import { Hono } from "hono";
 import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
@@ -16,6 +16,19 @@ describe("jwtMiddleware", () => {
     );
     return testClient(routes).index.$get({ header });
   };
+
+  beforeEach(() => {
+    mock.module("@supabase/supabase-js", () => ({
+      createClient: mock(() => ({
+        auth: {
+          getClaims: mock(async () => ({
+            data: { claims: { sub: "test" } },
+            error: null,
+          })),
+        },
+      })),
+    }));
+  });
 
   beforeEach(() => {
     header = { Authorization: "Bearer test" };
