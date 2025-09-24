@@ -72,4 +72,51 @@ describe("jwtMiddleware", () => {
       });
     });
   });
+
+  describe("when getClaims returns an error", () => {
+    beforeEach(() => {
+      mock.module("@supabase/supabase-js", () => ({
+        createClient: mock(() => ({
+          auth: {
+            getClaims: mock(async () => ({
+              data: null,
+              error: new Error("test"),
+            })),
+          },
+        })),
+      }));
+    });
+
+    it("should return 401 Response", async () => {
+      const res = await subject();
+      expect(res.status).toBe(401);
+
+      const body = await res.json();
+      expect(body).toEqual({
+        code: "Unauthorized",
+        message: "test",
+      });
+    });
+  });
+
+  describe("when getClaims returns null", () => {
+    beforeEach(() => {
+      mock.module("@supabase/supabase-js", () => ({
+        createClient: mock(() => ({
+          auth: { getClaims: mock(async () => ({ data: null, error: null })) },
+        })),
+      }));
+    });
+
+    it("should return 401 Response", async () => {
+      const res = await subject();
+      expect(res.status).toBe(401);
+
+      const body = await res.json();
+      expect(body).toEqual({
+        code: "Unauthorized",
+        message: "No claims found",
+      });
+    });
+  });
 });
