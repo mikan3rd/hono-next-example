@@ -47,9 +47,16 @@ describe("userApp", () => {
         await db.insert(usersTable).values({ supabase_uid: supabaseUid });
       });
 
-      it("should return 500 Response", async () => {
+      it("should return 200 Response", async () => {
         const res = await subject();
-        expect(res.status).toBe(500);
+        expect(res.status).toBe(200);
+
+        const users = await db.select().from(usersTable);
+        expect(users).toHaveLength(1);
+
+        const user = users[0];
+        if (!user) throw new Error("user is not found");
+        expect(user.supabase_uid).toBe(supabaseUid);
       });
     });
   });
