@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it } from "bun:test";
+import { AuthError } from "@supabase/auth-js";
 import { Hono } from "hono";
 import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import type { ErrorResponse } from "../../dto/output/error";
+import { getClaims } from "../../test/supabase";
 import { jwtMiddleware } from ".";
 
 describe("jwtMiddleware", () => {
@@ -56,6 +58,46 @@ describe("jwtMiddleware", () => {
       expect(body).toEqual({
         code: "Unauthorized",
         message: "Missing token",
+      });
+    });
+  });
+
+  describe("when getClaims returns an error", () => {
+    beforeEach(() => {
+      getClaims.mockImplementationOnce(async () => ({
+        data: null,
+        error: new AuthError("test"),
+      }));
+    });
+
+    it("should return 401 Response", async () => {
+      const res = await subject();
+      expect(res.status).toBe(401);
+
+      const body = await res.json();
+      expect(body).toEqual({
+        code: "Unauthorized",
+        message: "test",
+      });
+    });
+  });
+
+  describe("when getClaims returns null", () => {
+    beforeEach(() => {
+      getClaims.mockImplementationOnce(async () => ({
+        data: null,
+        error: null,
+      }));
+    });
+
+    it("should return 401 Response", async () => {
+      const res = await subject();
+      expect(res.status).toBe(401);
+
+      const body = await res.json();
+      expect(body).toEqual({
+        code: "Unauthorized",
+        message: "No claims found",
       });
     });
   });
