@@ -30,8 +30,16 @@ export const PostIndex = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Posts</h1>
               <p className="text-gray-600">View the latest posts</p>
             </div>
-            {session !== undefined &&
-              (session === null ? <SignUpDialog /> : <LogoutDialog />)}
+            {session !== undefined && (
+              <div className="flex gap-2">
+                <div className={session === null ? "" : "hidden"}>
+                  <SignUpDialog />
+                </div>
+                <div className={session ? "" : "hidden"}>
+                  <LogoutDialog />
+                </div>
+              </div>
+            )}
           </div>
 
           <PostForm />
