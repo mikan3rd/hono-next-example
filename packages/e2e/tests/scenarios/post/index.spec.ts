@@ -29,6 +29,23 @@ test("post page", async ({ page }, testInfo) => {
     await takeSnapshot(page, testInfo);
   });
 
+  await test.step("login", async () => {
+    const signUpDialogBtn = page.getByRole("button", {
+      name: "Sign Up Dialog",
+    });
+    const signUpBtn = page.getByRole("button", { name: "Sign Up" });
+
+    await expect(signUpDialogBtn).toBeVisible();
+
+    await signUpDialogBtn.click();
+    await expect(signUpBtn).toBeVisible();
+    await takeSnapshot(page, testInfo);
+
+    await signUpBtn.click();
+    await expect(signUpBtn).not.toBeVisible();
+    await expect(signUpDialogBtn).not.toBeVisible();
+  });
+
   const firstPostContent = `This is first post content`;
   const secondPostContent = `This is second post content`;
 
@@ -95,5 +112,22 @@ test("post page", async ({ page }, testInfo) => {
     await secondPostCard.getByRole("button", { name: "Delete" }).click();
     await expect(secondPostCard).not.toBeVisible();
     await takeSnapshot(page, testInfo);
+  });
+
+  await test.step("logout", async () => {
+    const logoutDialogBtn = page.getByRole("button", {
+      name: "Sign Out Dialog",
+    });
+    const logoutBtn = page.getByRole("button", { name: "Sign Out" });
+
+    await expect(logoutDialogBtn).toBeVisible();
+
+    await logoutDialogBtn.click();
+    await expect(logoutBtn).toBeVisible();
+    await takeSnapshot(page, testInfo);
+
+    await logoutBtn.click();
+    await expect(logoutBtn).not.toBeVisible();
+    await expect(logoutDialogBtn).not.toBeVisible();
   });
 });
