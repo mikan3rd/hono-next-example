@@ -1,4 +1,8 @@
-import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+
+const primaryKeys = {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+};
 
 const timestamps = {
   created_at: timestamp().defaultNow().notNull(),
@@ -8,8 +12,14 @@ const timestamps = {
     .$onUpdate(() => new Date()),
 };
 
+export const usersTable = pgTable("users", {
+  ...primaryKeys,
+  supabase_uid: uuid().unique().notNull(),
+  ...timestamps,
+});
+
 export const postsTable = pgTable("posts", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  ...primaryKeys,
   content: text().notNull(),
   ...timestamps,
 });

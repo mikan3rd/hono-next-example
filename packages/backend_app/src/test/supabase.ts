@@ -1,6 +1,8 @@
 import { mock } from "bun:test";
 import type { GoTrueClient } from "@supabase/supabase-js";
 
+export const supabaseUid = "11111111-1111-1111-1111-111111111111";
+
 // https://supabase.com/docs/reference/javascript/auth-getclaims
 export const getClaims = mock(
   async (): ReturnType<GoTrueClient["getClaims"]> => {
@@ -23,7 +25,7 @@ export const getClaims = mock(
           iss: "https://project-id.supabase.co/auth/v1",
           phone: "+13334445555",
           role: "authenticated",
-          session_id: "11111111-1111-1111-1111-111111111111",
+          session_id: supabaseUid,
           sub: "11111111-1111-1111-1111-111111111111",
           user_metadata: {},
         },

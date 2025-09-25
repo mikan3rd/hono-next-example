@@ -1,3 +1,5 @@
+import { db } from "../../db";
+import { usersTable } from "../../db/schema";
 import { jwtMiddleware } from "../../middlewares/jwt";
 import { createApp } from "../factory";
 import { signupRoute } from "./route";
@@ -13,8 +15,12 @@ userApp.openAPIRegistry.registerComponent("securitySchemes", "bearerAuth", {
 userApp.use(jwtMiddleware);
 
 const routes = userApp.openapi(signupRoute, async (c) => {
-  // TODO: ユーザー登録
-  return c.json({ status: "ok" }, 200);
+  const { sub: supabase_uid } = c.get("jwtClaims");
+  await db
+    .insert(usersTable)
+    .values({ supabase_uid })
+    .onConflictDoNothing({ target: usersTable.supabase_uid });
+  return c.json(null, 200);
 });
 
 export { routes as userApp };
