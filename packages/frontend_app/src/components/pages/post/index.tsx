@@ -1,12 +1,16 @@
 "use client";
 
 import { useGetPostsSuspense } from "../../../client";
+import { LogoutDialog } from "../../features/LogoutDialog";
 import { SignUpDialog } from "../../features/SignUpDialog";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
+import { useSession } from "./hooks";
 
 export const PostIndex = () => {
+  const { session } = useSession();
+
   const { data } = useGetPostsSuspense();
 
   if (data.status !== 200) {
@@ -26,7 +30,8 @@ export const PostIndex = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Posts</h1>
               <p className="text-gray-600">View the latest posts</p>
             </div>
-            <SignUpDialog />
+            {session !== undefined &&
+              (session === null ? <SignUpDialog /> : <LogoutDialog />)}
           </div>
 
           <PostForm />
