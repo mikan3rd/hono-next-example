@@ -32,6 +32,7 @@ export const PostIndex = () => {
             </div>
             {session !== undefined && (
               <div className="flex gap-2">
+                {/* FIXME: signupMutation の完了前に session が更新されてしまうため常にマウントする */}
                 <div className={session === null ? "" : "hidden"}>
                   <SignUpDialog />
                 </div>
