@@ -23,7 +23,7 @@ test("post page", async ({ page }, testInfo) => {
   });
 
   await test.step("visit post page", async () => {
-    await page.goto("/post");
+    await page.goto("/");
     await expect(page).toHaveTitle(/posts: 0/);
     await expect(page.getByText("No posts yet")).toBeVisible();
     await takeSnapshot(page, testInfo);
