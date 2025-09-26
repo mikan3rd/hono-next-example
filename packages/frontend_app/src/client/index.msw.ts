@@ -22,6 +22,11 @@ export const getGetPostsResponseMock = (
       max: 2147483647,
       multipleOf: undefined,
     }),
+    user_id: faker.number.int({
+      min: -2147483648,
+      max: 2147483647,
+      multipleOf: undefined,
+    }),
     content: faker.string.alpha({ length: { min: 10, max: 20 } }),
     created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
@@ -38,6 +43,11 @@ export const getPostPostsResponseMock = (
       max: 2147483647,
       multipleOf: undefined,
     }),
+    user_id: faker.number.int({
+      min: -2147483648,
+      max: 2147483647,
+      multipleOf: undefined,
+    }),
     content: faker.string.alpha({ length: { min: 10, max: 20 } }),
     created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
@@ -50,6 +60,11 @@ export const getPutPostsIdResponseMock = (
 ): PutPostsId200 => ({
   post: {
     id: faker.number.int({
+      min: -2147483648,
+      max: 2147483647,
+      multipleOf: undefined,
+    }),
+    user_id: faker.number.int({
       min: -2147483648,
       max: 2147483647,
       multipleOf: undefined,

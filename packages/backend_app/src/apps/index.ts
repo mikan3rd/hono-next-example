@@ -10,6 +10,12 @@ import { userApp } from "./user";
 
 const app = createApp();
 
+app.openAPIRegistry.registerComponent("securitySchemes", "bearerAuth", {
+  type: "http",
+  scheme: "bearer",
+  bearerFormat: "JWT",
+});
+
 app.use(logger());
 
 app.use("*", requestId());

@@ -1,7 +1,8 @@
 import { desc, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { db } from "../../db";
-import { postsTable } from "../../db/schema";
+import { postsTable, usersTable } from "../../db/schema";
+import { jwtMiddleware } from "../../middlewares/jwt";
 import { createApp } from "../factory";
 import {
   deletePostRoute,
@@ -10,7 +11,14 @@ import {
   updatePostRoute,
 } from "./route";
 
-export const postApp = createApp()
+const postApp = createApp();
+
+postApp.post("/", jwtMiddleware);
+
+// TODO: post に紐づくユーザーのみ許可するようにするべき
+postApp.use("/:id", jwtMiddleware);
+
+const routes = postApp
   .openapi(getPostsRoute, async (c) => {
     const posts = await db
       .select()
@@ -19,8 +27,23 @@ export const postApp = createApp()
     return c.json({ posts }, 200);
   })
   .openapi(postPostRoute, async (c) => {
+    const { sub: supabase_uid } = c.get("jwtClaims");
+    const users = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.supabase_uid, supabase_uid));
+    const user = users[0];
+    if (!user) {
+      throw new HTTPException(401, {
+        message: "User is not found",
+      });
+    }
+
     const { content } = c.req.valid("json");
-    const result = await db.insert(postsTable).values({ content }).returning();
+    const result = await db
+      .insert(postsTable)
+      .values({ user_id: user.id, content })
+      .returning();
     const post = result[0];
     if (!post)
       throw new HTTPException(500, {
@@ -80,3 +103,5 @@ export const postApp = createApp()
 
     return c.json(null, 200);
   });
+
+export { routes as postApp };

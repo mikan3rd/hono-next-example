@@ -1,10 +1,29 @@
 import { beforeEach, describe, expect, it } from "bun:test";
+import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
 import { db } from "../../db";
-import { postsTable } from "../../db/schema";
+import { postsTable, usersTable } from "../../db/schema";
+import { supabaseUid } from "../../test/supabase";
 
 describe("postsApp", () => {
+  let headers: ClientRequestOptions["headers"];
+  let user: typeof usersTable.$inferSelect;
+
+  beforeEach(() => {
+    headers = { Authorization: "Bearer test" };
+  });
+
+  beforeEach(async () => {
+    const users = await db
+      .insert(usersTable)
+      .values({ supabase_uid: supabaseUid })
+      .returning();
+    const createdUser = users[0];
+    if (!createdUser) throw new Error("user is not found");
+    user = createdUser;
+  });
+
   describe("getPostsRoute", () => {
     const subject = () => testClient(app).posts.$get();
 
@@ -21,8 +40,12 @@ describe("postsApp", () => {
 
     describe("when there are some posts", () => {
       beforeEach(async () => {
-        await db.insert(postsTable).values({ content: "test" });
-        await db.insert(postsTable).values({ content: "test2" });
+        await db
+          .insert(postsTable)
+          .values({ user_id: user.id, content: "test" });
+        await db
+          .insert(postsTable)
+          .values({ user_id: user.id, content: "test2" });
       });
 
       it("should return 200 Response", async () => {
@@ -47,7 +70,19 @@ describe("postsApp", () => {
   describe("postPostRoute", () => {
     let content: string;
 
-    const subject = () => testClient(app).posts.$post({ json: { content } });
+    const subject = () =>
+      testClient(app).posts.$post({ json: { content } }, { headers });
+
+    describe("when Authorization header is not provided", () => {
+      beforeEach(() => {
+        headers = undefined;
+      });
+
+      it("should return 401 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(401);
+      });
+    });
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
@@ -89,15 +124,29 @@ describe("postsApp", () => {
     let content: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$put({
-        param: { id: id.toString() },
-        json: { content },
-      });
+      testClient(app).posts[":id"].$put(
+        {
+          param: { id: id.toString() },
+          json: { content },
+        },
+        { headers },
+      );
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
         id = Number(1).toString();
         content = "test2";
+      });
+
+      describe("when Authorization header is not provided", () => {
+        beforeEach(() => {
+          headers = undefined;
+        });
+
+        it("should return 401 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(401);
+        });
       });
 
       it("should return 404 when post is not found", async () => {
@@ -111,7 +160,9 @@ describe("postsApp", () => {
 
       describe("when post is found", () => {
         beforeEach(async () => {
-          await db.insert(postsTable).values({ content: "test" });
+          await db
+            .insert(postsTable)
+            .values({ user_id: user.id, content: "test" });
         });
 
         it("should return 200 Response", async () => {
@@ -163,11 +214,22 @@ describe("postsApp", () => {
     let id: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$delete({ param: { id } });
+      testClient(app).posts[":id"].$delete({ param: { id } }, { headers });
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
         id = Number(1).toString();
+      });
+
+      describe("when Authorization header is not provided", () => {
+        beforeEach(() => {
+          headers = undefined;
+        });
+
+        it("should return 401 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(401);
+        });
       });
 
       it("should return 404 when post is not found", async () => {
@@ -181,7 +243,9 @@ describe("postsApp", () => {
 
       describe("when post is found", () => {
         beforeEach(async () => {
-          await db.insert(postsTable).values({ content: "test" });
+          await db
+            .insert(postsTable)
+            .values({ user_id: user.id, content: "test" });
         });
 
         it("should return 200 Response", async () => {
