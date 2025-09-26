@@ -79,7 +79,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:17.5
+        image: supabase/postgres:15.14.1.005
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
