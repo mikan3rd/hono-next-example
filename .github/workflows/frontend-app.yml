@@ -40,7 +40,6 @@ jobs:
             frontend:
               - '.github/workflows/frontend-app.yml'
               - 'packages/frontend_app/**'
-              - '!packages/frontend_app/src/client/**'
               - '.tool-versions'
               - 'biome.jsonc'
               - 'tsconfig.json'
