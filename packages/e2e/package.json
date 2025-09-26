@@ -15,11 +15,11 @@
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
     "@chromatic-com/playwright": "0.12.7",
-    "@dotenvx/dotenvx": "1.49.0",
-    "@playwright/test": "1.55.0",
+    "@dotenvx/dotenvx": "1.49.1",
+    "@playwright/test": "1.55.1",
     "@t3-oss/env-core": "0.13.8",
     "@types/node": "24.3.3",
     "typescript": "5.9.2",
-    "zod": "4.1.8"
+    "zod": "4.1.9"
   }
 }

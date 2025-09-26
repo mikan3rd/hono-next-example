@@ -17,6 +17,11 @@
   },
   "packageRules": [
     {
+      "groupName": "bun dependencies",
+      "matchPackageNames": ["bun"],
+      "automerge": false
+    },
+    {
       "groupName": "all patch dependencies",
       "matchUpdateTypes": ["patch"]
     },
