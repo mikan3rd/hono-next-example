@@ -14,6 +14,8 @@ import {
 const postApp = createApp();
 
 postApp.post("/", jwtMiddleware);
+
+// TODO: post に紐づくユーザーのみ許可するようにするべき
 postApp.use("/:id", jwtMiddleware);
 
 const routes = postApp
