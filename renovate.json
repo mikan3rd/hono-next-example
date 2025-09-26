@@ -26,7 +26,7 @@
     },
     {
       "groupName": "bun dependencies",
-      "matchManagers": ["dockerfile", "asdf", "npm", "bun"],
+      "matchManagers": ["dockerfile", "asdf", "npm", "bun", "custom.regex"],
       "matchPackageNames": [
         "bun",
         "@types/bun",
