@@ -26,7 +26,7 @@
     },
     {
       "groupName": "bun dependencies",
-      "matchManagers": ["dockerfile", "regex", "npm", "pnpm", "yarn"],
+      "matchManagers": ["dockerfile", "regex", "npm", "bun"],
       "matchPackageNames": ["bun", "@types/bun", "oven/bun"],
       "matchPackagePatterns": ["^bun$", "^@types/bun$", "^oven/bun$"],
       "automerge": false
