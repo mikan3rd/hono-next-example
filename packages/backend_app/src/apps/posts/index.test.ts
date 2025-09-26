@@ -21,8 +21,8 @@ describe("postsApp", () => {
 
     describe("when there are some posts", () => {
       beforeEach(async () => {
-        await db.insert(postsTable).values({ content: "test" });
-        await db.insert(postsTable).values({ content: "test2" });
+        await db.insert(postsTable).values({ user_id: 1, content: "test" });
+        await db.insert(postsTable).values({ user_id: 1, content: "test2" });
       });
 
       it("should return 200 Response", async () => {
@@ -111,7 +111,7 @@ describe("postsApp", () => {
 
       describe("when post is found", () => {
         beforeEach(async () => {
-          await db.insert(postsTable).values({ content: "test" });
+          await db.insert(postsTable).values({ user_id: 1, content: "test" });
         });
 
         it("should return 200 Response", async () => {
@@ -181,7 +181,7 @@ describe("postsApp", () => {
 
       describe("when post is found", () => {
         beforeEach(async () => {
-          await db.insert(postsTable).values({ content: "test" });
+          await db.insert(postsTable).values({ user_id: 1, content: "test" });
         });
 
         it("should return 200 Response", async () => {
