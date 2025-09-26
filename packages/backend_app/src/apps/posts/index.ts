@@ -15,7 +15,6 @@ const postApp = createApp();
 
 postApp.post("/", userMiddleware);
 
-// TODO: post に紐づくユーザーのみ許可するようにするべき
 postApp.use("/:id", userMiddleware);
 
 const routes = postApp
@@ -26,6 +25,7 @@ const routes = postApp
       .orderBy(desc(postsTable.id));
     return c.json({ posts }, 200);
   })
+
   .openapi(postPostRoute, async (c) => {
     const { content } = c.req.valid("json");
     const user = c.get("user");
@@ -40,19 +40,26 @@ const routes = postApp
       });
     return c.json({ post }, 200);
   })
+
   .openapi(updatePostRoute, async (c) => {
     const { id } = c.req.valid("param");
     const { content } = c.req.valid("json");
+    const user = c.get("user");
 
     const post = await db.transaction(async (tx) => {
-      const targets = await tx
-        .select()
-        .from(postsTable)
-        .where(eq(postsTable.id, id));
+      const target = (
+        await tx.select().from(postsTable).where(eq(postsTable.id, id))
+      )[0];
 
-      if (targets.length === 0) {
+      if (target === undefined) {
         throw new HTTPException(404, {
           message: "Post is not found",
+        });
+      }
+
+      if (target.user_id !== user.id) {
+        throw new HTTPException(403, {
+          message: "Forbidden",
         });
       }
 
@@ -72,18 +79,25 @@ const routes = postApp
 
     return c.json({ post }, 200);
   })
+
   .openapi(deletePostRoute, async (c) => {
     const { id } = c.req.valid("param");
+    const user = c.get("user");
 
     await db.transaction(async (tx) => {
-      const targets = await tx
-        .select()
-        .from(postsTable)
-        .where(eq(postsTable.id, id));
+      const target = (
+        await tx.select().from(postsTable).where(eq(postsTable.id, id))
+      )[0];
 
-      if (targets.length === 0) {
+      if (target === undefined) {
         throw new HTTPException(404, {
           message: "Post is not found",
+        });
+      }
+
+      if (target.user_id !== user.id) {
+        throw new HTTPException(403, {
+          message: "Forbidden",
         });
       }
 
