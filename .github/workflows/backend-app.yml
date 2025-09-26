@@ -17,6 +17,7 @@ defaults:
 env:
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: password
+  PGPASSWORD: password
   POSTGRES_DB: postgres
   POSTGRES_PORT: 5432
   BACKEND_APP_PORT: 4300
