@@ -17,17 +17,19 @@
   },
   "packageRules": [
     {
-      "groupName": "bun dependencies",
-      "matchPackageNames": ["bun"],
-      "automerge": false
-    },
-    {
       "groupName": "all patch dependencies",
       "matchUpdateTypes": ["patch"]
     },
     {
       "groupName": "all minor dependencies",
       "matchUpdateTypes": ["minor"]
+    },
+    {
+      "groupName": "bun dependencies",
+      "matchManagers": ["dockerfile", "regex", "npm", "bun"],
+      "matchPackageNames": ["bun", "@types/bun", "oven/bun"],
+      "matchPackagePatterns": ["^bun$", "^@types/bun$", "^oven/bun$"],
+      "automerge": false
     }
   ]
 }
