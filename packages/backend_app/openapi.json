@@ -296,6 +296,7 @@
       },
       "post": {
         "tags": ["posts"],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -433,6 +434,7 @@
     "/posts/{id}": {
       "put": {
         "tags": ["posts"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
@@ -579,6 +581,7 @@
       },
       "delete": {
         "tags": ["posts"],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "schema": {
