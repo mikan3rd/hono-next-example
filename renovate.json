@@ -1,11 +1,18 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "labels": ["renovate"],
+  "labels": [
+    "renovate"
+  ],
   "configMigration": true,
   "rebaseWhen": "automerging",
   "timezone": "Asia/Tokyo",
-  "schedule": ["* * * * 6"],
-  "extends": ["config:js-app", ":automergeMinor"],
+  "schedule": [
+    "* * * * 6"
+  ],
+  "extends": [
+    "config:js-app",
+    ":automergeMinor"
+  ],
   "major": {
     "minimumReleaseAge": "28 days"
   },
@@ -18,17 +25,32 @@
   "packageRules": [
     {
       "groupName": "all patch dependencies",
-      "matchUpdateTypes": ["patch"]
+      "matchUpdateTypes": [
+        "patch"
+      ]
     },
     {
       "groupName": "all minor dependencies",
-      "matchUpdateTypes": ["minor"]
+      "matchUpdateTypes": [
+        "minor"
+      ]
     },
     {
       "groupName": "bun dependencies",
-      "matchManagers": ["dockerfile", "regex", "npm", "bun"],
-      "matchPackageNames": ["bun", "@types/bun", "oven/bun"],
-      "matchPackagePatterns": ["^bun$", "^@types/bun$", "^oven/bun$"],
+      "matchManagers": [
+        "dockerfile",
+        "custom.regex",
+        "npm",
+        "bun"
+      ],
+      "matchPackageNames": [
+        "bun",
+        "@types/bun",
+        "oven/bun",
+        "/^bun$/",
+        "/^@types/bun$/",
+        "/^oven/bun$/"
+      ],
       "automerge": false
     }
   ]
