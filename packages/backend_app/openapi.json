@@ -37,6 +37,11 @@
             "description": "Primary ID",
             "example": 1
           },
+          "user_id": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          },
           "content": {
             "type": "string",
             "description": "The content of the post",
@@ -55,7 +60,7 @@
             "example": "2025-01-01T00:00:00Z"
           }
         },
-        "required": ["id", "content", "created_at", "updated_at"]
+        "required": ["id", "user_id", "content", "created_at", "updated_at"]
       }
     },
     "parameters": {}
