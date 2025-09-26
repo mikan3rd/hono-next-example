@@ -20,6 +20,9 @@ export const usersTable = pgTable("users", {
 
 export const postsTable = pgTable("posts", {
   ...primaryKeys,
+  user_id: integer()
+    .notNull()
+    .references(() => usersTable.id),
   content: text().notNull(),
   ...timestamps,
 });
