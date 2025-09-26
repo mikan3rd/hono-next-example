@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "bun:test";
+import { faker } from "@faker-js/faker";
 import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
@@ -182,6 +183,26 @@ describe("postsApp", () => {
           expect(post.created_at.getTime()).toBeLessThan(
             post.updated_at.getTime(),
           );
+        });
+      });
+
+      describe("when post user is not the same as the current user", () => {
+        beforeEach(async () => {
+          const anotherUser = (
+            await db
+              .insert(usersTable)
+              .values({ supabase_uid: faker.string.uuid() })
+              .returning()
+          )[0];
+          if (!anotherUser) throw new Error("another user is not found");
+          await db
+            .insert(postsTable)
+            .values({ user_id: anotherUser.id, content: "test" });
+        });
+
+        it("should return 403 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(403);
         });
       });
     });

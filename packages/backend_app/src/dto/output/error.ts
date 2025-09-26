@@ -3,6 +3,7 @@ import { z } from "@hono/zod-openapi";
 const errorCodes = [
   "Bad Request",
   "Unauthorized",
+  "Forbidden",
   "Not Found",
   "Internal Server Error",
 ] as const;
@@ -31,6 +32,7 @@ export const ErrorResponses = {
       },
     },
   },
+
   401: {
     description: "Unauthorized",
     content: {
@@ -39,6 +41,16 @@ export const ErrorResponses = {
       },
     },
   },
+
+  403: {
+    description: "Forbidden",
+    content: {
+      "application/json": {
+        schema: errorSchemaFactory("Forbidden"),
+      },
+    },
+  },
+
   404: {
     description: "Not Found",
     content: {
@@ -47,6 +59,7 @@ export const ErrorResponses = {
       },
     },
   },
+
   500: {
     description: "Internal Server Error",
     content: {
