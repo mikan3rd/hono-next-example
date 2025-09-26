@@ -1,10 +1,23 @@
 import { beforeEach, describe, expect, it } from "bun:test";
+import { faker } from "@faker-js/faker";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
 import { db } from "../../db";
-import { postsTable } from "../../db/schema";
+import { postsTable, usersTable } from "../../db/schema";
 
 describe("postsApp", () => {
+  let user: typeof usersTable.$inferSelect;
+
+  beforeEach(async () => {
+    const users = await db
+      .insert(usersTable)
+      .values({ supabase_uid: faker.string.uuid() })
+      .returning();
+    const createdUser = users[0];
+    if (!createdUser) throw new Error("user is not found");
+    user = createdUser;
+  });
+
   describe("getPostsRoute", () => {
     const subject = () => testClient(app).posts.$get();
 
@@ -21,8 +34,12 @@ describe("postsApp", () => {
 
     describe("when there are some posts", () => {
       beforeEach(async () => {
-        await db.insert(postsTable).values({ user_id: 1, content: "test" });
-        await db.insert(postsTable).values({ user_id: 1, content: "test2" });
+        await db
+          .insert(postsTable)
+          .values({ user_id: user.id, content: "test" });
+        await db
+          .insert(postsTable)
+          .values({ user_id: user.id, content: "test2" });
       });
 
       it("should return 200 Response", async () => {
@@ -111,7 +128,9 @@ describe("postsApp", () => {
 
       describe("when post is found", () => {
         beforeEach(async () => {
-          await db.insert(postsTable).values({ user_id: 1, content: "test" });
+          await db
+            .insert(postsTable)
+            .values({ user_id: user.id, content: "test" });
         });
 
         it("should return 200 Response", async () => {
@@ -181,7 +200,9 @@ describe("postsApp", () => {
 
       describe("when post is found", () => {
         beforeEach(async () => {
-          await db.insert(postsTable).values({ user_id: 1, content: "test" });
+          await db
+            .insert(postsTable)
+            .values({ user_id: user.id, content: "test" });
         });
 
         it("should return 200 Response", async () => {
