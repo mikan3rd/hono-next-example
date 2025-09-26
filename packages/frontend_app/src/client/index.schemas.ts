@@ -28,6 +28,11 @@ export interface Post {
    * @maximum 2147483647
    */
   id: number;
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  user_id: number;
   /** The content of the post */
   content: string;
   /** The date and time the post was created */
