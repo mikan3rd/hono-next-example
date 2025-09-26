@@ -1,17 +1,23 @@
 import { beforeEach, describe, expect, it } from "bun:test";
-import { faker } from "@faker-js/faker";
+import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
 import { db } from "../../db";
 import { postsTable, usersTable } from "../../db/schema";
+import { supabaseUid } from "../../test/supabase";
 
 describe("postsApp", () => {
+  let headers: ClientRequestOptions["headers"];
   let user: typeof usersTable.$inferSelect;
+
+  beforeEach(() => {
+    headers = { Authorization: "Bearer test" };
+  });
 
   beforeEach(async () => {
     const users = await db
       .insert(usersTable)
-      .values({ supabase_uid: faker.string.uuid() })
+      .values({ supabase_uid: supabaseUid })
       .returning();
     const createdUser = users[0];
     if (!createdUser) throw new Error("user is not found");
@@ -64,7 +70,8 @@ describe("postsApp", () => {
   describe("postPostRoute", () => {
     let content: string;
 
-    const subject = () => testClient(app).posts.$post({ json: { content } });
+    const subject = () =>
+      testClient(app).posts.$post({ json: { content } }, { headers });
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
@@ -106,10 +113,13 @@ describe("postsApp", () => {
     let content: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$put({
-        param: { id: id.toString() },
-        json: { content },
-      });
+      testClient(app).posts[":id"].$put(
+        {
+          param: { id: id.toString() },
+          json: { content },
+        },
+        { headers },
+      );
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
@@ -182,7 +192,7 @@ describe("postsApp", () => {
     let id: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$delete({ param: { id } });
+      testClient(app).posts[":id"].$delete({ param: { id } }, { headers });
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
