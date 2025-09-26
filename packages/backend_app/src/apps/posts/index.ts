@@ -1,8 +1,8 @@
 import { desc, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { db } from "../../db";
-import { postsTable, usersTable } from "../../db/schema";
-import { jwtMiddleware } from "../../middlewares/jwt";
+import { postsTable } from "../../db/schema";
+import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
 import {
   deletePostRoute,
@@ -13,10 +13,9 @@ import {
 
 const postApp = createApp();
 
-postApp.post("/", jwtMiddleware);
+postApp.post("/", userMiddleware);
 
-// TODO: post に紐づくユーザーのみ許可するようにするべき
-postApp.use("/:id", jwtMiddleware);
+postApp.use("/:id", userMiddleware);
 
 const routes = postApp
   .openapi(getPostsRoute, async (c) => {
@@ -26,20 +25,10 @@ const routes = postApp
       .orderBy(desc(postsTable.id));
     return c.json({ posts }, 200);
   })
-  .openapi(postPostRoute, async (c) => {
-    const { sub: supabase_uid } = c.get("jwtClaims");
-    const users = await db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.supabase_uid, supabase_uid));
-    const user = users[0];
-    if (!user) {
-      throw new HTTPException(401, {
-        message: "User is not found",
-      });
-    }
 
+  .openapi(postPostRoute, async (c) => {
     const { content } = c.req.valid("json");
+    const user = c.get("user");
     const result = await db
       .insert(postsTable)
       .values({ user_id: user.id, content })
@@ -51,19 +40,26 @@ const routes = postApp
       });
     return c.json({ post }, 200);
   })
+
   .openapi(updatePostRoute, async (c) => {
     const { id } = c.req.valid("param");
     const { content } = c.req.valid("json");
+    const user = c.get("user");
 
     const post = await db.transaction(async (tx) => {
-      const targets = await tx
-        .select()
-        .from(postsTable)
-        .where(eq(postsTable.id, id));
+      const target = (
+        await tx.select().from(postsTable).where(eq(postsTable.id, id))
+      )[0];
 
-      if (targets.length === 0) {
+      if (target === undefined) {
         throw new HTTPException(404, {
           message: "Post is not found",
+        });
+      }
+
+      if (target.user_id !== user.id) {
+        throw new HTTPException(403, {
+          message: "Forbidden",
         });
       }
 
@@ -83,18 +79,25 @@ const routes = postApp
 
     return c.json({ post }, 200);
   })
+
   .openapi(deletePostRoute, async (c) => {
     const { id } = c.req.valid("param");
+    const user = c.get("user");
 
     await db.transaction(async (tx) => {
-      const targets = await tx
-        .select()
-        .from(postsTable)
-        .where(eq(postsTable.id, id));
+      const target = (
+        await tx.select().from(postsTable).where(eq(postsTable.id, id))
+      )[0];
 
-      if (targets.length === 0) {
+      if (target === undefined) {
         throw new HTTPException(404, {
           message: "Post is not found",
+        });
+      }
+
+      if (target.user_id !== user.id) {
+        throw new HTTPException(403, {
+          message: "Forbidden",
         });
       }
 

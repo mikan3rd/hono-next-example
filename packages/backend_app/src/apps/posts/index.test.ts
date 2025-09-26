@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "bun:test";
+import { faker } from "@faker-js/faker";
 import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
@@ -9,19 +10,30 @@ import { supabaseUid } from "../../test/supabase";
 describe("postsApp", () => {
   let headers: ClientRequestOptions["headers"];
   let user: typeof usersTable.$inferSelect;
+  let anotherUser: typeof usersTable.$inferSelect;
 
   beforeEach(() => {
     headers = { Authorization: "Bearer test" };
   });
 
   beforeEach(async () => {
-    const users = await db
-      .insert(usersTable)
-      .values({ supabase_uid: supabaseUid })
-      .returning();
-    const createdUser = users[0];
-    if (!createdUser) throw new Error("user is not found");
-    user = createdUser;
+    const _user = (
+      await db
+        .insert(usersTable)
+        .values({ supabase_uid: supabaseUid })
+        .returning()
+    )[0];
+    if (!_user) throw new Error("user is not found");
+    user = _user;
+
+    const _anotherUser = (
+      await db
+        .insert(usersTable)
+        .values({ supabase_uid: faker.string.uuid() })
+        .returning()
+    )[0];
+    if (!_anotherUser) throw new Error("another user is not found");
+    anotherUser = _anotherUser;
   });
 
   describe("getPostsRoute", () => {
@@ -184,6 +196,19 @@ describe("postsApp", () => {
           );
         });
       });
+
+      describe("when post user is not the same as the current user", () => {
+        beforeEach(async () => {
+          await db
+            .insert(postsTable)
+            .values({ user_id: anotherUser.id, content: "test" });
+        });
+
+        it("should return 403 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(403);
+        });
+      });
     });
 
     describe("when required fields are not provided", () => {
@@ -254,6 +279,19 @@ describe("postsApp", () => {
 
           const posts = await db.select().from(postsTable);
           expect(posts).toHaveLength(0);
+        });
+      });
+
+      describe("when post user is not the same as the current user", () => {
+        beforeEach(async () => {
+          await db
+            .insert(postsTable)
+            .values({ user_id: anotherUser.id, content: "test" });
+        });
+
+        it("should return 403 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(403);
         });
       });
     });
