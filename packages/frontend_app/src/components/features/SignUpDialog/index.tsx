@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createClient } from "#src/supabase/client";
@@ -19,8 +18,6 @@ import {
 
 export const SignUpDialog = () => {
   const supabase = createClient();
-
-  const router = useRouter();
 
   const signupMutation = usePostUserSignup();
 
@@ -47,7 +44,6 @@ export const SignUpDialog = () => {
 
           toast.success("Signed up successfully");
           setIsOpen(false);
-          router.push("/logout");
         },
       });
     });

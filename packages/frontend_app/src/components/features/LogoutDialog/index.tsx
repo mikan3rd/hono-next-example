@@ -1,8 +1,6 @@
 "use client";
 
-import type { User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createClient } from "#src/supabase/client";
 import { Button } from "../../ui/Button";
@@ -20,11 +18,8 @@ import {
 const supabase = createClient();
 
 export const LogoutDialog = () => {
-  const router = useRouter();
-
   const [isOpen, setIsOpen] = useState(false);
   const [loading, startLoadingTransition] = useTransition();
-  const [user, setUser] = useState<User | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     startLoadingTransition(async () => {
@@ -37,21 +32,8 @@ export const LogoutDialog = () => {
       }
       toast.success("Signed out successfully");
       setIsOpen(false);
-
-      router.push("/login");
     });
   };
-
-  useEffect(() => {
-    supabase.auth.getUser().then((userResponse) => {
-      if (userResponse.error) {
-        setUser(null);
-        toast.error(userResponse.error.message);
-        return;
-      }
-      setUser(userResponse.data.user);
-    });
-  }, []);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -63,11 +45,7 @@ export const LogoutDialog = () => {
           <DialogHeader>
             <DialogTitle>Sign Out</DialogTitle>
             <DialogDescription data-testid="LogoutDialog-description">
-              {user !== null ? (
-                <>You are signed in as {user.id}.</>
-              ) : (
-                "You are signed out."
-              )}
+              You are signed in
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -76,7 +54,7 @@ export const LogoutDialog = () => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={user === null || loading}>
+            <Button type="submit" disabled={loading}>
               Sign Out
             </Button>
           </DialogFooter>

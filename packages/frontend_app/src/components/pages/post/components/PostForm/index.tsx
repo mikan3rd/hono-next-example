@@ -11,18 +11,7 @@ export const PostForm = () => {
 
   const [content, setContent] = useState("");
 
-  const createPostMutation = usePostPosts({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Post created successfully");
-        queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
-        handleClearForm();
-      },
-      onError: (error) => {
-        toast.error(`Failed to create post: ${error.message}`);
-      },
-    },
-  });
+  const createPostMutation = usePostPosts();
 
   const handleClearForm = () => {
     setContent("");
@@ -32,7 +21,19 @@ export const PostForm = () => {
     e.preventDefault();
     const trimmedContent = content.trim();
     if (!trimmedContent) return;
-    createPostMutation.mutate({ data: { content: trimmedContent } });
+    createPostMutation.mutate(
+      { data: { content: trimmedContent } },
+      {
+        onSuccess: () => {
+          toast.success("Post created successfully");
+          queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
+          handleClearForm();
+        },
+        onError: (error) => {
+          toast.error(`Failed to create post: ${error.message}`);
+        },
+      },
+    );
   };
 
   return (
