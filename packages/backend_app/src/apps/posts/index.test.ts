@@ -73,6 +73,17 @@ describe("postsApp", () => {
     const subject = () =>
       testClient(app).posts.$post({ json: { content } }, { headers });
 
+    describe("when Authorization header is not provided", () => {
+      beforeEach(() => {
+        headers = undefined;
+      });
+
+      it("should return 401 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(401);
+      });
+    });
+
     describe("when required fields are provided", () => {
       beforeEach(() => {
         content = "test";
@@ -125,6 +136,17 @@ describe("postsApp", () => {
       beforeEach(() => {
         id = Number(1).toString();
         content = "test2";
+      });
+
+      describe("when Authorization header is not provided", () => {
+        beforeEach(() => {
+          headers = undefined;
+        });
+
+        it("should return 401 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(401);
+        });
       });
 
       it("should return 404 when post is not found", async () => {
@@ -197,6 +219,17 @@ describe("postsApp", () => {
     describe("when required fields are provided", () => {
       beforeEach(() => {
         id = Number(1).toString();
+      });
+
+      describe("when Authorization header is not provided", () => {
+        beforeEach(() => {
+          headers = undefined;
+        });
+
+        it("should return 401 Response", async () => {
+          const res = await subject();
+          expect(res.status).toBe(401);
+        });
       });
 
       it("should return 404 when post is not found", async () => {
