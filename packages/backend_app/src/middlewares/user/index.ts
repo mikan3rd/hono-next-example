@@ -8,12 +8,12 @@ import type { ErrorResponse } from "../../dto/output/error";
 import { jwtMiddleware } from "../jwt";
 
 const baseUserMiddleware = createMiddleware<HonoEnv>(async (c, next) => {
-  const { sub: supabase_uid } = c.get("jwtClaims");
+  const { sub: supabaseUid } = c.get("jwtClaims");
   const user = (
     await db
       .select()
       .from(usersTable)
-      .where(eq(usersTable.supabase_uid, supabase_uid))
+      .where(eq(usersTable.supabase_uid, supabaseUid))
   )[0];
 
   if (!user) {
