@@ -25,23 +25,28 @@ import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { customFetch } from "../lib/custom-fetch";
 import type {
   DeletePostsId401,
+  DeletePostsId403,
   DeletePostsId404,
   DeletePostsId500,
   ErrorResponse,
   GetPosts200,
   GetPosts401,
+  GetPosts403,
   GetPosts404,
   GetPosts500,
   PostPosts200,
   PostPosts401,
+  PostPosts403,
   PostPosts404,
   PostPosts500,
   PostPostsBody,
   PostUserSignup401,
+  PostUserSignup403,
   PostUserSignup404,
   PostUserSignup500,
   PutPostsId200,
   PutPostsId401,
+  PutPostsId403,
   PutPostsId404,
   PutPostsId500,
   PutPostsIdBody,
@@ -68,6 +73,11 @@ export type postUserSignupResponse401 = {
   status: 401;
 };
 
+export type postUserSignupResponse403 = {
+  data: PostUserSignup403;
+  status: 403;
+};
+
 export type postUserSignupResponse404 = {
   data: PostUserSignup404;
   status: 404;
@@ -82,6 +92,7 @@ export type postUserSignupResponseComposite =
   | postUserSignupResponse200
   | postUserSignupResponse400
   | postUserSignupResponse401
+  | postUserSignupResponse403
   | postUserSignupResponse404
   | postUserSignupResponse500;
 
@@ -106,6 +117,7 @@ export const getPostUserSignupMutationOptions = <
   TError =
     | ErrorResponse
     | PostUserSignup401
+    | PostUserSignup403
     | PostUserSignup404
     | PostUserSignup500,
   TContext = unknown,
@@ -149,6 +161,7 @@ export type PostUserSignupMutationResult = NonNullable<
 export type PostUserSignupMutationError =
   | ErrorResponse
   | PostUserSignup401
+  | PostUserSignup403
   | PostUserSignup404
   | PostUserSignup500;
 
@@ -156,6 +169,7 @@ export const usePostUserSignup = <
   TError =
     | ErrorResponse
     | PostUserSignup401
+    | PostUserSignup403
     | PostUserSignup404
     | PostUserSignup500,
   TContext = unknown,
@@ -196,6 +210,11 @@ export type getPostsResponse401 = {
   status: 401;
 };
 
+export type getPostsResponse403 = {
+  data: GetPosts403;
+  status: 403;
+};
+
 export type getPostsResponse404 = {
   data: GetPosts404;
   status: 404;
@@ -210,6 +229,7 @@ export type getPostsResponseComposite =
   | getPostsResponse200
   | getPostsResponse400
   | getPostsResponse401
+  | getPostsResponse403
   | getPostsResponse404
   | getPostsResponse500;
 
@@ -236,7 +256,12 @@ export const getGetPostsQueryKey = () => {
 
 export const getGetPostsQueryOptions = <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(options?: {
   query?: Partial<
     UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
@@ -264,12 +289,18 @@ export type GetPostsQueryResult = NonNullable<
 export type GetPostsQueryError =
   | ErrorResponse
   | GetPosts401
+  | GetPosts403
   | GetPosts404
   | GetPosts500;
 
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   options: {
     query: Partial<
@@ -291,7 +322,12 @@ export function useGetPosts<
 };
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -313,7 +349,12 @@ export function useGetPosts<
 };
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -328,7 +369,12 @@ export function useGetPosts<
 
 export function useGetPosts<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -354,7 +400,12 @@ export function useGetPosts<
 
 export const prefetchGetPostsQuery = async <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   queryClient: QueryClient,
   options?: {
@@ -373,7 +424,12 @@ export const prefetchGetPostsQuery = async <
 
 export const getGetPostsSuspenseQueryOptions = <
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(options?: {
   query?: Partial<
     UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData>
@@ -401,12 +457,18 @@ export type GetPostsSuspenseQueryResult = NonNullable<
 export type GetPostsSuspenseQueryError =
   | ErrorResponse
   | GetPosts401
+  | GetPosts403
   | GetPosts404
   | GetPosts500;
 
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   options: {
     query: Partial<
@@ -424,7 +486,12 @@ export function useGetPostsSuspense<
 };
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -442,7 +509,12 @@ export function useGetPostsSuspense<
 };
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -461,7 +533,12 @@ export function useGetPostsSuspense<
 
 export function useGetPostsSuspense<
   TData = Awaited<ReturnType<typeof getPosts>>,
-  TError = ErrorResponse | GetPosts401 | GetPosts404 | GetPosts500,
+  TError =
+    | ErrorResponse
+    | GetPosts401
+    | GetPosts403
+    | GetPosts404
+    | GetPosts500,
 >(
   options?: {
     query?: Partial<
@@ -506,6 +583,11 @@ export type postPostsResponse401 = {
   status: 401;
 };
 
+export type postPostsResponse403 = {
+  data: PostPosts403;
+  status: 403;
+};
+
 export type postPostsResponse404 = {
   data: PostPosts404;
   status: 404;
@@ -520,6 +602,7 @@ export type postPostsResponseComposite =
   | postPostsResponse200
   | postPostsResponse400
   | postPostsResponse401
+  | postPostsResponse403
   | postPostsResponse404
   | postPostsResponse500;
 
@@ -544,7 +627,12 @@ export const postPosts = async (
 };
 
 export const getPostPostsMutationOptions = <
-  TError = ErrorResponse | PostPosts401 | PostPosts404 | PostPosts500,
+  TError =
+    | ErrorResponse
+    | PostPosts401
+    | PostPosts403
+    | PostPosts404
+    | PostPosts500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -588,11 +676,17 @@ export type PostPostsMutationBody = PostPostsBody;
 export type PostPostsMutationError =
   | ErrorResponse
   | PostPosts401
+  | PostPosts403
   | PostPosts404
   | PostPosts500;
 
 export const usePostPosts = <
-  TError = ErrorResponse | PostPosts401 | PostPosts404 | PostPosts500,
+  TError =
+    | ErrorResponse
+    | PostPosts401
+    | PostPosts403
+    | PostPosts404
+    | PostPosts500,
   TContext = unknown,
 >(
   options?: {
@@ -631,6 +725,11 @@ export type putPostsIdResponse401 = {
   status: 401;
 };
 
+export type putPostsIdResponse403 = {
+  data: PutPostsId403;
+  status: 403;
+};
+
 export type putPostsIdResponse404 = {
   data: PutPostsId404;
   status: 404;
@@ -645,6 +744,7 @@ export type putPostsIdResponseComposite =
   | putPostsIdResponse200
   | putPostsIdResponse400
   | putPostsIdResponse401
+  | putPostsIdResponse403
   | putPostsIdResponse404
   | putPostsIdResponse500;
 
@@ -670,7 +770,12 @@ export const putPostsId = async (
 };
 
 export const getPutPostsIdMutationOptions = <
-  TError = ErrorResponse | PutPostsId401 | PutPostsId404 | PutPostsId500,
+  TError =
+    | ErrorResponse
+    | PutPostsId401
+    | PutPostsId403
+    | PutPostsId404
+    | PutPostsId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -714,11 +819,17 @@ export type PutPostsIdMutationBody = PutPostsIdBody;
 export type PutPostsIdMutationError =
   | ErrorResponse
   | PutPostsId401
+  | PutPostsId403
   | PutPostsId404
   | PutPostsId500;
 
 export const usePutPostsId = <
-  TError = ErrorResponse | PutPostsId401 | PutPostsId404 | PutPostsId500,
+  TError =
+    | ErrorResponse
+    | PutPostsId401
+    | PutPostsId403
+    | PutPostsId404
+    | PutPostsId500,
   TContext = unknown,
 >(
   options?: {
@@ -757,6 +868,11 @@ export type deletePostsIdResponse401 = {
   status: 401;
 };
 
+export type deletePostsIdResponse403 = {
+  data: DeletePostsId403;
+  status: 403;
+};
+
 export type deletePostsIdResponse404 = {
   data: DeletePostsId404;
   status: 404;
@@ -771,6 +887,7 @@ export type deletePostsIdResponseComposite =
   | deletePostsIdResponse200
   | deletePostsIdResponse400
   | deletePostsIdResponse401
+  | deletePostsIdResponse403
   | deletePostsIdResponse404
   | deletePostsIdResponse500;
 
@@ -796,6 +913,7 @@ export const getDeletePostsIdMutationOptions = <
   TError =
     | ErrorResponse
     | DeletePostsId401
+    | DeletePostsId403
     | DeletePostsId404
     | DeletePostsId500,
   TContext = unknown,
@@ -841,6 +959,7 @@ export type DeletePostsIdMutationResult = NonNullable<
 export type DeletePostsIdMutationError =
   | ErrorResponse
   | DeletePostsId401
+  | DeletePostsId403
   | DeletePostsId404
   | DeletePostsId500;
 
@@ -848,6 +967,7 @@ export const useDeletePostsId = <
   TError =
     | ErrorResponse
     | DeletePostsId401
+    | DeletePostsId403
     | DeletePostsId404
     | DeletePostsId500,
   TContext = unknown,

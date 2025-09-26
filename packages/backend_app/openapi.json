@@ -18,6 +18,7 @@
             "enum": [
               "Bad Request",
               "Unauthorized",
+              "Forbidden",
               "Not Found",
               "Internal Server Error"
             ],
@@ -94,10 +95,42 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
                           "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Forbidden"
                         },
                         "message": {
                           "type": "string",
@@ -124,6 +157,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -154,6 +188,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -216,10 +251,42 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
                           "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Forbidden"
                         },
                         "message": {
                           "type": "string",
@@ -246,6 +313,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -276,6 +344,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -352,10 +421,42 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
                           "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Forbidden"
                         },
                         "message": {
                           "type": "string",
@@ -382,6 +483,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -412,6 +514,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -501,10 +604,42 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
                           "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Forbidden"
                         },
                         "message": {
                           "type": "string",
@@ -531,6 +666,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -561,6 +697,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -618,10 +755,42 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
                           "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Forbidden"
                         },
                         "message": {
                           "type": "string",
@@ -648,6 +817,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
@@ -678,6 +848,7 @@
                           "enum": [
                             "Bad Request",
                             "Unauthorized",
+                            "Forbidden",
                             "Not Found",
                             "Internal Server Error"
                           ],
