@@ -1,15 +1,15 @@
 "use client";
 
 import { useGetPostsSuspense } from "../../../client";
+import { useUserContext } from "../../../context/UserContext";
 import { LogoutDialog } from "../../features/LogoutDialog";
 import { SignUpDialog } from "../../features/SignUpDialog";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
-import { useSession } from "./hooks";
 
 export const PostIndex = () => {
-  const { session } = useSession();
+  const { session } = useUserContext();
 
   const { data } = useGetPostsSuspense();
 

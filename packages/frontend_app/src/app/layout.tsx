@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import { LoadingMask } from "../components/ui/LoadingMask";
 import { Toaster } from "../components/ui/Sonner";
+import { UserContextProvider } from "../context/UserContext";
 import Providers from "./providers";
 
 const geistSans = Geist({
@@ -34,7 +35,9 @@ export default function RootLayout({
       >
         {/* TODO: storybookと共通化 */}
         <Suspense fallback={<LoadingMask />}>
-          <Providers>{children}</Providers>
+          <Providers>
+            <UserContextProvider>{children}</UserContextProvider>
+          </Providers>
         </Suspense>
         <Toaster duration={1000 * 10} />
       </body>
