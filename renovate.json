@@ -15,6 +15,15 @@
   "patch": {
     "minimumReleaseAge": "7 days"
   },
+  "regexManagers": [
+    {
+      "fileMatch": ["^\\.tool-versions$"],
+      "matchStrings": ["^bun (?<currentValue>\\S+)$"],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "oven/bun",
+      "versioningTemplate": "semver"
+    }
+  ],
   "packageRules": [
     {
       "groupName": "all patch dependencies",
@@ -26,15 +35,12 @@
     },
     {
       "groupName": "bun dependencies",
-      "matchManagers": ["dockerfile", "asdf", "npm", "bun", "custom.regex"],
-      "matchPackageNames": [
-        "bun",
-        "@types/bun",
-        "oven/bun",
-        "/^bun$/",
-        "/^@types/bun$/",
-        "/^oven/bun$/"
-      ],
+      "matchManagers": ["dockerfile", "asdf", "regex", "npm", "pnpm", "yarn"],
+      "matchPackageNames": ["bun", "@types/bun", "oven/bun"],
+      "automerge": false
+    },
+    {
+      "matchPackageNames": ["timberio/vector"],
       "automerge": false
     }
   ]
