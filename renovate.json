@@ -26,7 +26,6 @@
     },
     {
       "groupName": "bun dependencies",
-      "matchManagers": ["dockerfile", "asdf", "npm", "bun", "custom.regex"],
       "matchPackageNames": [
         "bun",
         "@types/bun",
@@ -40,8 +39,8 @@
       "automerge": false
     },
     {
+      "groupName": "supabase vector",
       "matchPackageNames": ["timberio/vector"],
-      "matchDatasources": ["docker"],
       "automerge": false
     }
   ]
