@@ -1,11 +1,12 @@
 "use client";
 
 import type { Session } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { createClient } from "#src/supabase/client";
 
 type Context = {
   session: Session | null | undefined;
+  sessionStatus: "loading" | "loggedOut" | "loggedIn";
 };
 
 const UserContext = createContext<Context | undefined>(undefined);
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export const UserContextProvider = ({ children }: Props) => {
+  // TODO: DBのuserもここで取得するようにしたい
   const [session, setSession] = useState<Session | null | undefined>(undefined);
 
   useEffect(() => {
@@ -27,8 +29,20 @@ export const UserContextProvider = ({ children }: Props) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const sessionStatus = useMemo(() => {
+    if (session === undefined) {
+      return "loading";
+    }
+    if (session === null) {
+      return "loggedOut";
+    }
+    return "loggedIn";
+  }, [session]);
+
   return (
-    <UserContext.Provider value={{ session }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ session, sessionStatus }}>
+      {children}
+    </UserContext.Provider>
   );
 };
 

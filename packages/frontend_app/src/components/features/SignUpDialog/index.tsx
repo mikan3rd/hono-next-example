@@ -34,18 +34,16 @@ export const SignUpDialog = () => {
         return;
       }
 
-      signupMutation.mutate(undefined, {
-        onSuccess: async (response) => {
-          if (response.status !== 200) {
-            await supabase.auth.signOut();
-            toast.error(`Failed to sign up: ${response.data.message}`);
-            return;
-          }
+      const response = await signupMutation.mutateAsync();
 
-          toast.success("Signed up successfully");
-          setIsOpen(false);
-        },
-      });
+      if (response.status !== 200) {
+        await supabase.auth.signOut();
+        toast.error(`Failed to sign up: ${response.data.message}`);
+        return;
+      }
+
+      toast.success("Signed up successfully");
+      setIsOpen(false);
     });
   };
 

@@ -17,23 +17,20 @@ export const PostForm = () => {
     setContent("");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedContent = content.trim();
     if (!trimmedContent) return;
-    createPostMutation.mutate(
-      { data: { content: trimmedContent } },
-      {
-        onSuccess: () => {
-          toast.success("Post created successfully");
-          queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
-          handleClearForm();
-        },
-        onError: (error) => {
-          toast.error(`Failed to create post: ${error.message}`);
-        },
-      },
-    );
+    const result = await createPostMutation.mutateAsync({
+      data: { content: trimmedContent },
+    });
+    if (result.status !== 200) {
+      toast.error(`Failed to create post: ${result.data.message}`);
+      return;
+    }
+    toast.success("Post created successfully");
+    queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
+    handleClearForm();
   };
 
   return (

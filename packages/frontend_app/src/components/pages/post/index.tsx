@@ -1,15 +1,17 @@
 "use client";
 
+import { Loader2Icon } from "lucide-react";
 import { useGetPostsSuspense } from "../../../client";
 import { useUserContext } from "../../../context/UserContext";
 import { LogoutDialog } from "../../features/LogoutDialog";
 import { SignUpDialog } from "../../features/SignUpDialog";
+import { Button } from "../../ui/Button";
 import { EmptyState } from "./components/EmptyState";
 import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
 export const PostIndex = () => {
-  const { session } = useUserContext();
+  const { sessionStatus } = useUserContext();
 
   const { data } = useGetPostsSuspense();
 
@@ -30,17 +32,22 @@ export const PostIndex = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Posts</h1>
               <p className="text-gray-600">View the latest posts</p>
             </div>
-            {session !== undefined && (
-              <div className="flex gap-2">
-                {/* FIXME: signupMutation の完了前に session が更新されてしまうため常にマウントする */}
-                <div className={session === null ? "" : "hidden"}>
-                  <SignUpDialog />
-                </div>
-                <div className={session ? "" : "hidden"}>
-                  <LogoutDialog />
-                </div>
+            <div className="flex gap-2">
+              {sessionStatus === "loading" && (
+                <Button variant="outline">
+                  <Loader2Icon className="animate-spin" />
+                  Loading
+                </Button>
+              )}
+
+              {/* FIXME: signupMutation の完了前に session が更新されてしまうため常にマウントする */}
+              <div className={sessionStatus === "loggedOut" ? "" : "hidden"}>
+                <SignUpDialog />
               </div>
-            )}
+              <div className={sessionStatus === "loggedIn" ? "" : "hidden"}>
+                <LogoutDialog />
+              </div>
+            </div>
           </div>
 
           <PostForm />
