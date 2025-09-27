@@ -39,6 +39,7 @@
     },
     {
       "matchPackageNames": ["timberio/vector"],
+      "matchDatasources": ["docker"],
       "automerge": false
     }
   ]
