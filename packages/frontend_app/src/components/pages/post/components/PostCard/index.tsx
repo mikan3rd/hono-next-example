@@ -29,30 +29,8 @@ export const PostCard = ({ post }: PostCardProps) => {
   const [editContent, setEditContent] = useState(post.content);
   const isUpdated = post.updated_at !== post.created_at;
 
-  const updatePostMutation = usePutPostsId({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Post updated successfully");
-        setIsEditing(false);
-        queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
-      },
-      onError: (error) => {
-        toast.error(`Failed to update post: ${error.message}`);
-      },
-    },
-  });
-
-  const deletePostMutation = useDeletePostsId({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Post deleted successfully");
-        queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
-      },
-      onError: (error) => {
-        toast.error(`Failed to delete post: ${error.message}`);
-      },
-    },
-  });
+  const updatePostMutation = usePutPostsId();
+  const deletePostMutation = useDeletePostsId();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -64,17 +42,31 @@ export const PostCard = ({ post }: PostCardProps) => {
     setEditContent(post.content);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const trimmedContent = editContent.trim();
     if (!trimmedContent) return;
-    updatePostMutation.mutate({
+    const result = await updatePostMutation.mutateAsync({
       id: post.id,
       data: { content: trimmedContent },
     });
+
+    if (result.status !== 200) {
+      toast.error(`Failed to update post: ${result.data.message}`);
+      return;
+    }
+    toast.success("Post updated successfully");
+    setIsEditing(false);
+    queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
   };
 
-  const handleDelete = () => {
-    deletePostMutation.mutate({ id: post.id });
+  const handleDelete = async () => {
+    const result = await deletePostMutation.mutateAsync({ id: post.id });
+    if (result.status !== 200) {
+      toast.error(`Failed to delete post: ${result.data.message}`);
+      return;
+    }
+    toast.success("Post deleted successfully");
+    queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
   };
 
   return (
