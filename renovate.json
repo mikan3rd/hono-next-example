@@ -31,9 +31,11 @@
         "bun",
         "@types/bun",
         "oven/bun",
+        "oven-sh/bun",
         "/^bun$/",
         "/^@types/bun$/",
-        "/^oven/bun$/"
+        "/^oven/bun$/",
+        "/^oven-sh/bun$/"
       ],
       "automerge": false
     },
