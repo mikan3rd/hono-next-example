@@ -346,7 +346,7 @@ services:
 
   analytics:
     container_name: supabase-analytics
-    image: supabase/logflare:1.21.1
+    image: supabase/logflare:1.22.0
     restart: unless-stopped
     ports:
       - 4000:4000
@@ -485,7 +485,7 @@ services:
   # Update the DATABASE_URL if you are using an external Postgres database
   supavisor:
     container_name: supabase-pooler
-    image: supabase/supavisor:2.6.2
+    image: supabase/supavisor:2.7.0
     restart: unless-stopped
     ports:
       - ${POSTGRES_PORT}:5432
