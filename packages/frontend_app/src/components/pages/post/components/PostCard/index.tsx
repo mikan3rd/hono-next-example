@@ -42,17 +42,7 @@ export const PostCard = ({ post }: PostCardProps) => {
     },
   });
 
-  const deletePostMutation = useDeletePostsId({
-    mutation: {
-      onSuccess: () => {
-        toast.success("Post deleted successfully");
-        queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
-      },
-      onError: (error) => {
-        toast.error(`Failed to delete post: ${error.message}`);
-      },
-    },
-  });
+  const deletePostMutation = useDeletePostsId();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -73,8 +63,14 @@ export const PostCard = ({ post }: PostCardProps) => {
     });
   };
 
-  const handleDelete = () => {
-    deletePostMutation.mutate({ id: post.id });
+  const handleDelete = async () => {
+    const result = await deletePostMutation.mutateAsync({ id: post.id });
+    if (result.status !== 200) {
+      toast.error(`Failed to delete post: ${result.data.message}`);
+      return;
+    }
+    toast.success("Post deleted successfully");
+    queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
   };
 
   return (
