@@ -4,10 +4,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { getGetPostsQueryKey, usePostPosts } from "../../../../../client";
+import { useUserContext } from "../../../../../context/UserContext";
 import { Button } from "../../../../ui/Button";
 
 export const PostForm = () => {
   const queryClient = useQueryClient();
+  const { checkLoggedIn } = useUserContext();
 
   const [content, setContent] = useState("");
 
@@ -19,6 +21,9 @@ export const PostForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!checkLoggedIn()) return;
+
     const trimmedContent = content.trim();
     if (!trimmedContent) return;
     const result = await createPostMutation.mutateAsync({
