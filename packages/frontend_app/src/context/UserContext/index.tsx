@@ -38,6 +38,7 @@ export const UserContextProvider = ({ children }: Props) => {
       console.info("onAuthStateChange", nextSession);
       setSession(nextSession);
     });
+    console.info("subscription", subscription);
     return () => subscription.unsubscribe();
   }, []);
 

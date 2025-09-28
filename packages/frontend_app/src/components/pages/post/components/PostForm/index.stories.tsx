@@ -30,10 +30,13 @@ export const Default: Story = {
     await userEvent.type(input, "test");
     await expect(createPostButton).toBeEnabled();
 
+    console.info("click createPostButton");
     await userEvent.click(createPostButton);
     await waitFor(async () => {
       await expect(input).toHaveValue("");
     });
     await expect(createPostButton).toBeDisabled();
+
+    triggerAuthStateChange("SIGNED_OUT", null);
   },
 };

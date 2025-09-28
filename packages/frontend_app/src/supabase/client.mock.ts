@@ -28,8 +28,10 @@ type AuthListener = (
 const listeners = new Set<AuthListener>();
 
 const onAuthStateChange: GoTrueClient["onAuthStateChange"] = (callback) => {
-  const listener: AuthListener = (event, nextSession) =>
+  const listener: AuthListener = (event, nextSession) => {
+    console.info("listener", event, nextSession);
     callback(event, nextSession);
+  };
   listeners.add(listener);
 
   const sub: Subscription = {
@@ -48,6 +50,7 @@ export const triggerAuthStateChange = (
   nextSession: Session | null,
 ) => {
   for (const listener of listeners) {
+    console.info("triggerAuthStateChange", event, nextSession);
     listener(event, nextSession);
   }
 };
