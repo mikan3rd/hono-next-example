@@ -35,6 +35,7 @@ export const UserContextProvider = ({ children }: Props) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      console.info("onAuthStateChange", nextSession);
       setSession(nextSession);
     });
     return () => subscription.unsubscribe();
