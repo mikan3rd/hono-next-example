@@ -2,11 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Suspense } from "react";
-import { LoadingMask } from "../components/ui/LoadingMask";
-import { Toaster } from "../components/ui/Sonner";
-import { UserContextProvider } from "../context/UserContext";
-import Providers from "./providers";
+import { RootProviders } from "../lib/RootProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,13 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* TODO: storybookと共通化 */}
-        <Suspense fallback={<LoadingMask />}>
-          <Providers>
-            <UserContextProvider>{children}</UserContextProvider>
-          </Providers>
-        </Suspense>
-        <Toaster duration={1000 * 10} />
+        <RootProviders>{children}</RootProviders>
       </body>
     </html>
   );
