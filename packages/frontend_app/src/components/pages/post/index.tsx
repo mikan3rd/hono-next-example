@@ -32,6 +32,7 @@ export const PostIndex = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Posts</h1>
               <p className="text-gray-600">View the latest posts</p>
             </div>
+            {/* TODO: SideBar を用意して移植したい */}
             <div className="flex gap-2">
               {sessionStatus === "loading" && (
                 <Button variant="outline">
