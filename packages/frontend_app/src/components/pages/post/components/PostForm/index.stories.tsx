@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
+import {
+  __triggerAuthStateChange,
+  session,
+} from "../../../../../supabase/client.mock";
 import { PostForm } from ".";
 
 const meta = {
@@ -12,6 +16,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   play: async ({ canvasElement, userEvent }) => {
+    __triggerAuthStateChange("SIGNED_IN", session);
+
     const canvas = within(canvasElement);
 
     const input = canvas.getByRole("textbox");
