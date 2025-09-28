@@ -15,6 +15,11 @@ const session: Session = { user } as Session;
 const signInAnonymously: GoTrueClient["signInAnonymously"] = () =>
   Promise.resolve({ error: null, data: { user, session } });
 
+const signOut: GoTrueClient["signOut"] = () => Promise.resolve({ error: null });
+
+const getUser: GoTrueClient["getUser"] = () =>
+  Promise.resolve({ error: null, data: { user } });
+
 type AuthListener = (
   event: AuthChangeEvent,
   nextSession: Session | null,
@@ -47,14 +52,12 @@ export const triggerAuthStateChange = (
   }
 };
 
-// TODO: 型定義をできるだけ正確にしたい
 export function createClient() {
   return {
     auth: {
       signInAnonymously,
-      signOut: () => Promise.resolve({ error: null }),
-      getUser: () =>
-        Promise.resolve({ error: null, data: { user: { id: "123" } } }),
+      signOut,
+      getUser,
       onAuthStateChange,
     },
   };
