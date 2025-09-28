@@ -6,11 +6,11 @@ import type {
   User,
 } from "@supabase/supabase-js";
 
-export const user: User = {
+const user: User = {
   id: "123",
 } as User;
 
-export const session: Session = { user } as Session;
+const session: Session = { user } as Session;
 
 const signInAnonymously: GoTrueClient["signInAnonymously"] = () =>
   Promise.resolve({ error: null, data: { user, session } });
@@ -38,14 +38,14 @@ const onAuthStateChange: GoTrueClient["onAuthStateChange"] = (callback) => {
   return { data: { subscription: sub } };
 };
 
-export function __triggerAuthStateChange(
+export const triggerAuthStateChange = (
   event: AuthChangeEvent,
   nextSession: Session | null,
-) {
+) => {
   for (const listener of listeners) {
     listener(event, nextSession);
   }
-}
+};
 
 // TODO: 型定義をできるだけ正確にしたい
 export function createClient() {
@@ -59,3 +59,5 @@ export function createClient() {
     },
   };
 }
+
+export { session as mockSession };

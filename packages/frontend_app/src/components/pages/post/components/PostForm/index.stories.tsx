@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
 import {
-  __triggerAuthStateChange,
-  session,
+  mockSession,
+  triggerAuthStateChange,
 } from "../../../../../supabase/client.mock";
 import { PostForm } from ".";
 
@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    __triggerAuthStateChange("SIGNED_IN", session);
+    triggerAuthStateChange("SIGNED_IN", mockSession);
 
     const canvas = within(canvasElement);
 
