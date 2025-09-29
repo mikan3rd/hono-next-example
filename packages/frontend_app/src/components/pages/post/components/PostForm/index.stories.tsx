@@ -57,7 +57,6 @@ export const Default: Story = {
     triggerAuthStateChange("SIGNED_IN", mockSession);
 
     await waitFor(async () => {
-      console.info("Checking for loggedIn status...");
       await expect(canvas.getByText("loggedIn")).toBeInTheDocument();
     });
 
