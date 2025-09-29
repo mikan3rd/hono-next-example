@@ -30,11 +30,27 @@ export const Default: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
-    // リスナーが登録されるまで少し待つ
-    await waitFor(async () => {
-      console.info("Waiting for listener registration...");
-      console.info("Debug listeners count:", __debugListeners.count);
-    });
+    // リスナーが登録されるまで待つ
+    await waitFor(
+      async () => {
+        console.info("Waiting for listener registration...");
+        console.info("Debug listeners count:", __debugListeners.count);
+      },
+      { timeout: 5000 },
+    );
+
+    // リスナー登録完了を明示的に待つ
+    await waitFor(
+      async () => {
+        const listenerCount = __debugListeners.count;
+        console.info("Checking listeners count:", listenerCount);
+        if (listenerCount === 0) {
+          throw new Error("No listeners registered yet");
+        }
+        console.info("Listeners registered successfully");
+      },
+      { timeout: 5000 },
+    );
 
     console.info("Triggering SIGNED_IN with session:", mockSession);
     console.info("Before trigger - listeners count:", __debugListeners.count);

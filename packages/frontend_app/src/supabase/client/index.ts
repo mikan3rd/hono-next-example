@@ -16,6 +16,7 @@ export const mockSession = null;
 // Mock debug utilities (no-op in production)
 export const __debugListeners = {
   get count() {
+    console.info("[prod] __debugListeners.count");
     return 0;
   },
   get all() {
