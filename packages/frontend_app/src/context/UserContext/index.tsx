@@ -31,15 +31,23 @@ export const UserContextProvider = ({ children }: Props) => {
   const [isOpenLoginDialog, setIsOpenLoginDialog] = useState(false);
 
   useEffect(() => {
+    console.info("UserContext: Setting up auth listener");
     const supabase = createClient();
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      console.info("onAuthStateChange", nextSession);
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
+      console.info(
+        "UserContext: onAuthStateChange triggered",
+        event,
+        nextSession,
+      );
       setSession(nextSession);
     });
-    console.info("subscription", subscription);
-    return () => subscription.unsubscribe();
+    console.info("UserContext: subscription created", subscription);
+    return () => {
+      console.info("UserContext: cleaning up subscription");
+      subscription.unsubscribe();
+    };
   }, []);
 
   const sessionStatus = useMemo(() => {

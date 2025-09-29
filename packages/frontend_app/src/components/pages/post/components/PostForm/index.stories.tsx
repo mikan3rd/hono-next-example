@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
 import {
+  __debugListeners,
   mockSession,
   __triggerAuthStateChange as triggerAuthStateChange,
 } from "#src/supabase/client";
@@ -29,9 +30,18 @@ export const Default: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
+    // リスナーが登録されるまで少し待つ
+    await waitFor(async () => {
+      console.info("Waiting for listener registration...");
+      console.info("Debug listeners count:", __debugListeners.count);
+    });
+
+    console.info("Triggering SIGNED_IN with session:", mockSession);
+    console.info("Before trigger - listeners count:", __debugListeners.count);
     triggerAuthStateChange("SIGNED_IN", mockSession);
 
     await waitFor(async () => {
+      console.info("Checking for loggedIn status...");
       await expect(canvas.getByText("loggedIn")).toBeInTheDocument();
     });
 

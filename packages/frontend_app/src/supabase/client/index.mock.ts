@@ -1,4 +1,5 @@
 import {
+  __debugListeners,
   getUser,
   mockSession,
   onAuthStateChange,
@@ -8,7 +9,11 @@ import {
 } from "./mockFunc";
 
 // Export mock functions for story testing
-export { triggerAuthStateChange as __triggerAuthStateChange, mockSession };
+export {
+  triggerAuthStateChange as __triggerAuthStateChange,
+  mockSession,
+  __debugListeners,
+};
 
 export function createClient() {
   return {

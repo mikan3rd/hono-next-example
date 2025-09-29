@@ -30,6 +30,19 @@ type AuthListener = (
 
 const listeners = new Set<AuthListener>();
 
+// デバッグ用: リスナー登録の追跡
+export const __debugListeners = {
+  get count() {
+    return listeners.size;
+  },
+  get all() {
+    return Array.from(listeners);
+  },
+  clear() {
+    listeners.clear();
+  },
+};
+
 export const onAuthStateChange: GoTrueClient["onAuthStateChange"] = (
   callback,
 ) => {
@@ -54,8 +67,10 @@ export const triggerAuthStateChange = (
   event: AuthChangeEvent,
   nextSession: Session | null,
 ) => {
+  console.info("triggerAuthStateChange called", event, nextSession);
+  console.info("Active listeners count:", listeners.size);
   for (const listener of listeners) {
-    console.info("triggerAuthStateChange", event, nextSession);
+    console.info("Calling listener", event, nextSession);
     listener(event, nextSession);
   }
 };

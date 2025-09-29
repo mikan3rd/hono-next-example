@@ -13,6 +13,17 @@ export function __triggerAuthStateChange(
 
 export const mockSession = null;
 
+// Mock debug utilities (no-op in production)
+export const __debugListeners = {
+  get count() {
+    return 0;
+  },
+  get all() {
+    return [];
+  },
+  clear() {},
+};
+
 export function createClient() {
   return createBrowserClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
