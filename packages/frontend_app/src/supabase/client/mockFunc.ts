@@ -14,12 +14,13 @@ const user: User = {
 // TODO: 型定義をできるだけ正確にしたい
 const session: Session = { user } as Session;
 
-const signInAnonymously: GoTrueClient["signInAnonymously"] = () =>
+export const signInAnonymously: GoTrueClient["signInAnonymously"] = () =>
   Promise.resolve({ error: null, data: { user, session } });
 
-const signOut: GoTrueClient["signOut"] = () => Promise.resolve({ error: null });
+export const signOut: GoTrueClient["signOut"] = () =>
+  Promise.resolve({ error: null });
 
-const getUser: GoTrueClient["getUser"] = () =>
+export const getUser: GoTrueClient["getUser"] = () =>
   Promise.resolve({ error: null, data: { user } });
 
 type AuthListener = (
@@ -29,7 +30,9 @@ type AuthListener = (
 
 const listeners = new Set<AuthListener>();
 
-const onAuthStateChange: GoTrueClient["onAuthStateChange"] = (callback) => {
+export const onAuthStateChange: GoTrueClient["onAuthStateChange"] = (
+  callback,
+) => {
   const listener: AuthListener = (event, nextSession) => {
     console.info("listener", event, nextSession);
     callback(event, nextSession);
@@ -56,16 +59,5 @@ export const triggerAuthStateChange = (
     listener(event, nextSession);
   }
 };
-
-export function createClient() {
-  return {
-    auth: {
-      signInAnonymously,
-      signOut,
-      getUser,
-      onAuthStateChange,
-    },
-  };
-}
 
 export { session as mockSession };

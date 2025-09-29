@@ -3,7 +3,7 @@ import { expect, waitFor, within } from "storybook/test";
 import {
   mockSession,
   triggerAuthStateChange,
-} from "../../../../../supabase/client.mock";
+} from "../../../../../supabase/client/mockFunc";
 import { PostForm } from ".";
 
 const meta = {

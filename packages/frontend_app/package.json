@@ -4,8 +4,8 @@
   "private": true,
   "imports": {
     "#src/supabase/client": {
-      "storybook": "./src/supabase/client.mock.ts",
-      "default": "./src/supabase/client.ts"
+      "storybook": "./src/supabase/client/index.mock.ts",
+      "default": "./src/supabase/client/index.ts"
     }
   },
   "scripts": {
