@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
 import {
   mockSession,
-  triggerAuthStateChange,
-} from "../../../../../supabase/client/mockFunc";
+  __triggerAuthStateChange as triggerAuthStateChange,
+} from "#src/supabase/client";
 import { PostForm } from ".";
 
 const meta = {
