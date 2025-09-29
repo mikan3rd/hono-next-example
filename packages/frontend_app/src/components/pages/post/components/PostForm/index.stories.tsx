@@ -4,6 +4,7 @@ import {
   mockSession,
   __triggerAuthStateChange as triggerAuthStateChange,
 } from "#src/supabase/client";
+import { useUserContext } from "../../../../../context/UserContext";
 import { PostForm } from ".";
 
 const meta = {
@@ -15,10 +16,24 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  render: () => {
+    const { sessionStatus } = useUserContext();
+    return (
+      <>
+        <PostForm />
+        <div className="hidden">{sessionStatus}</div>
+      </>
+    );
+  },
+
   play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+
     triggerAuthStateChange("SIGNED_IN", mockSession);
 
-    const canvas = within(canvasElement);
+    await waitFor(async () => {
+      await expect(canvas.getByText("loggedIn")).toBeInTheDocument();
+    });
 
     const input = canvas.getByRole("textbox");
     await expect(input).toHaveValue("");
