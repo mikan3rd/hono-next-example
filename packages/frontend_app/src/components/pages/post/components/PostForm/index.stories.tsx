@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
+import {
+  __debugListeners,
+  mockSession,
+  __triggerAuthStateChange as triggerAuthStateChange,
+} from "#src/supabase/client";
+import { useUserContext } from "../../../../../context/UserContext";
 import { PostForm } from ".";
 
 const meta = {
@@ -11,8 +17,35 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  render: () => {
+    const { sessionStatus } = useUserContext();
+    return (
+      <>
+        <PostForm />
+        <div className="hidden">{sessionStatus}</div>
+      </>
+    );
+  },
+
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
+
+    await waitFor(
+      async () => {
+        const listenerCount = __debugListeners.count;
+        console.info("Checking listeners count:", listenerCount);
+        if (listenerCount === 0) {
+          throw new Error("No listeners registered yet");
+        }
+      },
+      { timeout: 5000 },
+    );
+
+    triggerAuthStateChange("SIGNED_IN", mockSession);
+
+    await waitFor(async () => {
+      await expect(canvas.getByText("loggedIn")).toBeInTheDocument();
+    });
 
     const input = canvas.getByRole("textbox");
     await expect(input).toHaveValue("");

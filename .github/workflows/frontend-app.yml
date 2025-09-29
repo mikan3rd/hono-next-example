@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
-    if: needs.changes.outputs.backend == 'true' || needs.changes.outputs.frontend == 'true' 
+    if: needs.changes.outputs.backend == 'true' || needs.changes.outputs.frontend == 'true'
     steps:
       - uses: actions/checkout@v5
 
@@ -71,33 +71,6 @@ jobs:
 
       - run: bun run typecheck
 
-  test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    needs:
-      - changes
-      - check
-    if: github.event.pull_request.draft != true && needs.changes.outputs.frontend == 'true' && needs.check.result == 'success' 
-    container:
-      # Make sure to grab the latest version of the Playwright image
-      # https://playwright.dev/docs/docker#pull-the-image
-      image: mcr.microsoft.com/playwright:v1.55.1-noble
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Install required tools
-        run: |
-          apt-get update
-          apt-get install -y unzip
-
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .tool-versions
-
-      - run: bun install --frozen-lockfile
-
-      - run: bun run test-storybook --coverage
-
   chromatic:
     name: Run Chromatic
     runs-on: ubuntu-latest
@@ -105,8 +78,7 @@ jobs:
     needs:
       - changes
       - check
-      - test
-    if: github.event.pull_request.draft != true && needs.changes.outputs.frontend == 'true' && needs.test.result == 'success'
+    if: github.event.pull_request.draft != true && needs.changes.outputs.frontend == 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v5

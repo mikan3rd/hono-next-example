@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { toast } from "sonner";
 import { createClient } from "#src/supabase/client";
 import { usePostUserSignup } from "../../../client";
+import { useUserContext } from "../../../context/UserContext";
 import { Button } from "../../ui/Button";
 import {
   Dialog,
@@ -18,10 +19,10 @@ import {
 
 export const SignUpDialog = () => {
   const supabase = createClient();
+  const { isOpenLoginDialog, setIsOpenLoginDialog } = useUserContext();
 
   const signupMutation = usePostUserSignup();
 
-  const [isOpen, setIsOpen] = useState(false);
   const [loading, startLoadingTransition] = useTransition();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,12 +44,12 @@ export const SignUpDialog = () => {
       }
 
       toast.success("Signed up successfully");
-      setIsOpen(false);
+      setIsOpenLoginDialog(false);
     });
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpenLoginDialog} onOpenChange={setIsOpenLoginDialog}>
       <DialogTrigger asChild>
         <Button variant="outline">Sign Up Dialog</Button>
       </DialogTrigger>

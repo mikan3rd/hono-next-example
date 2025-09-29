@@ -2,9 +2,8 @@ import "../src/app/globals.css";
 
 import type { Preview } from "@storybook/nextjs-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
-import Providers from "../src/app/providers";
 import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
-import { Toaster } from "../src/components/ui/Sonner";
+import { RootProviders } from "../src/lib/RootProviders";
 
 /*
  * Initializes MSW
@@ -37,10 +36,9 @@ const preview: Preview = {
   loaders: [mswLoader],
   decorators: [
     (Story) => (
-      <Providers>
+      <RootProviders>
         <Story />
-        <Toaster />
-      </Providers>
+      </RootProviders>
     ),
   ],
 };
