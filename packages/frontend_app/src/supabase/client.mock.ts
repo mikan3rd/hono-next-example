@@ -6,10 +6,12 @@ import type {
   User,
 } from "@supabase/supabase-js";
 
+// TODO: 型定義をできるだけ正確にしたい
 const user: User = {
   id: "123",
 } as User;
 
+// TODO: 型定義をできるだけ正確にしたい
 const session: Session = { user } as Session;
 
 const signInAnonymously: GoTrueClient["signInAnonymously"] = () =>
