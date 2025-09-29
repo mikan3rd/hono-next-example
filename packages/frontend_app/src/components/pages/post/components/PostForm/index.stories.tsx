@@ -51,7 +51,5 @@ export const Default: Story = {
       await expect(input).toHaveValue("");
     });
     await expect(createPostButton).toBeDisabled();
-
-    triggerAuthStateChange("SIGNED_OUT", null);
   },
 };
