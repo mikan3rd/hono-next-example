@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 const primaryKeys = {
@@ -26,3 +27,10 @@ export const postsTable = pgTable("posts", {
   content: text().notNull(),
   ...timestamps,
 });
+
+export const postsRelations = relations(postsTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [postsTable.user_id],
+    references: [usersTable.id],
+  }),
+}));

@@ -1,6 +1,7 @@
 import { desc, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { db } from "../../db";
+import { userPublicFields } from "../../db/field";
 import { postsTable } from "../../db/schema";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
@@ -19,10 +20,14 @@ postApp.use("/:id", userMiddleware);
 
 const routes = postApp
   .openapi(getPostsRoute, async (c) => {
-    const posts = await db
-      .select()
-      .from(postsTable)
-      .orderBy(desc(postsTable.id));
+    const posts = await db.query.postsTable.findMany({
+      with: {
+        user: {
+          columns: userPublicFields,
+        },
+      },
+      orderBy: desc(postsTable.id),
+    });
     return c.json({ posts }, 200);
   })
 
