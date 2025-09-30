@@ -37,7 +37,8 @@
             "maximum": 2147483647
           }
         },
-        "required": ["id"]
+        "required": ["id"],
+        "additionalProperties": false
       },
       "post": {
         "type": "object",
@@ -67,7 +68,8 @@
             "example": "2025-01-01T00:00:00Z"
           }
         },
-        "required": ["id", "content", "created_at", "updated_at"]
+        "required": ["id", "content", "created_at", "updated_at"],
+        "additionalProperties": false
       }
     },
     "parameters": {}
@@ -235,7 +237,8 @@
                             "properties": {
                               "user": { "$ref": "#/components/schemas/user" }
                             },
-                            "required": ["user"]
+                            "required": ["user"],
+                            "additionalProperties": false
                           }
                         ]
                       }

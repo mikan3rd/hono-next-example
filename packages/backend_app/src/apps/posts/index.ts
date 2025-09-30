@@ -5,7 +5,11 @@ import { postPublicFields, userPublicFields } from "../../db/field";
 import { postsTable } from "../../db/schema";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
-import { postPostResponseSchema, updatePostResponseSchema } from "./dto";
+import {
+  getPostsResponseSchema,
+  postPostResponseSchema,
+  updatePostResponseSchema,
+} from "./dto";
 import {
   deletePostRoute,
   getPostsRoute,
@@ -29,7 +33,8 @@ const routes = postApp
       },
       orderBy: desc(postsTable.id),
     });
-    return c.json({ posts }, 200);
+    const response = { posts };
+    return c.json(getPostsResponseSchema.parse(response), 200);
   })
 
   .openapi(postPostRoute, async (c) => {
