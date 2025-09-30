@@ -1,4 +1,5 @@
 import { app } from "./apps";
+import { db } from "./db";
 import { env } from "./env";
 
 const server = Bun.serve({
@@ -10,6 +11,9 @@ const server = Bun.serve({
 
 const shutdown = async () => {
   console.info("shutdown event");
+
+  await db.$client.end();
+  console.info("database connection closed");
 
   await server.stop();
   console.info("server stopped");
