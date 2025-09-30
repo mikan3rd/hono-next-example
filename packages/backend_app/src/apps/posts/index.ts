@@ -5,6 +5,7 @@ import { postPublicFields, userPublicFields } from "../../db/field";
 import { postsTable } from "../../db/schema";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
+import { postPostResponseSchema, updatePostResponseSchema } from "./dto";
 import {
   deletePostRoute,
   getPostsRoute,
@@ -15,7 +16,6 @@ import {
 const postApp = createApp();
 
 postApp.post("/", userMiddleware);
-
 postApp.use("/:id", userMiddleware);
 
 const routes = postApp
@@ -44,7 +44,7 @@ const routes = postApp
       throw new HTTPException(500, {
         message: "Failed to create post",
       });
-    return c.json({ post }, 200);
+    return c.json(postPostResponseSchema.parse({ post }), 200);
   })
 
   .openapi(updatePostRoute, async (c) => {
@@ -83,7 +83,7 @@ const routes = postApp
       return result;
     });
 
-    return c.json({ post }, 200);
+    return c.json(updatePostResponseSchema.parse({ post }), 200);
   })
 
   .openapi(deletePostRoute, async (c) => {
