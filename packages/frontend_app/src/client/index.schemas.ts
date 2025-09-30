@@ -223,8 +223,14 @@ export type PostPostsBody = {
   content: string;
 };
 
+export type PostPosts200PostAllOf = {
+  user: User;
+};
+
+export type PostPosts200Post = Post & PostPosts200PostAllOf;
+
 export type PostPosts200 = {
-  post: Post;
+  post: PostPosts200Post;
 };
 
 export type PostPosts401AllOfCode =
@@ -315,8 +321,14 @@ export type PutPostsIdBody = {
   content?: string;
 };
 
+export type PutPostsId200PostAllOf = {
+  user: User;
+};
+
+export type PutPostsId200Post = Post & PutPostsId200PostAllOf;
+
 export type PutPostsId200 = {
-  post: Post;
+  post: PutPostsId200Post;
 };
 
 export type PutPostsId401AllOfCode =
