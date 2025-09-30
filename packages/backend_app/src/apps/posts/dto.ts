@@ -6,6 +6,7 @@ import {
   createSelectSchema,
   createUpdateSchema,
 } from "../factory";
+import { userSelectSchema } from "../user/dto";
 
 const postSelectSchema = createSelectSchema(postsTable, {
   id: (schema) =>
@@ -35,7 +36,11 @@ const postSelectSchema = createSelectSchema(postsTable, {
   .openapi("post");
 
 export const getPostsResponseSchema = z.object({
-  posts: postSelectSchema.array(),
+  posts: postSelectSchema
+    .extend({
+      user: userSelectSchema,
+    })
+    .array(),
 });
 
 export const postPostRequestSchema = createInsertSchema(postsTable, {
