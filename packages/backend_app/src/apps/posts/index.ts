@@ -44,7 +44,13 @@ const routes = postApp
       throw new HTTPException(500, {
         message: "Failed to create post",
       });
-    return c.json(postPostResponseSchema.parse({ post }), 200);
+    const response = {
+      post: await db.query.postsTable.findFirst({
+        where: eq(postsTable.id, post.id),
+        columns: postPublicFields,
+      }),
+    };
+    return c.json(postPostResponseSchema.parse(response), 200);
   })
 
   .openapi(updatePostRoute, async (c) => {
@@ -83,7 +89,14 @@ const routes = postApp
       return result;
     });
 
-    return c.json(updatePostResponseSchema.parse({ post }), 200);
+    const response = {
+      post: await db.query.postsTable.findFirst({
+        where: eq(postsTable.id, post.id),
+        columns: postPublicFields,
+      }),
+    };
+
+    return c.json(updatePostResponseSchema.parse(response), 200);
   })
 
   .openapi(deletePostRoute, async (c) => {
