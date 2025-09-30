@@ -1,20 +1,25 @@
 import type { postsTable, usersTable } from "./schema";
 
 // TODO: displayName などを追加したい
-type UserPublicField = Extract<keyof typeof usersTable.$inferSelect, "id">;
+export const userPublicFieldDefs = [
+  "id",
+] satisfies (keyof typeof usersTable.$inferSelect)[];
 
-export const userPublicFields: Record<UserPublicField, true> = {
-  id: true,
+export const postPublicFieldDefs = [
+  "id",
+  "content",
+  "created_at",
+  "updated_at",
+] satisfies (keyof typeof postsTable.$inferSelect)[];
+
+const createFieldsFromDefs = <T extends readonly string[]>(
+  fieldDefs: T,
+): { [K in T[number]]: true } => {
+  return Object.fromEntries(fieldDefs.map((field) => [field, true])) as {
+    [K in T[number]]: true;
+  };
 };
 
-type PostPublicField = Extract<
-  keyof typeof postsTable.$inferSelect,
-  "id" | "content" | "created_at" | "updated_at"
->;
+export const userPublicFields = createFieldsFromDefs(userPublicFieldDefs);
 
-export const postPublicFields: Record<PostPublicField, true> = {
-  id: true,
-  content: true,
-  created_at: true,
-  updated_at: true,
-};
+export const postPublicFields = createFieldsFromDefs(postPublicFieldDefs);

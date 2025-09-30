@@ -33,14 +33,15 @@ const postSelectSchema = createSelectSchema(postsTable, {
     }),
 })
   .pick(postPublicFields)
+  .strict()
   .openapi("post");
 
+export const postWithUserSelectSchema = postSelectSchema.extend({
+  user: userSelectSchema,
+});
+
 export const getPostsResponseSchema = z.object({
-  posts: postSelectSchema
-    .extend({
-      user: userSelectSchema,
-    })
-    .array(),
+  posts: postWithUserSelectSchema.array(),
 });
 
 export const postPostRequestSchema = createInsertSchema(postsTable, {
@@ -54,7 +55,7 @@ export const postPostRequestSchema = createInsertSchema(postsTable, {
 });
 
 export const postPostResponseSchema = z.object({
-  post: postSelectSchema,
+  post: postWithUserSelectSchema,
 });
 
 export const updatePostParamsSchema = z.object({

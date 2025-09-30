@@ -1,10 +1,15 @@
 import { desc, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { db } from "../../db";
-import { postPublicFields, userPublicFields } from "../../db/field";
+import { postWithUserQuery } from "../../db/query";
 import { postsTable } from "../../db/schema";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
+import {
+  getPostsResponseSchema,
+  postPostResponseSchema,
+  updatePostResponseSchema,
+} from "./dto";
 import {
   deletePostRoute,
   getPostsRoute,
@@ -15,21 +20,16 @@ import {
 const postApp = createApp();
 
 postApp.post("/", userMiddleware);
-
 postApp.use("/:id", userMiddleware);
 
 const routes = postApp
   .openapi(getPostsRoute, async (c) => {
     const posts = await db.query.postsTable.findMany({
-      columns: postPublicFields,
-      with: {
-        user: {
-          columns: userPublicFields,
-        },
-      },
+      ...postWithUserQuery,
       orderBy: desc(postsTable.id),
     });
-    return c.json({ posts }, 200);
+    const response = { posts };
+    return c.json(getPostsResponseSchema.parse(response), 200);
   })
 
   .openapi(postPostRoute, async (c) => {
@@ -44,7 +44,13 @@ const routes = postApp
       throw new HTTPException(500, {
         message: "Failed to create post",
       });
-    return c.json({ post }, 200);
+    const response = {
+      post: await db.query.postsTable.findFirst({
+        ...postWithUserQuery,
+        where: eq(postsTable.id, post.id),
+      }),
+    };
+    return c.json(postPostResponseSchema.parse(response), 200);
   })
 
   .openapi(updatePostRoute, async (c) => {
@@ -83,7 +89,14 @@ const routes = postApp
       return result;
     });
 
-    return c.json({ post }, 200);
+    const response = {
+      post: await db.query.postsTable.findFirst({
+        ...postWithUserQuery,
+        where: eq(postsTable.id, post.id),
+      }),
+    };
+
+    return c.json(updatePostResponseSchema.parse(response), 200);
   })
 
   .openapi(deletePostRoute, async (c) => {

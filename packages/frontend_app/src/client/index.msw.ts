@@ -44,14 +44,25 @@ export const getPostPostsResponseMock = (
   overrideResponse: Partial<PostPosts200> = {},
 ): PostPosts200 => ({
   post: {
-    id: faker.number.int({
-      min: -2147483648,
-      max: 2147483647,
-      multipleOf: undefined,
-    }),
-    content: faker.string.alpha({ length: { min: 10, max: 20 } }),
-    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    ...{
+      id: faker.number.int({
+        min: -2147483648,
+        max: 2147483647,
+        multipleOf: undefined,
+      }),
+      content: faker.string.alpha({ length: { min: 10, max: 20 } }),
+      created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+      updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    },
+    ...{
+      user: {
+        id: faker.number.int({
+          min: -2147483648,
+          max: 2147483647,
+          multipleOf: undefined,
+        }),
+      },
+    },
   },
   ...overrideResponse,
 });
@@ -60,14 +71,25 @@ export const getPutPostsIdResponseMock = (
   overrideResponse: Partial<PutPostsId200> = {},
 ): PutPostsId200 => ({
   post: {
-    id: faker.number.int({
-      min: -2147483648,
-      max: 2147483647,
-      multipleOf: undefined,
-    }),
-    content: faker.string.alpha({ length: { min: 10, max: 20 } }),
-    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    ...{
+      id: faker.number.int({
+        min: -2147483648,
+        max: 2147483647,
+        multipleOf: undefined,
+      }),
+      content: faker.string.alpha({ length: { min: 10, max: 20 } }),
+      created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+      updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    },
+    ...{
+      user: {
+        id: faker.number.int({
+          min: -2147483648,
+          max: 2147483647,
+          multipleOf: undefined,
+        }),
+      },
+    },
   },
   ...overrideResponse,
 });
