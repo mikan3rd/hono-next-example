@@ -9,7 +9,7 @@ export const truncateAllTables = async () => {
       WHERE table_schema = 'public';
     `,
   );
-  for (const table of tables.rows) {
+  for (const table of tables) {
     const query = sql.raw(
       `TRUNCATE TABLE ${table.table_name} RESTART IDENTITY CASCADE`,
     );
