@@ -22,6 +22,14 @@ export interface ErrorResponse {
   message: string;
 }
 
+export interface User {
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  id: number;
+}
+
 export interface Post {
   /**
    * Primary ID
@@ -29,11 +37,6 @@ export interface Post {
    * @maximum 2147483647
    */
   id: number;
-  /**
-   * @minimum -2147483648
-   * @maximum 2147483647
-   */
-  user_id: number;
   /** The content of the post */
   content: string;
   /** The date and time the post was created */
@@ -122,8 +125,14 @@ export type PostUserSignup500AllOf = {
 
 export type PostUserSignup500 = ErrorResponse & PostUserSignup500AllOf;
 
+export type GetPosts200PostsItemAllOf = {
+  user: User;
+};
+
+export type GetPosts200PostsItem = Post & GetPosts200PostsItemAllOf;
+
 export type GetPosts200 = {
-  posts: Post[];
+  posts: GetPosts200PostsItem[];
 };
 
 export type GetPosts401AllOfCode =
