@@ -4,4 +4,5 @@ import { createSelectSchema } from "../factory";
 
 export const userSelectSchema = createSelectSchema(usersTable)
   .pick(userPublicFields)
+  .strict()
   .openapi("user");

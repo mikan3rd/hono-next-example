@@ -33,6 +33,7 @@ const postSelectSchema = createSelectSchema(postsTable, {
     }),
 })
   .pick(postPublicFields)
+  .strict()
   .openapi("post");
 
 export const getPostsResponseSchema = z.object({
