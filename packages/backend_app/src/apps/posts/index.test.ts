@@ -67,16 +67,20 @@ describe("postsApp", () => {
         if (!res.ok) throw new Error("res is not ok");
         const json = await res.json();
         expect(json.posts).toHaveLength(2);
-        expect(json.posts[0]).toMatchObject({
+        expect(json.posts[0]).toEqual({
           id: 2,
           content: "test2",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
           user: {
             id: user.id,
           },
         });
-        expect(json.posts[1]).toMatchObject({
+        expect(json.posts[1]).toEqual({
           id: 1,
           content: "test",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
           user: {
             id: user.id,
           },
