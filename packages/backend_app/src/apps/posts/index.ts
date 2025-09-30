@@ -53,6 +53,11 @@ const routes = postApp
       post: await db.query.postsTable.findFirst({
         where: eq(postsTable.id, post.id),
         columns: postPublicFields,
+        with: {
+          user: {
+            columns: userPublicFields,
+          },
+        },
       }),
     };
     return c.json(postPostResponseSchema.parse(response), 200);
@@ -98,6 +103,11 @@ const routes = postApp
       post: await db.query.postsTable.findFirst({
         where: eq(postsTable.id, post.id),
         columns: postPublicFields,
+        with: {
+          user: {
+            columns: userPublicFields,
+          },
+        },
       }),
     };
 

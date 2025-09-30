@@ -412,7 +412,19 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "post": { "$ref": "#/components/schemas/post" }
+                    "post": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/post" },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "user": { "$ref": "#/components/schemas/user" }
+                          },
+                          "required": ["user"],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
                   },
                   "required": ["post"]
                 }
@@ -595,7 +607,19 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "post": { "$ref": "#/components/schemas/post" }
+                    "post": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/post" },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "user": { "$ref": "#/components/schemas/user" }
+                          },
+                          "required": ["user"],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
                   },
                   "required": ["post"]
                 }
