@@ -28,6 +28,17 @@
         },
         "required": ["code", "message"]
       },
+      "user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        },
+        "required": ["id"]
+      },
       "post": {
         "type": "object",
         "properties": {
@@ -37,11 +48,6 @@
             "maximum": 2147483647,
             "description": "Primary ID",
             "example": 1
-          },
-          "user_id": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
           },
           "content": {
             "type": "string",
@@ -61,7 +67,7 @@
             "example": "2025-01-01T00:00:00Z"
           }
         },
-        "required": ["id", "user_id", "content", "created_at", "updated_at"]
+        "required": ["id", "content", "created_at", "updated_at"]
       }
     },
     "parameters": {}
@@ -221,7 +227,18 @@
                   "properties": {
                     "posts": {
                       "type": "array",
-                      "items": { "$ref": "#/components/schemas/post" }
+                      "items": {
+                        "allOf": [
+                          { "$ref": "#/components/schemas/post" },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "user": { "$ref": "#/components/schemas/user" }
+                            },
+                            "required": ["user"]
+                          }
+                        ]
+                      }
                     }
                   },
                   "required": ["posts"]

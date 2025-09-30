@@ -1,10 +1,12 @@
 import { z } from "@hono/zod-openapi";
+import { postPublicFields } from "../../db/field";
 import { postsTable } from "../../db/schema";
 import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
 } from "../factory";
+import { userSelectSchema } from "../user/dto";
 
 const postSelectSchema = createSelectSchema(postsTable, {
   id: (schema) =>
@@ -29,10 +31,16 @@ const postSelectSchema = createSelectSchema(postsTable, {
       example: "2025-01-01T00:00:00Z",
       format: "date-time",
     }),
-}).openapi("post");
+})
+  .pick(postPublicFields)
+  .openapi("post");
 
 export const getPostsResponseSchema = z.object({
-  posts: postSelectSchema.array(),
+  posts: postSelectSchema
+    .extend({
+      user: userSelectSchema,
+    })
+    .array(),
 });
 
 export const postPostRequestSchema = createInsertSchema(postsTable, {
