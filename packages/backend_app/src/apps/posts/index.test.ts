@@ -70,10 +70,16 @@ describe("postsApp", () => {
         expect(json.posts[0]).toMatchObject({
           id: 2,
           content: "test2",
+          user: {
+            id: user.id,
+          },
         });
         expect(json.posts[1]).toMatchObject({
           id: 1,
           content: "test",
+          user: {
+            id: user.id,
+          },
         });
       });
     });
