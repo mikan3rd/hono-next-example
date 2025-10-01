@@ -20,7 +20,10 @@ describe("postsApp", () => {
     const _user = (
       await db
         .insert(usersTable)
-        .values({ supabase_uid: supabaseUid })
+        .values({
+          supabase_uid: supabaseUid,
+          display_name: faker.person.fullName(),
+        })
         .returning()
     )[0];
     if (!_user) throw new Error("user is not found");
@@ -29,7 +32,10 @@ describe("postsApp", () => {
     const _anotherUser = (
       await db
         .insert(usersTable)
-        .values({ supabase_uid: faker.string.uuid() })
+        .values({
+          supabase_uid: faker.string.uuid(),
+          display_name: faker.person.fullName(),
+        })
         .returning()
     )[0];
     if (!_anotherUser) throw new Error("another user is not found");
@@ -68,21 +74,23 @@ describe("postsApp", () => {
         const json = await res.json();
         expect(json.posts).toHaveLength(2);
         expect(json.posts[0]).toEqual({
-          id: 2,
+          public_id: expect.any(String),
           content: "test2",
           created_at: expect.any(String),
           updated_at: expect.any(String),
           user: {
-            id: user.id,
+            public_id: user.public_id,
+            display_name: user.display_name,
           },
         });
         expect(json.posts[1]).toEqual({
-          id: 1,
+          public_id: expect.any(String),
           content: "test",
           created_at: expect.any(String),
           updated_at: expect.any(String),
           user: {
-            id: user.id,
+            public_id: user.public_id,
+            display_name: user.display_name,
           },
         });
       });
