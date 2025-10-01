@@ -44,6 +44,7 @@ import type {
   PostUserSignup403,
   PostUserSignup404,
   PostUserSignup500,
+  PostUserSignupBody,
   PutPostsId200,
   PutPostsId401,
   PutPostsId403,
@@ -105,11 +106,14 @@ export const getPostUserSignupUrl = () => {
 };
 
 export const postUserSignup = async (
+  postUserSignupBody: PostUserSignupBody,
   options?: RequestInit,
 ): Promise<postUserSignupResponse> => {
   return customFetch<postUserSignupResponse>(getPostUserSignupUrl(), {
     ...options,
     method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postUserSignupBody),
   });
 };
 
@@ -125,14 +129,14 @@ export const getPostUserSignupMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof postUserSignup>>,
     TError,
-    void,
+    { data: PostUserSignupBody },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof postUserSignup>>,
   TError,
-  void,
+  { data: PostUserSignupBody },
   TContext
 > => {
   const mutationKey = ["postUserSignup"];
@@ -146,9 +150,11 @@ export const getPostUserSignupMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof postUserSignup>>,
-    void
-  > = () => {
-    return postUserSignup(requestOptions);
+    { data: PostUserSignupBody }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postUserSignup(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -157,7 +163,7 @@ export const getPostUserSignupMutationOptions = <
 export type PostUserSignupMutationResult = NonNullable<
   Awaited<ReturnType<typeof postUserSignup>>
 >;
-
+export type PostUserSignupMutationBody = PostUserSignupBody;
 export type PostUserSignupMutationError =
   | ErrorResponse
   | PostUserSignup401
@@ -178,7 +184,7 @@ export const usePostUserSignup = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postUserSignup>>,
       TError,
-      void,
+      { data: PostUserSignupBody },
       TContext
     >;
     request?: SecondParameter<typeof customFetch>;
@@ -187,7 +193,7 @@ export const usePostUserSignup = <
 ): UseMutationResult<
   Awaited<ReturnType<typeof postUserSignup>>,
   TError,
-  void,
+  { data: PostUserSignupBody },
   TContext
 > => {
   const mutationOptions = getPostUserSignupMutationOptions(options);

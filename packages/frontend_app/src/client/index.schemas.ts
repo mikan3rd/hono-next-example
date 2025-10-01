@@ -23,20 +23,13 @@ export interface ErrorResponse {
 }
 
 export interface User {
-  /**
-   * @minimum -2147483648
-   * @maximum 2147483647
-   */
-  id: number;
+  public_id: string;
+  display_name: string;
 }
 
 export interface Post {
-  /**
-   * Primary ID
-   * @minimum -2147483648
-   * @maximum 2147483647
-   */
-  id: number;
+  /** Public ID */
+  public_id: string;
   /** The content of the post */
   content: string;
   /** The date and time the post was created */
@@ -44,6 +37,14 @@ export interface Post {
   /** The date and time the post was updated */
   updated_at: string;
 }
+
+export type PostUserSignupBody = {
+  /**
+   * The display name of the user
+   * @minLength 1
+   */
+  display_name: string;
+};
 
 export type PostUserSignup401AllOfCode =
   (typeof PostUserSignup401AllOfCode)[keyof typeof PostUserSignup401AllOfCode];

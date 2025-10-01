@@ -18,22 +18,15 @@ export const getGetPostsResponseMock = (
     (_, i) => i + 1,
   ).map(() => ({
     ...{
-      id: faker.number.int({
-        min: -2147483648,
-        max: 2147483647,
-        multipleOf: undefined,
-      }),
+      public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
       updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     },
     ...{
       user: {
-        id: faker.number.int({
-          min: -2147483648,
-          max: 2147483647,
-          multipleOf: undefined,
-        }),
+        public_id: faker.string.uuid(),
+        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
       },
     },
   })),
@@ -45,22 +38,15 @@ export const getPostPostsResponseMock = (
 ): PostPosts200 => ({
   post: {
     ...{
-      id: faker.number.int({
-        min: -2147483648,
-        max: 2147483647,
-        multipleOf: undefined,
-      }),
+      public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
       updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     },
     ...{
       user: {
-        id: faker.number.int({
-          min: -2147483648,
-          max: 2147483647,
-          multipleOf: undefined,
-        }),
+        public_id: faker.string.uuid(),
+        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
       },
     },
   },
@@ -72,22 +58,15 @@ export const getPutPostsIdResponseMock = (
 ): PutPostsId200 => ({
   post: {
     ...{
-      id: faker.number.int({
-        min: -2147483648,
-        max: 2147483647,
-        multipleOf: undefined,
-      }),
+      public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
       updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     },
     ...{
       user: {
-        id: faker.number.int({
-          min: -2147483648,
-          max: 2147483647,
-          multipleOf: undefined,
-        }),
+        public_id: faker.string.uuid(),
+        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
       },
     },
   },
