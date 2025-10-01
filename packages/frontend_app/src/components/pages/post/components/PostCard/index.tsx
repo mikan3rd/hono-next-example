@@ -73,7 +73,7 @@ export const PostCard = ({ post }: PostCardProps) => {
 
   return (
     <div
-      data-testid={`PostCard-${post.public_id}`}
+      data-testid="PostCard"
       className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 overflow-hidden"
     >
       <div className="p-6">

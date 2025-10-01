@@ -10,6 +10,7 @@ test.beforeEach(async () => {
     method: "POST",
   });
   expect(res.status).toBe(200);
+  console.info("backend app initialized");
 });
 
 test("post page", async ({ page }, testInfo) => {
