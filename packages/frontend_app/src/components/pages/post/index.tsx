@@ -59,7 +59,7 @@ export const PostIndex = () => {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post.public_id} post={post} />
             ))}
           </div>
         )}

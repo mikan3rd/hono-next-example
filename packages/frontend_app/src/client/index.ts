@@ -24,10 +24,10 @@ import type {
 import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { customFetch } from "../lib/custom-fetch";
 import type {
-  DeletePostsId401,
-  DeletePostsId403,
-  DeletePostsId404,
-  DeletePostsId500,
+  DeletePostsPublicId401,
+  DeletePostsPublicId403,
+  DeletePostsPublicId404,
+  DeletePostsPublicId500,
   ErrorResponse,
   GetPosts200,
   GetPosts401,
@@ -45,12 +45,12 @@ import type {
   PostUserSignup404,
   PostUserSignup500,
   PostUserSignupBody,
-  PutPostsId200,
-  PutPostsId401,
-  PutPostsId403,
-  PutPostsId404,
-  PutPostsId500,
-  PutPostsIdBody,
+  PutPostsPublicId200,
+  PutPostsPublicId401,
+  PutPostsPublicId403,
+  PutPostsPublicId404,
+  PutPostsPublicId500,
+  PutPostsPublicIdBody,
 } from "./index.schemas";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
@@ -716,88 +716,91 @@ export const usePostPosts = <
   return useMutation(mutationOptions, queryClient);
 };
 
-export type putPostsIdResponse200 = {
-  data: PutPostsId200;
+export type putPostsPublicIdResponse200 = {
+  data: PutPostsPublicId200;
   status: 200;
 };
 
-export type putPostsIdResponse400 = {
+export type putPostsPublicIdResponse400 = {
   data: ErrorResponse;
   status: 400;
 };
 
-export type putPostsIdResponse401 = {
-  data: PutPostsId401;
+export type putPostsPublicIdResponse401 = {
+  data: PutPostsPublicId401;
   status: 401;
 };
 
-export type putPostsIdResponse403 = {
-  data: PutPostsId403;
+export type putPostsPublicIdResponse403 = {
+  data: PutPostsPublicId403;
   status: 403;
 };
 
-export type putPostsIdResponse404 = {
-  data: PutPostsId404;
+export type putPostsPublicIdResponse404 = {
+  data: PutPostsPublicId404;
   status: 404;
 };
 
-export type putPostsIdResponse500 = {
-  data: PutPostsId500;
+export type putPostsPublicIdResponse500 = {
+  data: PutPostsPublicId500;
   status: 500;
 };
 
-export type putPostsIdResponseComposite =
-  | putPostsIdResponse200
-  | putPostsIdResponse400
-  | putPostsIdResponse401
-  | putPostsIdResponse403
-  | putPostsIdResponse404
-  | putPostsIdResponse500;
+export type putPostsPublicIdResponseComposite =
+  | putPostsPublicIdResponse200
+  | putPostsPublicIdResponse400
+  | putPostsPublicIdResponse401
+  | putPostsPublicIdResponse403
+  | putPostsPublicIdResponse404
+  | putPostsPublicIdResponse500;
 
-export type putPostsIdResponse = putPostsIdResponseComposite & {
+export type putPostsPublicIdResponse = putPostsPublicIdResponseComposite & {
   headers: Headers;
 };
 
-export const getPutPostsIdUrl = (id: number) => {
-  return `/posts/${id}`;
+export const getPutPostsPublicIdUrl = (publicId: string) => {
+  return `/posts/${publicId}`;
 };
 
-export const putPostsId = async (
-  id: number,
-  putPostsIdBody: PutPostsIdBody,
+export const putPostsPublicId = async (
+  publicId: string,
+  putPostsPublicIdBody: PutPostsPublicIdBody,
   options?: RequestInit,
-): Promise<putPostsIdResponse> => {
-  return customFetch<putPostsIdResponse>(getPutPostsIdUrl(id), {
-    ...options,
-    method: "PUT",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(putPostsIdBody),
-  });
+): Promise<putPostsPublicIdResponse> => {
+  return customFetch<putPostsPublicIdResponse>(
+    getPutPostsPublicIdUrl(publicId),
+    {
+      ...options,
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(putPostsPublicIdBody),
+    },
+  );
 };
 
-export const getPutPostsIdMutationOptions = <
+export const getPutPostsPublicIdMutationOptions = <
   TError =
     | ErrorResponse
-    | PutPostsId401
-    | PutPostsId403
-    | PutPostsId404
-    | PutPostsId500,
+    | PutPostsPublicId401
+    | PutPostsPublicId403
+    | PutPostsPublicId404
+    | PutPostsPublicId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof putPostsId>>,
+    Awaited<ReturnType<typeof putPostsPublicId>>,
     TError,
-    { id: number; data: PutPostsIdBody },
+    { publicId: string; data: PutPostsPublicIdBody },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof putPostsId>>,
+  Awaited<ReturnType<typeof putPostsPublicId>>,
   TError,
-  { id: number; data: PutPostsIdBody },
+  { publicId: string; data: PutPostsPublicIdBody },
   TContext
 > => {
-  const mutationKey = ["putPostsId"];
+  const mutationKey = ["putPostsPublicId"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -807,137 +810,141 @@ export const getPutPostsIdMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof putPostsId>>,
-    { id: number; data: PutPostsIdBody }
+    Awaited<ReturnType<typeof putPostsPublicId>>,
+    { publicId: string; data: PutPostsPublicIdBody }
   > = (props) => {
-    const { id, data } = props ?? {};
+    const { publicId, data } = props ?? {};
 
-    return putPostsId(id, data, requestOptions);
+    return putPostsPublicId(publicId, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PutPostsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof putPostsId>>
+export type PutPostsPublicIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putPostsPublicId>>
 >;
-export type PutPostsIdMutationBody = PutPostsIdBody;
-export type PutPostsIdMutationError =
+export type PutPostsPublicIdMutationBody = PutPostsPublicIdBody;
+export type PutPostsPublicIdMutationError =
   | ErrorResponse
-  | PutPostsId401
-  | PutPostsId403
-  | PutPostsId404
-  | PutPostsId500;
+  | PutPostsPublicId401
+  | PutPostsPublicId403
+  | PutPostsPublicId404
+  | PutPostsPublicId500;
 
-export const usePutPostsId = <
+export const usePutPostsPublicId = <
   TError =
     | ErrorResponse
-    | PutPostsId401
-    | PutPostsId403
-    | PutPostsId404
-    | PutPostsId500,
+    | PutPostsPublicId401
+    | PutPostsPublicId403
+    | PutPostsPublicId404
+    | PutPostsPublicId500,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof putPostsId>>,
+      Awaited<ReturnType<typeof putPostsPublicId>>,
       TError,
-      { id: number; data: PutPostsIdBody },
+      { publicId: string; data: PutPostsPublicIdBody },
       TContext
     >;
     request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof putPostsId>>,
+  Awaited<ReturnType<typeof putPostsPublicId>>,
   TError,
-  { id: number; data: PutPostsIdBody },
+  { publicId: string; data: PutPostsPublicIdBody },
   TContext
 > => {
-  const mutationOptions = getPutPostsIdMutationOptions(options);
+  const mutationOptions = getPutPostsPublicIdMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
 
-export type deletePostsIdResponse200 = {
+export type deletePostsPublicIdResponse200 = {
   data: null;
   status: 200;
 };
 
-export type deletePostsIdResponse400 = {
+export type deletePostsPublicIdResponse400 = {
   data: ErrorResponse;
   status: 400;
 };
 
-export type deletePostsIdResponse401 = {
-  data: DeletePostsId401;
+export type deletePostsPublicIdResponse401 = {
+  data: DeletePostsPublicId401;
   status: 401;
 };
 
-export type deletePostsIdResponse403 = {
-  data: DeletePostsId403;
+export type deletePostsPublicIdResponse403 = {
+  data: DeletePostsPublicId403;
   status: 403;
 };
 
-export type deletePostsIdResponse404 = {
-  data: DeletePostsId404;
+export type deletePostsPublicIdResponse404 = {
+  data: DeletePostsPublicId404;
   status: 404;
 };
 
-export type deletePostsIdResponse500 = {
-  data: DeletePostsId500;
+export type deletePostsPublicIdResponse500 = {
+  data: DeletePostsPublicId500;
   status: 500;
 };
 
-export type deletePostsIdResponseComposite =
-  | deletePostsIdResponse200
-  | deletePostsIdResponse400
-  | deletePostsIdResponse401
-  | deletePostsIdResponse403
-  | deletePostsIdResponse404
-  | deletePostsIdResponse500;
+export type deletePostsPublicIdResponseComposite =
+  | deletePostsPublicIdResponse200
+  | deletePostsPublicIdResponse400
+  | deletePostsPublicIdResponse401
+  | deletePostsPublicIdResponse403
+  | deletePostsPublicIdResponse404
+  | deletePostsPublicIdResponse500;
 
-export type deletePostsIdResponse = deletePostsIdResponseComposite & {
-  headers: Headers;
+export type deletePostsPublicIdResponse =
+  deletePostsPublicIdResponseComposite & {
+    headers: Headers;
+  };
+
+export const getDeletePostsPublicIdUrl = (publicId: string) => {
+  return `/posts/${publicId}`;
 };
 
-export const getDeletePostsIdUrl = (id: number) => {
-  return `/posts/${id}`;
-};
-
-export const deletePostsId = async (
-  id: number,
+export const deletePostsPublicId = async (
+  publicId: string,
   options?: RequestInit,
-): Promise<deletePostsIdResponse> => {
-  return customFetch<deletePostsIdResponse>(getDeletePostsIdUrl(id), {
-    ...options,
-    method: "DELETE",
-  });
+): Promise<deletePostsPublicIdResponse> => {
+  return customFetch<deletePostsPublicIdResponse>(
+    getDeletePostsPublicIdUrl(publicId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
 };
 
-export const getDeletePostsIdMutationOptions = <
+export const getDeletePostsPublicIdMutationOptions = <
   TError =
     | ErrorResponse
-    | DeletePostsId401
-    | DeletePostsId403
-    | DeletePostsId404
-    | DeletePostsId500,
+    | DeletePostsPublicId401
+    | DeletePostsPublicId403
+    | DeletePostsPublicId404
+    | DeletePostsPublicId500,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deletePostsId>>,
+    Awaited<ReturnType<typeof deletePostsPublicId>>,
     TError,
-    { id: number },
+    { publicId: string },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof deletePostsId>>,
+  Awaited<ReturnType<typeof deletePostsPublicId>>,
   TError,
-  { id: number },
+  { publicId: string },
   TContext
 > => {
-  const mutationKey = ["deletePostsId"];
+  const mutationKey = ["deletePostsPublicId"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -947,54 +954,54 @@ export const getDeletePostsIdMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deletePostsId>>,
-    { id: number }
+    Awaited<ReturnType<typeof deletePostsPublicId>>,
+    { publicId: string }
   > = (props) => {
-    const { id } = props ?? {};
+    const { publicId } = props ?? {};
 
-    return deletePostsId(id, requestOptions);
+    return deletePostsPublicId(publicId, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type DeletePostsIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deletePostsId>>
+export type DeletePostsPublicIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deletePostsPublicId>>
 >;
 
-export type DeletePostsIdMutationError =
+export type DeletePostsPublicIdMutationError =
   | ErrorResponse
-  | DeletePostsId401
-  | DeletePostsId403
-  | DeletePostsId404
-  | DeletePostsId500;
+  | DeletePostsPublicId401
+  | DeletePostsPublicId403
+  | DeletePostsPublicId404
+  | DeletePostsPublicId500;
 
-export const useDeletePostsId = <
+export const useDeletePostsPublicId = <
   TError =
     | ErrorResponse
-    | DeletePostsId401
-    | DeletePostsId403
-    | DeletePostsId404
-    | DeletePostsId500,
+    | DeletePostsPublicId401
+    | DeletePostsPublicId403
+    | DeletePostsPublicId404
+    | DeletePostsPublicId500,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deletePostsId>>,
+      Awaited<ReturnType<typeof deletePostsPublicId>>,
       TError,
-      { id: number },
+      { publicId: string },
       TContext
     >;
     request?: SecondParameter<typeof customFetch>;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof deletePostsId>>,
+  Awaited<ReturnType<typeof deletePostsPublicId>>,
   TError,
-  { id: number },
+  { publicId: string },
   TContext
 > => {
-  const mutationOptions = getDeletePostsIdMutationOptions(options);
+  const mutationOptions = getDeletePostsPublicIdMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };

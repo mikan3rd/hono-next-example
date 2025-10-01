@@ -57,7 +57,7 @@ export const postPostRoute = createRoute({
 export const updatePostRoute = createRoute({
   tags: ["posts"],
   method: "put",
-  path: "/{id}",
+  path: "/{public_id}",
   security: [{ bearerAuth: [] }],
   request: {
     params: updatePostParamsSchema,
@@ -85,7 +85,7 @@ export const updatePostRoute = createRoute({
 export const deletePostRoute = createRoute({
   tags: ["posts"],
   method: "delete",
-  path: "/{id}",
+  path: "/{public_id}",
   security: [{ bearerAuth: [] }],
   request: {
     params: deletePostParamsSchema,

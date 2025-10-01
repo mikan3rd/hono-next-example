@@ -580,19 +580,15 @@
         }
       }
     },
-    "/posts/{id}": {
+    "/posts/{public_id}": {
       "put": {
         "tags": ["posts"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "exclusiveMinimum": true
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "required": true,
-            "name": "id",
+            "name": "public_id",
             "in": "path"
           }
         ],
@@ -779,13 +775,9 @@
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "exclusiveMinimum": true
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "required": true,
-            "name": "id",
+            "name": "public_id",
             "in": "path"
           }
         ],

@@ -54,13 +54,16 @@ const routes = postApp
   })
 
   .openapi(updatePostRoute, async (c) => {
-    const { id } = c.req.valid("param");
+    const { public_id } = c.req.valid("param");
     const { content } = c.req.valid("json");
     const user = c.get("user");
 
     const post = await db.transaction(async (tx) => {
       const target = (
-        await tx.select().from(postsTable).where(eq(postsTable.id, id))
+        await tx
+          .select()
+          .from(postsTable)
+          .where(eq(postsTable.public_id, public_id))
       )[0];
 
       if (target === undefined) {
@@ -78,7 +81,7 @@ const routes = postApp
       const results = await tx
         .update(postsTable)
         .set({ content })
-        .where(eq(postsTable.id, id))
+        .where(eq(postsTable.public_id, public_id))
         .returning();
 
       const result = results[0];
@@ -100,12 +103,15 @@ const routes = postApp
   })
 
   .openapi(deletePostRoute, async (c) => {
-    const { id } = c.req.valid("param");
+    const { public_id } = c.req.valid("param");
     const user = c.get("user");
 
     await db.transaction(async (tx) => {
       const target = (
-        await tx.select().from(postsTable).where(eq(postsTable.id, id))
+        await tx
+          .select()
+          .from(postsTable)
+          .where(eq(postsTable.public_id, public_id))
       )[0];
 
       if (target === undefined) {
@@ -120,7 +126,7 @@ const routes = postApp
         });
       }
 
-      await tx.delete(postsTable).where(eq(postsTable.id, id));
+      await tx.delete(postsTable).where(eq(postsTable.public_id, public_id));
     });
 
     return c.json(null, 200);

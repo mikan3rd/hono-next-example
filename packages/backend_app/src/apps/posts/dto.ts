@@ -59,7 +59,7 @@ export const postPostResponseSchema = z.object({
 });
 
 export const updatePostParamsSchema = z.object({
-  id: z.coerce.number().int().positive(),
+  public_id: z.uuid(),
 });
 
 export const updatePostRequestSchema = createUpdateSchema(postsTable, {

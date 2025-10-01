@@ -150,13 +150,13 @@ describe("postsApp", () => {
   });
 
   describe("updatePostRoute", () => {
-    let id: string;
+    let public_id: string;
     let content: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$put(
+      testClient(app).posts[":public_id"].$put(
         {
-          param: { id: id.toString() },
+          param: { public_id },
           json: { content },
         },
         { headers },
@@ -164,7 +164,7 @@ describe("postsApp", () => {
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
-        id = Number(1).toString();
+        public_id = faker.string.uuid();
         content = "test2";
       });
 
@@ -192,7 +192,7 @@ describe("postsApp", () => {
         beforeEach(async () => {
           await db
             .insert(postsTable)
-            .values({ user_id: user.id, content: "test" });
+            .values({ public_id, user_id: user.id, content: "test" });
         });
 
         it("should return 200 Response", async () => {
@@ -219,7 +219,7 @@ describe("postsApp", () => {
         beforeEach(async () => {
           await db
             .insert(postsTable)
-            .values({ user_id: anotherUser.id, content: "test" });
+            .values({ public_id, user_id: anotherUser.id, content: "test" });
         });
 
         it("should return 403 Response", async () => {
@@ -231,7 +231,7 @@ describe("postsApp", () => {
 
     describe("when required fields are not provided", () => {
       beforeEach(() => {
-        id = Number(1).toString();
+        public_id = faker.string.uuid();
         content = "";
       });
 
@@ -243,7 +243,7 @@ describe("postsApp", () => {
 
     describe("when id is not a number", () => {
       beforeEach(() => {
-        id = "test";
+        public_id = faker.string.uuid();
       });
 
       it("should return 400 Response", async () => {
@@ -254,14 +254,17 @@ describe("postsApp", () => {
   });
 
   describe("deletePostRoute", () => {
-    let id: string;
+    let public_id: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$delete({ param: { id } }, { headers });
+      testClient(app).posts[":public_id"].$delete(
+        { param: { public_id } },
+        { headers },
+      );
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
-        id = Number(1).toString();
+        public_id = faker.string.uuid();
       });
 
       describe("when Authorization header is not provided", () => {
@@ -288,7 +291,7 @@ describe("postsApp", () => {
         beforeEach(async () => {
           await db
             .insert(postsTable)
-            .values({ user_id: user.id, content: "test" });
+            .values({ public_id, user_id: user.id, content: "test" });
         });
 
         it("should return 200 Response", async () => {
@@ -304,7 +307,7 @@ describe("postsApp", () => {
         beforeEach(async () => {
           await db
             .insert(postsTable)
-            .values({ user_id: anotherUser.id, content: "test" });
+            .values({ public_id, user_id: anotherUser.id, content: "test" });
         });
 
         it("should return 403 Response", async () => {
@@ -314,9 +317,9 @@ describe("postsApp", () => {
       });
     });
 
-    describe("when id is not a number", () => {
+    describe("when public_id is not a uuid", () => {
       beforeEach(() => {
-        id = "test";
+        public_id = faker.string.alphanumeric(36);
       });
 
       it("should return 400 Response", async () => {
