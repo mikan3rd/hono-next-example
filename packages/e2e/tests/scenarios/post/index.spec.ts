@@ -39,8 +39,13 @@ test("post page", async ({ page }, testInfo) => {
     await expect(signUpDialogBtn).toBeVisible();
 
     await signUpDialogBtn.click();
-    await expect(signUpBtn).toBeVisible();
+
+    const displayNameInput = page.getByLabel("Your Name");
+    await expect(displayNameInput).toBeVisible();
     await takeSnapshot(page, testInfo);
+
+    await displayNameInput.fill("Test User");
+    await expect(signUpBtn).toBeEnabled();
 
     await signUpBtn.click();
     await expect(signUpBtn).not.toBeVisible();
