@@ -55,8 +55,8 @@ test("post page", async ({ page }, testInfo) => {
   const firstPostContent = `This is first post content`;
   const secondPostContent = `This is second post content`;
 
-  const firstPostCard = page.getByTestId("PostCard-1");
-  const secondPostCard = page.getByTestId("PostCard-2");
+  const firstPostCard = page.getByTestId("PostCard").first();
+  const secondPostCard = page.getByTestId("PostCard").nth(1);
 
   await test.step("create posts", async () => {
     const createTextArea = page.getByPlaceholder(
