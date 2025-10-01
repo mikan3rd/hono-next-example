@@ -79,12 +79,12 @@ export const PostCard = ({ post }: PostCardProps) => {
       <div className="p-6">
         <div
           data-testid="PostCard-header"
-          className="flex items-start justify-between mb-4"
+          className="flex items-start justify-between gap-2 mb-4"
         >
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-            ID: {post.public_id}
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 min-w-0 flex-1">
+            <span className="truncate">{post.public_id}</span>
           </span>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <div className="text-xs text-gray-400">
               {isUpdated ? "Updated" : "New"}
             </div>

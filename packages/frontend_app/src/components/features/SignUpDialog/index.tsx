@@ -33,11 +33,6 @@ export const SignUpDialog = () => {
     startLoadingTransition(async () => {
       e.preventDefault();
 
-      if (!displayName.trim()) {
-        toast.error("Display name is required");
-        return;
-      }
-
       const result = await supabase.auth.signInAnonymously();
       if (result.error) {
         toast.error(result.error.message);
