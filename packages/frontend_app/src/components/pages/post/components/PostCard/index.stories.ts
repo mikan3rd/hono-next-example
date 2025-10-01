@@ -12,12 +12,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 type Props = ComponentProps<typeof PostCard>;
-const postId: Props["post"]["id"] = 1;
+const postId: Props["post"]["public_id"] =
+  "123e4567-e89b-12d3-a456-426614174000";
 const postContent: Props["post"]["content"] = "Test post content";
 const createMockPost = (
   overrides: Partial<Props["post"]> = {},
 ): Props["post"] => ({
-  id: postId,
+  public_id: postId,
   content: postContent,
   created_at: "2025-01-01T00:00:00.000Z",
   updated_at: "2025-01-01T00:00:00.000Z",
