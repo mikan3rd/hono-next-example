@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { waitFor } from "storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 import {
   __debugListeners,
   __triggerAuthStateChange,
@@ -19,19 +19,39 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  play: async () => {
-    // TODO: 共通化
-    await waitFor(
-      async () => {
-        const listenerCount = __debugListeners.count;
-        if (listenerCount === 0) {
-          throw new Error("No listeners registered yet");
-        }
-      },
-      { timeout: 5000 },
-    );
+// TODO: 共通化
+const waitForAuthStateChange = async () => {
+  await waitFor(
+    async () => {
+      const listenerCount = __debugListeners.count;
+      if (listenerCount === 0) {
+        throw new Error("No listeners registered yet");
+      }
+    },
+    { timeout: 5000 },
+  );
+};
 
+const waitForLoggedOut = async (canvas: ReturnType<typeof within>) => {
+  await waitFor(async () => {
+    await expect(canvas.getByText("Sign Up Dialog")).toBeInTheDocument();
+  });
+};
+
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitForAuthStateChange();
     __triggerAuthStateChange("SIGNED_OUT", null);
+    await waitForLoggedOut(canvas);
+  },
+};
+
+export const NoPosts: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitForAuthStateChange();
+    __triggerAuthStateChange("SIGNED_OUT", null);
+    await waitForLoggedOut(canvas);
   },
 };
