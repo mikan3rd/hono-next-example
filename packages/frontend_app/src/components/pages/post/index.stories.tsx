@@ -12,14 +12,15 @@ const meta = {
 } satisfies Meta<typeof PostIndex>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   play: async () => {
+    // TODO: 共通化
     await waitFor(
       async () => {
         const listenerCount = __debugListeners.count;
-        console.info("Checking listeners count:", listenerCount);
         if (listenerCount === 0) {
           throw new Error("No listeners registered yet");
         }
