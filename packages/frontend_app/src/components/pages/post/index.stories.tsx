@@ -6,7 +6,10 @@ import {
   __triggerAuthStateChange,
   mockSession,
 } from "#src/supabase/client";
-import { getGetPostsMockHandler } from "../../../client/index.msw";
+import {
+  getGetPostsMockHandler,
+  getGetPostsResponseMock,
+} from "../../../client/index.msw";
 import { PostIndex } from ".";
 
 const meta = {
@@ -74,6 +77,31 @@ export const NoPosts: Story = {
     const canvas = within(canvasElement);
     await waitForAuthStateChange();
     await waitForLoggedOut(canvas);
+  },
+};
+
+export const OnePost: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        getGetPostsMockHandler({
+          posts: [
+            (() => {
+              const post = getGetPostsResponseMock().posts[0];
+              if (!post) {
+                throw new Error("Post not found");
+              }
+              return post;
+            })(),
+          ],
+        }),
+      ],
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitForAuthStateChange();
+    await waitForLoggedIn(canvas);
   },
 };
 
