@@ -5,6 +5,7 @@ import {
   __debugListeners,
   __triggerAuthStateChange,
 } from "#src/supabase/client";
+import { getGetPostsMockHandler } from "../../../client/index.msw";
 import { PostIndex } from ".";
 
 const meta = {
@@ -48,6 +49,11 @@ export const Default: Story = {
 };
 
 export const NoPosts: Story = {
+  parameters: {
+    msw: {
+      handlers: [getGetPostsMockHandler({ posts: [] })],
+    },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitForAuthStateChange();
