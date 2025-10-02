@@ -57,9 +57,11 @@ export const PostIndex = () => {
         {posts.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-6">
             {posts.map((post) => (
-              <PostCard key={post.public_id} post={post} />
+              <div key={post.public_id} className="min-w-0">
+                <PostCard post={post} />
+              </div>
             ))}
           </div>
         )}

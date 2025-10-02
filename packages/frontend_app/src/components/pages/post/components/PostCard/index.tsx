@@ -81,7 +81,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           data-testid="PostCard-header"
           className="flex items-start justify-between gap-2 mb-4 min-w-0"
         >
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 w-0 flex-1 min-w-0 max-w-full md:flex-none md:w-auto md:max-w-fit">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 w-0 flex-1 min-w-0 max-w-full md:max-w-xs lg:max-w-sm">
             <span data-testid="PostCard-publicId" className="truncate">
               {post.public_id}
             </span>
