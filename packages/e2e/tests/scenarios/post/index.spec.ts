@@ -2,7 +2,10 @@ import { expect, takeSnapshot, test } from "@chromatic-com/playwright";
 import { env } from "../../env";
 
 test.use({
-  ignoreSelectors: [`[data-testid="PostCard-date"]`],
+  ignoreSelectors: [
+    `[data-testid="PostCard-publicId"]`,
+    `[data-testid="PostCard-date"]`,
+  ],
 });
 
 test.beforeEach(async () => {
@@ -52,71 +55,72 @@ test("post page", async ({ page }, testInfo) => {
     await expect(signUpDialogBtn).not.toBeVisible();
   });
 
-  const firstPostContent = `This is first post content`;
-  const secondPostContent = `This is second post content`;
+  const createTextArea = page.getByPlaceholder(
+    "Write your post content here...",
+  );
+  const createPostButton = page.getByRole("button", { name: "Create Post" });
 
+  const firstPostContent = `This is first post content`;
+
+  const postCards = page.getByTestId("PostCard");
   const firstPostCard = page.getByTestId("PostCard").first();
-  const secondPostCard = page.getByTestId("PostCard").nth(1);
 
   await test.step("create posts", async () => {
-    const createTextArea = page.getByPlaceholder(
-      "Write your post content here...",
-    );
-    const createPostButton = page.getByRole("button", { name: "Create Post" });
+    await createTextArea.fill(firstPostContent);
+    await createPostButton.click();
 
-    await test.step("create first post", async () => {
-      await createTextArea.fill(firstPostContent);
-      await createPostButton.click();
-      await expect(createTextArea).toHaveValue("");
-
-      await expect(firstPostCard).toBeVisible();
-      await takeSnapshot(page, testInfo);
-    });
-
-    await test.step("create second post", async () => {
-      await createTextArea.fill(secondPostContent);
-      await createPostButton.click();
-      await expect(createTextArea).toHaveValue("");
-
-      await expect(secondPostCard).toBeVisible();
-      await takeSnapshot(page, testInfo);
-    });
+    await expect(firstPostCard).toBeVisible();
+    await takeSnapshot(page, testInfo);
   });
 
   await test.step("update post", async () => {
     const editTextArea = firstPostCard.getByRole("textbox");
     const updatedPostContent = `This is updated post content`;
+    const editButton = firstPostCard.getByRole("button", { name: "Edit" });
 
-    await test.step("check first post edit button", async () => {
-      await firstPostCard.getByRole("button", { name: "Edit" }).click();
+    await test.step("check post edit button", async () => {
+      await editButton.click();
       await expect(editTextArea).toBeVisible();
       await takeSnapshot(page, testInfo);
     });
 
-    await test.step("update first post", async () => {
+    await test.step("cancel update post", async () => {
+      await firstPostCard
+        .getByRole("textbox")
+        .fill("This is not updated post content");
+      await firstPostCard.getByRole("button", { name: "Cancel" }).click();
       await expect(firstPostCard.getByText(firstPostContent)).toBeVisible();
+    });
+
+    await test.step("update post successfully", async () => {
       await expect(firstPostCard.getByText("New")).toBeVisible();
 
+      await editButton.click();
       await editTextArea.fill(updatedPostContent);
       await firstPostCard.getByRole("button", { name: "Save" }).click();
       await expect(firstPostCard.getByText(updatedPostContent)).toBeVisible();
       await expect(firstPostCard.getByText("New")).not.toBeVisible();
       await takeSnapshot(page, testInfo);
     });
-
-    await test.step("cancel update second post", async () => {
-      await secondPostCard.getByRole("button", { name: "Edit" }).click();
-      await secondPostCard
-        .getByRole("textbox")
-        .fill("This is not updated post content");
-      await secondPostCard.getByRole("button", { name: "Cancel" }).click();
-      await expect(secondPostCard.getByText(secondPostContent)).toBeVisible();
-    });
   });
 
   await test.step("delete second post", async () => {
-    await secondPostCard.getByRole("button", { name: "Delete" }).click();
-    await expect(secondPostCard).not.toBeVisible();
+    await firstPostCard.getByRole("button", { name: "Delete" }).click();
+    await expect(firstPostCard).not.toBeVisible();
+    await takeSnapshot(page, testInfo);
+  });
+
+  await test.step("create multiple posts", async () => {
+    const contents = Array.from(
+      { length: 3 },
+      (_, index) => `This is No.${index + 1} post content`,
+    );
+    for (const content of contents) {
+      await expect(createTextArea).toHaveValue("");
+      await createTextArea.fill(content);
+      await createPostButton.click();
+    }
+    await expect(postCards).toHaveCount(contents.length);
     await takeSnapshot(page, testInfo);
   });
 
