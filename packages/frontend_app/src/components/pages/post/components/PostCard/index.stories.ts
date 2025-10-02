@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { ComponentProps } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -12,8 +13,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 type Props = ComponentProps<typeof PostCard>;
-const postId: Props["post"]["public_id"] =
-  "123e4567-e89b-12d3-a456-426614174000";
+const postId: Props["post"]["public_id"] = faker.string.uuid();
 const postContent: Props["post"]["content"] = "Test post content";
 const createMockPost = (
   overrides: Partial<Props["post"]> = {},
@@ -26,7 +26,7 @@ const createMockPost = (
 });
 
 const getPostCardElements = (canvas: ReturnType<typeof within>) => {
-  const postCard = canvas.getByTestId(`PostCard-${postId}`);
+  const postCard = canvas.getByTestId(`PostCard`);
   const header = within(postCard).getByTestId("PostCard-header");
   const content = within(postCard).getByTestId("PostCard-content");
   const date = within(postCard).getByTestId("PostCard-date");
