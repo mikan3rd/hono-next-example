@@ -105,6 +105,29 @@ export const OnePost: Story = {
   },
 };
 
+export const IsEditing: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitForAuthStateChange();
+    await waitForLoggedIn(canvas);
+
+    const postCards = await canvas.findAllByTestId("PostCard");
+    const postCard = postCards[0];
+
+    if (!postCard) {
+      throw new Error("Post card not found");
+    }
+
+    const header = within(postCard).getByTestId("PostCard-header");
+    const editButton = within(header).getByRole("button", { name: "Edit" });
+    await userEvent.click(editButton);
+
+    const content = within(postCard).getByTestId("PostCard-content");
+    const textarea = within(content).getByRole("textbox");
+    await expect(textarea).toBeVisible();
+  },
+};
+
 export const WithSignUpDialog: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
