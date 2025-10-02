@@ -140,7 +140,9 @@ export const WithSignUpDialog: Story = {
     await userEvent.click(signUpDialogBtn);
 
     const signUpBtn = await screen.findByRole("button", { name: "Sign Up" });
-    await expect(signUpBtn).toBeVisible();
+    await waitFor(async () => {
+      await expect(signUpBtn).toBeVisible();
+    });
   },
 };
 
@@ -156,6 +158,8 @@ export const WithSignOutDialog: Story = {
     await userEvent.click(signOutDialogBtn);
 
     const signOutBtn = await screen.findByRole("button", { name: "Sign Out" });
-    await expect(signOutBtn).toBeVisible();
+    await waitFor(async () => {
+      await expect(signOutBtn).toBeVisible();
+    });
   },
 };
