@@ -20,7 +20,10 @@ describe("postsApp", () => {
     const _user = (
       await db
         .insert(usersTable)
-        .values({ supabase_uid: supabaseUid })
+        .values({
+          supabase_uid: supabaseUid,
+          display_name: faker.person.fullName(),
+        })
         .returning()
     )[0];
     if (!_user) throw new Error("user is not found");
@@ -29,7 +32,10 @@ describe("postsApp", () => {
     const _anotherUser = (
       await db
         .insert(usersTable)
-        .values({ supabase_uid: faker.string.uuid() })
+        .values({
+          supabase_uid: faker.string.uuid(),
+          display_name: faker.person.fullName(),
+        })
         .returning()
     )[0];
     if (!_anotherUser) throw new Error("another user is not found");
@@ -68,21 +74,23 @@ describe("postsApp", () => {
         const json = await res.json();
         expect(json.posts).toHaveLength(2);
         expect(json.posts[0]).toEqual({
-          id: 2,
+          public_id: expect.any(String),
           content: "test2",
           created_at: expect.any(String),
           updated_at: expect.any(String),
           user: {
-            id: user.id,
+            public_id: user.public_id,
+            display_name: user.display_name,
           },
         });
         expect(json.posts[1]).toEqual({
-          id: 1,
+          public_id: expect.any(String),
           content: "test",
           created_at: expect.any(String),
           updated_at: expect.any(String),
           user: {
-            id: user.id,
+            public_id: user.public_id,
+            display_name: user.display_name,
           },
         });
       });
@@ -142,13 +150,13 @@ describe("postsApp", () => {
   });
 
   describe("updatePostRoute", () => {
-    let id: string;
+    let public_id: string;
     let content: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$put(
+      testClient(app).posts[":public_id"].$put(
         {
-          param: { id: id.toString() },
+          param: { public_id },
           json: { content },
         },
         { headers },
@@ -156,7 +164,7 @@ describe("postsApp", () => {
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
-        id = Number(1).toString();
+        public_id = faker.string.uuid();
         content = "test2";
       });
 
@@ -184,7 +192,7 @@ describe("postsApp", () => {
         beforeEach(async () => {
           await db
             .insert(postsTable)
-            .values({ user_id: user.id, content: "test" });
+            .values({ public_id, user_id: user.id, content: "test" });
         });
 
         it("should return 200 Response", async () => {
@@ -211,7 +219,7 @@ describe("postsApp", () => {
         beforeEach(async () => {
           await db
             .insert(postsTable)
-            .values({ user_id: anotherUser.id, content: "test" });
+            .values({ public_id, user_id: anotherUser.id, content: "test" });
         });
 
         it("should return 403 Response", async () => {
@@ -223,7 +231,7 @@ describe("postsApp", () => {
 
     describe("when required fields are not provided", () => {
       beforeEach(() => {
-        id = Number(1).toString();
+        public_id = faker.string.uuid();
         content = "";
       });
 
@@ -235,7 +243,7 @@ describe("postsApp", () => {
 
     describe("when id is not a number", () => {
       beforeEach(() => {
-        id = "test";
+        public_id = faker.string.uuid();
       });
 
       it("should return 400 Response", async () => {
@@ -246,14 +254,17 @@ describe("postsApp", () => {
   });
 
   describe("deletePostRoute", () => {
-    let id: string;
+    let public_id: string;
 
     const subject = () =>
-      testClient(app).posts[":id"].$delete({ param: { id } }, { headers });
+      testClient(app).posts[":public_id"].$delete(
+        { param: { public_id } },
+        { headers },
+      );
 
     describe("when required fields are provided", () => {
       beforeEach(() => {
-        id = Number(1).toString();
+        public_id = faker.string.uuid();
       });
 
       describe("when Authorization header is not provided", () => {
@@ -280,7 +291,7 @@ describe("postsApp", () => {
         beforeEach(async () => {
           await db
             .insert(postsTable)
-            .values({ user_id: user.id, content: "test" });
+            .values({ public_id, user_id: user.id, content: "test" });
         });
 
         it("should return 200 Response", async () => {
@@ -296,7 +307,7 @@ describe("postsApp", () => {
         beforeEach(async () => {
           await db
             .insert(postsTable)
-            .values({ user_id: anotherUser.id, content: "test" });
+            .values({ public_id, user_id: anotherUser.id, content: "test" });
         });
 
         it("should return 403 Response", async () => {
@@ -306,9 +317,9 @@ describe("postsApp", () => {
       });
     });
 
-    describe("when id is not a number", () => {
+    describe("when public_id is not a uuid", () => {
       beforeEach(() => {
-        id = "test";
+        public_id = faker.string.alphanumeric(36);
       });
 
       it("should return 400 Response", async () => {

@@ -12,12 +12,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 type Props = ComponentProps<typeof PostCard>;
-const postId: Props["post"]["id"] = 1;
+const postId: Props["post"]["public_id"] =
+  "b07530d9-82c0-4662-aed0-fcc4539ebd29";
 const postContent: Props["post"]["content"] = "Test post content";
 const createMockPost = (
   overrides: Partial<Props["post"]> = {},
 ): Props["post"] => ({
-  id: postId,
+  public_id: postId,
   content: postContent,
   created_at: "2025-01-01T00:00:00.000Z",
   updated_at: "2025-01-01T00:00:00.000Z",
@@ -25,7 +26,7 @@ const createMockPost = (
 });
 
 const getPostCardElements = (canvas: ReturnType<typeof within>) => {
-  const postCard = canvas.getByTestId(`PostCard-${postId}`);
+  const postCard = canvas.getByTestId(`PostCard`);
   const header = within(postCard).getByTestId("PostCard-header");
   const content = within(postCard).getByTestId("PostCard-content");
   const date = within(postCard).getByTestId("PostCard-date");

@@ -35,9 +35,15 @@ export const SignUpSuccess: Story = {
     });
     await userEvent.click(signUpDialogBtn);
 
+    const displayNameInput = await screen.findByLabelText("Your Name");
+    await waitFor(async () => {
+      await expect(displayNameInput).toBeVisible();
+    });
+    await userEvent.type(displayNameInput, "Test User");
+
     const signUpBtn = await screen.findByRole("button", { name: "Sign Up" });
     await waitFor(async () => {
-      await expect(signUpBtn).toBeVisible();
+      await expect(signUpBtn).toBeEnabled();
     });
 
     await userEvent.click(signUpBtn);

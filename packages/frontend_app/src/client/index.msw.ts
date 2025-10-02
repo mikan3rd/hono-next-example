@@ -8,7 +8,11 @@ import { faker } from "@faker-js/faker";
 
 import { HttpResponse, http } from "msw";
 
-import type { GetPosts200, PostPosts200, PutPostsId200 } from "./index.schemas";
+import type {
+  GetPosts200,
+  PostPosts200,
+  PutPostsPublicId200,
+} from "./index.schemas";
 
 export const getGetPostsResponseMock = (
   overrideResponse: Partial<GetPosts200> = {},
@@ -18,22 +22,15 @@ export const getGetPostsResponseMock = (
     (_, i) => i + 1,
   ).map(() => ({
     ...{
-      id: faker.number.int({
-        min: -2147483648,
-        max: 2147483647,
-        multipleOf: undefined,
-      }),
+      public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
       updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     },
     ...{
       user: {
-        id: faker.number.int({
-          min: -2147483648,
-          max: 2147483647,
-          multipleOf: undefined,
-        }),
+        public_id: faker.string.uuid(),
+        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
       },
     },
   })),
@@ -45,49 +42,35 @@ export const getPostPostsResponseMock = (
 ): PostPosts200 => ({
   post: {
     ...{
-      id: faker.number.int({
-        min: -2147483648,
-        max: 2147483647,
-        multipleOf: undefined,
-      }),
+      public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
       updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     },
     ...{
       user: {
-        id: faker.number.int({
-          min: -2147483648,
-          max: 2147483647,
-          multipleOf: undefined,
-        }),
+        public_id: faker.string.uuid(),
+        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
       },
     },
   },
   ...overrideResponse,
 });
 
-export const getPutPostsIdResponseMock = (
-  overrideResponse: Partial<PutPostsId200> = {},
-): PutPostsId200 => ({
+export const getPutPostsPublicIdResponseMock = (
+  overrideResponse: Partial<PutPostsPublicId200> = {},
+): PutPostsPublicId200 => ({
   post: {
     ...{
-      id: faker.number.int({
-        min: -2147483648,
-        max: 2147483647,
-        multipleOf: undefined,
-      }),
+      public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
       updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     },
     ...{
       user: {
-        id: faker.number.int({
-          min: -2147483648,
-          max: 2147483647,
-          multipleOf: undefined,
-        }),
+        public_id: faker.string.uuid(),
+        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
       },
     },
   },
@@ -151,35 +134,35 @@ export const getPostPostsMockHandler = (
   });
 };
 
-export const getPutPostsIdMockHandler = (
+export const getPutPostsPublicIdMockHandler = (
   overrideResponse?:
-    | PutPostsId200
+    | PutPostsPublicId200
     | ((
         info: Parameters<Parameters<typeof http.put>[1]>[0],
-      ) => Promise<PutPostsId200> | PutPostsId200),
+      ) => Promise<PutPostsPublicId200> | PutPostsPublicId200),
 ) => {
-  return http.put("*/posts/:id", async (info) => {
+  return http.put("*/posts/:publicId", async (info) => {
     return new HttpResponse(
       JSON.stringify(
         overrideResponse !== undefined
           ? typeof overrideResponse === "function"
             ? await overrideResponse(info)
             : overrideResponse
-          : getPutPostsIdResponseMock(),
+          : getPutPostsPublicIdResponseMock(),
       ),
       { status: 200, headers: { "Content-Type": "application/json" } },
     );
   });
 };
 
-export const getDeletePostsIdMockHandler = (
+export const getDeletePostsPublicIdMockHandler = (
   overrideResponse?:
     | null
     | ((
         info: Parameters<Parameters<typeof http.delete>[1]>[0],
       ) => Promise<null> | null),
 ) => {
-  return http.delete("*/posts/:id", async (info) => {
+  return http.delete("*/posts/:publicId", async (info) => {
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
     }
@@ -190,6 +173,6 @@ export const getBackendAppOpenAPIMock = () => [
   getPostUserSignupMockHandler(),
   getGetPostsMockHandler(),
   getPostPostsMockHandler(),
-  getPutPostsIdMockHandler(),
-  getDeletePostsIdMockHandler(),
+  getPutPostsPublicIdMockHandler(),
+  getDeletePostsPublicIdMockHandler(),
 ];

@@ -10,7 +10,7 @@ import { RootProviders } from "../src/lib/RootProviders";
  * See https://github.com/mswjs/msw-storybook-addon#configuring-msw
  * to learn how to customize it
  */
-initialize({}, getBackendAppOpenAPIMock());
+initialize({ onUnhandledRequest: "bypass" }, getBackendAppOpenAPIMock());
 
 const preview: Preview = {
   parameters: {

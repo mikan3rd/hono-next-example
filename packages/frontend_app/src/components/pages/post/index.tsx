@@ -25,7 +25,7 @@ export const PostIndex = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <div className="mb-6 flex justify-between items-start">
             <div>
@@ -57,9 +57,14 @@ export const PostIndex = () => {
         {posts.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <div
+                key={post.public_id}
+                className="min-w-0 w-full max-w-[90%] sm:max-w-full"
+              >
+                <PostCard post={post} />
+              </div>
             ))}
           </div>
         )}

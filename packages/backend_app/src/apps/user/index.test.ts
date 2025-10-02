@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "bun:test";
+import { faker } from "@faker-js/faker";
 import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
@@ -11,9 +12,12 @@ describe("userApp", () => {
     let headers: ClientRequestOptions["headers"];
 
     const subject = () =>
-      testClient(app).user.signup.$post(undefined, {
-        headers,
-      });
+      testClient(app).user.signup.$post(
+        { json: { display_name: faker.person.fullName() } },
+        {
+          headers,
+        },
+      );
 
     beforeEach(() => {
       headers = { Authorization: "Bearer test" };
@@ -44,7 +48,10 @@ describe("userApp", () => {
 
     describe("when supabase_uid is already registered", () => {
       beforeEach(async () => {
-        await db.insert(usersTable).values({ supabase_uid: supabaseUid });
+        await db.insert(usersTable).values({
+          supabase_uid: supabaseUid,
+          display_name: faker.person.fullName(),
+        });
       });
 
       it("should return 200 Response", async () => {

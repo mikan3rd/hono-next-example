@@ -9,10 +9,10 @@ import {
 import { userSelectSchema } from "../user/dto";
 
 const postSelectSchema = createSelectSchema(postsTable, {
-  id: (schema) =>
+  public_id: (schema) =>
     schema.openapi({
-      description: "Primary ID",
-      example: 1,
+      description: "Public ID",
+      example: "123e4567-e89b-12d3-a456-426614174000",
     }),
   content: (schema) =>
     schema.openapi({
@@ -59,7 +59,7 @@ export const postPostResponseSchema = z.object({
 });
 
 export const updatePostParamsSchema = z.object({
-  id: z.coerce.number().int().positive(),
+  public_id: z.uuid(),
 });
 
 export const updatePostRequestSchema = createUpdateSchema(postsTable, {

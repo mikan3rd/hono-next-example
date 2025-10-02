@@ -5,14 +5,14 @@ import { useState } from "react";
 import { toast } from "sonner";
 import {
   getGetPostsQueryKey,
-  useDeletePostsId,
-  usePutPostsId,
+  useDeletePostsPublicId,
+  usePutPostsPublicId,
 } from "../../../../../client";
 import { formatDate } from "../../../../../lib/dateUtils";
 import { Button } from "../../../../ui/Button";
 
 type Post = {
-  id: number;
+  public_id: string;
   content: string;
   created_at: string;
   updated_at: string;
@@ -29,8 +29,8 @@ export const PostCard = ({ post }: PostCardProps) => {
   const [editContent, setEditContent] = useState(post.content);
   const isUpdated = post.updated_at !== post.created_at;
 
-  const updatePostMutation = usePutPostsId();
-  const deletePostMutation = useDeletePostsId();
+  const updatePostMutation = usePutPostsPublicId();
+  const deletePostMutation = useDeletePostsPublicId();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -46,7 +46,7 @@ export const PostCard = ({ post }: PostCardProps) => {
     const trimmedContent = editContent.trim();
     if (!trimmedContent) return;
     const result = await updatePostMutation.mutateAsync({
-      id: post.id,
+      publicId: post.public_id,
       data: { content: trimmedContent },
     });
 
@@ -60,7 +60,9 @@ export const PostCard = ({ post }: PostCardProps) => {
   };
 
   const handleDelete = async () => {
-    const result = await deletePostMutation.mutateAsync({ id: post.id });
+    const result = await deletePostMutation.mutateAsync({
+      publicId: post.public_id,
+    });
     if (result.status !== 200) {
       toast.error(`Failed to delete post: ${result.data.message}`);
       return;
@@ -71,18 +73,20 @@ export const PostCard = ({ post }: PostCardProps) => {
 
   return (
     <div
-      data-testid={`PostCard-${post.id}`}
+      data-testid="PostCard"
       className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 overflow-hidden"
     >
       <div className="p-6">
         <div
           data-testid="PostCard-header"
-          className="flex items-start justify-between mb-4"
+          className="flex flex-wrap items-start justify-between gap-2 mb-4 min-w-0"
         >
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-            ID: {post.id}
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 w-0 flex-1 min-w-0 max-w-[65%] sm:max-w-[60%] md:flex-none md:w-auto md:max-w-fit">
+            <span data-testid="PostCard-publicId" className="truncate">
+              {post.public_id}
+            </span>
           </span>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <div className="text-xs text-gray-400">
               {isUpdated ? "Updated" : "New"}
             </div>

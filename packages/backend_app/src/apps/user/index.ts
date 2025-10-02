@@ -10,9 +10,10 @@ userApp.use(jwtMiddleware);
 
 const routes = userApp.openapi(signupRoute, async (c) => {
   const { sub: supabase_uid } = c.get("jwtClaims");
+  const { display_name } = await c.req.valid("json");
   await db
     .insert(usersTable)
-    .values({ supabase_uid })
+    .values({ supabase_uid, display_name })
     .onConflictDoNothing({ target: usersTable.supabase_uid });
   return c.json(null, 200);
 });

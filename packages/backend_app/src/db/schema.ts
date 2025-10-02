@@ -1,9 +1,10 @@
 import { relations } from "drizzle-orm";
 import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-const primaryKeys = {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-};
+const primaryKeys = () => ({
+  id: integer().primaryKey().generatedAlwaysAsIdentity(), // TODO: uuid v7 を検討
+  public_id: uuid().unique().notNull().defaultRandom(), // uuid v4
+});
 
 const timestamps = {
   created_at: timestamp().defaultNow().notNull(),
@@ -14,13 +15,14 @@ const timestamps = {
 };
 
 export const usersTable = pgTable("users", {
-  ...primaryKeys,
+  ...primaryKeys(),
   supabase_uid: uuid().unique().notNull(),
+  display_name: text().notNull(),
   ...timestamps,
 });
 
 export const postsTable = pgTable("posts", {
-  ...primaryKeys,
+  ...primaryKeys(),
   user_id: integer()
     .notNull()
     .references(() => usersTable.id),

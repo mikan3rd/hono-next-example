@@ -1,12 +1,12 @@
 import type { postsTable, usersTable } from "./schema";
 
-// TODO: displayName などを追加したい
 export const userPublicFieldDefs = [
-  "id",
+  "public_id",
+  "display_name",
 ] satisfies (keyof typeof usersTable.$inferSelect)[];
 
 export const postPublicFieldDefs = [
-  "id",
+  "public_id",
   "content",
   "created_at",
   "updated_at",

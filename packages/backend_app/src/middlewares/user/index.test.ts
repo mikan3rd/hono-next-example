@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "bun:test";
+import { faker } from "@faker-js/faker";
 import { Hono } from "hono";
 import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
@@ -31,7 +32,10 @@ describe("userMiddleware", () => {
 
   describe("when user is found", () => {
     beforeEach(async () => {
-      await db.insert(usersTable).values({ supabase_uid: supabaseUid });
+      await db.insert(usersTable).values({
+        supabase_uid: supabaseUid,
+        display_name: faker.person.fullName(),
+      });
     });
 
     it("should return 200 Response", async () => {

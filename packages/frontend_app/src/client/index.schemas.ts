@@ -23,20 +23,13 @@ export interface ErrorResponse {
 }
 
 export interface User {
-  /**
-   * @minimum -2147483648
-   * @maximum 2147483647
-   */
-  id: number;
+  public_id: string;
+  display_name: string;
 }
 
 export interface Post {
-  /**
-   * Primary ID
-   * @minimum -2147483648
-   * @maximum 2147483647
-   */
-  id: number;
+  /** Public ID */
+  public_id: string;
   /** The content of the post */
   content: string;
   /** The date and time the post was created */
@@ -44,6 +37,14 @@ export interface Post {
   /** The date and time the post was updated */
   updated_at: string;
 }
+
+export type PostUserSignupBody = {
+  /**
+   * The display name of the user
+   * @minLength 1
+   */
+  display_name: string;
+};
 
 export type PostUserSignup401AllOfCode =
   (typeof PostUserSignup401AllOfCode)[keyof typeof PostUserSignup401AllOfCode];
@@ -313,7 +314,7 @@ export type PostPosts500AllOf = {
 
 export type PostPosts500 = ErrorResponse & PostPosts500AllOf;
 
-export type PutPostsIdBody = {
+export type PutPostsPublicIdBody = {
   /**
    * The content of the post
    * @minLength 1
@@ -321,21 +322,21 @@ export type PutPostsIdBody = {
   content?: string;
 };
 
-export type PutPostsId200PostAllOf = {
+export type PutPostsPublicId200PostAllOf = {
   user: User;
 };
 
-export type PutPostsId200Post = Post & PutPostsId200PostAllOf;
+export type PutPostsPublicId200Post = Post & PutPostsPublicId200PostAllOf;
 
-export type PutPostsId200 = {
-  post: PutPostsId200Post;
+export type PutPostsPublicId200 = {
+  post: PutPostsPublicId200Post;
 };
 
-export type PutPostsId401AllOfCode =
-  (typeof PutPostsId401AllOfCode)[keyof typeof PutPostsId401AllOfCode];
+export type PutPostsPublicId401AllOfCode =
+  (typeof PutPostsPublicId401AllOfCode)[keyof typeof PutPostsPublicId401AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PutPostsId401AllOfCode = {
+export const PutPostsPublicId401AllOfCode = {
   Bad_Request: "Bad Request",
   Unauthorized: "Unauthorized",
   Forbidden: "Forbidden",
@@ -343,19 +344,19 @@ export const PutPostsId401AllOfCode = {
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export type PutPostsId401AllOf = {
-  code?: PutPostsId401AllOfCode;
+export type PutPostsPublicId401AllOf = {
+  code?: PutPostsPublicId401AllOfCode;
   /** explanation */
   message?: string;
 };
 
-export type PutPostsId401 = ErrorResponse & PutPostsId401AllOf;
+export type PutPostsPublicId401 = ErrorResponse & PutPostsPublicId401AllOf;
 
-export type PutPostsId403AllOfCode =
-  (typeof PutPostsId403AllOfCode)[keyof typeof PutPostsId403AllOfCode];
+export type PutPostsPublicId403AllOfCode =
+  (typeof PutPostsPublicId403AllOfCode)[keyof typeof PutPostsPublicId403AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PutPostsId403AllOfCode = {
+export const PutPostsPublicId403AllOfCode = {
   Bad_Request: "Bad Request",
   Unauthorized: "Unauthorized",
   Forbidden: "Forbidden",
@@ -363,19 +364,19 @@ export const PutPostsId403AllOfCode = {
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export type PutPostsId403AllOf = {
-  code?: PutPostsId403AllOfCode;
+export type PutPostsPublicId403AllOf = {
+  code?: PutPostsPublicId403AllOfCode;
   /** explanation */
   message?: string;
 };
 
-export type PutPostsId403 = ErrorResponse & PutPostsId403AllOf;
+export type PutPostsPublicId403 = ErrorResponse & PutPostsPublicId403AllOf;
 
-export type PutPostsId404AllOfCode =
-  (typeof PutPostsId404AllOfCode)[keyof typeof PutPostsId404AllOfCode];
+export type PutPostsPublicId404AllOfCode =
+  (typeof PutPostsPublicId404AllOfCode)[keyof typeof PutPostsPublicId404AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PutPostsId404AllOfCode = {
+export const PutPostsPublicId404AllOfCode = {
   Bad_Request: "Bad Request",
   Unauthorized: "Unauthorized",
   Forbidden: "Forbidden",
@@ -383,19 +384,19 @@ export const PutPostsId404AllOfCode = {
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export type PutPostsId404AllOf = {
-  code?: PutPostsId404AllOfCode;
+export type PutPostsPublicId404AllOf = {
+  code?: PutPostsPublicId404AllOfCode;
   /** explanation */
   message?: string;
 };
 
-export type PutPostsId404 = ErrorResponse & PutPostsId404AllOf;
+export type PutPostsPublicId404 = ErrorResponse & PutPostsPublicId404AllOf;
 
-export type PutPostsId500AllOfCode =
-  (typeof PutPostsId500AllOfCode)[keyof typeof PutPostsId500AllOfCode];
+export type PutPostsPublicId500AllOfCode =
+  (typeof PutPostsPublicId500AllOfCode)[keyof typeof PutPostsPublicId500AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PutPostsId500AllOfCode = {
+export const PutPostsPublicId500AllOfCode = {
   Bad_Request: "Bad Request",
   Unauthorized: "Unauthorized",
   Forbidden: "Forbidden",
@@ -403,19 +404,19 @@ export const PutPostsId500AllOfCode = {
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export type PutPostsId500AllOf = {
-  code?: PutPostsId500AllOfCode;
+export type PutPostsPublicId500AllOf = {
+  code?: PutPostsPublicId500AllOfCode;
   /** explanation */
   message?: string;
 };
 
-export type PutPostsId500 = ErrorResponse & PutPostsId500AllOf;
+export type PutPostsPublicId500 = ErrorResponse & PutPostsPublicId500AllOf;
 
-export type DeletePostsId401AllOfCode =
-  (typeof DeletePostsId401AllOfCode)[keyof typeof DeletePostsId401AllOfCode];
+export type DeletePostsPublicId401AllOfCode =
+  (typeof DeletePostsPublicId401AllOfCode)[keyof typeof DeletePostsPublicId401AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeletePostsId401AllOfCode = {
+export const DeletePostsPublicId401AllOfCode = {
   Bad_Request: "Bad Request",
   Unauthorized: "Unauthorized",
   Forbidden: "Forbidden",
@@ -423,19 +424,20 @@ export const DeletePostsId401AllOfCode = {
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export type DeletePostsId401AllOf = {
-  code?: DeletePostsId401AllOfCode;
+export type DeletePostsPublicId401AllOf = {
+  code?: DeletePostsPublicId401AllOfCode;
   /** explanation */
   message?: string;
 };
 
-export type DeletePostsId401 = ErrorResponse & DeletePostsId401AllOf;
+export type DeletePostsPublicId401 = ErrorResponse &
+  DeletePostsPublicId401AllOf;
 
-export type DeletePostsId403AllOfCode =
-  (typeof DeletePostsId403AllOfCode)[keyof typeof DeletePostsId403AllOfCode];
+export type DeletePostsPublicId403AllOfCode =
+  (typeof DeletePostsPublicId403AllOfCode)[keyof typeof DeletePostsPublicId403AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeletePostsId403AllOfCode = {
+export const DeletePostsPublicId403AllOfCode = {
   Bad_Request: "Bad Request",
   Unauthorized: "Unauthorized",
   Forbidden: "Forbidden",
@@ -443,19 +445,20 @@ export const DeletePostsId403AllOfCode = {
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export type DeletePostsId403AllOf = {
-  code?: DeletePostsId403AllOfCode;
+export type DeletePostsPublicId403AllOf = {
+  code?: DeletePostsPublicId403AllOfCode;
   /** explanation */
   message?: string;
 };
 
-export type DeletePostsId403 = ErrorResponse & DeletePostsId403AllOf;
+export type DeletePostsPublicId403 = ErrorResponse &
+  DeletePostsPublicId403AllOf;
 
-export type DeletePostsId404AllOfCode =
-  (typeof DeletePostsId404AllOfCode)[keyof typeof DeletePostsId404AllOfCode];
+export type DeletePostsPublicId404AllOfCode =
+  (typeof DeletePostsPublicId404AllOfCode)[keyof typeof DeletePostsPublicId404AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeletePostsId404AllOfCode = {
+export const DeletePostsPublicId404AllOfCode = {
   Bad_Request: "Bad Request",
   Unauthorized: "Unauthorized",
   Forbidden: "Forbidden",
@@ -463,19 +466,20 @@ export const DeletePostsId404AllOfCode = {
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export type DeletePostsId404AllOf = {
-  code?: DeletePostsId404AllOfCode;
+export type DeletePostsPublicId404AllOf = {
+  code?: DeletePostsPublicId404AllOfCode;
   /** explanation */
   message?: string;
 };
 
-export type DeletePostsId404 = ErrorResponse & DeletePostsId404AllOf;
+export type DeletePostsPublicId404 = ErrorResponse &
+  DeletePostsPublicId404AllOf;
 
-export type DeletePostsId500AllOfCode =
-  (typeof DeletePostsId500AllOfCode)[keyof typeof DeletePostsId500AllOfCode];
+export type DeletePostsPublicId500AllOfCode =
+  (typeof DeletePostsPublicId500AllOfCode)[keyof typeof DeletePostsPublicId500AllOfCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeletePostsId500AllOfCode = {
+export const DeletePostsPublicId500AllOfCode = {
   Bad_Request: "Bad Request",
   Unauthorized: "Unauthorized",
   Forbidden: "Forbidden",
@@ -483,10 +487,11 @@ export const DeletePostsId500AllOfCode = {
   Internal_Server_Error: "Internal Server Error",
 } as const;
 
-export type DeletePostsId500AllOf = {
-  code?: DeletePostsId500AllOfCode;
+export type DeletePostsPublicId500AllOf = {
+  code?: DeletePostsPublicId500AllOfCode;
   /** explanation */
   message?: string;
 };
 
-export type DeletePostsId500 = ErrorResponse & DeletePostsId500AllOf;
+export type DeletePostsPublicId500 = ErrorResponse &
+  DeletePostsPublicId500AllOf;

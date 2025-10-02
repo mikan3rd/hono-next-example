@@ -31,24 +31,20 @@
       "user": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647
-          }
+          "public_id": { "type": "string", "format": "uuid" },
+          "display_name": { "type": "string" }
         },
-        "required": ["id"],
+        "required": ["public_id", "display_name"],
         "additionalProperties": false
       },
       "post": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
-            "description": "Primary ID",
-            "example": 1
+          "public_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Public ID",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
           },
           "content": {
             "type": "string",
@@ -68,7 +64,7 @@
             "example": "2025-01-01T00:00:00Z"
           }
         },
-        "required": ["id", "content", "created_at", "updated_at"],
+        "required": ["public_id", "content", "created_at", "updated_at"],
         "additionalProperties": false
       }
     },
@@ -79,6 +75,24 @@
       "post": {
         "tags": ["user"],
         "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "display_name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The display name of the user",
+                    "example": "John Doe"
+                  }
+                },
+                "required": ["display_name"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": { "description": "signup" },
           "400": {
@@ -566,19 +580,15 @@
         }
       }
     },
-    "/posts/{id}": {
+    "/posts/{public_id}": {
       "put": {
         "tags": ["posts"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "exclusiveMinimum": true
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "required": true,
-            "name": "id",
+            "name": "public_id",
             "in": "path"
           }
         ],
@@ -765,13 +775,9 @@
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "exclusiveMinimum": true
-            },
+            "schema": { "type": "string", "format": "uuid" },
             "required": true,
-            "name": "id",
+            "name": "public_id",
             "in": "path"
           }
         ],
