@@ -4,6 +4,7 @@ import { expect, waitFor, within } from "storybook/test";
 import {
   __debugListeners,
   __triggerAuthStateChange,
+  mockSession,
 } from "#src/supabase/client";
 import { getGetPostsMockHandler } from "../../../client/index.msw";
 import { PostIndex } from ".";
@@ -40,11 +41,26 @@ const waitForLoggedOut = async (canvas: ReturnType<typeof within>) => {
   });
 };
 
+const waitForLoggedIn = async (canvas: ReturnType<typeof within>) => {
+  __triggerAuthStateChange("SIGNED_IN", mockSession);
+  await waitFor(async () => {
+    await expect(canvas.getByText("Sign Out Dialog")).toBeInTheDocument();
+  });
+};
+
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitForAuthStateChange();
     await waitForLoggedOut(canvas);
+  },
+};
+
+export const WithLoggedIn: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitForAuthStateChange();
+    await waitForLoggedIn(canvas);
   },
 };
 
