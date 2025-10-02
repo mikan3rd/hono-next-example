@@ -2,6 +2,7 @@ import "../src/app/globals.css";
 
 import type { Preview } from "@storybook/nextjs-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
+import { MINIMAL_VIEWPORTS } from "storybook/viewport";
 import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
 import { RootProviders } from "../src/lib/RootProviders";
 
@@ -30,6 +31,13 @@ const preview: Preview = {
 
     nextjs: {
       appDirectory: true,
+    },
+
+    chromatic: {
+      modes: {
+        desktop: MINIMAL_VIEWPORTS.desktop,
+        mobile: MINIMAL_VIEWPORTS.mobile1,
+      },
     },
   },
 
