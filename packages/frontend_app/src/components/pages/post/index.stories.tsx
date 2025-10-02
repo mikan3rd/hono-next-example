@@ -92,3 +92,19 @@ export const WithSignUpDialog: Story = {
     await expect(signUpBtn).toBeVisible();
   },
 };
+
+export const WithSignOutDialog: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitForAuthStateChange();
+    await waitForLoggedIn(canvas);
+
+    const signOutDialogBtn = await canvas.findByRole("button", {
+      name: "Sign Out Dialog",
+    });
+    await userEvent.click(signOutDialogBtn);
+
+    const signOutBtn = await screen.findByRole("button", { name: "Sign Out" });
+    await expect(signOutBtn).toBeVisible();
+  },
+};
