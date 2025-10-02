@@ -1,4 +1,4 @@
-import { expect, takeSnapshot, test } from "@chromatic-com/playwright";
+import { expect, test } from "@chromatic-com/playwright";
 import { env } from "../../env";
 
 test.use({
@@ -16,7 +16,7 @@ test.beforeEach(async () => {
   console.info("backend app initialized");
 });
 
-test("post page", async ({ page }, testInfo) => {
+test("post page", async ({ page }) => {
   // TODO: 共通化
   page.on("console", (msg) => {
     if (msg.type() === "error") {
@@ -30,7 +30,6 @@ test("post page", async ({ page }, testInfo) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/posts: 0/);
     await expect(page.getByText("No posts yet")).toBeVisible();
-    await takeSnapshot(page, testInfo);
   });
 
   await test.step("login", async () => {
@@ -45,7 +44,6 @@ test("post page", async ({ page }, testInfo) => {
 
     const displayNameInput = page.getByLabel("Your Name");
     await expect(displayNameInput).toBeVisible();
-    await takeSnapshot(page, testInfo);
 
     await displayNameInput.fill("Test User");
     await expect(signUpBtn).toBeEnabled();
@@ -70,7 +68,6 @@ test("post page", async ({ page }, testInfo) => {
     await createPostButton.click();
 
     await expect(firstPostCard).toBeVisible();
-    await takeSnapshot(page, testInfo);
   });
 
   await test.step("update post", async () => {
@@ -81,7 +78,6 @@ test("post page", async ({ page }, testInfo) => {
     await test.step("check post edit button", async () => {
       await editButton.click();
       await expect(editTextArea).toBeVisible();
-      await takeSnapshot(page, testInfo);
     });
 
     await test.step("cancel update post", async () => {
@@ -100,14 +96,12 @@ test("post page", async ({ page }, testInfo) => {
       await firstPostCard.getByRole("button", { name: "Save" }).click();
       await expect(firstPostCard.getByText(updatedPostContent)).toBeVisible();
       await expect(firstPostCard.getByText("New")).not.toBeVisible();
-      await takeSnapshot(page, testInfo);
     });
   });
 
   await test.step("delete second post", async () => {
     await firstPostCard.getByRole("button", { name: "Delete" }).click();
     await expect(firstPostCard).not.toBeVisible();
-    await takeSnapshot(page, testInfo);
   });
 
   await test.step("create multiple posts", async () => {
@@ -121,7 +115,6 @@ test("post page", async ({ page }, testInfo) => {
       await createPostButton.click();
     }
     await expect(postCards).toHaveCount(contents.length);
-    await takeSnapshot(page, testInfo);
   });
 
   await test.step("logout", async () => {
@@ -134,7 +127,6 @@ test("post page", async ({ page }, testInfo) => {
 
     await logoutDialogBtn.click();
     await expect(logoutBtn).toBeVisible();
-    await takeSnapshot(page, testInfo);
 
     await logoutBtn.click();
     await expect(logoutBtn).not.toBeVisible();
