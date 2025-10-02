@@ -35,8 +35,8 @@ const preview: Preview = {
 
     chromatic: {
       modes: {
-        desktop: MINIMAL_VIEWPORTS.desktop,
-        mobile: MINIMAL_VIEWPORTS.mobile1,
+        desktop: { viewport: MINIMAL_VIEWPORTS.desktop.styles },
+        mobile: { viewport: MINIMAL_VIEWPORTS.mobile1.styles },
       },
     },
   },
