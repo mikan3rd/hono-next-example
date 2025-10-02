@@ -33,6 +33,7 @@ const waitForAuthStateChange = async () => {
 };
 
 const waitForLoggedOut = async (canvas: ReturnType<typeof within>) => {
+  __triggerAuthStateChange("SIGNED_OUT", null);
   await waitFor(async () => {
     await expect(canvas.getByText("Sign Up Dialog")).toBeInTheDocument();
   });
@@ -42,7 +43,6 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitForAuthStateChange();
-    __triggerAuthStateChange("SIGNED_OUT", null);
     await waitForLoggedOut(canvas);
   },
 };
@@ -51,7 +51,6 @@ export const NoPosts: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitForAuthStateChange();
-    __triggerAuthStateChange("SIGNED_OUT", null);
     await waitForLoggedOut(canvas);
   },
 };
