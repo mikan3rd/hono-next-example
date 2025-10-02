@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { expect, waitFor, within } from "storybook/test";
+import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import {
   __debugListeners,
   __triggerAuthStateChange,
@@ -74,5 +74,21 @@ export const NoPosts: Story = {
     const canvas = within(canvasElement);
     await waitForAuthStateChange();
     await waitForLoggedOut(canvas);
+  },
+};
+
+export const WithSignUpDialog: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitForAuthStateChange();
+    await waitForLoggedOut(canvas);
+
+    const signUpDialogBtn = await canvas.findByRole("button", {
+      name: "Sign Up Dialog",
+    });
+    await userEvent.click(signUpDialogBtn);
+
+    const signUpBtn = await screen.findByRole("button", { name: "Sign Up" });
+    await expect(signUpBtn).toBeVisible();
   },
 };
