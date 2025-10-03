@@ -2,14 +2,14 @@ import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import {
-  __debugListeners,
-  __triggerAuthStateChange,
-  mockSession,
-} from "#src/supabase/client";
-import {
   getGetPostsMockHandler,
   getGetPostsResponseMock,
 } from "../../../client/index.msw";
+import {
+  __debugListeners,
+  mockSession,
+  triggerAuthStateChange,
+} from "../../../supabase/client/mockFunc";
 import { PostIndex } from ".";
 
 const meta = {
@@ -38,14 +38,14 @@ const waitForAuthStateChange = async () => {
 };
 
 const waitForLoggedOut = async (canvas: ReturnType<typeof within>) => {
-  __triggerAuthStateChange("SIGNED_OUT", null);
+  triggerAuthStateChange("SIGNED_OUT", null);
   await waitFor(async () => {
     await expect(canvas.getByText("Sign Up Dialog")).toBeInTheDocument();
   });
 };
 
 const waitForLoggedIn = async (canvas: ReturnType<typeof within>) => {
-  __triggerAuthStateChange("SIGNED_IN", mockSession);
+  triggerAuthStateChange("SIGNED_IN", mockSession);
   await waitFor(async () => {
     await expect(canvas.getByText("Sign Out Dialog")).toBeInTheDocument();
   });

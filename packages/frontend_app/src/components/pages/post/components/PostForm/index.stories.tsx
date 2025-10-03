@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
+import { useUserContext } from "../../../../../context/UserContext";
 import {
   __debugListeners,
   mockSession,
-  __triggerAuthStateChange as triggerAuthStateChange,
-} from "#src/supabase/client";
-import { useUserContext } from "../../../../../context/UserContext";
+  triggerAuthStateChange,
+} from "../../../../../supabase/client/mockFunc";
 import { PostForm } from ".";
 
 const meta = {
