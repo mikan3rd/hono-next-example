@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import {
@@ -15,9 +14,6 @@ import { PostIndex } from ".";
 const meta = {
   component: PostIndex,
   tags: ["autodocs"],
-  beforeEach: () => {
-    faker.seed(123);
-  },
 } satisfies Meta<typeof PostIndex>;
 
 export default meta;
