@@ -13,7 +13,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 type Props = ComponentProps<typeof PostCard>;
-const postContent: Props["post"]["content"] = "Test post content";
+const postContent: Props["post"]["content"] = faker.lorem.paragraph();
 const createMockPost = (
   overrides: Partial<Props["post"]> = {},
 ): Props["post"] => ({
@@ -23,7 +23,7 @@ const createMockPost = (
   updated_at: "2025-01-01T00:00:00.000Z",
   user: {
     public_id: faker.string.uuid(),
-    display_name: "Test user",
+    display_name: faker.person.fullName(),
   },
   ...overrides,
 });
@@ -80,9 +80,8 @@ export const CreatedPost: Story = {
 
     await expect(header).toBeVisible();
     await expect(
-      within(header).getByTestId("PostCard-displayName"),
-    ).toHaveTextContent(args.post.user.display_name);
-    // Post IDはUI上では非表示
+      within(header).getByText(args.post.user.display_name),
+    ).toBeVisible();
     await verifyPostStatus(header, false);
     await expect(
       within(header).getByRole("button", { name: "Edit" }),
