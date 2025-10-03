@@ -16,6 +16,10 @@ type Post = {
   content: string;
   created_at: string;
   updated_at: string;
+  user: {
+    public_id: string;
+    display_name: string;
+  };
 };
 
 type PostCardProps = {
@@ -81,11 +85,15 @@ export const PostCard = ({ post }: PostCardProps) => {
           data-testid="PostCard-header"
           className="flex flex-wrap items-start justify-between gap-2 mb-4 min-w-0"
         >
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 w-0 flex-1 min-w-0 max-w-[65%] sm:max-w-[60%] md:flex-none md:w-auto md:max-w-fit">
-            <span data-testid="PostCard-publicId" className="truncate">
-              {post.public_id}
-            </span>
-          </span>
+          <div className="min-w-0 max-w-[65%] sm:max-w-[60%] md:max-w-full">
+            <div
+              data-testid="PostCard-displayName"
+              className="text-sm font-medium text-gray-900 truncate"
+              title={post.user.display_name}
+            >
+              {post.user.display_name}
+            </div>
+          </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             <div className="text-xs text-gray-400">
               {isUpdated ? "Updated" : "New"}
