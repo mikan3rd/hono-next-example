@@ -5,6 +5,7 @@ import type {
   Subscription,
   User,
 } from "@supabase/supabase-js";
+import { waitFor } from "storybook/test";
 
 // TODO: 型定義をできるだけ正確にしたい
 const user: User = {
@@ -73,6 +74,18 @@ export const triggerAuthStateChange = (
     console.info("Calling listener", event, nextSession);
     listener(event, nextSession);
   }
+};
+
+export const waitForAuthStateChange = async () => {
+  await waitFor(
+    async () => {
+      const listenerCount = __debugListeners.count;
+      if (listenerCount === 0) {
+        throw new Error("No listeners registered yet");
+      }
+    },
+    { timeout: 5000 },
+  );
 };
 
 export { session as mockSession };

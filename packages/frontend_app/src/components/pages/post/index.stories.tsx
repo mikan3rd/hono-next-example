@@ -5,9 +5,9 @@ import {
   getGetPostsResponseMock,
 } from "../../../client/index.msw";
 import {
-  __debugListeners,
   mockSession,
   triggerAuthStateChange,
+  waitForAuthStateChange,
 } from "../../../supabase/client/mockFunc";
 import { PostIndex } from ".";
 
@@ -19,19 +19,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-// TODO: 共通化
-const waitForAuthStateChange = async () => {
-  await waitFor(
-    async () => {
-      const listenerCount = __debugListeners.count;
-      if (listenerCount === 0) {
-        throw new Error("No listeners registered yet");
-      }
-    },
-    { timeout: 5000 },
-  );
-};
 
 const waitForLoggedOut = async (canvas: ReturnType<typeof within>) => {
   triggerAuthStateChange("SIGNED_OUT", null);
