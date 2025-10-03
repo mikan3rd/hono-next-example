@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
-import {
-  __debugListeners,
-  mockSession,
-  __triggerAuthStateChange as triggerAuthStateChange,
-} from "#src/supabase/client";
 import { useUserContext } from "../../../../../context/UserContext";
+import {
+  mockSession,
+  triggerAuthStateChange,
+  waitForAuthStateChange,
+} from "../../../../../supabase/client/mockFunc";
 import { PostForm } from ".";
 
 const meta = {
@@ -30,17 +30,7 @@ export const Default: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
-    await waitFor(
-      async () => {
-        const listenerCount = __debugListeners.count;
-        console.info("Checking listeners count:", listenerCount);
-        if (listenerCount === 0) {
-          throw new Error("No listeners registered yet");
-        }
-      },
-      { timeout: 5000 },
-    );
-
+    await waitForAuthStateChange();
     triggerAuthStateChange("SIGNED_IN", mockSession);
 
     await waitFor(async () => {
