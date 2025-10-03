@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { ComponentProps } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -12,16 +13,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 type Props = ComponentProps<typeof PostCard>;
-const postId: Props["post"]["public_id"] =
-  "b07530d9-82c0-4662-aed0-fcc4539ebd29";
 const postContent: Props["post"]["content"] = "Test post content";
 const createMockPost = (
   overrides: Partial<Props["post"]> = {},
 ): Props["post"] => ({
-  public_id: postId,
+  public_id: faker.string.uuid(),
   content: postContent,
   created_at: "2025-01-01T00:00:00.000Z",
   updated_at: "2025-01-01T00:00:00.000Z",
+  user: {
+    public_id: faker.string.uuid(),
+    display_name: "Test user",
+  },
   ...overrides,
 });
 
@@ -76,6 +79,10 @@ export const CreatedPost: Story = {
     const { header, content, date } = getPostCardElements(canvas);
 
     await expect(header).toBeVisible();
+    await expect(
+      within(header).getByTestId("PostCard-displayName"),
+    ).toHaveTextContent(args.post.user.display_name);
+    // Post IDはUI上では非表示
     await verifyPostStatus(header, false);
     await expect(
       within(header).getByRole("button", { name: "Edit" }),
