@@ -10,14 +10,19 @@ import {
   useState,
 } from "react";
 import { createClient } from "#src/supabase/client";
+import { useGetUserLogin } from "../../client";
+import type { User } from "../../client/index.schemas";
+
+type SessionValue =
+  | { sessionStatus: "loading"; session: undefined; user: undefined }
+  | { sessionStatus: "loggedOut"; session: null; user: null }
+  | { sessionStatus: "loggedIn"; session: Session; user: User };
 
 type Context = {
-  session: Session | null | undefined;
-  sessionStatus: "loading" | "loggedOut" | "loggedIn";
   isOpenLoginDialog: boolean;
   setIsOpenLoginDialog: (isOpen: boolean) => void;
   checkLoggedIn: () => boolean;
-};
+} & SessionValue;
 
 const UserContext = createContext<Context | undefined>(undefined);
 
@@ -26,45 +31,54 @@ type Props = {
 };
 
 export const UserContextProvider = ({ children }: Props) => {
-  // TODO: DBのuserもここで取得するようにしたい
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   const [isOpenLoginDialog, setIsOpenLoginDialog] = useState(false);
+
+  const { data, refetch } = useGetUserLogin({ query: { enabled: false } });
+
+  const user = useMemo(() => {
+    if (data === undefined) return undefined;
+    if (data.status !== 200) return null;
+    return data.data;
+  }, [data]);
 
   useEffect(() => {
     const supabase = createClient();
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
+      if (nextSession !== null) {
+        await refetch();
+      }
       setSession(nextSession);
     });
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [refetch]);
 
-  const sessionStatus = useMemo(() => {
-    if (session === undefined) {
-      return "loading";
+  const sessionValue: SessionValue = useMemo(() => {
+    if (session === undefined || user === undefined) {
+      return { sessionStatus: "loading", session: undefined, user: undefined };
     }
-    if (session === null) {
-      return "loggedOut";
+    if (session === null || user === null) {
+      return { sessionStatus: "loggedOut", session: null, user: null };
     }
-    return "loggedIn";
-  }, [session]);
+    return { sessionStatus: "loggedIn", session, user };
+  }, [session, user]);
 
   const checkLoggedIn = useCallback((): boolean => {
-    if (sessionStatus !== "loggedIn") {
+    if (sessionValue.sessionStatus !== "loggedIn") {
       setIsOpenLoginDialog(true);
       return false;
     }
     return true;
-  }, [sessionStatus]);
+  }, [sessionValue]);
 
   return (
     <UserContext.Provider
       value={{
-        session,
-        sessionStatus,
+        ...sessionValue,
         isOpenLoginDialog,
         setIsOpenLoginDialog,
         checkLoggedIn,
