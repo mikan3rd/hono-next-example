@@ -102,6 +102,7 @@ jobs:
       - name: docker compose logs
         if: failure()
         run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml logs
+        working-directory: ./docker
 
       # NOTE: npx playwright show-report name-of-my-extracted-playwright-report
       - uses: actions/upload-artifact@v4
