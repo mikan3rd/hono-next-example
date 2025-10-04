@@ -1,6 +1,6 @@
 import { createRoute } from "@hono/zod-openapi";
 import { ErrorResponses } from "../../dto/output/error";
-import { signupRequestSchema } from "./dto";
+import { signupRequestSchema, userSelectSchema } from "./dto";
 
 export const signupRoute = createRoute({
   tags: ["user"],
@@ -19,6 +19,24 @@ export const signupRoute = createRoute({
   responses: {
     200: {
       description: "signup",
+    },
+    ...ErrorResponses,
+  },
+});
+
+export const getCurrentUserRoute = createRoute({
+  tags: ["user"],
+  method: "get",
+  path: "/current",
+  security: [{ bearerAuth: [] }],
+  responses: {
+    200: {
+      description: "get login user",
+      content: {
+        "application/json": {
+          schema: userSelectSchema,
+        },
+      },
     },
     ...ErrorResponses,
   },

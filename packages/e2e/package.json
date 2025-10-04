@@ -5,7 +5,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "biome check . --error-on-warnings",
-    "lint:fix": "biome check . --write",
+    "lint:fix": "biome check . --write --unsafe",
     "e2e:local": "dotenvx run -- npx playwright test",
     "e2e:local:ui": "dotenvx run -- npx playwright test --ui",
     "e2e:docker": "npx playwright test",

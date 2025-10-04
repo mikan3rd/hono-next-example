@@ -6,7 +6,7 @@
     "db:push": "bun run --bun drizzle-kit push",
     "typecheck": "bun run --bun tsgo --noEmit",
     "lint": "bun run --bun biome check . --error-on-warnings",
-    "lint:fix": "bun run lint --write",
+    "lint:fix": "bun run lint --write --unsafe",
     "test:db:push": "bun --env-file=.env.test run --bun drizzle-kit push",
     "test:local": "bun --env-file=.env.test test",
     "test:db:studio": "bun --env-file=.env.test drizzle-kit studio",
