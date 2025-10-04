@@ -6,12 +6,12 @@ import { jwtMiddleware } from "../../middlewares/jwt";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
 import { userSelectSchema } from "./dto";
-import { getCurrentUserRoute, signupRoute } from "./route";
+import { getLoginUserRoute, signupRoute } from "./route";
 
 const userApp = createApp();
 
 userApp.use("/signup", jwtMiddleware);
-userApp.use("/current", userMiddleware);
+userApp.use("/login", userMiddleware);
 
 const routes = userApp
   .openapi(signupRoute, async (c) => {
@@ -24,7 +24,7 @@ const routes = userApp
     return c.json(null, 200);
   })
 
-  .openapi(getCurrentUserRoute, async (c) => {
+  .openapi(getLoginUserRoute, async (c) => {
     const user = c.get("user");
     const publicUser = pick(user, userPublicFieldDefs);
     return c.json(userSelectSchema.parse(publicUser), 200);

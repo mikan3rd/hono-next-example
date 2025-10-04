@@ -24,10 +24,10 @@ export const signupRoute = createRoute({
   },
 });
 
-export const getCurrentUserRoute = createRoute({
+export const getLoginUserRoute = createRoute({
   tags: ["user"],
   method: "get",
-  path: "/current",
+  path: "/login",
   security: [{ bearerAuth: [] }],
   responses: {
     200: {

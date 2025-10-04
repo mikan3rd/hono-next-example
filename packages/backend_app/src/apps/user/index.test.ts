@@ -73,7 +73,7 @@ describe("userApp", () => {
     let user: typeof usersTable.$inferSelect;
 
     const subject = () =>
-      testClient(app).user.current.$get(undefined, { headers });
+      testClient(app).user.login.$get(undefined, { headers });
 
     beforeEach(() => {
       headers = { Authorization: "Bearer test" };

@@ -230,7 +230,7 @@
         }
       }
     },
-    "/user/current": {
+    "/user/login": {
       "get": {
         "tags": ["user"],
         "security": [{ "bearerAuth": [] }],
