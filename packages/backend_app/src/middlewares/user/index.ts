@@ -9,12 +9,9 @@ import { jwtMiddleware } from "../jwt";
 
 const baseUserMiddleware = createMiddleware<HonoEnv>(async (c, next) => {
   const { sub: supabaseUid } = c.get("jwtClaims");
-  const user = (
-    await db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.supabase_uid, supabaseUid))
-  )[0];
+  const user = await db.query.usersTable.findFirst({
+    where: eq(usersTable.supabase_uid, supabaseUid),
+  });
 
   if (!user) {
     return c.json<ErrorResponse>(

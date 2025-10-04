@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useTransition } from "react";
+import { useEffect, useId, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createClient } from "#src/supabase/client";
 import { usePostUserSignup } from "../../../client";
@@ -21,7 +21,12 @@ import { Label } from "../../ui/Label";
 
 export const SignUpDialog = () => {
   const supabase = createClient();
-  const { isOpenLoginDialog, setIsOpenLoginDialog } = useUserContext();
+  const {
+    isOpenLoginDialog,
+    setIsOpenLoginDialog,
+    setEnableAutoLogin,
+    getLoginUser,
+  } = useUserContext();
 
   const signupMutation = usePostUserSignup();
 
@@ -51,11 +56,21 @@ export const SignUpDialog = () => {
         return;
       }
 
+      const isLoggedIn = await getLoginUser();
+      if (!isLoggedIn) {
+        toast.error("Failed to login");
+        return;
+      }
+
       toast.success("Signed up successfully");
       setIsOpenLoginDialog(false);
       setDisplayName("");
     });
   };
+
+  useEffect(() => {
+    setEnableAutoLogin(!loading);
+  }, [loading, setEnableAutoLogin]);
 
   return (
     <Dialog open={isOpenLoginDialog} onOpenChange={setIsOpenLoginDialog}>

@@ -12,7 +12,16 @@ import type {
   GetPosts200,
   PostPosts200,
   PutPostsPublicId200,
+  User,
 } from "./index.schemas";
+
+export const getGetUserLoginResponseMock = (
+  overrideResponse: Partial<User> = {},
+): User => ({
+  public_id: faker.string.uuid(),
+  display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
+  ...overrideResponse,
+});
 
 export const getGetPostsResponseMock = (
   overrideResponse: Partial<GetPosts200> = {},
@@ -89,6 +98,27 @@ export const getPostUserSignupMockHandler = (
       await overrideResponse(info);
     }
     return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getGetUserLoginMockHandler = (
+  overrideResponse?:
+    | User
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<User> | User),
+) => {
+  return http.get("*/user/login", async (info) => {
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetUserLoginResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
   });
 };
 
@@ -171,6 +201,7 @@ export const getDeletePostsPublicIdMockHandler = (
 };
 export const getBackendAppOpenAPIMock = () => [
   getPostUserSignupMockHandler(),
+  getGetUserLoginMockHandler(),
   getGetPostsMockHandler(),
   getPostPostsMockHandler(),
   getPutPostsPublicIdMockHandler(),

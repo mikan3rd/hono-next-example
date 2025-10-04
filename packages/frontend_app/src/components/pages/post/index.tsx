@@ -11,7 +11,7 @@ import { PostCard } from "./components/PostCard";
 import { PostForm } from "./components/PostForm";
 
 export const PostIndex = () => {
-  const { sessionStatus } = useUserContext();
+  const { sessionState } = useUserContext();
 
   const { data } = useGetPostsSuspense();
 
@@ -34,7 +34,7 @@ export const PostIndex = () => {
             </div>
             {/* TODO: SideBar を用意して移植したい */}
             <div className="flex gap-2">
-              {sessionStatus === "loading" && (
+              {sessionState.status === "loading" && (
                 <Button variant="outline">
                   <Loader2Icon className="animate-spin" />
                   Loading
@@ -42,10 +42,14 @@ export const PostIndex = () => {
               )}
 
               {/* FIXME: signupMutation の完了前に session が更新されてしまうため常にマウントする */}
-              <div className={sessionStatus === "loggedOut" ? "" : "hidden"}>
+              <div
+                className={sessionState.status === "loggedOut" ? "" : "hidden"}
+              >
                 <SignUpDialog />
               </div>
-              <div className={sessionStatus === "loggedIn" ? "" : "hidden"}>
+              <div
+                className={sessionState.status === "loggedIn" ? "" : "hidden"}
+              >
                 <LogoutDialog />
               </div>
             </div>
