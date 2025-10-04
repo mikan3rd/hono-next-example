@@ -18,11 +18,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => {
-    const { sessionStatus } = useUserContext();
+    const { sessionState } = useUserContext();
     return (
       <>
         <PostForm />
-        <div className="hidden">{sessionStatus}</div>
+        <div className="hidden">{sessionState.status}</div>
       </>
     );
   },

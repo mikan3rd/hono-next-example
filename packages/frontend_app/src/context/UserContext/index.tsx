@@ -13,16 +13,17 @@ import { createClient } from "#src/supabase/client";
 import { useGetUserLogin } from "../../client";
 import type { User } from "../../client/index.schemas";
 
-type SessionValue =
-  | { sessionStatus: "loading"; session: undefined; user: undefined }
-  | { sessionStatus: "loggedOut"; session: null; user: null }
-  | { sessionStatus: "loggedIn"; session: Session; user: User };
+type SessionState =
+  | { status: "loading"; session: undefined; user: undefined }
+  | { status: "loggedOut"; session: null; user: null }
+  | { status: "loggedIn"; session: Session; user: User };
 
 type Context = {
+  sessionState: SessionState;
   isOpenLoginDialog: boolean;
   setIsOpenLoginDialog: (isOpen: boolean) => void;
   checkLoggedIn: () => boolean;
-} & SessionValue;
+};
 
 const UserContext = createContext<Context | undefined>(undefined);
 
@@ -57,28 +58,28 @@ export const UserContextProvider = ({ children }: Props) => {
     };
   }, [refetch]);
 
-  const sessionValue: SessionValue = useMemo(() => {
+  const sessionState: SessionState = useMemo(() => {
     if (session === undefined || user === undefined) {
-      return { sessionStatus: "loading", session: undefined, user: undefined };
+      return { status: "loading", session: undefined, user: undefined };
     }
     if (session === null || user === null) {
-      return { sessionStatus: "loggedOut", session: null, user: null };
+      return { status: "loggedOut", session: null, user: null };
     }
-    return { sessionStatus: "loggedIn", session, user };
+    return { status: "loggedIn", session, user };
   }, [session, user]);
 
   const checkLoggedIn = useCallback((): boolean => {
-    if (sessionValue.sessionStatus !== "loggedIn") {
+    if (sessionState.status !== "loggedIn") {
       setIsOpenLoginDialog(true);
       return false;
     }
     return true;
-  }, [sessionValue]);
+  }, [sessionState]);
 
   return (
     <UserContext.Provider
       value={{
-        ...sessionValue,
+        sessionState,
         isOpenLoginDialog,
         setIsOpenLoginDialog,
         checkLoggedIn,
