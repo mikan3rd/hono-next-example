@@ -79,29 +79,48 @@ describe("userApp", () => {
       headers = { Authorization: "Bearer test" };
     });
 
-    beforeEach(async () => {
-      const _user = (
-        await db
-          .insert(usersTable)
-          .values({
-            supabase_uid: supabaseUid,
-            display_name: faker.person.fullName(),
-          })
-          .returning()
-      )[0];
+    describe("when user signed up", () => {
+      beforeEach(async () => {
+        const _user = (
+          await db
+            .insert(usersTable)
+            .values({
+              supabase_uid: supabaseUid,
+              display_name: faker.person.fullName(),
+            })
+            .returning()
+        )[0];
 
-      if (!_user) throw new Error("user is not found");
-      user = _user;
+        if (!_user) throw new Error("user is not found");
+        user = _user;
+      });
+      it("should return 200 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(200);
+
+        const resUser = await res.json();
+        expect(resUser).toEqual({
+          public_id: user.public_id,
+          display_name: user.display_name,
+        });
+      });
     });
 
-    it("should return 200 Response", async () => {
-      const res = await subject();
-      expect(res.status).toBe(200);
+    describe("when user is not found", () => {
+      it("should return 401 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(401);
+      });
+    });
 
-      const resUser = await res.json();
-      expect(resUser).toEqual({
-        public_id: user.public_id,
-        display_name: user.display_name,
+    describe("when Authorization header is not provided", () => {
+      beforeEach(() => {
+        headers = undefined;
+      });
+
+      it("should return 401 Response", async () => {
+        const res = await subject();
+        expect(res.status).toBe(401);
       });
     });
   });
