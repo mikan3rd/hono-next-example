@@ -23,6 +23,8 @@ type Context = {
   isOpenLoginDialog: boolean;
   setIsOpenLoginDialog: (isOpen: boolean) => void;
   checkLoggedIn: () => boolean;
+  setEnableAutoLogin: (enable: boolean) => void;
+  getLoginUser: () => Promise<boolean>;
 };
 
 const UserContext = createContext<Context | undefined>(undefined);
@@ -35,7 +37,10 @@ export const UserContextProvider = ({ children }: Props) => {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   const [isOpenLoginDialog, setIsOpenLoginDialog] = useState(false);
 
-  const { data, refetch } = useGetUserLogin({ query: { enabled: false } });
+  const { data, refetch: getUserLogin } = useGetUserLogin({
+    query: { enabled: false },
+  });
+  const [enableAutoLogin, setEnableAutoLogin] = useState(true);
 
   const user = useMemo(() => {
     if (data === undefined) return undefined;
@@ -43,29 +48,46 @@ export const UserContextProvider = ({ children }: Props) => {
     return data.data;
   }, [data]);
 
+  const getLoginUser = useCallback(async () => {
+    const response = await getUserLogin();
+    if (response.data?.status !== 200) {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      return false;
+    }
+    return true;
+  }, [getUserLogin]);
+
   useEffect(() => {
     const supabase = createClient();
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
-      if (nextSession !== null) {
-        await refetch();
+      if (nextSession !== null && enableAutoLogin) {
+        await getLoginUser();
       }
       setSession(nextSession);
     });
     return () => {
       subscription.unsubscribe();
     };
-  }, [refetch]);
+  }, [getLoginUser, enableAutoLogin]);
 
   const sessionState: SessionState = useMemo(() => {
-    if (session === undefined || user === undefined) {
-      return { status: "loading", session: undefined, user: undefined };
+    if (
+      session !== undefined &&
+      session !== null &&
+      user !== undefined &&
+      user !== null
+    ) {
+      return { status: "loggedIn", session, user };
     }
-    if (session === null || user === null) {
+
+    if (session === null) {
       return { status: "loggedOut", session: null, user: null };
     }
-    return { status: "loggedIn", session, user };
+
+    return { status: "loading", session: undefined, user: undefined };
   }, [session, user]);
 
   const checkLoggedIn = useCallback((): boolean => {
@@ -83,6 +105,8 @@ export const UserContextProvider = ({ children }: Props) => {
         isOpenLoginDialog,
         setIsOpenLoginDialog,
         checkLoggedIn,
+        setEnableAutoLogin,
+        getLoginUser,
       }}
     >
       {children}
