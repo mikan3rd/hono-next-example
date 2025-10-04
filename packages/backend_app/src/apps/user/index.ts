@@ -1,8 +1,11 @@
+import { pick } from "es-toolkit";
 import { db } from "../../db";
+import { userPublicFieldDefs } from "../../db/field";
 import { usersTable } from "../../db/schema";
 import { jwtMiddleware } from "../../middlewares/jwt";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
+import { userSelectSchema } from "./dto";
 import { getCurrentUserRoute, signupRoute } from "./route";
 
 const userApp = createApp();
@@ -23,7 +26,8 @@ const routes = userApp
 
   .openapi(getCurrentUserRoute, async (c) => {
     const user = c.get("user");
-    return c.json(user, 200);
+    const publicUser = pick(user, userPublicFieldDefs);
+    return c.json(userSelectSchema.parse(publicUser), 200);
   });
 
 export { routes as userApp };

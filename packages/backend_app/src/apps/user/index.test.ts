@@ -67,4 +67,42 @@ describe("userApp", () => {
       });
     });
   });
+
+  describe("getCurrentUserRoute", () => {
+    let headers: ClientRequestOptions["headers"];
+    let user: typeof usersTable.$inferSelect;
+
+    const subject = () =>
+      testClient(app).user.current.$get(undefined, { headers });
+
+    beforeEach(() => {
+      headers = { Authorization: "Bearer test" };
+    });
+
+    beforeEach(async () => {
+      const _user = (
+        await db
+          .insert(usersTable)
+          .values({
+            supabase_uid: supabaseUid,
+            display_name: faker.person.fullName(),
+          })
+          .returning()
+      )[0];
+
+      if (!_user) throw new Error("user is not found");
+      user = _user;
+    });
+
+    it("should return 200 Response", async () => {
+      const res = await subject();
+      expect(res.status).toBe(200);
+
+      const resUser = await res.json();
+      expect(resUser).toEqual({
+        public_id: user.public_id,
+        display_name: user.display_name,
+      });
+    });
+  });
 });
