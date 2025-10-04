@@ -7,6 +7,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { createClient } from "#src/supabase/client";
@@ -40,7 +41,7 @@ export const UserContextProvider = ({ children }: Props) => {
   const { data, refetch: getUserLogin } = useGetUserLogin({
     query: { enabled: false },
   });
-  const [enableAutoLogin, setEnableAutoLogin] = useState(true);
+  const enableAutoLoginRef = useRef(true);
 
   const user = useMemo(() => {
     if (data === undefined) return undefined;
@@ -63,7 +64,7 @@ export const UserContextProvider = ({ children }: Props) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
-      if (nextSession !== null && enableAutoLogin) {
+      if (nextSession !== null && enableAutoLoginRef.current) {
         await getLoginUser();
       }
       setSession(nextSession);
@@ -71,7 +72,7 @@ export const UserContextProvider = ({ children }: Props) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [getLoginUser, enableAutoLogin]);
+  }, [getLoginUser]);
 
   const sessionState: SessionState = useMemo(() => {
     if (
@@ -97,6 +98,10 @@ export const UserContextProvider = ({ children }: Props) => {
     }
     return true;
   }, [sessionState]);
+
+  const setEnableAutoLogin = useCallback((enable: boolean) => {
+    enableAutoLoginRef.current = enable;
+  }, []);
 
   return (
     <UserContext.Provider
