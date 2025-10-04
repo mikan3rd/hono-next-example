@@ -230,6 +230,154 @@
         }
       }
     },
+    "/user/current": {
+      "get": {
+        "tags": ["user"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "get login user",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/user" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Unauthorized"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Forbidden"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Not Found"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ErrorResponse" },
+                    {
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "Bad Request",
+                            "Unauthorized",
+                            "Forbidden",
+                            "Not Found",
+                            "Internal Server Error"
+                          ],
+                          "example": "Internal Server Error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "explanation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/posts": {
       "get": {
         "tags": ["posts"],
