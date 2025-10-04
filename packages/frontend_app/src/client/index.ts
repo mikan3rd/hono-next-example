@@ -34,6 +34,10 @@ import type {
   GetPosts403,
   GetPosts404,
   GetPosts500,
+  GetUserLogin401,
+  GetUserLogin403,
+  GetUserLogin404,
+  GetUserLogin500,
   PostPosts200,
   PostPosts401,
   PostPosts403,
@@ -51,6 +55,7 @@ import type {
   PutPostsPublicId404,
   PutPostsPublicId500,
   PutPostsPublicIdBody,
+  User,
 } from "./index.schemas";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
@@ -200,6 +205,383 @@ export const usePostUserSignup = <
 
   return useMutation(mutationOptions, queryClient);
 };
+
+export type getUserLoginResponse200 = {
+  data: User;
+  status: 200;
+};
+
+export type getUserLoginResponse400 = {
+  data: ErrorResponse;
+  status: 400;
+};
+
+export type getUserLoginResponse401 = {
+  data: GetUserLogin401;
+  status: 401;
+};
+
+export type getUserLoginResponse403 = {
+  data: GetUserLogin403;
+  status: 403;
+};
+
+export type getUserLoginResponse404 = {
+  data: GetUserLogin404;
+  status: 404;
+};
+
+export type getUserLoginResponse500 = {
+  data: GetUserLogin500;
+  status: 500;
+};
+
+export type getUserLoginResponseComposite =
+  | getUserLoginResponse200
+  | getUserLoginResponse400
+  | getUserLoginResponse401
+  | getUserLoginResponse403
+  | getUserLoginResponse404
+  | getUserLoginResponse500;
+
+export type getUserLoginResponse = getUserLoginResponseComposite & {
+  headers: Headers;
+};
+
+export const getGetUserLoginUrl = () => {
+  return `/user/login`;
+};
+
+export const getUserLogin = async (
+  options?: RequestInit,
+): Promise<getUserLoginResponse> => {
+  return customFetch<getUserLoginResponse>(getGetUserLoginUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetUserLoginQueryKey = () => {
+  return [`/user/login`] as const;
+};
+
+export const getGetUserLoginQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof getUserLogin>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetUserLoginQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserLogin>>> = ({
+    signal,
+  }) => getUserLogin({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUserLogin>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetUserLoginQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getUserLogin>>
+>;
+export type GetUserLoginQueryError =
+  | ErrorResponse
+  | GetUserLogin401
+  | GetUserLogin403
+  | GetUserLogin404
+  | GetUserLogin500;
+
+export function useGetUserLogin<
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserLogin>>, TError, TData>
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserLogin>>,
+          TError,
+          Awaited<ReturnType<typeof getUserLogin>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetUserLogin<
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserLogin>>, TError, TData>
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserLogin>>,
+          TError,
+          Awaited<ReturnType<typeof getUserLogin>>
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetUserLogin<
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserLogin>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useGetUserLogin<
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserLogin>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetUserLoginQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const prefetchGetUserLoginQuery = async <
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  queryClient: QueryClient,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserLogin>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): Promise<QueryClient> => {
+  const queryOptions = getGetUserLoginQueryOptions(options);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return queryClient;
+};
+
+export const getGetUserLoginSuspenseQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(options?: {
+  query?: Partial<
+    UseSuspenseQueryOptions<
+      Awaited<ReturnType<typeof getUserLogin>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetUserLoginQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserLogin>>> = ({
+    signal,
+  }) => getUserLogin({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseSuspenseQueryOptions<
+    Awaited<ReturnType<typeof getUserLogin>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetUserLoginSuspenseQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getUserLogin>>
+>;
+export type GetUserLoginSuspenseQueryError =
+  | ErrorResponse
+  | GetUserLogin401
+  | GetUserLogin403
+  | GetUserLogin404
+  | GetUserLogin500;
+
+export function useGetUserLoginSuspense<
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  options: {
+    query: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUserLogin>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetUserLoginSuspense<
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUserLogin>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetUserLoginSuspense<
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUserLogin>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useGetUserLoginSuspense<
+  TData = Awaited<ReturnType<typeof getUserLogin>>,
+  TError =
+    | ErrorResponse
+    | GetUserLogin401
+    | GetUserLogin403
+    | GetUserLogin404
+    | GetUserLogin500,
+>(
+  options?: {
+    query?: Partial<
+      UseSuspenseQueryOptions<
+        Awaited<ReturnType<typeof getUserLogin>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseSuspenseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetUserLoginSuspenseQueryOptions(options);
+
+  const query = useSuspenseQuery(
+    queryOptions,
+    queryClient,
+  ) as UseSuspenseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
 
 export type getPostsResponse200 = {
   data: GetPosts200;

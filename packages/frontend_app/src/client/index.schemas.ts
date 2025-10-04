@@ -126,6 +126,86 @@ export type PostUserSignup500AllOf = {
 
 export type PostUserSignup500 = ErrorResponse & PostUserSignup500AllOf;
 
+export type GetUserLogin401AllOfCode =
+  (typeof GetUserLogin401AllOfCode)[keyof typeof GetUserLogin401AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUserLogin401AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Forbidden: "Forbidden",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type GetUserLogin401AllOf = {
+  code?: GetUserLogin401AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type GetUserLogin401 = ErrorResponse & GetUserLogin401AllOf;
+
+export type GetUserLogin403AllOfCode =
+  (typeof GetUserLogin403AllOfCode)[keyof typeof GetUserLogin403AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUserLogin403AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Forbidden: "Forbidden",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type GetUserLogin403AllOf = {
+  code?: GetUserLogin403AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type GetUserLogin403 = ErrorResponse & GetUserLogin403AllOf;
+
+export type GetUserLogin404AllOfCode =
+  (typeof GetUserLogin404AllOfCode)[keyof typeof GetUserLogin404AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUserLogin404AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Forbidden: "Forbidden",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type GetUserLogin404AllOf = {
+  code?: GetUserLogin404AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type GetUserLogin404 = ErrorResponse & GetUserLogin404AllOf;
+
+export type GetUserLogin500AllOfCode =
+  (typeof GetUserLogin500AllOfCode)[keyof typeof GetUserLogin500AllOfCode];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUserLogin500AllOfCode = {
+  Bad_Request: "Bad Request",
+  Unauthorized: "Unauthorized",
+  Forbidden: "Forbidden",
+  Not_Found: "Not Found",
+  Internal_Server_Error: "Internal Server Error",
+} as const;
+
+export type GetUserLogin500AllOf = {
+  code?: GetUserLogin500AllOfCode;
+  /** explanation */
+  message?: string;
+};
+
+export type GetUserLogin500 = ErrorResponse & GetUserLogin500AllOf;
+
 export type GetPosts200PostsItemAllOf = {
   user: User;
 };
