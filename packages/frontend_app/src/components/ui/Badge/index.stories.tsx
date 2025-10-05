@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { BadgeCheckIcon } from "lucide-react";
+import Link from "next/link";
 import { Badge } from ".";
 
 const meta = {
@@ -42,6 +43,16 @@ export const AllVariants: Story = {
           20+
         </Badge>
       </div>
+    );
+  },
+};
+
+export const LinkAsBadge: Story = {
+  render: () => {
+    return (
+      <Badge asChild>
+        <Link href="/">Badge</Link>
+      </Badge>
     );
   },
 };
