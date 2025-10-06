@@ -9,6 +9,7 @@ import {
   usePutPostsPublicId,
 } from "../../../../../client";
 import { formatDate } from "../../../../../lib/dateUtils";
+import { Badge } from "../../../../ui/Badge";
 import { Button } from "../../../../ui/Button";
 
 type Post = {
@@ -95,9 +96,7 @@ export const PostCard = ({ post }: PostCardProps) => {
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="text-xs text-gray-400">
-              {isUpdated ? "Updated" : "New"}
-            </div>
+            {isUpdated && <Badge variant="secondary">Updated</Badge>}
             {isEditing ? (
               <>
                 <Button
