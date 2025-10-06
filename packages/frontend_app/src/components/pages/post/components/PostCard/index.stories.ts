@@ -53,10 +53,8 @@ const enterEditMode = async (canvas: ReturnType<typeof within>) => {
 
 const verifyPostStatus = async (header: HTMLElement, isUpdated: boolean) => {
   if (isUpdated) {
-    await expect(within(header).queryByText("New")).toBeNull();
     await expect(within(header).getByText("Updated")).toBeVisible();
   } else {
-    await expect(within(header).getByText("New")).toBeVisible();
     await expect(within(header).queryByText("Updated")).toBeNull();
   }
 };

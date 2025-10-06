@@ -1,13 +1,6 @@
 import { expect, test } from "@chromatic-com/playwright";
 import { env } from "../../env";
 
-test.use({
-  ignoreSelectors: [
-    `[data-testid="PostCard-publicId"]`,
-    `[data-testid="PostCard-date"]`,
-  ],
-});
-
 test.beforeEach(async () => {
   const res = await fetch(`${env.BACKEND_APP_SERVER_URL}/initialize`, {
     method: "POST",
@@ -62,6 +55,7 @@ test("post page", async ({ page }) => {
 
   const postCards = page.getByTestId("PostCard");
   const firstPostCard = page.getByTestId("PostCard").first();
+  const firstPostCardHeader = firstPostCard.getByTestId("PostCard-header");
 
   await test.step("create posts", async () => {
     await createTextArea.fill(firstPostContent);
@@ -89,13 +83,11 @@ test("post page", async ({ page }) => {
     });
 
     await test.step("update post successfully", async () => {
-      await expect(firstPostCard.getByText("New")).toBeVisible();
-
       await editButton.click();
       await editTextArea.fill(updatedPostContent);
       await firstPostCard.getByRole("button", { name: "Save" }).click();
       await expect(firstPostCard.getByText(updatedPostContent)).toBeVisible();
-      await expect(firstPostCard.getByText("New")).not.toBeVisible();
+      await expect(firstPostCardHeader.getByText("Updated")).toBeVisible();
     });
   });
 
