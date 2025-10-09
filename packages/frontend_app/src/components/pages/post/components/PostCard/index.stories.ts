@@ -47,7 +47,7 @@ const enterEditMode = async (canvas: ReturnType<typeof within>) => {
   const editItem = screen.getByRole("menuitem", {
     name: "Edit",
   });
-  await await waitFor(async () => {
+  await waitFor(async () => {
     await expect(editItem).toBeVisible();
   });
   await userEvent.click(editItem);
@@ -202,7 +202,7 @@ export const DeletePost: Story = {
     const deleteItem = screen.getByRole("menuitem", {
       name: "Delete",
     });
-    await await waitFor(async () => {
+    await waitFor(async () => {
       await expect(deleteItem).toBeVisible();
     });
     await userEvent.click(deleteItem);

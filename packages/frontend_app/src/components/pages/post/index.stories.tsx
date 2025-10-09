@@ -108,7 +108,7 @@ export const IsEditing: Story = {
     const editItem = within(document.body).getByRole("menuitem", {
       name: "Edit",
     });
-    await await waitFor(async () => {
+    await waitFor(async () => {
       await expect(editItem).toBeVisible();
     });
     await userEvent.click(editItem);
