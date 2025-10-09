@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { ComponentProps } from "react";
-import { expect, userEvent, waitFor, within } from "storybook/test";
+import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import { PostCard } from ".";
 
 const meta = {
@@ -40,9 +40,17 @@ const getPostCardElements = (canvas: ReturnType<typeof within>) => {
 const enterEditMode = async (canvas: ReturnType<typeof within>) => {
   const { header, content } = getPostCardElements(canvas);
 
-  const editButton = within(header).getByRole("button", { name: "Edit" });
-  await expect(editButton).toBeEnabled();
-  await userEvent.click(editButton);
+  const actionsButton = within(header).getByRole("button", { name: "Actions" });
+  await expect(actionsButton).toBeEnabled();
+  await userEvent.click(actionsButton);
+
+  const editItem = screen.getByRole("menuitem", {
+    name: "Edit",
+  });
+  await waitFor(async () => {
+    await expect(editItem).toBeVisible();
+  });
+  await userEvent.click(editItem);
 
   const textarea = within(content).getByRole("textbox");
   await expect(textarea).toBeVisible();
@@ -82,11 +90,14 @@ export const CreatedPost: Story = {
     ).toBeVisible();
     await verifyPostStatus(header, false);
     await expect(
-      within(header).getByRole("button", { name: "Edit" }),
+      within(header).getByRole("button", { name: "Actions" }),
     ).toBeVisible();
     await expect(
-      within(header).getByRole("button", { name: "Delete" }),
-    ).toBeVisible();
+      within(header).queryByRole("button", { name: "Edit" }),
+    ).toBeNull();
+    await expect(
+      within(header).queryByRole("button", { name: "Delete" }),
+    ).toBeNull();
 
     await expect(content).toBeVisible();
     await expect(within(content).getByText(args.post.content)).toBeVisible();
@@ -117,12 +128,14 @@ export const EditPost: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { header } = await enterEditMode(canvas);
+    const { content } = await enterEditMode(canvas);
 
-    const saveButton = within(header).getByRole("button", { name: "Save" });
+    const saveButton = within(content).getByRole("button", { name: "Save" });
     await expect(saveButton).toBeEnabled();
 
-    const cancelButton = within(header).getByRole("button", { name: "Cancel" });
+    const cancelButton = within(content).getByRole("button", {
+      name: "Cancel",
+    });
     await expect(cancelButton).toBeEnabled();
   },
 };
@@ -133,9 +146,9 @@ export const EditAndSavePost: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { header, textarea } = await enterEditMode(canvas);
+    const { content, textarea } = await enterEditMode(canvas);
 
-    const saveButton = within(header).getByRole("button", { name: "Save" });
+    const saveButton = within(content).getByRole("button", { name: "Save" });
     await expect(saveButton).toBeEnabled();
 
     await userEvent.clear(textarea);
@@ -159,9 +172,11 @@ export const EditAndCancelPost: Story = {
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    const { header, content, textarea } = await enterEditMode(canvas);
+    const { content, textarea } = await enterEditMode(canvas);
 
-    const cancelButton = within(header).getByRole("button", { name: "Cancel" });
+    const cancelButton = within(content).getByRole("button", {
+      name: "Cancel",
+    });
     await expect(cancelButton).toBeEnabled();
     await userEvent.click(cancelButton);
 
@@ -178,8 +193,18 @@ export const DeletePost: Story = {
     const canvas = within(canvasElement);
     const { header } = getPostCardElements(canvas);
 
-    const deleteButton = within(header).getByRole("button", { name: "Delete" });
-    await expect(deleteButton).toBeEnabled();
-    await userEvent.click(deleteButton);
+    const actionsButton = within(header).getByRole("button", {
+      name: "Actions",
+    });
+    await expect(actionsButton).toBeEnabled();
+    await userEvent.click(actionsButton);
+
+    const deleteItem = screen.getByRole("menuitem", {
+      name: "Delete",
+    });
+    await waitFor(async () => {
+      await expect(deleteItem).toBeVisible();
+    });
+    await userEvent.click(deleteItem);
   },
 };

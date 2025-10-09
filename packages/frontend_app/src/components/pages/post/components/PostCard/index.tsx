@@ -11,6 +11,12 @@ import {
 import { formatDate } from "../../../../../lib/dateUtils";
 import { Badge } from "../../../../ui/Badge";
 import { Button } from "../../../../ui/Button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../../../ui/DropdownMenu";
 
 type Post = {
   public_id: string;
@@ -97,8 +103,45 @@ export const PostCard = ({ post }: PostCardProps) => {
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             {isUpdated && <Badge variant="secondary">Updated</Badge>}
-            {isEditing ? (
-              <>
+            {!isEditing && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    disabled={deletePostMutation.isPending}
+                  >
+                    Actions
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={handleEdit}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={handleDelete}
+                    variant="destructive"
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        </div>
+
+        <div data-testid="PostCard-content" className="mb-4">
+          {isEditing ? (
+            <>
+              <textarea
+                value={editContent}
+                onChange={(e) => setEditContent(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 text-sm"
+                rows={4}
+                disabled={updatePostMutation.isPending}
+              />
+              <div className="mt-3 flex items-center justify-end gap-2">
                 <Button
                   type="button"
                   onClick={handleSave}
@@ -118,41 +161,8 @@ export const PostCard = ({ post }: PostCardProps) => {
                 >
                   Cancel
                 </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  type="button"
-                  onClick={handleEdit}
-                  disabled={updatePostMutation.isPending}
-                  variant="secondary"
-                  size="sm"
-                >
-                  Edit
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleDelete}
-                  disabled={deletePostMutation.isPending}
-                  variant="destructive"
-                  size="sm"
-                >
-                  Delete
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
-
-        <div data-testid="PostCard-content" className="mb-4">
-          {isEditing ? (
-            <textarea
-              value={editContent}
-              onChange={(e) => setEditContent(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 text-sm"
-              rows={4}
-              disabled={updatePostMutation.isPending}
-            />
+              </div>
+            </>
           ) : (
             <p className="text-gray-900 text-sm leading-relaxed line-clamp-4 whitespace-pre-wrap">
               {post.content}
