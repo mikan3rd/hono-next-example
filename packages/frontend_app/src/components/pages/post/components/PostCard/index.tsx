@@ -97,29 +97,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             {isUpdated && <Badge variant="secondary">Updated</Badge>}
-            {isEditing ? (
-              <>
-                <Button
-                  type="button"
-                  onClick={handleSave}
-                  disabled={updatePostMutation.isPending || !editContent.trim()}
-                  variant="default"
-                  size="sm"
-                  className="bg-green-600 hover:bg-green-700 disabled:bg-green-400"
-                >
-                  {updatePostMutation.isPending ? "Saving..." : "Save"}
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleCancel}
-                  disabled={updatePostMutation.isPending}
-                  variant="secondary"
-                  size="sm"
-                >
-                  Cancel
-                </Button>
-              </>
-            ) : (
+            {!isEditing && (
               <>
                 <Button
                   type="button"
@@ -146,13 +124,36 @@ export const PostCard = ({ post }: PostCardProps) => {
 
         <div data-testid="PostCard-content" className="mb-4">
           {isEditing ? (
-            <textarea
-              value={editContent}
-              onChange={(e) => setEditContent(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 text-sm"
-              rows={4}
-              disabled={updatePostMutation.isPending}
-            />
+            <>
+              <textarea
+                value={editContent}
+                onChange={(e) => setEditContent(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 text-sm"
+                rows={4}
+                disabled={updatePostMutation.isPending}
+              />
+              <div className="mt-3 flex items-center justify-end gap-2">
+                <Button
+                  type="button"
+                  onClick={handleSave}
+                  disabled={updatePostMutation.isPending || !editContent.trim()}
+                  variant="default"
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700 disabled:bg-green-400"
+                >
+                  {updatePostMutation.isPending ? "Saving..." : "Save"}
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleCancel}
+                  disabled={updatePostMutation.isPending}
+                  variant="secondary"
+                  size="sm"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </>
           ) : (
             <p className="text-gray-900 text-sm leading-relaxed line-clamp-4 whitespace-pre-wrap">
               {post.content}
