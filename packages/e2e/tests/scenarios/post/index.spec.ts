@@ -64,13 +64,19 @@ test("post page", async ({ page }) => {
     await expect(firstPostCard).toBeVisible();
   });
 
+  const actionsButton = firstPostCardHeader.getByRole("button", {
+    name: "Actions",
+  });
+
   await test.step("update post", async () => {
     const editTextArea = firstPostCard.getByRole("textbox");
     const updatedPostContent = `This is updated post content`;
-    const editButton = firstPostCard.getByRole("button", { name: "Edit" });
+    const editMenuItem = page.getByRole("menuitem", { name: "Edit" });
 
     await test.step("check post edit button", async () => {
-      await editButton.click();
+      await actionsButton.click();
+      await expect(editMenuItem).toBeVisible();
+      await editMenuItem.click();
       await expect(editTextArea).toBeVisible();
     });
 
@@ -83,7 +89,9 @@ test("post page", async ({ page }) => {
     });
 
     await test.step("update post successfully", async () => {
-      await editButton.click();
+      await actionsButton.click();
+      await expect(editMenuItem).toBeVisible();
+      await editMenuItem.click();
       await editTextArea.fill(updatedPostContent);
       await firstPostCard.getByRole("button", { name: "Save" }).click();
       await expect(firstPostCard.getByText(updatedPostContent)).toBeVisible();
@@ -92,7 +100,10 @@ test("post page", async ({ page }) => {
   });
 
   await test.step("delete second post", async () => {
-    await firstPostCard.getByRole("button", { name: "Delete" }).click();
+    await actionsButton.click();
+    const deleteMenuItem = page.getByRole("menuitem", { name: "Delete" });
+    await expect(deleteMenuItem).toBeVisible();
+    await deleteMenuItem.click();
     await expect(firstPostCard).not.toBeVisible();
   });
 

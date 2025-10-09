@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { ComponentProps } from "react";
-import { expect, userEvent, waitFor, within } from "storybook/test";
+import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import { PostCard } from ".";
 
 const meta = {
@@ -44,7 +44,7 @@ const enterEditMode = async (canvas: ReturnType<typeof within>) => {
   await expect(actionsButton).toBeEnabled();
   await userEvent.click(actionsButton);
 
-  const editItem = within(document.body).getByRole("menuitem", {
+  const editItem = screen.getByRole("menuitem", {
     name: "Edit",
   });
   await await waitFor(async () => {
@@ -199,7 +199,7 @@ export const DeletePost: Story = {
     await expect(actionsButton).toBeEnabled();
     await userEvent.click(actionsButton);
 
-    const deleteItem = within(document.body).getByRole("menuitem", {
+    const deleteItem = screen.getByRole("menuitem", {
       name: "Delete",
     });
     await await waitFor(async () => {
