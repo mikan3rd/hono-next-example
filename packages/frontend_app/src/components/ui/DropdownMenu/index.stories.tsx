@@ -1,6 +1,7 @@
 import type { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import * as React from "react";
+import { userEvent, within } from "storybook/test";
 import { Button } from "../Button";
 import {
   DropdownMenu,
@@ -44,6 +45,11 @@ export const Default: Story = {
         </DropdownMenuContent>
       </DropdownMenu>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole("button", { name: "Open" });
+    await userEvent.click(trigger);
   },
 };
 
@@ -106,6 +112,11 @@ export const Nested: Story = {
       </DropdownMenu>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole("button", { name: "Open" });
+    await userEvent.click(trigger);
+  },
 };
 
 export const WithCheckbox: Story = {
@@ -146,6 +157,11 @@ export const WithCheckbox: Story = {
       </DropdownMenu>
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole("button", { name: "Open" });
+    await userEvent.click(trigger);
+  },
 };
 
 export const WithRadio: Story = {
@@ -168,5 +184,10 @@ export const WithRadio: Story = {
         </DropdownMenuContent>
       </DropdownMenu>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole("button", { name: "Open" });
+    await userEvent.click(trigger);
   },
 };
