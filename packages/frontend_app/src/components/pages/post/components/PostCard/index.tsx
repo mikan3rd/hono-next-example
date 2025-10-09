@@ -11,6 +11,12 @@ import {
 import { formatDate } from "../../../../../lib/dateUtils";
 import { Badge } from "../../../../ui/Badge";
 import { Button } from "../../../../ui/Button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../../../ui/DropdownMenu";
 
 type Post = {
   public_id: string;
@@ -98,26 +104,29 @@ export const PostCard = ({ post }: PostCardProps) => {
           <div className="flex items-center gap-2 flex-shrink-0">
             {isUpdated && <Badge variant="secondary">Updated</Badge>}
             {!isEditing && (
-              <>
-                <Button
-                  type="button"
-                  onClick={handleEdit}
-                  disabled={updatePostMutation.isPending}
-                  variant="secondary"
-                  size="sm"
-                >
-                  Edit
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleDelete}
-                  disabled={deletePostMutation.isPending}
-                  variant="destructive"
-                  size="sm"
-                >
-                  Delete
-                </Button>
-              </>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    disabled={deletePostMutation.isPending}
+                  >
+                    Actions
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={handleEdit}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={handleDelete}
+                    variant="destructive"
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
         </div>

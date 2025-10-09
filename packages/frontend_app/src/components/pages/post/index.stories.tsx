@@ -102,8 +102,16 @@ export const IsEditing: Story = {
     }
 
     const header = within(postCard).getByTestId("PostCard-header");
-    const editButton = within(header).getByRole("button", { name: "Edit" });
+    const editButton = within(header).getByRole("button", { name: "Actions" });
     await userEvent.click(editButton);
+
+    const editItem = within(document.body).getByRole("menuitem", {
+      name: "Edit",
+    });
+    await await waitFor(async () => {
+      await expect(editItem).toBeVisible();
+    });
+    await userEvent.click(editItem);
 
     const content = within(postCard).getByTestId("PostCard-content");
     const textarea = within(content).getByRole("textbox");
