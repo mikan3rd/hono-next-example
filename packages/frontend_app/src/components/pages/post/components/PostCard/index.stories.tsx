@@ -2,17 +2,43 @@ import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { ComponentProps } from "react";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
+import { getGetUserLoginMockHandler } from "../../../../../client/index.msw";
+import { useUserContext } from "../../../../../context/UserContext";
+import {
+  mockSession,
+  triggerAuthStateChange,
+  waitForAuthStateChange,
+} from "../../../../../supabase/client/mockFunc";
 import { PostCard } from ".";
+
+type Props = ComponentProps<typeof PostCard>;
+const user: Props["post"]["user"] = {
+  public_id: faker.string.uuid(),
+  display_name: faker.person.fullName(),
+};
 
 const meta = {
   component: PostCard,
   tags: ["autodocs"],
+  parameters: {
+    msw: {
+      handlers: [getGetUserLoginMockHandler(user)],
+    },
+  },
+  render: (args) => {
+    const { sessionState } = useUserContext();
+    return (
+      <>
+        <PostCard {...args} />
+        <div className="hidden">{sessionState.status}</div>
+      </>
+    );
+  },
 } satisfies Meta<typeof PostCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-type Props = ComponentProps<typeof PostCard>;
 const postContent: Props["post"]["content"] = faker.lorem.paragraph();
 const createMockPost = (
   overrides: Partial<Props["post"]> = {},
@@ -21,10 +47,7 @@ const createMockPost = (
   content: postContent,
   created_at: "2025-01-01T00:00:00.000Z",
   updated_at: "2025-01-01T00:00:00.000Z",
-  user: {
-    public_id: faker.string.uuid(),
-    display_name: faker.person.fullName(),
-  },
+  user,
   ...overrides,
 });
 
@@ -52,7 +75,7 @@ const enterEditMode = async (canvas: ReturnType<typeof within>) => {
   });
   await userEvent.click(editItem);
 
-  const textarea = within(content).getByRole("textbox");
+  const textarea = await within(content).findByRole("textbox");
   await expect(textarea).toBeVisible();
   await expect(textarea).toHaveValue(postContent);
 
@@ -76,6 +99,14 @@ const verifyDateDisplay = async (date: HTMLElement, isUpdated: boolean) => {
   }
 };
 
+const waitForLoggedIn = async (canvas: ReturnType<typeof within>) => {
+  await waitForAuthStateChange();
+  triggerAuthStateChange("SIGNED_IN", mockSession);
+  await waitFor(async () => {
+    await expect(canvas.getByText("loggedIn")).toBeInTheDocument();
+  });
+};
+
 export const CreatedPost: Story = {
   args: {
     post: createMockPost(),
@@ -83,6 +114,8 @@ export const CreatedPost: Story = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const { header, content, date } = getPostCardElements(canvas);
+
+    await waitForLoggedIn(canvas);
 
     await expect(header).toBeVisible();
     await expect(
@@ -117,8 +150,27 @@ export const UpdatedPost: Story = {
     const canvas = within(canvasElement);
     const { header, date } = getPostCardElements(canvas);
 
+    await waitForLoggedIn(canvas);
+
     await verifyPostStatus(header, true);
     await verifyDateDisplay(date, true);
+  },
+};
+
+export const NotOwnerPost: Story = {
+  args: {
+    post: createMockPost({
+      user: { ...user, public_id: faker.string.uuid() },
+    }),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const { header } = getPostCardElements(canvas);
+    await waitForLoggedIn(canvas);
+    const actionsButton = within(header).queryByRole("button", {
+      name: "Actions",
+    });
+    await expect(actionsButton).toBeNull();
   },
 };
 
@@ -128,6 +180,8 @@ export const EditPost: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+
+    await waitForLoggedIn(canvas);
     const { content } = await enterEditMode(canvas);
 
     const saveButton = within(content).getByRole("button", { name: "Save" });
@@ -146,6 +200,8 @@ export const EditAndSavePost: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+
+    await waitForLoggedIn(canvas);
     const { content, textarea } = await enterEditMode(canvas);
 
     const saveButton = within(content).getByRole("button", { name: "Save" });
@@ -172,6 +228,8 @@ export const EditAndCancelPost: Story = {
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
+
+    await waitForLoggedIn(canvas);
     const { content, textarea } = await enterEditMode(canvas);
 
     const cancelButton = within(content).getByRole("button", {
@@ -192,6 +250,8 @@ export const DeletePost: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const { header } = getPostCardElements(canvas);
+
+    await waitForLoggedIn(canvas);
 
     const actionsButton = within(header).getByRole("button", {
       name: "Actions",
