@@ -132,10 +132,9 @@ export const IsEditing: Story = {
     }
 
     const header = within(postCard).getByTestId("PostCard-header");
-    await waitFor(async () => {
-      within(header).getByRole("button", { name: "Actions" });
+    const editButton = await within(header).findByRole("button", {
+      name: "Actions",
     });
-    const editButton = within(header).getByRole("button", { name: "Actions" });
     await userEvent.click(editButton);
 
     const editItem = screen.getByRole("menuitem", {
