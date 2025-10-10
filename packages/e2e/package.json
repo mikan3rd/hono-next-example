@@ -13,13 +13,13 @@
     "e2e:show-report": "npx playwright show-report"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.4",
+    "@biomejs/biome": "2.2.5",
     "@chromatic-com/playwright": "0.12.7",
     "@dotenvx/dotenvx": "1.50.1",
     "@playwright/test": "1.55.1",
     "@t3-oss/env-core": "0.13.8",
     "@types/node": "24.5.2",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "zod": "4.1.11"
   }
 }

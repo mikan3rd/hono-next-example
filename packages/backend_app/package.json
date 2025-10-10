@@ -19,17 +19,17 @@
     "@supabase/supabase-js": "2.57.4",
     "@t3-oss/env-core": "0.13.8",
     "drizzle-kit": "0.31.5",
-    "drizzle-orm": "0.44.5",
+    "drizzle-orm": "0.44.6",
     "drizzle-zod": "0.8.3",
     "es-toolkit": "1.39.10",
     "hono": "4.9.9",
     "postgres": "3.4.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.4",
+    "@biomejs/biome": "2.2.5",
     "@faker-js/faker": "10.0.0",
     "@types/bun": "1.2.21",
     "@types/node": "24.5.2",
-    "@typescript/native-preview": "7.0.0-dev.20250927.1"
+    "@typescript/native-preview": "7.0.0-dev.20251003.1"
   }
 }
