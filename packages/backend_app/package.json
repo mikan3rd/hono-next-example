@@ -28,7 +28,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
     "@faker-js/faker": "10.0.0",
-    "@types/bun": "1.2.21",
+    "@types/bun": "1.2.23",
     "@types/node": "24.5.2",
     "@typescript/native-preview": "7.0.0-dev.20250927.1"
   }
