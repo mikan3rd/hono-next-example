@@ -75,10 +75,10 @@ const enterEditMode = async (canvas: ReturnType<typeof within>) => {
   });
   await userEvent.click(editItem);
 
-  let textarea: HTMLElement;
   await waitFor(async () => {
-    textarea = within(content).getByRole("textbox");
+    within(content).getByRole("textbox");
   });
+  const textarea = within(content).getByRole("textbox");
   await expect(textarea).toBeVisible();
   await expect(textarea).toHaveValue(postContent);
 
