@@ -1,6 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
+import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -112,10 +113,11 @@ export const PostCard = ({ post }: PostCardProps) => {
                   <Button
                     type="button"
                     variant="secondary"
-                    size="sm"
+                    size="icon"
+                    aria-label="Actions"
                     disabled={deletePostMutation.isPending}
                   >
-                    Actions
+                    <MoreHorizontal className="size-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
