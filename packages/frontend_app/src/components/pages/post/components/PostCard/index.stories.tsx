@@ -160,6 +160,23 @@ export const UpdatedPost: Story = {
   },
 };
 
+export const NotOwnerPost: Story = {
+  args: {
+    post: createMockPost({
+      user: { ...user, public_id: faker.string.uuid() },
+    }),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const { header } = getPostCardElements(canvas);
+    await waitForLoggedIn(canvas);
+    const actionsButton = within(header).queryByRole("button", {
+      name: "Actions",
+    });
+    await expect(actionsButton).toBeNull();
+  },
+};
+
 export const EditPost: Story = {
   args: {
     post: createMockPost(),
