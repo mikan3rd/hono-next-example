@@ -146,10 +146,8 @@ export const IsEditing: Story = {
     await userEvent.click(editItem);
 
     const content = within(postCard).getByTestId("PostCard-content");
-    await waitFor(async () => {
-      const textarea = within(content).getByRole("textbox");
-      await expect(textarea).toBeVisible();
-    });
+    const textarea = await within(content).findByRole("textbox");
+    await expect(textarea).toBeVisible();
   },
 };
 
