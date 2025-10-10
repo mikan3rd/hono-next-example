@@ -31,11 +31,13 @@
         "@types/bun",
         "oven/bun",
         "oven-sh/bun",
-        "/^bun$/",
-        "/^@types/bun$/",
-        "/^oven/bun$/",
-        "/^oven-sh/bun$/"
+        "/^bun$/"
       ],
+      "automerge": false
+    },
+    {
+      "groupName": "orval dependencies",
+      "matchPackageNames": ["orval"],
       "automerge": false
     },
     {
