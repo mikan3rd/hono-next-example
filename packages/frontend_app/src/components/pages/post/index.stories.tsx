@@ -20,11 +20,16 @@ const user: User = {
   display_name: faker.person.fullName(),
 };
 
+const anotherUser: User = {
+  public_id: faker.string.uuid(),
+  display_name: faker.person.fullName(),
+};
+
 const GetLoginUserMockHandler = getGetUserLoginMockHandler(user);
 
 const posts = getGetPostsResponseMock().posts.map((post) => ({
   ...post,
-  user,
+  user: faker.helpers.arrayElement([user, anotherUser]),
 }));
 
 const meta = {
