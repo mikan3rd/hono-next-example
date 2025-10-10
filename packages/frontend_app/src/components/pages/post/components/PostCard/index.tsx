@@ -8,6 +8,7 @@ import {
   useDeletePostsPublicId,
   usePutPostsPublicId,
 } from "../../../../../client";
+import { useUserContext } from "../../../../../context/UserContext";
 import { formatDate } from "../../../../../lib/dateUtils";
 import { Badge } from "../../../../ui/Badge";
 import { Button } from "../../../../ui/Button";
@@ -35,6 +36,8 @@ type PostCardProps = {
 
 export const PostCard = ({ post }: PostCardProps) => {
   const queryClient = useQueryClient();
+
+  const { sessionState } = useUserContext();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(post.content);
@@ -103,7 +106,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             {isUpdated && <Badge variant="secondary">Updated</Badge>}
-            {!isEditing && (
+            {sessionState.user?.public_id === post.user.public_id && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
