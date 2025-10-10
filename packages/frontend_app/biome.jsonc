@@ -7,5 +7,17 @@
       "!**/storybook-static",
       "!**/public/mockServiceWorker.js"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["src/client/**/*.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConfusingVoidType": "off"
+          }
+        }
+      }
+    }
+  ]
 }
