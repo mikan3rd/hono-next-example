@@ -1,9 +1,13 @@
+import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import {
+  getBackendAppOpenAPIMock,
   getGetPostsMockHandler,
   getGetPostsResponseMock,
+  getGetUserLoginMockHandler,
 } from "../../../client/index.msw";
+import type { User } from "../../../client/index.schemas";
 import {
   mockSession,
   triggerAuthStateChange,
@@ -11,9 +15,30 @@ import {
 } from "../../../supabase/client/mockFunc";
 import { PostIndex } from ".";
 
+const user: User = {
+  public_id: faker.string.uuid(),
+  display_name: faker.person.fullName(),
+};
+
+const GetLoginUserMockHandler = getGetUserLoginMockHandler(user);
+
+const posts = getGetPostsResponseMock().posts.map((post) => ({
+  ...post,
+  user,
+}));
+
 const meta = {
   component: PostIndex,
   tags: ["autodocs"],
+  parameters: {
+    msw: {
+      handlers: [
+        GetLoginUserMockHandler,
+        getGetPostsMockHandler({ posts }),
+        ...getBackendAppOpenAPIMock(),
+      ],
+    },
+  },
 } satisfies Meta<typeof PostIndex>;
 
 export default meta;
@@ -102,10 +127,13 @@ export const IsEditing: Story = {
     }
 
     const header = within(postCard).getByTestId("PostCard-header");
+    await waitFor(async () => {
+      within(header).getByRole("button", { name: "Actions" });
+    });
     const editButton = within(header).getByRole("button", { name: "Actions" });
     await userEvent.click(editButton);
 
-    const editItem = within(document.body).getByRole("menuitem", {
+    const editItem = screen.getByRole("menuitem", {
       name: "Edit",
     });
     await waitFor(async () => {
@@ -114,8 +142,10 @@ export const IsEditing: Story = {
     await userEvent.click(editItem);
 
     const content = within(postCard).getByTestId("PostCard-content");
-    const textarea = within(content).getByRole("textbox");
-    await expect(textarea).toBeVisible();
+    await waitFor(async () => {
+      const textarea = within(content).getByRole("textbox");
+      await expect(textarea).toBeVisible();
+    });
   },
 };
 
