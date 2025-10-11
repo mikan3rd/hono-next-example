@@ -40,7 +40,8 @@
         "@playwright/test",
         "playwright",
         "mcr.microsoft.com/playwright"
-      ]
+      ],
+      "automerge": false
     },
     {
       "groupName": "supabase vector",
