@@ -25,23 +25,23 @@ const anotherUser: User = {
   display_name: faker.person.fullName(),
 };
 
-const GetLoginUserMockHandler = getGetUserLoginMockHandler(user);
-
 const posts = getGetPostsResponseMock().posts.map((post, i) => ({
   ...post,
-  user: i === 0 ? user : anotherUser,
+  user: i % 2 === 0 ? user : anotherUser,
 }));
+
+const defaultHandlers = [
+  getGetUserLoginMockHandler(user),
+  getGetPostsMockHandler({ posts }),
+  ...getBackendAppOpenAPIMock(),
+];
 
 const meta = {
   component: PostIndex,
   tags: ["autodocs"],
   parameters: {
     msw: {
-      handlers: [
-        GetLoginUserMockHandler,
-        getGetPostsMockHandler({ posts }),
-        ...getBackendAppOpenAPIMock(),
-      ],
+      handlers: defaultHandlers,
     },
   },
 } satisfies Meta<typeof PostIndex>;
@@ -83,7 +83,7 @@ export const WithLoggedIn: Story = {
 export const NoPosts: Story = {
   parameters: {
     msw: {
-      handlers: [getGetPostsMockHandler({ posts: [] })],
+      handlers: [getGetPostsMockHandler({ posts: [] }), ...defaultHandlers],
     },
   },
   play: async ({ canvasElement }) => {
@@ -108,6 +108,7 @@ export const OnePost: Story = {
             })(),
           ],
         }),
+        ...defaultHandlers,
       ],
     },
   },
@@ -125,7 +126,19 @@ export const IsEditing: Story = {
     await waitForLoggedIn(canvas);
 
     const postCards = await canvas.findAllByTestId("PostCard");
-    const postCard = postCards[0];
+    const postCard = (
+      await Promise.all(
+        postCards.map(async (targetPostCard) => {
+          const header = within(targetPostCard).getByTestId("PostCard-header");
+          const editButton = await within(header)
+            .findByRole("button", {
+              name: "Actions",
+            })
+            .catch(() => null);
+          return { postCard: targetPostCard, editButton };
+        }),
+      )
+    ).find((targetEditButton) => targetEditButton !== null)?.postCard;
 
     if (!postCard) {
       throw new Error("Post card not found");
