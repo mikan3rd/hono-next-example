@@ -27,9 +27,9 @@ const anotherUser: User = {
 
 const GetLoginUserMockHandler = getGetUserLoginMockHandler(user);
 
-const posts = getGetPostsResponseMock().posts.map((post) => ({
+const posts = getGetPostsResponseMock().posts.map((post, i) => ({
   ...post,
-  user: faker.helpers.arrayElement([user, anotherUser]),
+  user: i === 0 ? user : anotherUser,
 }));
 
 const meta = {

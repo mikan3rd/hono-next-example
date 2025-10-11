@@ -98,7 +98,6 @@ export const PostCard = ({ post }: PostCardProps) => {
         >
           <div className="min-w-0 max-w-[65%] sm:max-w-[60%] md:max-w-full">
             <div
-              data-testid="PostCard-displayName"
               className="text-sm font-medium text-gray-900 truncate"
               title={post.user.display_name}
             >
