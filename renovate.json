@@ -26,19 +26,21 @@
     },
     {
       "groupName": "bun dependencies",
-      "matchPackageNames": [
-        "bun",
-        "@types/bun",
-        "oven/bun",
-        "oven-sh/bun",
-        "/^bun$/"
-      ],
+      "matchPackageNames": ["bun", "@types/bun", "oven/bun", "oven-sh/bun"],
       "automerge": false
     },
     {
       "groupName": "orval dependencies",
       "matchPackageNames": ["orval"],
       "automerge": false
+    },
+    {
+      "groupName": "Playwright dependencies",
+      "matchPackageNames": [
+        "@playwright/test",
+        "playwright",
+        "mcr.microsoft.com/playwright"
+      ]
     },
     {
       "groupName": "supabase vector",
