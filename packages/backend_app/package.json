@@ -30,6 +30,6 @@
     "@faker-js/faker": "10.0.0",
     "@types/bun": "1.2.23",
     "@types/node": "24.5.2",
-    "@typescript/native-preview": "7.0.0-dev.20251003.1"
+    "@typescript/native-preview": "7.0.0-dev.20251004.1"
   }
 }
