@@ -48,7 +48,7 @@ export const onAuthStateChange: GoTrueClient["onAuthStateChange"] = (
   callback,
 ) => {
   const listener: AuthListener = (event, nextSession) => {
-    console.info("listener", event, nextSession);
+    // console.info("listener", event, nextSession);
     callback(event, nextSession);
   };
   listeners.add(listener);
@@ -68,10 +68,10 @@ export const triggerAuthStateChange = (
   event: AuthChangeEvent,
   nextSession: Session | null,
 ) => {
-  console.info("triggerAuthStateChange called", event, nextSession);
-  console.info("Active listeners count:", listeners.size);
+  // console.info("triggerAuthStateChange called", event, nextSession);
+  // console.info("Active listeners count:", listeners.size);
   for (const listener of listeners) {
-    console.info("Calling listener", event, nextSession);
+    // console.info("Calling listener", event, nextSession);
     listener(event, nextSession);
   }
 };
