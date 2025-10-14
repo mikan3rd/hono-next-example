@@ -22,7 +22,7 @@
     "drizzle-orm": "0.44.6",
     "drizzle-zod": "0.8.3",
     "es-toolkit": "1.39.10",
-    "hono": "4.9.9",
+    "hono": "4.9.10",
     "postgres": "3.4.7"
   },
   "devDependencies": {
@@ -30,6 +30,6 @@
     "@faker-js/faker": "10.0.0",
     "@types/bun": "1.2.23",
     "@types/node": "24.5.2",
-    "@typescript/native-preview": "7.0.0-dev.20251003.1"
+    "@typescript/native-preview": "7.0.0-dev.20251006.1"
   }
 }
