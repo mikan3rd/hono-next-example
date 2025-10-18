@@ -24,6 +24,9 @@ env:
   DATABASE_HOST: 127.0.0.1
   SUPABASE_URL: https://example.supabase.com
   SUPABASE_KEY: example-key
+  NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
+  NEXT_PUBLIC_SUPABASE_URL: http://localhost:8000
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: test
 
 jobs:
   changes:
@@ -42,19 +45,25 @@ jobs:
               - '.tool-versions'
               - 'biome.jsonc'
               - 'tsconfig.json'
+            frontend:
+              - '.github/workflows/frontend-app.yml'
+              - 'packages/backend_app/openapi.json'
+              - 'packages/frontend_app/**'
+              - '.tool-versions'
+              - 'biome.jsonc'
+              - 'tsconfig.json'
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
 
   backend-check:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
     if: ${{ needs.changes.outputs.backend == 'true' }}
-
     defaults:
       run:
         working-directory: ./packages/backend_app
-
     steps:
       - uses: actions/checkout@v5
 
@@ -78,14 +87,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs:
-      - changes
       - backend-check
-    if: ${{ needs.changes.outputs.backend == 'true' }}
-
     defaults:
       run:
         working-directory: ./packages/backend_app
-
     services:
       postgres:
         image: postgres:17.6
@@ -109,3 +114,88 @@ jobs:
       - run: bun db:push
 
       - run: bun test --coverage
+
+  frontend-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    defaults:
+      run:
+        working-directory: ./packages/frontend_app
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - run: bun install --frozen-lockfile
+
+      - name: Check gen:client diff
+        run: |
+          bun run gen:client
+          git add -N src/client
+          git diff --exit-code src/client
+
+      - run: bun run lint
+
+      - run: bun run typecheck
+
+  frontend-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs:
+      - frontend-check
+    defaults:
+      run:
+        working-directory: ./packages/frontend_app
+    container:
+      # Make sure to grab the latest version of the Playwright image
+      # https://playwright.dev/docs/docker#pull-the-image
+      image: mcr.microsoft.com/playwright:v1.55.1-noble
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install required tools
+        run: |
+          apt-get update
+          apt-get install -y unzip
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun run test-storybook --coverage
+
+  frontend-chromatic:
+    name: Run Chromatic
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs:
+      - frontend-test
+    if: github.event.pull_request.draft != true
+    defaults:
+      run:
+        working-directory: ./packages/frontend_app
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run Chromatic
+        uses: chromaui/action@v13
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: packages/frontend_app
+          exitZeroOnChanges: false
