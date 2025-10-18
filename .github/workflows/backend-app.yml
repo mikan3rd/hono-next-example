@@ -79,7 +79,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:17.5
+        image: postgres:17.6
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
