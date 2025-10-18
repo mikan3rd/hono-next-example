@@ -237,12 +237,12 @@ jobs:
     timeout-minutes: 5
     needs:
       - backend-test
-      - frontend-test
+      - frontend-chromatic
       - e2e-check
     if: >-
       github.event.pull_request.draft != true &&
       (needs.backend-test.result == 'success' || needs.backend-test.result == 'skipped') &&
-      (needs.frontend-test.result == 'success' || needs.frontend-test.result == 'skipped') &&
+      (needs.frontend-chromatic.result == 'success' || needs.frontend-chromatic.result == 'skipped') &&
       (needs.e2e-check.result == 'success' || needs.e2e-check.result == 'skipped')
     steps:
       - uses: actions/checkout@v5
