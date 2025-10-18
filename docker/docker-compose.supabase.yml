@@ -239,7 +239,7 @@ services:
   # To use S3 backed storage: docker compose -f docker-compose.yml -f docker-compose.s3.yml up
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.28.0
+    image: supabase/storage-api:v1.28.1
     restart: unless-stopped
     volumes:
       - ./volumes/storage:/var/lib/storage:z
@@ -282,7 +282,7 @@ services:
 
   imgproxy:
     container_name: supabase-imgproxy
-    image: darthsim/imgproxy:v3.30.0
+    image: darthsim/imgproxy:v3.30.1
     restart: unless-stopped
     volumes:
       - ./volumes/storage:/var/lib/storage:z
@@ -304,7 +304,7 @@ services:
 
   meta:
     container_name: supabase-meta
-    image: supabase/postgres-meta:v0.91.6
+    image: supabase/postgres-meta:v0.91.7
     restart: unless-stopped
     depends_on:
       db:
@@ -395,7 +395,7 @@ services:
   # Comment out everything below this point if you are using an external Postgres database
   db:
     container_name: supabase-db
-    image: supabase/postgres:15.14.1.015
+    image: supabase/postgres:15.14.1.021
     restart: unless-stopped
     volumes:
       - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
@@ -485,7 +485,7 @@ services:
   # Update the DATABASE_URL if you are using an external Postgres database
   supavisor:
     container_name: supabase-pooler
-    image: supabase/supavisor:2.7.1
+    image: supabase/supavisor:2.7.3
     restart: unless-stopped
     ports:
       - ${POSTGRES_PORT}:5432
