@@ -59,6 +59,15 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/backend_app
+    env:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: example-db
+      POSTGRES_PORT: 5432
+      BACKEND_APP_PORT: 4300
+      DATABASE_HOST: 127.0.0.1
+      SUPABASE_URL: https://example.supabase.com
+      SUPABASE_KEY: example-key
     steps:
       - uses: actions/checkout@v5
 
