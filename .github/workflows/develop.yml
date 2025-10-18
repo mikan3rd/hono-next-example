@@ -196,6 +196,10 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/frontend_app
+    env:
+      NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:8000
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: test
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
