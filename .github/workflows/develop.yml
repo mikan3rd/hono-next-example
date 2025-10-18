@@ -42,20 +42,20 @@ jobs:
         with:
           filters: |
             backend:
-              - '.github/workflows/backend-app.yml'
+              - '.github/workflows/develop.yml'
               - 'packages/backend_app/**'
               - '.tool-versions'
               - 'biome.jsonc'
               - 'tsconfig.json'
             frontend:
-              - '.github/workflows/frontend-app.yml'
+              - '.github/workflows/develop.yml'
               - 'packages/backend_app/openapi.json'
               - 'packages/frontend_app/**'
               - '.tool-versions'
               - 'biome.jsonc'
               - 'tsconfig.json'
             e2e:
-              - '.github/workflows/e2e.yml'
+              - '.github/workflows/develop.yml'
               - 'packages/e2e/**'
               - '.dockerignore'
               - '.tool-versions'
