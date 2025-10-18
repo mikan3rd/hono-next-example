@@ -171,9 +171,8 @@ jobs:
       - run: bun run test-storybook --coverage
 
   frontend-chromatic:
-    name: Run Chromatic
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 4
     needs:
       - frontend-test
     if: github.event.pull_request.draft != true
