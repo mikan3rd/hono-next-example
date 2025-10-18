@@ -201,6 +201,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -215,6 +216,7 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/frontend_app
           exitZeroOnChanges: false
+          zip: true
 
   e2e-check:
     runs-on: ubuntu-latest
