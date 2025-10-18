@@ -189,7 +189,7 @@ jobs:
 
   frontend-chromatic:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 5
     needs:
       - frontend-test
     if: github.event.pull_request.draft != true
@@ -217,6 +217,7 @@ jobs:
           workingDir: packages/frontend_app
           exitZeroOnChanges: false
           zip: true
+          onlyChanged: true
 
   e2e-check:
     runs-on: ubuntu-latest
