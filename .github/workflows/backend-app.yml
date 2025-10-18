@@ -5,14 +5,15 @@ on:
     branches:
       - main
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
-defaults:
-  run:
-    working-directory: ./packages/backend_app
 
 env:
   POSTGRES_USER: user
@@ -44,11 +45,15 @@ jobs:
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
 
-  check:
+  backend-check:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     needs: changes
     if: ${{ needs.changes.outputs.backend == 'true' }}
+
+    defaults:
+      run:
+        working-directory: ./packages/backend_app
 
     steps:
       - uses: actions/checkout@v5
@@ -69,13 +74,17 @@ jobs:
 
       - run: bun run typecheck
 
-  test:
+  backend-test:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    needs: 
+    needs:
       - changes
-      - check
+      - backend-check
     if: ${{ needs.changes.outputs.backend == 'true' }}
+
+    defaults:
+      run:
+        working-directory: ./packages/backend_app
 
     services:
       postgres:
