@@ -27,6 +27,10 @@ env:
   NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
   NEXT_PUBLIC_SUPABASE_URL: http://localhost:8000
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: test
+  BACKEND_APP_SERVER_URL: http://localhost:4300
+  FRONTEND_APP_SERVER_URL: http://localhost
+  FRONTEND_APP_PORT: 4400
+  HOSTNAME: localhost
 
 jobs:
   changes:
@@ -52,9 +56,19 @@ jobs:
               - '.tool-versions'
               - 'biome.jsonc'
               - 'tsconfig.json'
+            e2e:
+              - '.github/workflows/e2e.yml'
+              - 'packages/e2e/**'
+              - '.dockerignore'
+              - '.tool-versions'
+              - 'biome.jsonc'
+              - 'docker/**'
+              - 'tsconfig.json'
+
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
+      e2e: ${{ steps.filter.outputs.e2e }}
 
   backend-check:
     runs-on: ubuntu-latest
@@ -198,3 +212,76 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/frontend_app
           exitZeroOnChanges: false
+
+  e2e-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: changes
+    if: needs.changes.outputs.e2e == 'true'
+    defaults:
+      run:
+        working-directory: ./packages/e2e
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .tool-versions
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run typecheck
+
+  e2e-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs:
+      - backend-test
+      - frontend-test
+      - e2e-check
+    if: >-
+      github.event.pull_request.draft != true &&
+      (needs.backend-test.result == 'success' || needs.backend-test.result == 'skipped') &&
+      (needs.frontend-test.result == 'success' || needs.frontend-test.result == 'skipped') &&
+      (needs.e2e-check.result == 'success' || needs.e2e-check.result == 'skipped')
+    steps:
+      - uses: actions/checkout@v5
+
+      - run: cp .env.example .env
+        working-directory: ./docker
+
+      - name: docker compose build
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml build
+        working-directory: ./docker
+
+      - name: docker compose up studio
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up -d studio
+        working-directory: ./docker
+
+      - name: docker compose up frontend_app
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up -d frontend_app
+        working-directory: ./docker
+
+      - name: docker compose up e2e
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up e2e --exit-code-from e2e
+        working-directory: ./docker
+
+      - name: docker compose logs
+        if: failure()
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml logs
+        working-directory: ./docker
+
+      # NOTE: npx playwright show-report name-of-my-extracted-playwright-report
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: "playwright-report-${{ github.sha }}"
+          path: packages/e2e/playwright-report/
+          retention-days: 1
+
+      - name: docker compose down
+        if: always()
+        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
+        working-directory: ./docker
