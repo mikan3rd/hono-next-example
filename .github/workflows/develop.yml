@@ -13,23 +13,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  POSTGRES_USER: user
-  POSTGRES_PASSWORD: password
-  POSTGRES_DB: example-db
-  POSTGRES_PORT: 5432
-  BACKEND_APP_PORT: 4300
-  DATABASE_HOST: 127.0.0.1
-  SUPABASE_URL: https://example.supabase.com
-  SUPABASE_KEY: example-key
-  NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
-  NEXT_PUBLIC_SUPABASE_URL: http://localhost:8000
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: test
-  BACKEND_APP_SERVER_URL: http://localhost:4300
-  FRONTEND_APP_SERVER_URL: http://localhost
-  FRONTEND_APP_PORT: 4400
-  HOSTNAME: localhost
-
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -103,6 +86,15 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/backend_app
+    env:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: example-db
+      POSTGRES_PORT: 5432
+      BACKEND_APP_PORT: 4300
+      DATABASE_HOST: 127.0.0.1
+      SUPABASE_URL: https://example.supabase.com
+      SUPABASE_KEY: example-key
     services:
       postgres:
         image: postgres:17.6
@@ -162,6 +154,10 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/frontend_app
+    env:
+      NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:8000
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: test
     container:
       # Make sure to grab the latest version of the Playwright image
       # https://playwright.dev/docs/docker#pull-the-image
@@ -244,6 +240,13 @@ jobs:
       (needs.backend-test.result == 'success' || needs.backend-test.result == 'skipped') &&
       (needs.frontend-chromatic.result == 'success' || needs.frontend-chromatic.result == 'skipped') &&
       (needs.e2e-check.result == 'success' || needs.e2e-check.result == 'skipped')
+    env:
+      BACKEND_APP_PORT: 4300
+      BACKEND_APP_SERVER_URL: http://localhost:4300
+      NEXT_PUBLIC_BACKEND_APP_URL: http://localhost:4300
+      FRONTEND_APP_SERVER_URL: http://localhost
+      FRONTEND_APP_PORT: 4400
+      HOSTNAME: localhost
     steps:
       - uses: actions/checkout@v5
 
