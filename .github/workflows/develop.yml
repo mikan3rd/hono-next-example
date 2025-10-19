@@ -256,6 +256,7 @@ jobs:
       - frontend-chromatic
       - e2e-check
     if: >-
+      always() &&
       github.event.pull_request.draft != true &&
       (needs.backend-test.result == 'success' || needs.backend-test.result == 'skipped') &&
       (needs.frontend-chromatic.result == 'success' || needs.frontend-chromatic.result == 'skipped') &&

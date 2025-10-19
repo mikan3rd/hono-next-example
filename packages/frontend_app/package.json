@@ -60,7 +60,7 @@
     "@vitest/coverage-v8": "3.2.4",
     "msw": "2.11.5",
     "msw-storybook-addon": "2.0.6",
-    "orval": "7.13.0",
+    "orval": "7.13.2",
     "playwright": "1.55.1",
     "storybook": "9.1.10",
     "vitest": "3.2.4"
