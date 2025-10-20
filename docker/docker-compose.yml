@@ -1,7 +1,6 @@
 name: "hono-next-example--dev"
 
 services:
-
   db_migrate:
     image: backend_app
     env_file:
@@ -88,7 +87,7 @@ services:
       - frontend_app
     volumes:
       - ../:/app
-      - ../playwright_node_modules:/app/node_modules
+      - ../playwright_node_modules:/app/packages/e2e/node_modules
 
   export-openapi:
     image: backend_app

@@ -1,6 +1,41 @@
 name: "hono-next-example--prod"
 
 services:
+  studio:
+    extends:
+      file: docker-compose.supabase.yml
+      service: studio
+
+  analytics:
+    extends:
+      file: docker-compose.supabase.yml
+      service: analytics
+
+  db:
+    extends:
+      file: docker-compose.supabase.yml
+      service: db
+
+  meta:
+    extends:
+      file: docker-compose.supabase.yml
+      service: meta
+
+  auth:
+    extends:
+      file: docker-compose.supabase.yml
+      service: auth
+
+  kong:
+    extends:
+      file: docker-compose.supabase.yml
+      service: kong
+
+  vector:
+    extends:
+      file: docker-compose.supabase.yml
+      service: vector
+
   db_migrate:
     build:
       context: ..
@@ -94,3 +129,6 @@ services:
       - ../packages/e2e/tests:/app/packages/e2e/tests
       - ../packages/e2e/playwright-report:/app/packages/e2e/playwright-report
       - ../packages/e2e/test-results:/app/packages/e2e/test-results
+
+volumes:
+  db-config:
