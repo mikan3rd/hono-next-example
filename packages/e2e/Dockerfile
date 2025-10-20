@@ -1,6 +1,6 @@
 # FIXME: bun do not support playwright
 # https://github.com/oven-sh/bun/issues/8222
-FROM mcr.microsoft.com/playwright:v1.55.1-noble
+FROM mcr.microsoft.com/playwright:v1.56.1-noble
 WORKDIR /app
 
 COPY package.json tsconfig.json /app/
