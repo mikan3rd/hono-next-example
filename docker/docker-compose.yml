@@ -1,6 +1,41 @@
 name: "hono-next-example--dev"
 
 services:
+  studio:
+    extends:
+      file: docker-compose.supabase.yml
+      service: studio
+
+  analytics:
+    extends:
+      file: docker-compose.supabase.yml
+      service: analytics
+
+  db:
+    extends:
+      file: docker-compose.supabase.yml
+      service: db
+
+  meta:
+    extends:
+      file: docker-compose.supabase.yml
+      service: meta
+
+  auth:
+    extends:
+      file: docker-compose.supabase.yml
+      service: auth
+
+  kong:
+    extends:
+      file: docker-compose.supabase.yml
+      service: kong
+
+  vector:
+    extends:
+      file: docker-compose.supabase.yml
+      service: vector
+
   db_migrate:
     image: backend_app
     env_file:
@@ -102,3 +137,4 @@ services:
 volumes:
   node_modules:
   playwright_node_modules:
+  db-config:
