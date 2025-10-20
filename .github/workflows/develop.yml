@@ -305,5 +305,5 @@ jobs:
 
       - name: docker compose down
         if: always()
-        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
+        run: docker compose -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
         working-directory: ./docker
