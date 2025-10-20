@@ -69,7 +69,7 @@ bun backend test
 cd docker
 
 docker compose build
-docker compose -f docker-compose.supabase.yml -f docker-compose.yml up -d
+docker compose -f docker-compose.yml up -d
 ```
 
 ### Production
@@ -77,8 +77,8 @@ docker compose -f docker-compose.supabase.yml -f docker-compose.yml up -d
 ```bash
 cd docker
 
-docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml build
-docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up -d
 ```
 
 ## Generate OpenAPI JSON

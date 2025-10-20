@@ -250,7 +250,7 @@ jobs:
 
   e2e-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     needs:
       - backend-test
       - frontend-chromatic
@@ -275,24 +275,24 @@ jobs:
         working-directory: ./docker
 
       - name: docker compose build
-        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml build
+        run: docker compose -f docker-compose.prod.yml build
         working-directory: ./docker
 
       - name: docker compose up studio
-        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up -d studio
+        run: docker compose -f docker-compose.prod.yml up -d studio
         working-directory: ./docker
 
       - name: docker compose up frontend_app
-        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up -d frontend_app
+        run: docker compose -f docker-compose.prod.yml up -d frontend_app
         working-directory: ./docker
 
       - name: docker compose up e2e
-        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml up e2e --exit-code-from e2e
+        run: docker compose -f docker-compose.prod.yml up e2e --exit-code-from e2e
         working-directory: ./docker
 
       - name: docker compose logs
         if: failure()
-        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml logs
+        run: docker compose -f docker-compose.prod.yml logs
         working-directory: ./docker
 
       # NOTE: npx playwright show-report name-of-my-extracted-playwright-report
@@ -302,8 +302,3 @@ jobs:
           name: "playwright-report-${{ github.sha }}"
           path: packages/e2e/playwright-report/
           retention-days: 1
-
-      - name: docker compose down
-        if: always()
-        run: docker compose -f docker-compose.supabase.yml -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
-        working-directory: ./docker
