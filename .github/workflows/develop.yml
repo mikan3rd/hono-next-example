@@ -250,7 +250,7 @@ jobs:
 
   e2e-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     needs:
       - backend-test
       - frontend-chromatic
@@ -302,8 +302,3 @@ jobs:
           name: "playwright-report-${{ github.sha }}"
           path: packages/e2e/playwright-report/
           retention-days: 1
-
-      - name: docker compose down
-        if: always()
-        run: docker compose -f docker-compose.prod.yml down --rmi all --volumes --remove-orphans
-        working-directory: ./docker
