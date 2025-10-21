@@ -43,7 +43,7 @@ services:
     environment:
       DATABASE_HOST: ${POSTGRES_HOST}
       SUPABASE_URL: http://kong:8000
-      SUPABASE_KEY: ${ANON_KEY}
+      SUPABASE_KEY: ${SERVICE_ROLE_KEY}
     command: |
       sh -c '
         bun install --frozen-lockfile &&
@@ -67,7 +67,7 @@ services:
     environment:
       DATABASE_HOST: db
       SUPABASE_URL: http://kong:8000
-      SUPABASE_KEY: ${ANON_KEY}
+      SUPABASE_KEY: ${SERVICE_ROLE_KEY}
       ENABLE_DB_INITIALIZE: true
     command: |
       sh -c '

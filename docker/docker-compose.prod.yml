@@ -48,7 +48,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       DATABASE_HOST: db
       SUPABASE_URL: http://kong:8000
-      SUPABASE_KEY: ${ANON_KEY}
+      SUPABASE_KEY: ${SERVICE_ROLE_KEY}
     command: |
       bun db:push
     depends_on:
@@ -67,7 +67,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       DATABASE_HOST: db
       SUPABASE_URL: http://kong:8000
-      SUPABASE_KEY: ${ANON_KEY}
+      SUPABASE_KEY: ${SERVICE_ROLE_KEY}
       ENABLE_DB_INITIALIZE: true
     ports:
       - "${BACKEND_APP_PORT}:${BACKEND_APP_PORT}"
