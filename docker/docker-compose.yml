@@ -79,6 +79,8 @@ services:
     depends_on:
       db_migrate:
         condition: service_completed_successfully
+      studio:
+        condition: service_started
     volumes:
       - ../:/app
       - node_modules:/app/node_modules
@@ -103,6 +105,7 @@ services:
       - "${FRONTEND_APP_PORT}:${FRONTEND_APP_PORT}"
     depends_on:
       - backend_app
+      - auth
     volumes:
       - ../:/app
       - node_modules:/app/node_modules
@@ -113,8 +116,6 @@ services:
       dockerfile: packages/e2e/Dockerfile
     env_file:
       - .env
-    command: |
-      npm run e2e:docker
     network_mode: host
     ports:
       - "9323:9323"
