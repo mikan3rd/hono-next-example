@@ -274,6 +274,10 @@ jobs:
       - run: cp .env.example .env
         working-directory: ./docker
 
+      - name: docker compose pull
+        run: docker compose -f docker-compose.prod.yml pull
+        working-directory: ./docker
+
       - name: docker compose build
         run: docker compose -f docker-compose.prod.yml build
         working-directory: ./docker
