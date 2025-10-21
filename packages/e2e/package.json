@@ -6,11 +6,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check . --error-on-warnings",
     "lint:fix": "biome check . --write --unsafe",
-    "e2e:local": "dotenvx run -- npx playwright test",
-    "e2e:local:ui": "dotenvx run -- npx playwright test --ui",
-    "e2e:docker": "npx playwright test",
-    "e2e:docker:screenshot": "npx playwright test --update-snapshots",
-    "e2e:show-report": "npx playwright show-report"
+    "e2e:local": "dotenvx run -- bun playwright test",
+    "e2e:local:ui": "dotenvx run -- bun playwright test --ui",
+    "e2e:docker": "bun playwright test",
+    "e2e:docker:screenshot": "bun playwright test --update-snapshots",
+    "e2e:show-report": "bun playwright show-report"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.5",
