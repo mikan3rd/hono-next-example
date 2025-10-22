@@ -105,6 +105,7 @@ jobs:
         working-directory: ./docker
 
       - run: cp docker/.env.example packages/backend_app/.env
+        working-directory: ./
 
       - name: docker compose pull
         run: docker compose pull vector db kong analytics rest
