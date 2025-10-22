@@ -43,8 +43,6 @@ services:
 
   db_migrate:
     image: backend_app
-    env_file:
-      - .env
     environment:
       DATABASE_HOST: ${POSTGRES_HOST}
       SUPABASE_URL: http://kong:8000
