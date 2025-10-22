@@ -96,8 +96,8 @@ jobs:
       run:
         working-directory: ./packages/backend_app
     env:
-      DATABASE_HOST: db
-      SUPABASE_URL: http://kong:8000
+      DATABASE_HOST: 127.0.0.1
+      SUPABASE_URL: http://127.0.0.1:8000
     steps:
       - uses: actions/checkout@v5
 
