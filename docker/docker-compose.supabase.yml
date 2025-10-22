@@ -36,6 +36,8 @@ services:
         condition: service_started
       kong:
         condition: service_started
+      rest:
+        condition: service_started
     environment:
       STUDIO_PG_META_URL: http://meta:8080
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
