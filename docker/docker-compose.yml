@@ -67,8 +67,6 @@ services:
       context: ..
       dockerfile: packages/backend_app/Dockerfile
       target: dev
-    env_file:
-      - .env
     environment:
       DATABASE_HOST: db
       SUPABASE_URL: http://kong:8000
@@ -95,8 +93,6 @@ services:
       context: ..
       dockerfile: packages/frontend_app/Dockerfile
       target: dev
-    env_file:
-      - .env
     environment:
       NEXT_PUBLIC_SUPABASE_URL: ${API_EXTERNAL_URL}
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${ANON_KEY}
@@ -119,8 +115,6 @@ services:
     build:
       context: ..
       dockerfile: packages/e2e/Dockerfile
-    env_file:
-      - .env
     network_mode: host
     ports:
       - "9323:9323"
@@ -132,8 +126,6 @@ services:
 
   export-openapi:
     image: backend_app
-    env_file:
-      - .env
     volumes:
       - ../:/app
       - node_modules:/app/node_modules
