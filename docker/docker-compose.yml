@@ -36,6 +36,11 @@ services:
       file: docker-compose.supabase.yml
       service: vector
 
+  rest:
+    extends:
+      file: docker-compose.supabase.yml
+      service: rest
+
   db_migrate:
     image: backend_app
     env_file:
