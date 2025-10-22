@@ -36,6 +36,11 @@ services:
       file: docker-compose.supabase.yml
       service: vector
 
+  rest:
+    extends:
+      file: docker-compose.supabase.yml
+      service: rest
+
   db_migrate:
     build:
       context: ..
@@ -74,6 +79,8 @@ services:
     depends_on:
       db_migrate:
         condition: service_completed_successfully
+      studio:
+        condition: service_started
 
   backend_health_check:
     image: curlimages/curl
@@ -112,6 +119,24 @@ services:
         condition: service_completed_successfully
       auth:
         condition: service_started
+
+  frontend_anon_check:
+    build:
+      context: ..
+      dockerfile: packages/frontend_app/Dockerfile
+      target: dev
+      args:
+        NEXT_PUBLIC_BACKEND_APP_URL: ${NEXT_PUBLIC_BACKEND_APP_URL}
+        NEXT_PUBLIC_SUPABASE_URL: ${API_EXTERNAL_URL}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${ANON_KEY}
+        HOSTNAME: ${HOSTNAME}
+    network_mode: host
+    depends_on:
+      - studio
+    command: |
+      bun test
+    volumes:
+      - ../packages/frontend_app:/app/packages/frontend_app
 
   e2e:
     build:
