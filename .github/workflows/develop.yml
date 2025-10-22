@@ -96,24 +96,26 @@ jobs:
       run:
         working-directory: ./packages/backend_app
     env:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: example-db
+      POSTGRES_PORT: 5432
+      BACKEND_APP_PORT: 4300
       DATABASE_HOST: 127.0.0.1
-      SUPABASE_URL: http://127.0.0.1:8000
+      SUPABASE_URL: https://example.supabase.com
+      SUPABASE_KEY: example-key
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          PGPORT: ${{ env.POSTGRES_PORT }}
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v5
-
-      - run: cp .env.example .env
-        working-directory: ./docker
-
-      - run: cp docker/.env.example packages/backend_app/.env
-        working-directory: ./
-
-      - name: docker compose pull
-        run: docker compose pull vector db kong analytics rest
-        working-directory: ./docker
-
-      - name: docker compose up
-        run: docker compose up -d vector db kong analytics rest
-        working-directory: ./docker
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -122,6 +124,8 @@ jobs:
       - run: bun install --frozen-lockfile
 
       - run: bun db:push
+        env:
+          SUPABASE_KEY: ${{ env.SERVICE_ROLE_KEY }}
 
       - run: bun test --coverage
 
