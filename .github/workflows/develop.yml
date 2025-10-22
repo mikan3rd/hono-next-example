@@ -114,6 +114,7 @@ jobs:
           PGPORT: ${{ env.POSTGRES_PORT }}
         ports:
           - 5432:5432
+
     steps:
       - uses: actions/checkout@v5
 
@@ -124,8 +125,6 @@ jobs:
       - run: bun install --frozen-lockfile
 
       - run: bun db:push
-        env:
-          SUPABASE_KEY: ${{ env.SERVICE_ROLE_KEY }}
 
       - run: bun test --coverage
 
