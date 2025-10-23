@@ -3,11 +3,13 @@
   "scripts": {
     "dev": "bun run --hot --no-clear-screen src/server.ts",
     "db:studio": "drizzle-kit studio",
+    "db:migrate": "bun run --bun drizzle-kit migrate",
     "db:push": "bun run --bun drizzle-kit push",
     "typecheck": "bun run --bun tsgo --noEmit",
     "lint": "bun run --bun biome check . --error-on-warnings",
     "lint:fix": "bun run lint --write --unsafe",
     "test:db:push": "bun --env-file=.env.test run --bun drizzle-kit push",
+    "test:db:migrate": "bun --env-file=.env.test run --bun drizzle-kit migrate",
     "test:local": "bun --env-file=.env.test test",
     "test:db:studio": "bun --env-file=.env.test drizzle-kit studio",
     "gen:openapi": "bun run src/scripts/export-openapi/index.ts",

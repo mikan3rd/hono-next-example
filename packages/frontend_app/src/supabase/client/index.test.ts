@@ -2,37 +2,37 @@ import { describe, expect, it } from "bun:test";
 import { faker } from "@faker-js/faker";
 import { createClient } from ".";
 
-// TODO: createClientからアクセス許可しないようにする想定
 describe("createClient", () => {
   const supabaseUid = faker.string.uuid();
 
-  it("can fetch from supabase DB", async () => {
+  // https://supabase.com/docs/guides/troubleshooting/database-api-42501-errors
+  it("can not fetch from supabase DB", async () => {
     const client = createClient();
-    const res = await client.from("users").select();
-    expect(res.status).toBe(200);
+    const { error } = await client.from("users").select();
+    expect(error?.code).toBe("42501");
   });
 
-  it("can insert into supabase DB", async () => {
+  it("can not insert into supabase DB", async () => {
     const client = createClient();
-    const res = await client.from("users").insert({
+    const { error } = await client.from("users").insert({
       supabase_uid: supabaseUid,
       display_name: faker.person.fullName(),
     });
-    expect(res.status).toBe(201);
+    expect(error?.code).toBe("42501");
   });
 
-  it("can update supabase DB", async () => {
+  it("can not update supabase DB", async () => {
     const client = createClient();
-    const res = await client.from("users").update({});
-    expect(res.status).toBe(204);
+    const { error } = await client.from("users").update({});
+    expect(error?.code).toBe("42501");
   });
 
-  it("can delete from supabase DB", async () => {
+  it("can not delete from supabase DB", async () => {
     const client = createClient();
-    const res = await client
+    const { error } = await client
       .from("users")
       .delete()
       .eq("supabase_uid", supabaseUid);
-    expect(res.status).toBe(204);
+    expect(error?.code).toBe("42501");
   });
 });

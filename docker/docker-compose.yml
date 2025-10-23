@@ -50,6 +50,7 @@ services:
     command: |
       sh -c '
         bun install --frozen-lockfile &&
+        bun db:migrate &&
         bun db:push
       '
     depends_on:

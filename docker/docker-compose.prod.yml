@@ -55,7 +55,10 @@ services:
       SUPABASE_URL: http://kong:8000
       SUPABASE_KEY: ${SERVICE_ROLE_KEY}
     command: |
-      bun db:push
+      sh -c '
+        bun db:migrate &&
+        bun db:push
+      '
     depends_on:
       db:
         condition: service_healthy
