@@ -30,6 +30,11 @@
       "automerge": false
     },
     {
+      "groupName": "biome dependencies",
+      "matchPackageNames": ["@biomejs/biome"],
+      "automerge": false
+    },
+    {
       "groupName": "orval dependencies",
       "matchPackageNames": ["orval"],
       "automerge": false
