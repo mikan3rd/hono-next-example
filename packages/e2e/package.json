@@ -16,7 +16,7 @@
     "@biomejs/biome": "2.2.6",
     "@chromatic-com/playwright": "0.12.7",
     "@dotenvx/dotenvx": "1.51.0",
-    "@playwright/test": "1.56.0",
+    "@playwright/test": "1.56.1",
     "@t3-oss/env-core": "0.13.8",
     "@types/node": "24.7.2",
     "typescript": "5.9.3",
