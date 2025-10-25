@@ -2,7 +2,7 @@
 
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1.2.23 AS base
+FROM oven/bun:1.3.0 AS base
 WORKDIR /app
 
 # install with --production (exclude devDependencies)
