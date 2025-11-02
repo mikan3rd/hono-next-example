@@ -24,14 +24,14 @@
     "drizzle-orm": "0.44.7",
     "drizzle-zod": "0.8.3",
     "es-toolkit": "1.40.0",
-    "hono": "4.9.12",
+    "hono": "4.10.1",
     "postgres": "3.4.7"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
-    "@faker-js/faker": "10.0.0",
+    "@faker-js/faker": "10.1.0",
     "@types/bun": "1.2.23",
-    "@types/node": "24.7.2",
+    "@types/node": "24.8.1",
     "@typescript/native-preview": "7.0.0-dev.20251025.1"
   }
 }
