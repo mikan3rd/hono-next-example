@@ -23,9 +23,14 @@
         }
       },
       "nursery": {
-        // "noFloatingPromises": "error",
+        "noFloatingPromises": "error",
         "noShadow": "error"
       }
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }
