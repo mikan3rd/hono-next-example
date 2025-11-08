@@ -13,7 +13,7 @@
     "e2e:show-report": "bun playwright show-report"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.0",
+    "@biomejs/biome": "2.3.2",
     "@chromatic-com/playwright": "0.12.7",
     "@dotenvx/dotenvx": "1.51.0",
     "@playwright/test": "1.56.1",
