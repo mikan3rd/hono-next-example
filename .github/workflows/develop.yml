@@ -189,7 +189,7 @@ jobs:
 
   frontend-chromatic:
     runs-on: ubuntu-slim
-    timeout-minutes: 10
+    timeout-minutes: 15
     needs:
       - frontend-test
     if: github.event.pull_request.draft != true
