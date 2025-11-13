@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   changes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v5
@@ -52,7 +52,7 @@ jobs:
       e2e: ${{ steps.filter.outputs.e2e }}
 
   backend-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 3
     needs: changes
     if: ${{ needs.changes.outputs.backend == 'true' }}
@@ -88,7 +88,7 @@ jobs:
       - run: bun run typecheck
 
   backend-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 3
     needs:
       - backend-check
@@ -129,7 +129,7 @@ jobs:
       - run: bun test --coverage
 
   frontend-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 3
     needs: changes
     if: needs.changes.outputs.frontend == 'true'
@@ -156,7 +156,7 @@ jobs:
       - run: bun run typecheck
 
   frontend-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 3
     needs:
       - frontend-check
@@ -188,7 +188,7 @@ jobs:
       - run: bun run test-storybook --coverage
 
   frontend-chromatic:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 10
     needs:
       - frontend-test
@@ -228,7 +228,7 @@ jobs:
           onlyChanged: true
 
   e2e-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 3
     needs: changes
     if: needs.changes.outputs.e2e == 'true'
