@@ -25,7 +25,7 @@ const meta = {
       handlers: [getGetUserLoginMockHandler(user)],
     },
   },
-  render: (args) => {
+  render: (args, _context) => {
     const { sessionState } = useUserContext();
     return (
       <>
