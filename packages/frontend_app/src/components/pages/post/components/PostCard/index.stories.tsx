@@ -25,15 +25,17 @@ const meta = {
       handlers: [getGetUserLoginMockHandler(user)],
     },
   },
-  render: (args, _context) => {
-    const { sessionState } = useUserContext();
-    return (
-      <>
-        <PostCard {...args} />
-        <div className="hidden">{sessionState.status}</div>
-      </>
-    );
-  },
+  decorators: [
+    (StoryFn) => {
+      const { sessionState } = useUserContext();
+      return (
+        <>
+          <StoryFn />
+          <div className="hidden">{sessionState.status}</div>
+        </>
+      );
+    },
+  ],
 } satisfies Meta<typeof PostCard>;
 
 export default meta;
