@@ -57,6 +57,7 @@
     "@storybook/nextjs-vite": "9.1.16",
     "@typescript/native-preview": "7.0.0-dev.20251114.1",
     "@vitest/browser": "4.0.3",
+    "@vitest/browser-playwright": "4.0.13",
     "@vitest/coverage-v8": "4.0.3",
     "msw": "2.12.2",
     "msw-storybook-addon": "2.0.6",
