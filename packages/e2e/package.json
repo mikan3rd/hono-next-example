@@ -6,6 +6,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check . --error-on-warnings",
     "lint:fix": "biome check . --write --unsafe",
+    "check:all": "bun install && bun run lint:fix && bun run typecheck",
     "e2e:local": "dotenvx run -- bun playwright test",
     "e2e:local:ui": "dotenvx run -- bun playwright test --ui",
     "e2e:docker": "bun playwright test",
