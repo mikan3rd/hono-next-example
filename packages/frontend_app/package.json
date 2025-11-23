@@ -16,7 +16,7 @@
     "lint": "bun run --bun biome check . --error-on-warnings",
     "lint:fix": "bun run --bun biome check . --write --unsafe",
     "dev-storybook": "bun run --bun storybook dev -p 6006",
-    "build-storybook": "bun run --bun storybook build",
+    "build-storybook": "bun run storybook build",
     "test-storybook": "bun run vitest --project=storybook",
     "gen:client": "bun run --bun orval",
     "check:all": "bun install && bun run gen:client && bun run lint:fix && bun run typecheck && bun run test-storybook"
