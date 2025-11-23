@@ -222,7 +222,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Run build storybook
-        run: bun run build-storybook --stats-json storybook-static
+        run: bun run build-storybook --stats-json
 
       - name: Run Chromatic
         uses: chromaui/action@v13
