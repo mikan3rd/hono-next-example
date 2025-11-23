@@ -307,7 +307,7 @@ jobs:
         working-directory: ./docker
 
       # NOTE: npx playwright show-report name-of-my-extracted-playwright-report
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: "playwright-report-${{ github.sha }}"
