@@ -232,7 +232,7 @@ jobs:
           exitZeroOnChanges: false
           zip: true
           onlyChanged: true
-          storybookBuildDir: packages/frontend_app/storybook-static
+          storybookBuildDir: storybook-static
 
   e2e-check:
     runs-on: ubuntu-slim
