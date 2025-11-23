@@ -192,7 +192,7 @@ jobs:
 
   frontend-chromatic:
     runs-on: ubuntu-slim
-    timeout-minutes: 15
+    timeout-minutes: 10
     needs:
       - frontend-test
     if: github.event.pull_request.draft != true
@@ -222,7 +222,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Run build storybook
-        run: bun run build-storybook --stats-json
+        run: bun run build-storybook --stats-json storybook-static
 
       - name: Run Chromatic
         uses: chromaui/action@v13
