@@ -18,7 +18,7 @@
   "dependencies": {
     "@hono/swagger-ui": "0.5.2",
     "@hono/zod-openapi": "1.1.5",
-    "@supabase/supabase-js": "2.80.0",
+    "@supabase/supabase-js": "2.81.1",
     "@t3-oss/env-core": "0.13.8",
     "drizzle-kit": "0.31.7",
     "drizzle-orm": "0.44.7",
