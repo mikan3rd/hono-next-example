@@ -5,6 +5,7 @@
   "rebaseWhen": "automerging",
   "timezone": "Asia/Tokyo",
   "schedule": ["* * * * 6"],
+  "automergeSchedule": ["* * * * 0"],
   "extends": ["config:js-app", ":automergeMinor"],
   "major": {
     "minimumReleaseAge": "28 days"
