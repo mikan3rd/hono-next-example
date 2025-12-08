@@ -1,12 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "labels": ["renovate"],
+  "labels": [
+    "renovate"
+  ],
   "configMigration": true,
   "rebaseWhen": "automerging",
   "timezone": "Asia/Tokyo",
-  "schedule": ["* * * * 6"],
-  "automergeSchedule": ["* * * * 0-5"],
-  "extends": ["config:js-app", ":automergeMinor"],
+  "schedule": [
+    "* * * * 6"
+  ],
+  "automergeSchedule": [
+    "* * * * 0-5"
+  ],
+  "extends": [
+    "config:js-app",
+    ":automergeMinor"
+  ],
   "major": {
     "minimumReleaseAge": "28 days"
   },
@@ -19,25 +28,38 @@
   "packageRules": [
     {
       "groupName": "all patch dependencies",
-      "matchUpdateTypes": ["patch"]
+      "matchUpdateTypes": [
+        "patch"
+      ]
     },
     {
       "groupName": "all minor dependencies",
-      "matchUpdateTypes": ["minor"]
+      "matchUpdateTypes": [
+        "minor"
+      ]
     },
     {
       "groupName": "bun dependencies",
-      "matchPackageNames": ["bun", "@types/bun", "oven/bun", "oven-sh/bun"],
+      "matchPackageNames": [
+        "bun",
+        "@types/bun",
+        "oven/bun",
+        "oven-sh/bun"
+      ],
       "automerge": false
     },
     {
       "groupName": "biome dependencies",
-      "matchPackageNames": ["@biomejs/biome"],
+      "matchPackageNames": [
+        "@biomejs/biome"
+      ],
       "automerge": false
     },
     {
       "groupName": "orval dependencies",
-      "matchPackageNames": ["orval"],
+      "matchPackageNames": [
+        "orval"
+      ],
       "automerge": false
     },
     {
@@ -51,12 +73,17 @@
     },
     {
       "groupName": "vitest dependencies",
-      "matchPackagePatterns": ["^@vitest/", "^vitest$"],
-      "automerge": false
+      "automerge": false,
+      "matchPackageNames": [
+        "/^@vitest//",
+        "/^vitest$/"
+      ]
     },
     {
       "groupName": "supabase vector",
-      "matchPackageNames": ["timberio/vector"],
+      "matchPackageNames": [
+        "timberio/vector"
+      ],
       "automerge": false
     }
   ]
