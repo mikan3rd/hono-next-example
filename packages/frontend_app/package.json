@@ -19,7 +19,7 @@
     "build-storybook": "bun run storybook build",
     "test-storybook": "bun run vitest --project=storybook",
     "gen:client": "bun run --bun orval",
-    "check:all": "bun install && bun run gen:client && bun run lint:fix && bun run typecheck && bun run test-storybook"
+    "check:all": "bun install && bun run gen:client && bun run lint:fix && bun run typecheck && bun run test-storybook --run"
   },
   "dependencies": {
     "@js-temporal/polyfill": "0.5.1",
