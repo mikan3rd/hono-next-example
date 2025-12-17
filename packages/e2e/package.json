@@ -14,7 +14,7 @@
     "e2e:show-report": "bun playwright show-report"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.5",
+    "@biomejs/biome": "2.3.8",
     "@chromatic-com/playwright": "0.12.8",
     "@dotenvx/dotenvx": "1.51.1",
     "@playwright/test": "1.56.1",
