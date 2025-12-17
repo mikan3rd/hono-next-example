@@ -18,7 +18,7 @@
     "dev-storybook": "bun run --bun storybook dev -p 6006",
     "build-storybook": "bun run storybook build",
     "test-storybook": "bun run vitest --project=storybook",
-    "gen:client": "bun run --bun orval",
+    "gen:client": "bun run orval",
     "check:all": "bun install && bun run gen:client && bun run lint:fix && bun run typecheck && bun run test-storybook --run"
   },
   "dependencies": {
@@ -61,7 +61,7 @@
     "@vitest/coverage-v8": "4.0.13",
     "msw": "2.12.4",
     "msw-storybook-addon": "2.0.6",
-    "orval": "7.16.1",
+    "orval": "7.17.0",
     "playwright": "1.56.1",
     "storybook": "10.1.3",
     "vitest": "4.0.13"
