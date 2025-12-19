@@ -1,5 +1,6 @@
 node_modules
+packages/backend_app/node_modules
+packages/frontend_app/node_modules
+packages/e2e/node_modules
 
 packages/frontend_app/.next
-
-packages/e2e/node_modules
