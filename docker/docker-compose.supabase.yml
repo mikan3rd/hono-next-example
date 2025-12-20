@@ -337,7 +337,7 @@ services:
 
   analytics:
     container_name: supabase-analytics
-    image: supabase/logflare:1.26.24
+    image: supabase/logflare:1.26.25
     restart: unless-stopped
     ports:
       - 4000:4000
@@ -381,7 +381,7 @@ services:
   # Comment out everything below this point if you are using an external Postgres database
   db:
     container_name: supabase-db
-    image: supabase/postgres:17.6.1.062
+    image: supabase/postgres:17.6.1.064
     restart: unless-stopped
     volumes:
       - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
