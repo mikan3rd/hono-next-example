@@ -1,5 +1,8 @@
 # :rocket: hono-next-example
 
+- [Chromatic Library](https://www.chromatic.com/library?appId=68b4d2ddc7b859a68b164a43)
+- [Storybook](https://main--68b4d2ddc7b859a68b164a43.chromatic.com)
+
 ## Tech Stack
 
 - Common
@@ -24,6 +27,33 @@
 
 ## Setup
 
+### Environment Variables
+
+- Create `.env` file in the docker directory, refer to `.env.example`
+- Otherwise an error will occur when running the development server
+
+## Run by Docker
+
+### Development Server
+
+```bash
+cd docker
+
+docker compose build
+docker compose up -d
+```
+
+### Production
+
+```bash
+cd docker
+
+docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up -d
+```
+
+## Run by local
+
 - Install package manager **asdf**
 
 ```bash
@@ -39,50 +69,15 @@ asdf install
 - Install dependencies by Bun
 
 ```bash
-bun install-all
-```
-
-### Environment Variables
-
-- Create `.env` file in the root directory, refer to `.env.example`
-- Otherwise an error will occur when running the development server
-
-## Run development server
-
-```bash
-bun backend dev
-bun frontend dev --port 4400
+bun install
 ```
 
 ### Format & Lint & Test
 
 ```bash
-bun backend lint:fix
-bun backend test
-```
+cd packages/backend_app
+bun check:all
 
-## Run by Docker
-
-### Development Server
-
-```bash
-cd docker
-
-docker compose build
-docker compose -f docker-compose.yml up -d
-```
-
-### Production
-
-```bash
-cd docker
-
-docker compose -f docker-compose.prod.yml build
-docker compose -f docker-compose.prod.yml up -d
-```
-
-## Generate OpenAPI JSON
-
-```bash
-bun run export-openapi
+cd packages/frontend_app
+bun check:all
 ```
