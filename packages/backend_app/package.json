@@ -18,13 +18,13 @@
   "dependencies": {
     "@hono/swagger-ui": "0.5.2",
     "@hono/zod-openapi": "1.1.6",
-    "@supabase/supabase-js": "2.86.2",
+    "@supabase/supabase-js": "2.87.1",
     "@t3-oss/env-core": "0.13.10",
     "drizzle-kit": "0.31.8",
     "drizzle-orm": "0.45.1",
     "drizzle-zod": "0.8.3",
-    "es-toolkit": "1.42.0",
-    "hono": "4.10.8",
+    "es-toolkit": "1.43.0",
+    "hono": "4.11.0",
     "postgres": "3.4.7"
   },
   "devDependencies": {

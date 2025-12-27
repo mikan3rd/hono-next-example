@@ -109,7 +109,7 @@ jobs:
       SUPABASE_KEY: example-key
     services:
       postgres:
-        image: postgres:18.0
+        image: postgres:18.1
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
