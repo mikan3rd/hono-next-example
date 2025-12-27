@@ -300,7 +300,7 @@ services:
 
   meta:
     container_name: supabase-meta
-    image: supabase/postgres-meta:v0.95.0
+    image: supabase/postgres-meta:v0.95.1
     restart: unless-stopped
     depends_on:
       db:
@@ -381,7 +381,7 @@ services:
   # Comment out everything below this point if you are using an external Postgres database
   db:
     container_name: supabase-db
-    image: supabase/postgres:17.6.1.064
+    image: supabase/postgres:17.6.1.066
     restart: unless-stopped
     volumes:
       - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
