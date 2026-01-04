@@ -4,8 +4,8 @@
   "configMigration": true,
   "rebaseWhen": "automerging",
   "timezone": "Asia/Tokyo",
-  "schedule": ["* * * * 6"],
-  "automergeSchedule": ["* * * * 0-5"],
+  "schedule": ["* * * * 5"],
+  "automergeSchedule": ["* * * * 0-4,6"],
   "extends": ["config:js-app", ":automergeMinor"],
   "major": {
     "minimumReleaseAge": "28 days"
