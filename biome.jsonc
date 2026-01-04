@@ -2,7 +2,17 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "files": {
-    "includes": ["**", "!**/node_modules"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/storybook-static",
+      "!**/public/mockServiceWorker.js",
+      "!**/test-results",
+      "!**/playwright-report",
+      "!**/blob-report",
+      "!**/playwright/.cache"
+    ]
   },
   "formatter": {
     "indentStyle": "space"
