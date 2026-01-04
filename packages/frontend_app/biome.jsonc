@@ -1,13 +1,6 @@
 {
   "root": false,
   "extends": "//",
-  "files": {
-    "includes": [
-      "!**/.next",
-      "!**/storybook-static",
-      "!**/public/mockServiceWorker.js"
-    ]
-  },
   "overrides": [
     {
       "includes": ["src/client/**/*.ts"],
