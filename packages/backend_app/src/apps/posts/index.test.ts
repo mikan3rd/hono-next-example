@@ -4,7 +4,7 @@ import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
 import { db } from "../../db";
-import { postsTable, usersTable } from "../../db/schema";
+import { postLogsTable, postsTable, usersTable } from "../../db/schema";
 import { supabaseUid } from "../../test/supabase";
 
 describe("postsApp", () => {
@@ -60,20 +60,16 @@ describe("postsApp", () => {
 
     describe("when there are some posts", () => {
       beforeEach(async () => {
-        await db
-          .insert(postsTable)
-          .values({
-            public_id: faker.string.uuid(),
-            user_id: user.id,
-            content: "test",
-          });
-        await db
-          .insert(postsTable)
-          .values({
-            public_id: faker.string.uuid(),
-            user_id: user.id,
-            content: "test2",
-          });
+        await db.insert(postsTable).values({
+          public_id: faker.string.uuid(),
+          user_id: user.id,
+          content: "test",
+        });
+        await db.insert(postsTable).values({
+          public_id: faker.string.uuid(),
+          user_id: user.id,
+          content: "test2",
+        });
       });
 
       it("should return 200 Response", async () => {
@@ -141,6 +137,14 @@ describe("postsApp", () => {
         const post = posts[0];
         if (!post) throw new Error("post is not found");
         expect(post.content).toBe(content);
+
+        const postLogs = await db.select().from(postLogsTable);
+        expect(postLogs).toHaveLength(1);
+        const postLog = postLogs[0];
+        if (!postLog) throw new Error("postLog is not found");
+        expect(postLog.public_id).toBe(post.public_id);
+        expect(postLog.user_id).toBe(post.user_id);
+        expect(postLog.content).toBe(content);
       });
     });
 
@@ -216,6 +220,16 @@ describe("postsApp", () => {
           const post = posts[0];
           if (!post) throw new Error("post is not found");
           expect(post.content).toBe(content);
+          expect(post.public_id).toBe(public_id);
+
+          const postLogs = await db.select().from(postLogsTable);
+          expect(postLogs).toHaveLength(1);
+          const postLog = postLogs[0];
+          if (!postLog) throw new Error("postLog is not found");
+          expect(postLog.id).toBe(post.id);
+          expect(postLog.public_id).toBe(post.public_id);
+          expect(postLog.user_id).toBe(post.user_id);
+          expect(postLog.content).toBe(content);
         });
       });
 
