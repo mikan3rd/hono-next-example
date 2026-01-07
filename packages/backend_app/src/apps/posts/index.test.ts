@@ -34,7 +34,7 @@ describe("postsApp", () => {
       await db
         .insert(usersTable)
         .values({
-          public_id: crypto.randomUUID(),
+          public_id: faker.string.uuid(),
           supabase_uid: faker.string.uuid(),
           display_name: faker.person.fullName(),
         })
