@@ -21,6 +21,7 @@ describe("postsApp", () => {
       await db
         .insert(usersTable)
         .values({
+          public_id: faker.string.uuid(),
           supabase_uid: supabaseUid,
           display_name: faker.person.fullName(),
         })
@@ -33,6 +34,7 @@ describe("postsApp", () => {
       await db
         .insert(usersTable)
         .values({
+          public_id: crypto.randomUUID(),
           supabase_uid: faker.string.uuid(),
           display_name: faker.person.fullName(),
         })
@@ -60,10 +62,10 @@ describe("postsApp", () => {
       beforeEach(async () => {
         await db
           .insert(postsTable)
-          .values({ user_id: user.id, content: "test" });
+          .values({ public_id: faker.string.uuid(), user_id: user.id, content: "test" });
         await db
           .insert(postsTable)
-          .values({ user_id: user.id, content: "test2" });
+          .values({ public_id: faker.string.uuid(), user_id: user.id, content: "test2" });
       });
 
       it("should return 200 Response", async () => {

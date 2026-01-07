@@ -33,7 +33,7 @@ describe("userMiddleware", () => {
   describe("when user is found", () => {
     beforeEach(async () => {
       await db.insert(usersTable).values({
-        public_id: crypto.randomUUID(),
+        public_id: faker.string.uuid(),
         supabase_uid: supabaseUid,
         display_name: faker.person.fullName(),
       });
