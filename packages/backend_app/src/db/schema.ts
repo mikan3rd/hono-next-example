@@ -8,10 +8,6 @@ const primaryKeys = () => ({
 
 const timestamps = {
   created_at: timestamp().defaultNow().notNull(),
-  updated_at: timestamp()
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
 };
 
 export const usersTable = pgTable("users", {
@@ -36,3 +32,10 @@ export const postsRelations = relations(postsTable, ({ one }) => ({
     references: [usersTable.id],
   }),
 }));
+
+export const postLogsTable = pgTable("post_logs", {
+  ...primaryKeys(),
+  user_id: integer().notNull(),
+  content: text().notNull(),
+  ...timestamps,
+});

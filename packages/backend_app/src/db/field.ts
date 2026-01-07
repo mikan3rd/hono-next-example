@@ -9,7 +9,6 @@ export const postPublicFieldDefs = [
   "public_id",
   "content",
   "created_at",
-  "updated_at",
 ] satisfies (keyof typeof postsTable.$inferSelect)[];
 
 const createFieldsFromDefs = <T extends readonly string[]>(

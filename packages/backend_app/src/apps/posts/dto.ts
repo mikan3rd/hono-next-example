@@ -25,12 +25,6 @@ const postSelectSchema = createSelectSchema(postsTable, {
       example: "2025-01-01T00:00:00Z",
       format: "date-time",
     }),
-  updated_at: (schema) =>
-    schema.openapi({
-      description: "The date and time the post was updated",
-      example: "2025-01-01T00:00:00Z",
-      format: "date-time",
-    }),
 })
   .pick(postPublicFields)
   .strict()
