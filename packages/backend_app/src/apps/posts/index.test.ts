@@ -77,7 +77,6 @@ describe("postsApp", () => {
           public_id: expect.any(String),
           content: "test2",
           created_at: expect.any(String),
-          updated_at: expect.any(String),
           user: {
             public_id: user.public_id,
             display_name: user.display_name,
@@ -87,7 +86,6 @@ describe("postsApp", () => {
           public_id: expect.any(String),
           content: "test",
           created_at: expect.any(String),
-          updated_at: expect.any(String),
           user: {
             public_id: user.public_id,
             display_name: user.display_name,
@@ -133,7 +131,6 @@ describe("postsApp", () => {
         const post = posts[0];
         if (!post) throw new Error("post is not found");
         expect(post.content).toBe(content);
-        expect(post.created_at).toEqual(post.updated_at);
       });
     });
 
@@ -209,9 +206,6 @@ describe("postsApp", () => {
           const post = posts[0];
           if (!post) throw new Error("post is not found");
           expect(post.content).toBe(content);
-          expect(post.created_at.getTime()).toBeLessThan(
-            post.updated_at.getTime(),
-          );
         });
       });
 

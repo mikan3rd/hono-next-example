@@ -62,9 +62,11 @@ export const updatePostRequestSchema = createUpdateSchema(postsTable, {
       description: "The content of the post",
       example: "test",
     }),
-}).pick({
-  content: true,
-});
+})
+  .pick({
+    content: true,
+  })
+  .required();
 
 export const updatePostResponseSchema = postPostResponseSchema;
 

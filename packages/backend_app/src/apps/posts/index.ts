@@ -99,7 +99,7 @@ const routes = postApp
         .insert(postsTable)
         .values({
           public_id: target.public_id,
-          user_id: user.id,
+          user_id: target.user_id,
           content,
         })
         .returning();
