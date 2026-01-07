@@ -17,9 +17,10 @@ const routes = userApp
   .openapi(signupRoute, async (c) => {
     const { sub: supabase_uid } = c.get("jwtClaims");
     const { display_name } = await c.req.valid("json");
+    const public_id = crypto.randomUUID();
     await db
       .insert(usersTable)
-      .values({ supabase_uid, display_name })
+      .values({ public_id, supabase_uid, display_name })
       .onConflictDoNothing({ target: usersTable.supabase_uid });
     return c.json(null, 200);
   })
