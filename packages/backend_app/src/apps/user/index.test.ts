@@ -49,7 +49,7 @@ describe("userApp", () => {
     describe("when supabase_uid is already registered", () => {
       beforeEach(async () => {
         await db.insert(usersTable).values({
-          public_id: crypto.randomUUID(), // FIXME
+          public_id: crypto.randomUUID(),
           supabase_uid: supabaseUid,
           display_name: faker.person.fullName(),
         });
@@ -86,7 +86,7 @@ describe("userApp", () => {
           await db
             .insert(usersTable)
             .values({
-              public_id: crypto.randomUUID(), // FIXME
+              public_id: crypto.randomUUID(),
               supabase_uid: supabaseUid,
               display_name: faker.person.fullName(),
             })
