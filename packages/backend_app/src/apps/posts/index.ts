@@ -109,7 +109,14 @@ const routes = postApp
         throw new HTTPException(500, {
           message: "Failed to update post",
         });
-      return result;
+
+      await tx.insert(postLogsTable).values({
+        id: result.id,
+        public_id: result.public_id,
+        user_id: result.user_id,
+        content: result.content,
+        created_at: result.created_at,
+      });
     });
 
     const response = {
