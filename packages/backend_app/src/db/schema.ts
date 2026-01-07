@@ -3,7 +3,7 @@ import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 const primaryKeys = () => ({
   id: integer().primaryKey().generatedAlwaysAsIdentity(), // TODO: uuid v7 を検討
-  public_id: uuid().unique().notNull().defaultRandom(), // uuid v4
+  public_id: uuid().unique().notNull(), // uuid v4
 });
 
 const timestamps = {
@@ -34,7 +34,8 @@ export const postsRelations = relations(postsTable, ({ one }) => ({
 }));
 
 export const postLogsTable = pgTable("post_logs", {
-  ...primaryKeys(),
+  id: integer().primaryKey(),
+  public_id: uuid().notNull(),
   user_id: integer().notNull(),
   content: text().notNull(),
   ...timestamps,
