@@ -49,6 +49,7 @@ const routes = postApp
         });
 
       await tx.insert(postLogsTable).values({
+        id: post.id,
         public_id: post.public_id,
         user_id: post.user_id,
         content: post.content,
