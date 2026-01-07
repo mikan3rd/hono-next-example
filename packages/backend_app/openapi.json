@@ -56,15 +56,9 @@
             "format": "date-time",
             "description": "The date and time the post was created",
             "example": "2025-01-01T00:00:00Z"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The date and time the post was updated",
-            "example": "2025-01-01T00:00:00Z"
           }
         },
-        "required": ["public_id", "content", "created_at", "updated_at"],
+        "required": ["public_id", "content", "created_at"],
         "additionalProperties": false
       }
     },
@@ -752,7 +746,8 @@
                     "description": "The content of the post",
                     "example": "test"
                   }
-                }
+                },
+                "required": ["content"]
               }
             }
           }

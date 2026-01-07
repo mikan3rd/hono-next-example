@@ -62,10 +62,18 @@ describe("postsApp", () => {
       beforeEach(async () => {
         await db
           .insert(postsTable)
-          .values({ public_id: faker.string.uuid(), user_id: user.id, content: "test" });
+          .values({
+            public_id: faker.string.uuid(),
+            user_id: user.id,
+            content: "test",
+          });
         await db
           .insert(postsTable)
-          .values({ public_id: faker.string.uuid(), user_id: user.id, content: "test2" });
+          .values({
+            public_id: faker.string.uuid(),
+            user_id: user.id,
+            content: "test2",
+          });
       });
 
       it("should return 200 Response", async () => {
