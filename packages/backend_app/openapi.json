@@ -56,9 +56,16 @@
             "format": "date-time",
             "description": "The date and time the post was created",
             "example": "2025-01-01T00:00:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time",
+            "description": "The date and time the post was updated",
+            "example": "2025-01-01T00:00:00Z"
           }
         },
-        "required": ["public_id", "content", "created_at"],
+        "required": ["public_id", "content", "created_at", "updated_at"],
         "additionalProperties": false
       }
     },
