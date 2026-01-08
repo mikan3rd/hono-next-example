@@ -36,11 +36,10 @@ const routes = postApp
     const { content } = c.req.valid("json");
     const user = c.get("user");
     const result = await db.transaction(async (tx) => {
-      const public_id = crypto.randomUUID();
       const post = (
         await tx
           .insert(postsTable)
-          .values({ public_id, user_id: user.id, content })
+          .values({ public_id: crypto.randomUUID(), user_id: user.id, content })
           .returning()
       )[0];
       if (!post)
