@@ -34,7 +34,10 @@ export const getGetPostsResponseMock = (
       public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-      updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+      updated_at: faker.helpers.arrayElement([
+        `${faker.date.past().toISOString().split(".")[0]}Z`,
+        null,
+      ]),
     },
     ...{
       user: {
@@ -54,7 +57,10 @@ export const getPostPostsResponseMock = (
       public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-      updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+      updated_at: faker.helpers.arrayElement([
+        `${faker.date.past().toISOString().split(".")[0]}Z`,
+        null,
+      ]),
     },
     ...{
       user: {
@@ -74,7 +80,10 @@ export const getPutPostsPublicIdResponseMock = (
       public_id: faker.string.uuid(),
       content: faker.string.alpha({ length: { min: 10, max: 20 } }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-      updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+      updated_at: faker.helpers.arrayElement([
+        `${faker.date.past().toISOString().split(".")[0]}Z`,
+        null,
+      ]),
     },
     ...{
       user: {

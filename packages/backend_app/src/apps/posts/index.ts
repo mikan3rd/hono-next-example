@@ -2,7 +2,7 @@ import { desc, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import { db } from "../../db";
 import { postWithUserQuery } from "../../db/query";
-import { postsTable } from "../../db/schema";
+import { postLogsTable, postsTable } from "../../db/schema";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
 import {
@@ -35,19 +35,33 @@ const routes = postApp
   .openapi(postPostRoute, async (c) => {
     const { content } = c.req.valid("json");
     const user = c.get("user");
-    const result = await db
-      .insert(postsTable)
-      .values({ user_id: user.id, content })
-      .returning();
-    const post = result[0];
-    if (!post)
-      throw new HTTPException(500, {
-        message: "Failed to create post",
+    const result = await db.transaction(async (tx) => {
+      const post = (
+        await tx
+          .insert(postsTable)
+          .values({ public_id: crypto.randomUUID(), user_id: user.id, content })
+          .returning()
+      )[0];
+      if (!post)
+        throw new HTTPException(500, {
+          message: "Failed to create post",
+        });
+
+      await tx.insert(postLogsTable).values({
+        id: post.id,
+        public_id: post.public_id,
+        user_id: post.user_id,
+        content: post.content,
+        created_at: post.created_at,
       });
+
+      return post;
+    });
+
     const response = {
       post: await db.query.postsTable.findFirst({
         ...postWithUserQuery,
-        where: eq(postsTable.id, post.id),
+        where: eq(postsTable.id, result.id),
       }),
     };
     return c.json(postPostResponseSchema.parse(response), 200);
@@ -58,7 +72,7 @@ const routes = postApp
     const { content } = c.req.valid("json");
     const user = c.get("user");
 
-    const post = await db.transaction(async (tx) => {
+    await db.transaction(async (tx) => {
       const target = (
         await tx
           .select()
@@ -78,10 +92,16 @@ const routes = postApp
         });
       }
 
+      await tx.delete(postsTable).where(eq(postsTable.public_id, public_id));
+
       const results = await tx
-        .update(postsTable)
-        .set({ content })
-        .where(eq(postsTable.public_id, public_id))
+        .insert(postsTable)
+        .values({
+          public_id: target.public_id,
+          user_id: target.user_id,
+          content,
+          updated_at: new Date(),
+        })
         .returning();
 
       const result = results[0];
@@ -89,13 +109,21 @@ const routes = postApp
         throw new HTTPException(500, {
           message: "Failed to update post",
         });
-      return result;
+
+      await tx.insert(postLogsTable).values({
+        id: result.id,
+        public_id: result.public_id,
+        user_id: result.user_id,
+        content: result.content,
+        created_at: result.created_at,
+        updated_at: result.updated_at,
+      });
     });
 
     const response = {
       post: await db.query.postsTable.findFirst({
         ...postWithUserQuery,
-        where: eq(postsTable.id, post.id),
+        where: eq(postsTable.public_id, public_id),
       }),
     };
 

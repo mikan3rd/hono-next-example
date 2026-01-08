@@ -4,7 +4,7 @@ import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
 import { db } from "../../db";
-import { postsTable, usersTable } from "../../db/schema";
+import { postLogsTable, postsTable, usersTable } from "../../db/schema";
 import { supabaseUid } from "../../test/supabase";
 
 describe("postsApp", () => {
@@ -21,6 +21,7 @@ describe("postsApp", () => {
       await db
         .insert(usersTable)
         .values({
+          public_id: faker.string.uuid(),
           supabase_uid: supabaseUid,
           display_name: faker.person.fullName(),
         })
@@ -33,6 +34,7 @@ describe("postsApp", () => {
       await db
         .insert(usersTable)
         .values({
+          public_id: faker.string.uuid(),
           supabase_uid: faker.string.uuid(),
           display_name: faker.person.fullName(),
         })
@@ -58,12 +60,16 @@ describe("postsApp", () => {
 
     describe("when there are some posts", () => {
       beforeEach(async () => {
-        await db
-          .insert(postsTable)
-          .values({ user_id: user.id, content: "test" });
-        await db
-          .insert(postsTable)
-          .values({ user_id: user.id, content: "test2" });
+        await db.insert(postsTable).values({
+          public_id: faker.string.uuid(),
+          user_id: user.id,
+          content: "test",
+        });
+        await db.insert(postsTable).values({
+          public_id: faker.string.uuid(),
+          user_id: user.id,
+          content: "test2",
+        });
       });
 
       it("should return 200 Response", async () => {
@@ -77,7 +83,7 @@ describe("postsApp", () => {
           public_id: expect.any(String),
           content: "test2",
           created_at: expect.any(String),
-          updated_at: expect.any(String),
+          updated_at: null,
           user: {
             public_id: user.public_id,
             display_name: user.display_name,
@@ -87,7 +93,7 @@ describe("postsApp", () => {
           public_id: expect.any(String),
           content: "test",
           created_at: expect.any(String),
-          updated_at: expect.any(String),
+          updated_at: null,
           user: {
             public_id: user.public_id,
             display_name: user.display_name,
@@ -133,7 +139,14 @@ describe("postsApp", () => {
         const post = posts[0];
         if (!post) throw new Error("post is not found");
         expect(post.content).toBe(content);
-        expect(post.created_at).toEqual(post.updated_at);
+
+        const postLogs = await db.select().from(postLogsTable);
+        expect(postLogs).toHaveLength(1);
+        const postLog = postLogs[0];
+        if (!postLog) throw new Error("postLog is not found");
+        expect(postLog.public_id).toBe(post.public_id);
+        expect(postLog.user_id).toBe(post.user_id);
+        expect(postLog.content).toBe(content);
       });
     });
 
@@ -209,9 +222,16 @@ describe("postsApp", () => {
           const post = posts[0];
           if (!post) throw new Error("post is not found");
           expect(post.content).toBe(content);
-          expect(post.created_at.getTime()).toBeLessThan(
-            post.updated_at.getTime(),
-          );
+          expect(post.public_id).toBe(public_id);
+
+          const postLogs = await db.select().from(postLogsTable);
+          expect(postLogs).toHaveLength(1);
+          const postLog = postLogs[0];
+          if (!postLog) throw new Error("postLog is not found");
+          expect(postLog.id).toBe(post.id);
+          expect(postLog.public_id).toBe(post.public_id);
+          expect(postLog.user_id).toBe(post.user_id);
+          expect(postLog.content).toBe(content);
         });
       });
 
