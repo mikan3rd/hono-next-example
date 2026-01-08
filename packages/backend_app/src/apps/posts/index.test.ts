@@ -83,6 +83,7 @@ describe("postsApp", () => {
           public_id: expect.any(String),
           content: "test2",
           created_at: expect.any(String),
+          updated_at: expect.any(String),
           user: {
             public_id: user.public_id,
             display_name: user.display_name,
@@ -92,6 +93,7 @@ describe("postsApp", () => {
           public_id: expect.any(String),
           content: "test",
           created_at: expect.any(String),
+          updated_at: expect.any(String),
           user: {
             public_id: user.public_id,
             display_name: user.display_name,

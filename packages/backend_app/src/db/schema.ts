@@ -8,6 +8,7 @@ const primaryKeys = () => ({
 
 const timestamps = {
   created_at: timestamp().defaultNow().notNull(),
+  updated_at: timestamp(),
 };
 
 export const usersTable = pgTable("users", {

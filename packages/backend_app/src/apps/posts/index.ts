@@ -100,6 +100,7 @@ const routes = postApp
           public_id: target.public_id,
           user_id: target.user_id,
           content,
+          updated_at: new Date(),
         })
         .returning();
 
