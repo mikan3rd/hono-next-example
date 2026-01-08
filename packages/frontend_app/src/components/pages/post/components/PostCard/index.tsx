@@ -24,7 +24,7 @@ type Post = {
   public_id: string;
   content: string;
   created_at: string;
-  updated_at: string;
+  updated_at: string | null;
   user: {
     public_id: string;
     display_name: string;
@@ -42,7 +42,7 @@ export const PostCard = ({ post }: PostCardProps) => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(post.content);
-  const isUpdated = post.updated_at !== post.created_at;
+  const isUpdated = post.updated_at !== null;
 
   const updatePostMutation = usePutPostsPublicId();
   const deletePostMutation = useDeletePostsPublicId();
@@ -183,7 +183,7 @@ export const PostCard = ({ post }: PostCardProps) => {
             <span suppressHydrationWarning>
               Created: {formatDate(post.created_at)}
             </span>
-            {isUpdated && (
+            {post.updated_at !== null && (
               <span suppressHydrationWarning>
                 Updated: {formatDate(post.updated_at)}
               </span>

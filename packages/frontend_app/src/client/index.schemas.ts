@@ -34,8 +34,11 @@ export interface Post {
   content: string;
   /** The date and time the post was created */
   created_at: string;
-  /** The date and time the post was updated */
-  updated_at: string;
+  /**
+   * The date and time the post was updated
+   * @nullable
+   */
+  updated_at: string | null;
 }
 
 export type PostUserSignupBody = {
@@ -399,7 +402,7 @@ export type PutPostsPublicIdBody = {
    * The content of the post
    * @minLength 1
    */
-  content?: string;
+  content: string;
 };
 
 export type PutPostsPublicId200PostAllOf = {
