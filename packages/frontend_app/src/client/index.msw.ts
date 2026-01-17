@@ -30,20 +30,13 @@ export const getGetPostsResponseMock = (
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
-    ...{
+    public_id: faker.string.uuid(),
+    content: faker.string.alpha({ length: { min: 10, max: 20 } }),
+    first_created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    user: {
       public_id: faker.string.uuid(),
-      content: faker.string.alpha({ length: { min: 10, max: 20 } }),
-      created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-      updated_at: faker.helpers.arrayElement([
-        `${faker.date.past().toISOString().split(".")[0]}Z`,
-        null,
-      ]),
-    },
-    ...{
-      user: {
-        public_id: faker.string.uuid(),
-        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
-      },
+      display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
     },
   })),
   ...overrideResponse,
@@ -53,20 +46,13 @@ export const getPostPostsResponseMock = (
   overrideResponse: Partial<PostPosts200> = {},
 ): PostPosts200 => ({
   post: {
-    ...{
+    public_id: faker.string.uuid(),
+    content: faker.string.alpha({ length: { min: 10, max: 20 } }),
+    first_created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    user: {
       public_id: faker.string.uuid(),
-      content: faker.string.alpha({ length: { min: 10, max: 20 } }),
-      created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-      updated_at: faker.helpers.arrayElement([
-        `${faker.date.past().toISOString().split(".")[0]}Z`,
-        null,
-      ]),
-    },
-    ...{
-      user: {
-        public_id: faker.string.uuid(),
-        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
-      },
+      display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
     },
   },
   ...overrideResponse,
@@ -76,20 +62,13 @@ export const getPutPostsPublicIdResponseMock = (
   overrideResponse: Partial<PutPostsPublicId200> = {},
 ): PutPostsPublicId200 => ({
   post: {
-    ...{
+    public_id: faker.string.uuid(),
+    content: faker.string.alpha({ length: { min: 10, max: 20 } }),
+    first_created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    user: {
       public_id: faker.string.uuid(),
-      content: faker.string.alpha({ length: { min: 10, max: 20 } }),
-      created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-      updated_at: faker.helpers.arrayElement([
-        `${faker.date.past().toISOString().split(".")[0]}Z`,
-        null,
-      ]),
-    },
-    ...{
-      user: {
-        public_id: faker.string.uuid(),
-        display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
-      },
+      display_name: faker.string.alpha({ length: { min: 10, max: 20 } }),
     },
   },
   ...overrideResponse,

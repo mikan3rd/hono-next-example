@@ -27,20 +27,6 @@ export interface User {
   display_name: string;
 }
 
-export interface Post {
-  /** Public ID */
-  public_id: string;
-  /** The content of the post */
-  content: string;
-  /** The date and time the post was created */
-  created_at: string;
-  /**
-   * The date and time the post was updated
-   * @nullable
-   */
-  updated_at: string | null;
-}
-
 export type PostUserSignupBody = {
   /**
    * The display name of the user
@@ -209,11 +195,17 @@ export type GetUserLogin500AllOf = {
 
 export type GetUserLogin500 = ErrorResponse & GetUserLogin500AllOf;
 
-export type GetPosts200PostsItemAllOf = {
+export type GetPosts200PostsItem = {
+  /** Public ID */
+  public_id: string;
+  /** The content of the post */
+  content: string;
+  /** The date and time the post was originally created */
+  first_created_at: string;
+  /** The date and time the post was created (or last updated in case of delete&insert) */
+  created_at: string;
   user: User;
 };
-
-export type GetPosts200PostsItem = Post & GetPosts200PostsItemAllOf;
 
 export type GetPosts200 = {
   posts: GetPosts200PostsItem[];
@@ -307,11 +299,17 @@ export type PostPostsBody = {
   content: string;
 };
 
-export type PostPosts200PostAllOf = {
+export type PostPosts200Post = {
+  /** Public ID */
+  public_id: string;
+  /** The content of the post */
+  content: string;
+  /** The date and time the post was originally created */
+  first_created_at: string;
+  /** The date and time the post was created (or last updated in case of delete&insert) */
+  created_at: string;
   user: User;
 };
-
-export type PostPosts200Post = Post & PostPosts200PostAllOf;
 
 export type PostPosts200 = {
   post: PostPosts200Post;
@@ -405,11 +403,17 @@ export type PutPostsPublicIdBody = {
   content: string;
 };
 
-export type PutPostsPublicId200PostAllOf = {
+export type PutPostsPublicId200Post = {
+  /** Public ID */
+  public_id: string;
+  /** The content of the post */
+  content: string;
+  /** The date and time the post was originally created */
+  first_created_at: string;
+  /** The date and time the post was created (or last updated in case of delete&insert) */
+  created_at: string;
   user: User;
 };
-
-export type PutPostsPublicId200Post = Post & PutPostsPublicId200PostAllOf;
 
 export type PutPostsPublicId200 = {
   post: PutPostsPublicId200Post;
