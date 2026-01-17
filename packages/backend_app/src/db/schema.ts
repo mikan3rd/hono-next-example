@@ -8,7 +8,6 @@ const primaryKeys = () => ({
 
 const timestamps = {
   created_at: timestamp().defaultNow().notNull(),
-  updated_at: timestamp(),
 };
 
 export const usersTable = pgTable("users", {
@@ -24,6 +23,7 @@ export const postsTable = pgTable("posts", {
     .notNull()
     .references(() => usersTable.id),
   content: text().notNull(),
+  first_created_at: timestamp().notNull(), // 最初の作成日時を保持（delete&insert方式のため）
   ...timestamps,
 });
 

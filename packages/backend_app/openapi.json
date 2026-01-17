@@ -36,37 +36,6 @@
         },
         "required": ["public_id", "display_name"],
         "additionalProperties": false
-      },
-      "post": {
-        "type": "object",
-        "properties": {
-          "public_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Public ID",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "content": {
-            "type": "string",
-            "description": "The content of the post",
-            "example": "test"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The date and time the post was created",
-            "example": "2025-01-01T00:00:00Z"
-          },
-          "updated_at": {
-            "type": "string",
-            "nullable": true,
-            "format": "date-time",
-            "description": "The date and time the post was updated",
-            "example": "2025-01-01T00:00:00Z"
-          }
-        },
-        "required": ["public_id", "content", "created_at", "updated_at"],
-        "additionalProperties": false
       }
     },
     "parameters": {}
@@ -393,17 +362,41 @@
                     "posts": {
                       "type": "array",
                       "items": {
-                        "allOf": [
-                          { "$ref": "#/components/schemas/post" },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "user": { "$ref": "#/components/schemas/user" }
-                            },
-                            "required": ["user"],
-                            "additionalProperties": false
-                          }
-                        ]
+                        "type": "object",
+                        "properties": {
+                          "public_id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Public ID",
+                            "example": "123e4567-e89b-12d3-a456-426614174000"
+                          },
+                          "content": {
+                            "type": "string",
+                            "description": "The content of the post",
+                            "example": "test"
+                          },
+                          "first_created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "The date and time the post was originally created",
+                            "example": "2025-01-01T00:00:00Z"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "The date and time the post was created (or last updated in case of delete&insert)",
+                            "example": "2025-01-01T00:00:00Z"
+                          },
+                          "user": { "$ref": "#/components/schemas/user" }
+                        },
+                        "required": [
+                          "public_id",
+                          "content",
+                          "first_created_at",
+                          "created_at",
+                          "user"
+                        ],
+                        "additionalProperties": false
                       }
                     }
                   },
@@ -576,17 +569,41 @@
                   "type": "object",
                   "properties": {
                     "post": {
-                      "allOf": [
-                        { "$ref": "#/components/schemas/post" },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "user": { "$ref": "#/components/schemas/user" }
-                          },
-                          "required": ["user"],
-                          "additionalProperties": false
-                        }
-                      ]
+                      "type": "object",
+                      "properties": {
+                        "public_id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Public ID",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "content": {
+                          "type": "string",
+                          "description": "The content of the post",
+                          "example": "test"
+                        },
+                        "first_created_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "The date and time the post was originally created",
+                          "example": "2025-01-01T00:00:00Z"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "The date and time the post was created (or last updated in case of delete&insert)",
+                          "example": "2025-01-01T00:00:00Z"
+                        },
+                        "user": { "$ref": "#/components/schemas/user" }
+                      },
+                      "required": [
+                        "public_id",
+                        "content",
+                        "first_created_at",
+                        "created_at",
+                        "user"
+                      ],
+                      "additionalProperties": false
                     }
                   },
                   "required": ["post"]
@@ -768,17 +785,41 @@
                   "type": "object",
                   "properties": {
                     "post": {
-                      "allOf": [
-                        { "$ref": "#/components/schemas/post" },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "user": { "$ref": "#/components/schemas/user" }
-                          },
-                          "required": ["user"],
-                          "additionalProperties": false
-                        }
-                      ]
+                      "type": "object",
+                      "properties": {
+                        "public_id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Public ID",
+                          "example": "123e4567-e89b-12d3-a456-426614174000"
+                        },
+                        "content": {
+                          "type": "string",
+                          "description": "The content of the post",
+                          "example": "test"
+                        },
+                        "first_created_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "The date and time the post was originally created",
+                          "example": "2025-01-01T00:00:00Z"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "The date and time the post was created (or last updated in case of delete&insert)",
+                          "example": "2025-01-01T00:00:00Z"
+                        },
+                        "user": { "$ref": "#/components/schemas/user" }
+                      },
+                      "required": [
+                        "public_id",
+                        "content",
+                        "first_created_at",
+                        "created_at",
+                        "user"
+                      ],
+                      "additionalProperties": false
                     }
                   },
                   "required": ["post"]

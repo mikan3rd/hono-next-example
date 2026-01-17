@@ -36,10 +36,16 @@ const routes = postApp
     const { content } = c.req.valid("json");
     const user = c.get("user");
     const result = await db.transaction(async (tx) => {
+      const now = new Date();
       const post = (
         await tx
           .insert(postsTable)
-          .values({ public_id: crypto.randomUUID(), user_id: user.id, content })
+          .values({
+            public_id: crypto.randomUUID(),
+            user_id: user.id,
+            content,
+            first_created_at: now, // 最初の作成日時を設定
+          })
           .returning()
       )[0];
       if (!post)
@@ -100,7 +106,7 @@ const routes = postApp
           public_id: target.public_id,
           user_id: target.user_id,
           content,
-          updated_at: new Date(),
+          first_created_at: target.first_created_at, // 最初の作成日時を維持
         })
         .returning();
 
@@ -116,7 +122,6 @@ const routes = postApp
         user_id: result.user_id,
         content: result.content,
         created_at: result.created_at,
-        updated_at: result.updated_at,
       });
     });
 
