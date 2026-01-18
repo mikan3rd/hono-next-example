@@ -8,31 +8,31 @@ import {
 } from "../factory";
 import { userSelectSchema } from "../user/dto";
 
-// レスポンス用スキーマ（フィールド名を変換）
-const postSelectSchemaBase = z.object({
-  public_id: z.uuid().openapi({
-    description: "Public ID",
-    example: "123e4567-e89b-12d3-a456-426614174000",
-  }),
-  content: z.string().openapi({
-    description: "The content of the post",
-    example: "test",
-  }),
-  created_at: z.iso.datetime().openapi({
-    description: "The date and time the post was originally created",
-    example: "2025-01-01T00:00:00Z",
-    format: "date-time",
-  }),
-  updated_at: z.iso.datetime().openapi({
-    description:
-      "The date and time the post was created (or last updated in case of delete&insert)",
-    example: "2025-01-01T00:00:00Z",
-    format: "date-time",
-  }),
-});
+const postSchema = z
+  .object({
+    public_id: z.uuid().openapi({
+      description: "Public ID",
+      example: "123e4567-e89b-12d3-a456-426614174000",
+    }),
+    content: z.string().openapi({
+      description: "The content of the post",
+      example: "test",
+    }),
+    created_at: z.iso.datetime().openapi({
+      description: "The date and time the post was originally created",
+      example: "2025-01-01T00:00:00Z",
+      format: "date-time",
+    }),
+    updated_at: z.iso.datetime().openapi({
+      description:
+        "The date and time the post was created (or last updated in case of delete&insert)",
+      example: "2025-01-01T00:00:00Z",
+      format: "date-time",
+    }),
+  })
+  .openapi("post");
 
-// Post単体のスキーマ（変換を含む、OpenAPI定義用）
-export const postSelectSchema = createSelectSchema(postsTable)
+export const postResponseSchema = createSelectSchema(postsTable)
   .pick(postPublicFields)
   .transform((data) => ({
     public_id: data.public_id,
@@ -40,18 +40,16 @@ export const postSelectSchema = createSelectSchema(postsTable)
     created_at: data.first_created_at.toISOString(), // first_created_at → created_at
     updated_at: data.created_at.toISOString(), // created_at → updated_at
   }))
-  .pipe(postSelectSchemaBase)
-  .openapi("post");
+  .pipe(postSchema);
 
-// Post with Userのスキーマ（変換を含む）
-export const postWithUserSelectSchema = postSelectSchema.and(
+export const postWithUserResponseSchema = postSchema.and(
   z.object({
     user: userSelectSchema,
   }),
 );
 
 export const getPostsResponseSchema = z.object({
-  posts: postWithUserSelectSchema.array(),
+  posts: postWithUserResponseSchema.array(),
 });
 
 export const postPostRequestSchema = createInsertSchema(postsTable, {
@@ -65,7 +63,7 @@ export const postPostRequestSchema = createInsertSchema(postsTable, {
 });
 
 export const postPostResponseSchema = z.object({
-  post: postWithUserSelectSchema,
+  post: postWithUserResponseSchema,
 });
 
 export const updatePostParamsSchema = z.object({
