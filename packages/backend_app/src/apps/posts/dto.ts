@@ -1,14 +1,9 @@
 import { z } from "@hono/zod-openapi";
-import { postPublicFields } from "../../db/field";
 import { postsTable } from "../../db/schema";
-import {
-  createInsertSchema,
-  createSelectSchema,
-  createUpdateSchema,
-} from "../factory";
+import { createInsertSchema, createUpdateSchema } from "../factory";
 import { userSelectSchema } from "../user/dto";
 
-const postSchema = z
+export const postSchema = z
   .object({
     public_id: z.uuid().openapi({
       description: "Public ID",
@@ -32,15 +27,34 @@ const postSchema = z
   })
   .openapi("post");
 
-export const postResponseSchema = createSelectSchema(postsTable)
-  .pick(postPublicFields)
-  .transform((data) => ({
-    public_id: data.public_id,
-    content: data.content,
-    created_at: data.first_created_at.toISOString(), // first_created_at → created_at
-    updated_at: data.created_at.toISOString(), // created_at → updated_at
-  }))
-  .pipe(postSchema);
+// DB データから API レスポンス形式への変換関数
+export const transformPost = (post: {
+  public_id: string;
+  content: string;
+  first_created_at: Date;
+  created_at: Date;
+}): z.infer<typeof postSchema> => ({
+  public_id: post.public_id,
+  content: post.content,
+  created_at: post.first_created_at.toISOString(), // first_created_at → created_at
+  updated_at: post.created_at.toISOString(), // created_at → updated_at
+});
+
+// user 付きの変換関数
+export const transformPostWithUser = <
+  T extends {
+    public_id: string;
+    content: string;
+    first_created_at: Date;
+    created_at: Date;
+    user: z.infer<typeof userSelectSchema>;
+  },
+>(
+  post: T,
+): z.infer<typeof postWithUserResponseSchema> => ({
+  ...transformPost(post),
+  user: post.user,
+});
 
 export const postWithUserResponseSchema = postSchema.and(
   z.object({

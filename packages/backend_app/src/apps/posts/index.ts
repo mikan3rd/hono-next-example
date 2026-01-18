@@ -5,11 +5,7 @@ import { postWithUserQuery } from "../../db/query";
 import { postLogsTable, postsTable } from "../../db/schema";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
-import {
-  getPostsResponseSchema,
-  postPostResponseSchema,
-  updatePostResponseSchema,
-} from "./dto";
+import { transformPostWithUser } from "./dto";
 import {
   deletePostRoute,
   getPostsRoute,
@@ -28,8 +24,7 @@ const routes = postApp
       ...postWithUserQuery,
       orderBy: desc(postsTable.id),
     });
-    const response = { posts };
-    return c.json(getPostsResponseSchema.parse(response), 200);
+    return c.json({ posts: posts.map(transformPostWithUser) }, 200);
   })
 
   .openapi(postPostRoute, async (c) => {
@@ -64,13 +59,16 @@ const routes = postApp
       return post;
     });
 
-    const response = {
-      post: await db.query.postsTable.findFirst({
-        ...postWithUserQuery,
-        where: eq(postsTable.id, result.id),
-      }),
-    };
-    return c.json(postPostResponseSchema.parse(response), 200);
+    const post = await db.query.postsTable.findFirst({
+      ...postWithUserQuery,
+      where: eq(postsTable.id, result.id),
+    });
+    if (!post) {
+      throw new HTTPException(500, {
+        message: "Failed to fetch created post",
+      });
+    }
+    return c.json({ post: transformPostWithUser(post) }, 200);
   })
 
   .openapi(updatePostRoute, async (c) => {
@@ -125,14 +123,16 @@ const routes = postApp
       });
     });
 
-    const response = {
-      post: await db.query.postsTable.findFirst({
-        ...postWithUserQuery,
-        where: eq(postsTable.public_id, public_id),
-      }),
-    };
-
-    return c.json(updatePostResponseSchema.parse(response), 200);
+    const post = await db.query.postsTable.findFirst({
+      ...postWithUserQuery,
+      where: eq(postsTable.public_id, public_id),
+    });
+    if (!post) {
+      throw new HTTPException(500, {
+        message: "Failed to fetch updated post",
+      });
+    }
+    return c.json({ post: transformPostWithUser(post) }, 200);
   })
 
   .openapi(deletePostRoute, async (c) => {
