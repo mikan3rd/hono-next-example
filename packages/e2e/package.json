@@ -19,8 +19,8 @@
     "@dotenvx/dotenvx": "1.51.4",
     "@playwright/test": "1.57.0",
     "@t3-oss/env-core": "0.13.10",
-    "@types/node": "24.10.4",
+    "@types/node": "24.10.9",
     "typescript": "5.9.3",
-    "zod": "4.3.4"
+    "zod": "4.3.5"
   }
 }
