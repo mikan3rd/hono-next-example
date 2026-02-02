@@ -62,7 +62,7 @@ services:
 
   kong:
     container_name: supabase-kong
-    image: kong:2.8.5
+    image: kong:3.9.0
     platform: linux/amd64
     restart: unless-stopped
     ports:
