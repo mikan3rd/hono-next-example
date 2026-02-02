@@ -174,7 +174,7 @@ services:
 
   rest:
     container_name: supabase-rest
-    image: postgrest/postgrest:v12.2.12
+    image: postgrest/postgrest:v13.0.8
     restart: unless-stopped
     depends_on:
       db:
