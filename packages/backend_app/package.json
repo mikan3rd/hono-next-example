@@ -23,7 +23,7 @@
     "drizzle-kit": "0.31.8",
     "drizzle-orm": "0.45.1",
     "drizzle-zod": "0.8.3",
-    "es-toolkit": "1.43.0",
+    "es-toolkit": "1.44.0",
     "hono": "4.11.5",
     "postgres": "3.4.8"
   },
