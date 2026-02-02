@@ -32,9 +32,9 @@ export interface Post {
   public_id: string;
   /** The content of the post */
   content: string;
-  /** The date and time the post was created */
+  /** The date and time the post was originally created */
   created_at: string;
-  /** The date and time the post was updated */
+  /** The date and time the post was created (or last updated in case of delete&insert) */
   updated_at: string;
 }
 
@@ -399,7 +399,7 @@ export type PutPostsPublicIdBody = {
    * The content of the post
    * @minLength 1
    */
-  content?: string;
+  content: string;
 };
 
 export type PutPostsPublicId200PostAllOf = {

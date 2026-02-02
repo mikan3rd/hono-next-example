@@ -48,7 +48,7 @@ const createMockPost = (
   public_id: faker.string.uuid(),
   content: postContent,
   created_at: "2025-01-01T00:00:00.000Z",
-  updated_at: "2025-01-01T00:00:00.000Z",
+  updated_at: null,
   user,
   ...overrides,
 });
