@@ -56,15 +56,15 @@
     "@storybook/addon-vitest": "10.1.11",
     "@storybook/nextjs-vite": "10.1.11",
     "@typescript/native-preview": "7.0.0-dev.20260126.1",
-    "@vitest/browser": "4.0.16",
-    "@vitest/browser-playwright": "4.0.16",
-    "@vitest/coverage-v8": "4.0.16",
+    "@vitest/browser": "4.0.18",
+    "@vitest/browser-playwright": "4.0.18",
+    "@vitest/coverage-v8": "4.0.18",
     "msw": "2.12.7",
     "msw-storybook-addon": "2.0.6",
     "orval": "7.17.2",
     "playwright": "1.57.0",
     "storybook": "10.1.11",
-    "vitest": "4.0.16"
+    "vitest": "4.0.18"
   },
   "msw": {
     "workerDirectory": [
