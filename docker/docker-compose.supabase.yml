@@ -318,7 +318,7 @@ services:
 
   functions:
     container_name: supabase-edge-functions
-    image: supabase/edge-runtime:v1.70.0
+    image: supabase/edge-runtime:v1.70.1
     restart: unless-stopped
     volumes:
       - ./volumes/functions:/home/deno/functions:Z
@@ -337,7 +337,7 @@ services:
 
   analytics:
     container_name: supabase-analytics
-    image: supabase/logflare:1.30.3
+    image: supabase/logflare:1.30.8
     restart: unless-stopped
     ports:
       - 4000:4000
@@ -381,7 +381,7 @@ services:
   # Comment out everything below this point if you are using an external Postgres database
   db:
     container_name: supabase-db
-    image: supabase/postgres:17.6.1.077
+    image: supabase/postgres:17.6.1.081
     restart: unless-stopped
     volumes:
       - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
