@@ -54,18 +54,17 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "The date and time the post was created",
+            "description": "The date and time the post was originally created",
             "example": "2025-01-01T00:00:00Z"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "The date and time the post was updated",
+            "description": "The date and time the post was created (or last updated in case of delete&insert)",
             "example": "2025-01-01T00:00:00Z"
           }
         },
-        "required": ["public_id", "content", "created_at", "updated_at"],
-        "additionalProperties": false
+        "required": ["public_id", "content", "created_at", "updated_at"]
       }
     },
     "parameters": {}
@@ -399,8 +398,7 @@
                             "properties": {
                               "user": { "$ref": "#/components/schemas/user" }
                             },
-                            "required": ["user"],
-                            "additionalProperties": false
+                            "required": ["user"]
                           }
                         ]
                       }
@@ -582,8 +580,7 @@
                           "properties": {
                             "user": { "$ref": "#/components/schemas/user" }
                           },
-                          "required": ["user"],
-                          "additionalProperties": false
+                          "required": ["user"]
                         }
                       ]
                     }
@@ -752,7 +749,8 @@
                     "description": "The content of the post",
                     "example": "test"
                   }
-                }
+                },
+                "required": ["content"]
               }
             }
           }
@@ -773,8 +771,7 @@
                           "properties": {
                             "user": { "$ref": "#/components/schemas/user" }
                           },
-                          "required": ["user"],
-                          "additionalProperties": false
+                          "required": ["user"]
                         }
                       ]
                     }
