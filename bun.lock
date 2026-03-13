@@ -84,7 +84,7 @@
         "@vitest/coverage-v8": "4.0.18",
         "msw": "2.12.9",
         "msw-storybook-addon": "2.0.6",
-        "orval": "7.20.0",
+        "orval": "7.21.0",
         "playwright": "1.57.0",
         "storybook": "10.2.7",
         "vitest": "4.0.18",
@@ -388,25 +388,25 @@
 
     "@open-draft/until": ["@open-draft/until@2.1.0", "", {}, "sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg=="],
 
-    "@orval/angular": ["@orval/angular@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0" } }, "sha512-Axb0uOH7k/YRUovjCDW+LkGrbeX5UJEo67wzJZFZCo5VHQZJNjKA4AG2m8Jxps9r9xtsW5OsBJiQ6Miruxr5Jw=="],
+    "@orval/angular": ["@orval/angular@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0" } }, "sha512-AGelR1FfuimtIBBVccUI9MyjNOalLEyJFog8a94thFiqRGtz0JFIPnd8+IqRcmw3wE370PKQQMCqZl1WkjZi8w=="],
 
-    "@orval/axios": ["@orval/axios@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0" } }, "sha512-QdkEGAGX0pchYgw4kVq/s3qXSvcaWmdhpb73TQRQ4kVzCaJu7LWAMlRy5Mv0uXKJrSD2csJv1IF7831XDFhTtQ=="],
+    "@orval/axios": ["@orval/axios@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0" } }, "sha512-0t2PqMSdjJ7No6Ng5gTEpqyILmngz1mDw7OQ2TPwOiAEepNfeDgE6NtRh3zbZvrH/H5I+W8dgn+wGYueZQCNjw=="],
 
-    "@orval/core": ["@orval/core@7.20.0", "", { "dependencies": { "@apidevtools/swagger-parser": "^12.1.0", "@ibm-cloud/openapi-ruleset": "^1.33.1", "@stoplight/spectral-core": "^1.20.0", "acorn": "^8.15.0", "chalk": "^4.1.2", "compare-versions": "^6.1.1", "debug": "^4.4.3", "esbuild": "^0.25.11", "esutils": "2.0.3", "fs-extra": "^11.3.1", "globby": "11.1.0", "lodash.isempty": "^4.4.0", "lodash.uniq": "^4.5.0", "lodash.uniqby": "^4.7.0", "lodash.uniqwith": "^4.5.0", "micromatch": "^4.0.8", "openapi3-ts": "4.5.0", "swagger2openapi": "^7.0.8", "typedoc": "^0.28.14" } }, "sha512-K5ilcSEOOQVHl6/f0bWAGP+BEf5kRIh7XlXD0AJl/oE76vzFN8BgXgfjRBrpKIBQNUofLRgwYpGJXnhVr3bc4Q=="],
+    "@orval/core": ["@orval/core@7.21.0", "", { "dependencies": { "@apidevtools/swagger-parser": "^12.1.0", "@ibm-cloud/openapi-ruleset": "^1.33.1", "@stoplight/spectral-core": "^1.20.0", "acorn": "^8.15.0", "chalk": "^4.1.2", "compare-versions": "^6.1.1", "debug": "^4.4.3", "esbuild": "^0.25.11", "esutils": "2.0.3", "fs-extra": "^11.3.1", "globby": "11.1.0", "lodash.isempty": "^4.4.0", "lodash.uniq": "^4.5.0", "lodash.uniqby": "^4.7.0", "lodash.uniqwith": "^4.5.0", "micromatch": "^4.0.8", "openapi3-ts": "4.5.0", "swagger2openapi": "^7.0.8", "typedoc": "^0.28.14" } }, "sha512-dUkggESlHq1pEUoNMF1ssRSzat5Y+G+pwtah8YoKW4wY3pTB7CNjGtGlD+a9dv3rCHUqYUqKaQD1UWRWWpF+VQ=="],
 
-    "@orval/fetch": ["@orval/fetch@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0", "openapi3-ts": "4.5.0" } }, "sha512-Ysq4pgkgJePmHnkAPigOXDC0cGEHoXkY2n/0TowzvBk/MZ6cYZTdgljrYJ/fhPor3bNfwpy2ppVYEvvDsItxOg=="],
+    "@orval/fetch": ["@orval/fetch@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0", "openapi3-ts": "4.5.0" } }, "sha512-e5YrZeZGoZhqj9Gzp2ANJx3/36ueMRXxwLwX0C1ps+rmMsFNa26lmQ8FHIscDQTwwULSGEGNUcunfO6X6f8t4w=="],
 
-    "@orval/hono": ["@orval/hono@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0", "@orval/zod": "7.20.0", "fs-extra": "^11.3.2", "lodash.uniq": "^4.5.0", "openapi3-ts": "4.5.0" } }, "sha512-ESf42JjNFXvfs0Txp4aFNOOoSqvBF9YCgQB+lyP/VYyPffJriDBsE8+T0njuagj0oP8ucJiG/7SH2NYCoR6uhg=="],
+    "@orval/hono": ["@orval/hono@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0", "@orval/zod": "7.21.0", "fs-extra": "^11.3.2", "lodash.uniq": "^4.5.0", "openapi3-ts": "4.5.0" } }, "sha512-XF5hdzUjDVUjZC2Fd/ROJsp8Us+j2dCSocqfrJmOrjSO1ReTTYy2sKv3c2wk7+TUAojz/0VdTtISf8LZTM+ETQ=="],
 
-    "@orval/mcp": ["@orval/mcp@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0", "@orval/fetch": "7.20.0", "@orval/zod": "7.20.0", "openapi3-ts": "4.5.0" } }, "sha512-qRmPUnvdIE8jnYu9XcHvQIC7FZ8Dx42VCrRdyQrACJSKhlHbfafARQrw/CK58G+f2ADaYz8xb3TStbcFMiw36A=="],
+    "@orval/mcp": ["@orval/mcp@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0", "@orval/fetch": "7.21.0", "@orval/zod": "7.21.0", "openapi3-ts": "4.5.0" } }, "sha512-4VQjdj1IDgximy+YWOwA7NzXjSvQ8lb2b6BlkKQk8wtrUW//xfquBmR7TRrtf2HKRx3UGtHsxayx4LP0dIqZgQ=="],
 
-    "@orval/mock": ["@orval/mock@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0", "openapi3-ts": "4.5.0" } }, "sha512-fAuGnoKUOhM9eJm8/+H3Llt3w2hiAYDTK6H15qrheeJyulX3PbGr0QRz2raRoAkHc2G+oNiNruWuryhyr1jjJw=="],
+    "@orval/mock": ["@orval/mock@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0", "openapi3-ts": "4.5.0" } }, "sha512-KgzGfG9JrrX1ciO7c0niyumncWYU9nuUg0CqMf0S2/SrAj+xunydQVja1HEB/eNB/E269pp4KG+S/d6ofe94yQ=="],
 
-    "@orval/query": ["@orval/query@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0", "@orval/fetch": "7.20.0", "chalk": "^4.1.2", "lodash.omitby": "^4.6.0" } }, "sha512-/sAXHBh8FguOVzKvxxLhKgxISscp1eStZIytcDaBF2Y5wVHpqqUq6B0kFbtClKt2e10nZUZgqAjnDQfSMY4Hrw=="],
+    "@orval/query": ["@orval/query@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0", "@orval/fetch": "7.21.0", "chalk": "^4.1.2", "lodash.omitby": "^4.6.0" } }, "sha512-4An6IcqRMRReSurHVw2izLHOAX4ZkHPlaK9LubkOH1Nxzymm2ihw4eamt2XKuZ1eF83R3rzYcKwMPK3t+GzeVg=="],
 
-    "@orval/swr": ["@orval/swr@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0", "@orval/fetch": "7.20.0" } }, "sha512-lu6a1dVNzhua9jtBc/UwvyPZd7AFi42iID9eMJH+PeefrVhNexFDdYbOVe4ABrtfdiI4mpMHUDGbmzyrwMLblg=="],
+    "@orval/swr": ["@orval/swr@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0", "@orval/fetch": "7.21.0" } }, "sha512-aHa6WFldrpN8gQYuXfl51ogC+QpFtVzL/u9DQa+hEUAf9MXieMVVDV5w9fR9XJ4nMpV1fSCbeRd7xxqNVtd/Nw=="],
 
-    "@orval/zod": ["@orval/zod@7.20.0", "", { "dependencies": { "@orval/core": "7.20.0", "lodash.uniq": "^4.5.0", "openapi3-ts": "4.5.0" } }, "sha512-Czzz6aR/eSLy35HZdvKChNYIr4ebbIgyoaX576vKssK+zHY17fftOW4oq0e8CMtlxJseiKBi4IE0n/hQJbt6zw=="],
+    "@orval/zod": ["@orval/zod@7.21.0", "", { "dependencies": { "@orval/core": "7.21.0", "lodash.uniq": "^4.5.0", "openapi3-ts": "4.5.0" } }, "sha512-bTMAxdtJ8/KxDusTRL0u57YN7H0VWim8pbWj5eQYwo3xABs+puYdF3kKZ2c2biB/jUwgJJEnVkwbZV8XjxaWYw=="],
 
     "@playwright/test": ["@playwright/test@1.57.0", "", { "dependencies": { "playwright": "1.57.0" }, "bin": { "playwright": "cli.js" } }, "sha512-6TyEnHgd6SArQO8UO2OMTxshln3QMWBtPGrOCgs3wVEmQmwyuNtB10IZMfmYDE0riwNR1cu4q+pPcxMVtaG3TA=="],
 
@@ -1522,7 +1522,7 @@
 
     "openapi3-ts": ["openapi3-ts@4.5.0", "", { "dependencies": { "yaml": "^2.8.0" } }, "sha512-jaL+HgTq2Gj5jRcfdutgRGLosCy/hT8sQf6VOy+P+g36cZOjI1iukdPnijC+4CmeRzg/jEllJUboEic2FhxhtQ=="],
 
-    "orval": ["orval@7.20.0", "", { "dependencies": { "@apidevtools/swagger-parser": "^12.1.0", "@commander-js/extra-typings": "^14.0.0", "@orval/angular": "7.20.0", "@orval/axios": "7.20.0", "@orval/core": "7.20.0", "@orval/fetch": "7.20.0", "@orval/hono": "7.20.0", "@orval/mcp": "7.20.0", "@orval/mock": "7.20.0", "@orval/query": "7.20.0", "@orval/swr": "7.20.0", "@orval/zod": "7.20.0", "chalk": "^4.1.2", "chokidar": "^4.0.3", "commander": "^14.0.1", "enquirer": "^2.4.1", "execa": "^5.1.1", "find-up": "5.0.0", "fs-extra": "^11.3.2", "jiti": "^2.6.1", "js-yaml": "4.1.1", "lodash.uniq": "^4.5.0", "openapi3-ts": "4.5.0", "string-argv": "^0.3.2", "tsconfck": "^2.1.2", "typedoc": "^0.28.14", "typedoc-plugin-coverage": "^4.0.2", "typedoc-plugin-markdown": "^4.9.0" }, "bin": "./dist/bin/orval.js" }, "sha512-mcq0kdn8yPvRdUnzAm1T04naZOM3njbLDLNfnhP9KTk6gOgxJYHha2C3TdddOIVFwpaR4burCHlx5Jq63DtSbA=="],
+    "orval": ["orval@7.21.0", "", { "dependencies": { "@apidevtools/swagger-parser": "^12.1.0", "@commander-js/extra-typings": "^14.0.0", "@orval/angular": "7.21.0", "@orval/axios": "7.21.0", "@orval/core": "7.21.0", "@orval/fetch": "7.21.0", "@orval/hono": "7.21.0", "@orval/mcp": "7.21.0", "@orval/mock": "7.21.0", "@orval/query": "7.21.0", "@orval/swr": "7.21.0", "@orval/zod": "7.21.0", "chalk": "^4.1.2", "chokidar": "^4.0.3", "commander": "^14.0.1", "enquirer": "^2.4.1", "execa": "^5.1.1", "find-up": "5.0.0", "fs-extra": "^11.3.2", "jiti": "^2.6.1", "js-yaml": "4.1.1", "lodash.uniq": "^4.5.0", "openapi3-ts": "4.5.0", "string-argv": "^0.3.2", "tsconfck": "^2.1.2", "typedoc": "^0.28.14", "typedoc-plugin-coverage": "^4.0.2", "typedoc-plugin-markdown": "^4.9.0" }, "bin": "./dist/bin/orval.js" }, "sha512-gG6aihg/BUiOgapn0qXsx3mgKU3L6iuzWtQJmvzdXavasyS0i+9e5j7kIpbdbeCYIEQX05kjBIzz5ZQlqzXCDA=="],
 
     "outvariant": ["outvariant@1.4.3", "", {}, "sha512-+Sl2UErvtsoajRDKCE5/dBz4DIvHXQQnAxtQTF04OJxY0+DyZXSo5P5Bb7XYWOh81syohlYL24hbDwxedPUJCA=="],
 
