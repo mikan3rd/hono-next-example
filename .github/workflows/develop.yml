@@ -278,15 +278,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .tool-versions
-
-      - run: bun install --frozen-lockfile
-
-      - run: bun run gen:client
-        working-directory: ./packages/frontend_app
-
       - run: cp .env.example .env
         working-directory: ./docker
 
