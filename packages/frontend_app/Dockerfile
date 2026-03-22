@@ -17,7 +17,7 @@ COPY packages/backend_app/package.json /app/packages/backend_app/
 COPY packages/frontend_app/package.json /app/packages/frontend_app/
 COPY packages/e2e/package.json /app/packages/e2e/
 RUN bun install --frozen-lockfile --production --filter frontend_app
-COPY package.json tsconfig.json /app/
+COPY tsconfig.json /app/
 COPY packages/backend_app/openapi.json /app/packages/backend_app/openapi.json
 COPY packages/frontend_app /app/packages/frontend_app
 WORKDIR /app/packages/frontend_app
@@ -46,7 +46,7 @@ COPY packages/frontend_app/package.json /app/packages/frontend_app/
 COPY packages/e2e/package.json /app/packages/e2e/
 COPY packages/backend_app/openapi.json /app/packages/backend_app/openapi.json
 RUN bun install --frozen-lockfile
-COPY package.json tsconfig.json /app/
+COPY tsconfig.json /app/
 COPY packages/frontend_app /app/packages/frontend_app
 WORKDIR /app/packages/frontend_app
 RUN bun run gen:client
