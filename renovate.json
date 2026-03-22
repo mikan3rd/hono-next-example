@@ -36,8 +36,7 @@
     },
     {
       "groupName": "orval dependencies",
-      "matchPackageNames": ["orval"],
-      "automerge": false
+      "matchPackageNames": ["orval"]
     },
     {
       "groupName": "Playwright dependencies",
