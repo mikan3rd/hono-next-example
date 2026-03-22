@@ -140,6 +140,7 @@ services:
       bun test
     volumes:
       - ../packages/frontend_app:/app/packages/frontend_app
+      - /app/packages/frontend_app/src/client
 
   e2e:
     build:
