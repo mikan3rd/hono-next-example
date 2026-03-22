@@ -47,6 +47,4 @@ COPY packages/e2e/package.json /app/packages/e2e/
 COPY packages/backend_app/openapi.json /app/packages/backend_app/openapi.json
 RUN bun install --frozen-lockfile
 COPY tsconfig.json /app/
-COPY packages/frontend_app /app/packages/frontend_app
 WORKDIR /app/packages/frontend_app
-RUN bun run gen:client

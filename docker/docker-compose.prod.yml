@@ -136,11 +136,9 @@ services:
     network_mode: host
     depends_on:
       - studio
-    command: |
-      bun test
+    command: sh -c 'bun run gen:client && bun test'
     volumes:
       - ../packages/frontend_app:/app/packages/frontend_app
-      - /app/packages/frontend_app/src/client
 
   e2e:
     build:
