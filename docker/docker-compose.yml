@@ -1,25 +1,10 @@
 name: "hono-next-example--dev"
 
 services:
-  studio:
-    extends:
-      file: docker-compose.supabase.yml
-      service: studio
-
-  analytics:
-    extends:
-      file: docker-compose.supabase.yml
-      service: analytics
-
   db:
     extends:
       file: docker-compose.supabase.yml
       service: db
-
-  meta:
-    extends:
-      file: docker-compose.supabase.yml
-      service: meta
 
   auth:
     extends:
@@ -31,23 +16,13 @@ services:
       file: docker-compose.supabase.yml
       service: kong
 
-  vector:
-    extends:
-      file: docker-compose.supabase.yml
-      service: vector
-
-  rest:
-    extends:
-      file: docker-compose.supabase.yml
-      service: rest
-
   db_migrate:
     image: backend_app
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_PORT: "5432"
       DATABASE_HOST: db
       SUPABASE_URL: http://kong:8000
       SUPABASE_KEY: ${SERVICE_ROLE_KEY}
@@ -75,7 +50,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_PORT: "5432"
       DATABASE_HOST: db
       SUPABASE_URL: http://kong:8000
       SUPABASE_KEY: ${SERVICE_ROLE_KEY}
@@ -90,7 +65,9 @@ services:
     depends_on:
       db_migrate:
         condition: service_completed_successfully
-      studio:
+      kong:
+        condition: service_started
+      auth:
         condition: service_started
     volumes:
       - ../:/app
@@ -150,4 +127,3 @@ volumes:
   backend_app_node_modules:
   frontend_app_node_modules:
   e2e_node_modules:
-  db-config:

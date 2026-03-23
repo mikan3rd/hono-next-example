@@ -51,11 +51,6 @@
       "groupName": "vitest dependencies",
       "automerge": false,
       "matchPackageNames": ["/^@vitest//", "/^vitest$/"]
-    },
-    {
-      "groupName": "supabase vector",
-      "matchPackageNames": ["timberio/vector"],
-      "automerge": false
     }
   ]
 }
