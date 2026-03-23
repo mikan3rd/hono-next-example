@@ -1,7 +1,4 @@
-# Minimal stack: official Postgres + GoTrue + Kong (Auth API at /auth/v1 only).
-# Derived from https://github.com/supabase/supabase/blob/master/docker/docker-compose.yml
-
-name: supabase
+# GoTrue + Kong（/auth/v1）。DB は docker-compose.postgres.yml。
 
 services:
   kong:
@@ -45,9 +42,6 @@ services:
       timeout: 5s
       interval: 5s
       retries: 3
-    depends_on:
-      db:
-        condition: service_healthy
     environment:
       GOTRUE_API_HOST: 0.0.0.0
       GOTRUE_API_PORT: 9999
@@ -83,29 +77,3 @@ services:
 
       GOTRUE_EXTERNAL_PHONE_ENABLED: ${ENABLE_PHONE_SIGNUP}
       GOTRUE_SMS_AUTOCONFIRM: ${ENABLE_PHONE_AUTOCONFIRM}
-
-  db:
-    container_name: app-db
-    image: postgres:17.6-bookworm
-    restart: unless-stopped
-    volumes:
-      - ./volumes/db/data:/var/lib/postgresql/data:Z
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\" -h localhost -p 5432",
-        ]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "${POSTGRES_PORT}:5432"
-    command:
-      - postgres
-      - -c
-      - listen_addresses=*

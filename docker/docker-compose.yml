@@ -3,13 +3,16 @@ name: "hono-next-example--dev"
 services:
   db:
     extends:
-      file: docker-compose.supabase.yml
+      file: docker-compose.postgres.yml
       service: db
 
   auth:
     extends:
       file: docker-compose.supabase.yml
       service: auth
+    depends_on:
+      db:
+        condition: service_healthy
 
   kong:
     extends:
