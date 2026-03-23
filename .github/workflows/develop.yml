@@ -127,7 +127,7 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
-      - run: bun db:push:force
+      - run: bun db:push
 
       - run: bun test --coverage
 
