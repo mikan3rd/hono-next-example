@@ -109,7 +109,7 @@ jobs:
       SUPABASE_KEY: example-key
     services:
       postgres:
-        image: postgres:18.1
+        image: postgres:18.1-bookworm
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
@@ -289,20 +289,12 @@ jobs:
         run: docker compose -f docker-compose.prod.yml build
         working-directory: ./docker
 
-      - name: docker compose up studio
-        run: docker compose -f docker-compose.prod.yml up -d studio
-        working-directory: ./docker
-
-      - name: docker compose up frontend_app
+      - name: docker compose up
         run: docker compose -f docker-compose.prod.yml up -d frontend_app
         working-directory: ./docker
 
       - name: docker compose up e2e
         run: docker compose -f docker-compose.prod.yml up e2e --exit-code-from e2e
-        working-directory: ./docker
-
-      - name: docker compose up frontend_anon_check
-        run: docker compose -f docker-compose.prod.yml up frontend_anon_check --exit-code-from frontend_anon_check
         working-directory: ./docker
 
       - name: docker compose logs

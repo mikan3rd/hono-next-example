@@ -1,0 +1,29 @@
+# Official PostgreSQL
+
+services:
+  db:
+    container_name: app-db
+    image: postgres:18.1-bookworm
+    restart: unless-stopped
+    volumes:
+      - ./volumes/db/data:/var/lib/postgresql:Z
+      - ./volumes/db/init-auth-schema.sql:/docker-entrypoint-initdb.d/00-init-auth-schema.sql:ro
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\" -h localhost -p 5432",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    command:
+      - postgres
+      - -c
+      - listen_addresses=*
