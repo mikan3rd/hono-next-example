@@ -127,7 +127,7 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
-      - run: bun db:push
+      - run: bun db:push:force
 
       - run: bun test --coverage
 
@@ -257,7 +257,7 @@ jobs:
 
   e2e-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     needs:
       - backend-test
       - frontend-chromatic
