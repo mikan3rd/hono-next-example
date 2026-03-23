@@ -6,7 +6,7 @@ services:
     image: postgres:18.1-bookworm
     restart: unless-stopped
     volumes:
-      - ./volumes/db/data:/var/lib/postgresql/data:Z
+      - ./volumes/db/data:/var/lib/postgresql:Z
       - ./volumes/db/init-auth-schema.sql:/docker-entrypoint-initdb.d/00-init-auth-schema.sql:ro
     healthcheck:
       test:
