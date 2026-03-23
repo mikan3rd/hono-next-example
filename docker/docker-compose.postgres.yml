@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./volumes/db/data:/var/lib/postgresql/data:Z
+      - ./volumes/db/init-auth-schema.sql:/docker-entrypoint-initdb.d/00-init-auth-schema.sql:ro
     healthcheck:
       test:
         [

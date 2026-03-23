@@ -48,7 +48,8 @@ services:
       API_EXTERNAL_URL: ${API_EXTERNAL_URL}
 
       GOTRUE_DB_DRIVER: postgres
-      GOTRUE_DB_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}
+      # API 用 DB 接続に Pop の Namespace が無く unqualified テーブルが public を見るため、接続の search_path で auth を先頭にする（migrate も同一 URL）。
+      GOTRUE_DB_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}?options=-c%20search_path%3Dauth
 
       GOTRUE_SITE_URL: ${SITE_URL}
       GOTRUE_URI_ALLOW_LIST: ${ADDITIONAL_REDIRECT_URLS}
