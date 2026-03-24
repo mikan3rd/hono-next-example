@@ -3,7 +3,7 @@
 services:
   db:
     container_name: app-db
-    image: postgres:18.1-bookworm
+    image: postgres:18.2-bookworm
     restart: unless-stopped
     volumes:
       - ./volumes/db/data:/var/lib/postgresql:Z

@@ -27,8 +27,7 @@
     },
     {
       "groupName": "bun dependencies",
-      "matchPackageNames": ["bun", "@types/bun", "oven/bun", "oven-sh/bun"],
-      "automerge": false
+      "matchPackageNames": ["bun", "@types/bun", "oven/bun", "oven-sh/bun"]
     },
     {
       "groupName": "biome dependencies",
@@ -51,6 +50,10 @@
       "groupName": "vitest dependencies",
       "automerge": false,
       "matchPackageNames": ["/^@vitest//", "/^vitest$/"]
+    },
+    {
+      "groupName": "faker dependencies",
+      "matchPackageNames": ["@faker-js/faker"]
     }
   ]
 }
