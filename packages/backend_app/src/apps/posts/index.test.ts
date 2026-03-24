@@ -87,7 +87,7 @@ describe("postsApp", () => {
         expect(json.posts[0]).toEqual({
           public_id: expect.any(String),
           content: "test2",
-          created_at: expect.any(String), // first_created_at → created_at に変換
+          created_at: expect.any(String),
           updated_at: null,
           user: {
             public_id: user.public_id,
@@ -97,7 +97,7 @@ describe("postsApp", () => {
         expect(json.posts[1]).toEqual({
           public_id: expect.any(String),
           content: "test",
-          created_at: expect.any(String), // first_created_at → created_at に変換
+          created_at: expect.any(String),
           updated_at: null,
           user: {
             public_id: user.public_id,
@@ -154,7 +154,6 @@ describe("postsApp", () => {
         expect(postLog.user_id).toBe(post.user_id);
         expect(postLog.content).toBe(content);
 
-        // first_created_atが正しく設定されていることを確認
         expect(post.first_created_at).toBeDefined();
         expect(post.first_created_at).toBeInstanceOf(Date);
       });
@@ -246,7 +245,6 @@ describe("postsApp", () => {
           expect(post.public_id).toBe(public_id);
           expect(json.post.updated_at).toEqual(post.created_at.toISOString());
 
-          // first_created_atが維持されていることを確認
           expect(post.first_created_at).toEqual(firstPost.first_created_at);
 
           const postLogs = await db.select().from(postLogsTable);
