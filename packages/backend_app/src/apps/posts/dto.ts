@@ -18,12 +18,15 @@ export const postSchema = z
       example: "2025-01-01T00:00:00Z",
       format: "date-time",
     }),
-    updated_at: z.iso.datetime().openapi({
-      description:
-        "The date and time the post was created (or last updated in case of delete&insert)",
-      example: "2025-01-01T00:00:00Z",
-      format: "date-time",
-    }),
+    updated_at: z
+      .iso.datetime()
+      .nullable()
+      .openapi({
+        description:
+          "Last update time; null if the post has never been edited (after an edit, equals the current row's created_at)",
+        example: "2025-01-01T00:00:00Z",
+        format: "date-time",
+      }),
   })
   .openapi("post");
 
@@ -37,7 +40,10 @@ export const transformPost = (post: {
   public_id: post.public_id,
   content: post.content,
   created_at: post.first_created_at.toISOString(), // first_created_at → created_at
-  updated_at: post.created_at.toISOString(), // created_at → updated_at
+  updated_at:
+    post.first_created_at.getTime() === post.created_at.getTime()
+      ? null
+      : post.created_at.toISOString(),
 });
 
 // user 付きの変換関数

@@ -101,8 +101,9 @@
           },
           "updated_at": {
             "type": "string",
+            "nullable": true,
             "format": "date-time",
-            "description": "The date and time the post was created (or last updated in case of delete&insert)",
+            "description": "Last update time; null if the post has never been edited (after an edit, equals the current row's created_at)",
             "example": "2025-01-01T00:00:00Z"
           }
         },

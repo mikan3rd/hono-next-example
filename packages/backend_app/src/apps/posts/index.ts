@@ -40,6 +40,7 @@ const routes = postApp
             user_id: user.id,
             content,
             first_created_at: now, // 最初の作成日時を設定
+            created_at: now, // defaultNow との差分で未編集と誤判定しないよう揃える
           })
           .returning()
       )[0];
