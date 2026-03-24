@@ -1,10 +1,7 @@
 import { desc, eq } from "drizzle-orm";
-import type { DbTransaction } from "../db";
 import { db } from "../db";
 import { postWithUserQuery } from "../db/query";
 import { postLogsTable, postsTable } from "../db/schema";
-
-export type PostMutationRow = typeof postsTable.$inferSelect;
 
 export type PostApplicationError =
   | "not_found"
@@ -16,32 +13,6 @@ export type PostAccessError = Extract<
   PostApplicationError,
   "not_found" | "forbidden"
 >;
-
-type ResolvePostForMutation =
-  | { ok: true; row: PostMutationRow }
-  | { ok: false; error: PostAccessError };
-
-async function resolvePostForMutation(
-  tx: DbTransaction,
-  publicId: string,
-  actorUserId: number,
-): Promise<ResolvePostForMutation> {
-  const rows = await tx
-    .select()
-    .from(postsTable)
-    .where(eq(postsTable.public_id, publicId));
-  const target = rows[0];
-
-  if (target === undefined) {
-    return { ok: false, error: "not_found" };
-  }
-
-  if (actorUserId !== target.user_id) {
-    return { ok: false, error: "forbidden" };
-  }
-
-  return { ok: true, row: target };
-}
 
 export async function listPostsWithUser() {
   return db.query.postsTable.findMany({
@@ -114,15 +85,19 @@ export async function updatePostByPublicId(input: {
   content: string;
 }): Promise<{ ok: true } | { ok: false; error: PostApplicationError }> {
   const txResult = await db.transaction(async (tx) => {
-    const resolved = await resolvePostForMutation(
-      tx,
-      input.publicId,
-      input.actorUserId,
-    );
-    if (!resolved.ok) {
-      return { kind: "abort" as const, error: resolved.error };
+    const rows = await tx
+      .select()
+      .from(postsTable)
+      .where(eq(postsTable.public_id, input.publicId));
+    const target = rows[0];
+
+    if (target === undefined) {
+      return { kind: "abort" as const, error: "not_found" as const };
     }
-    const target = resolved.row;
+
+    if (input.actorUserId !== target.user_id) {
+      return { kind: "abort" as const, error: "forbidden" as const };
+    }
 
     await tx.delete(postsTable).where(eq(postsTable.public_id, input.publicId));
 
@@ -167,13 +142,18 @@ export async function deletePostByPublicId(input: {
   actorUserId: number;
 }): Promise<{ ok: true } | { ok: false; error: PostAccessError }> {
   const txResult = await db.transaction(async (tx) => {
-    const resolved = await resolvePostForMutation(
-      tx,
-      input.publicId,
-      input.actorUserId,
-    );
-    if (!resolved.ok) {
-      return { kind: "abort" as const, error: resolved.error };
+    const rows = await tx
+      .select()
+      .from(postsTable)
+      .where(eq(postsTable.public_id, input.publicId));
+    const target = rows[0];
+
+    if (target === undefined) {
+      return { kind: "abort" as const, error: "not_found" as const };
+    }
+
+    if (input.actorUserId !== target.user_id) {
+      return { kind: "abort" as const, error: "forbidden" as const };
     }
 
     await tx.delete(postsTable).where(eq(postsTable.public_id, input.publicId));
