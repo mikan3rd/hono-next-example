@@ -30,6 +30,10 @@
       "matchPackageNames": ["bun", "@types/bun", "oven/bun", "oven-sh/bun"]
     },
     {
+      "groupName": "tsgo dependencies",
+      "matchPackageNames": ["@typescript/native-preview"]
+    },
+    {
       "groupName": "biome dependencies",
       "matchPackageNames": ["@biomejs/biome"]
     },

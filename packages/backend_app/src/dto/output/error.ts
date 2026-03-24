@@ -1,70 +1,69 @@
 import { z } from "@hono/zod-openapi";
 
-const errorCodes = [
-  "Bad Request",
-  "Unauthorized",
-  "Forbidden",
-  "Not Found",
-  "Internal Server Error",
-] as const;
+export const ERROR_BY_STATUS = {
+  400: "Bad Request",
+  401: "Unauthorized",
+  403: "Forbidden",
+  404: "Not Found",
+  500: "Internal Server Error",
+} as const;
 
-export type ErrorCode = (typeof errorCodes)[number];
+export type HttpErrorStatus = keyof typeof ERROR_BY_STATUS;
+export type ErrorCode = (typeof ERROR_BY_STATUS)[HttpErrorStatus];
 
-const errorSchemaFactory = (code: ErrorCode) => {
+const errorSchemaFactory = (status: HttpErrorStatus) => {
+  const code = ERROR_BY_STATUS[status];
   return z
     .object({
-      code: z.enum(errorCodes).openapi({
-        example: code,
-      }),
+      code: z.literal(code).openapi({ example: code }),
       message: z.string().openapi({ description: "explanation" }),
     })
-    .openapi("ErrorResponse");
+    .openapi(`ErrorResponse${status}`);
 };
 
-export type ErrorResponse = z.infer<ReturnType<typeof errorSchemaFactory>>;
+export type ErrorResponse = {
+  code: ErrorCode;
+  message: string;
+};
 
 export const ErrorResponses = {
   400: {
-    description: "Bad Request",
+    description: ERROR_BY_STATUS[400],
     content: {
       "application/json": {
-        schema: errorSchemaFactory("Bad Request"),
+        schema: errorSchemaFactory(400),
       },
     },
   },
-
   401: {
-    description: "Unauthorized",
+    description: ERROR_BY_STATUS[401],
     content: {
       "application/json": {
-        schema: errorSchemaFactory("Unauthorized"),
+        schema: errorSchemaFactory(401),
       },
     },
   },
-
   403: {
-    description: "Forbidden",
+    description: ERROR_BY_STATUS[403],
     content: {
       "application/json": {
-        schema: errorSchemaFactory("Forbidden"),
+        schema: errorSchemaFactory(403),
       },
     },
   },
-
   404: {
-    description: "Not Found",
+    description: ERROR_BY_STATUS[404],
     content: {
       "application/json": {
-        schema: errorSchemaFactory("Not Found"),
+        schema: errorSchemaFactory(404),
       },
     },
   },
-
   500: {
-    description: "Internal Server Error",
+    description: ERROR_BY_STATUS[500],
     content: {
       "application/json": {
-        schema: errorSchemaFactory("Internal Server Error"),
+        schema: errorSchemaFactory(500),
       },
     },
   },
