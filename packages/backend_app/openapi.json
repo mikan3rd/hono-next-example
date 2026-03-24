@@ -10,19 +10,61 @@
       }
     },
     "schemas": {
-      "ErrorResponse": {
+      "ErrorResponse400": {
         "type": "object",
         "properties": {
           "code": {
             "type": "string",
-            "enum": [
-              "Bad Request",
-              "Unauthorized",
-              "Forbidden",
-              "Not Found",
-              "Internal Server Error"
-            ],
+            "enum": ["Bad Request"],
             "example": "Bad Request"
+          },
+          "message": { "type": "string", "description": "explanation" }
+        },
+        "required": ["code", "message"]
+      },
+      "ErrorResponse401": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": ["Unauthorized"],
+            "example": "Unauthorized"
+          },
+          "message": { "type": "string", "description": "explanation" }
+        },
+        "required": ["code", "message"]
+      },
+      "ErrorResponse403": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": ["Forbidden"],
+            "example": "Forbidden"
+          },
+          "message": { "type": "string", "description": "explanation" }
+        },
+        "required": ["code", "message"]
+      },
+      "ErrorResponse404": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": ["Not Found"],
+            "example": "Not Found"
+          },
+          "message": { "type": "string", "description": "explanation" }
+        },
+        "required": ["code", "message"]
+      },
+      "ErrorResponse500": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": ["Internal Server Error"],
+            "example": "Internal Server Error"
           },
           "message": { "type": "string", "description": "explanation" }
         },
@@ -99,7 +141,7 @@
             "description": "Bad Request",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse400" }
               }
             }
           },
@@ -107,30 +149,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Unauthorized"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse401" }
               }
             }
           },
@@ -138,30 +157,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Forbidden"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse403" }
               }
             }
           },
@@ -169,30 +165,7 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Not Found"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse404" }
               }
             }
           },
@@ -200,30 +173,7 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Internal Server Error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse500" }
               }
             }
           }
@@ -247,7 +197,7 @@
             "description": "Bad Request",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse400" }
               }
             }
           },
@@ -255,30 +205,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Unauthorized"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse401" }
               }
             }
           },
@@ -286,30 +213,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Forbidden"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse403" }
               }
             }
           },
@@ -317,30 +221,7 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Not Found"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse404" }
               }
             }
           },
@@ -348,30 +229,7 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Internal Server Error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse500" }
               }
             }
           }
@@ -415,7 +273,7 @@
             "description": "Bad Request",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse400" }
               }
             }
           },
@@ -423,30 +281,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Unauthorized"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse401" }
               }
             }
           },
@@ -454,30 +289,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Forbidden"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse403" }
               }
             }
           },
@@ -485,30 +297,7 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Not Found"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse404" }
               }
             }
           },
@@ -516,30 +305,7 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Internal Server Error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse500" }
               }
             }
           }
@@ -597,7 +363,7 @@
             "description": "Bad Request",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse400" }
               }
             }
           },
@@ -605,30 +371,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Unauthorized"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse401" }
               }
             }
           },
@@ -636,30 +379,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Forbidden"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse403" }
               }
             }
           },
@@ -667,30 +387,7 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Not Found"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse404" }
               }
             }
           },
@@ -698,30 +395,7 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Internal Server Error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse500" }
               }
             }
           }
@@ -788,7 +462,7 @@
             "description": "Bad Request",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse400" }
               }
             }
           },
@@ -796,30 +470,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Unauthorized"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse401" }
               }
             }
           },
@@ -827,30 +478,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Forbidden"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse403" }
               }
             }
           },
@@ -858,30 +486,7 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Not Found"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse404" }
               }
             }
           },
@@ -889,30 +494,7 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Internal Server Error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse500" }
               }
             }
           }
@@ -935,7 +517,7 @@
             "description": "Bad Request",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse400" }
               }
             }
           },
@@ -943,30 +525,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Unauthorized"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse401" }
               }
             }
           },
@@ -974,30 +533,7 @@
             "description": "Forbidden",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Forbidden"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse403" }
               }
             }
           },
@@ -1005,30 +541,7 @@
             "description": "Not Found",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Not Found"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse404" }
               }
             }
           },
@@ -1036,30 +549,7 @@
             "description": "Internal Server Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "allOf": [
-                    { "$ref": "#/components/schemas/ErrorResponse" },
-                    {
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "Bad Request",
-                            "Unauthorized",
-                            "Forbidden",
-                            "Not Found",
-                            "Internal Server Error"
-                          ],
-                          "example": "Internal Server Error"
-                        },
-                        "message": {
-                          "type": "string",
-                          "description": "explanation"
-                        }
-                      }
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse500" }
               }
             }
           }
