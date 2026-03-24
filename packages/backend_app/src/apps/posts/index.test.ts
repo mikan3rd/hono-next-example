@@ -4,7 +4,7 @@ import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
 import { db } from "../../db";
-import { postsTable, usersTable } from "../../db/schema";
+import { postLogsTable, postsTable, usersTable } from "../../db/schema";
 import { supabaseUid } from "../../test/supabase";
 
 describe("postsApp", () => {
@@ -21,6 +21,7 @@ describe("postsApp", () => {
       await db
         .insert(usersTable)
         .values({
+          public_id: faker.string.uuid(),
           supabase_uid: supabaseUid,
           display_name: faker.person.fullName(),
         })
@@ -33,6 +34,7 @@ describe("postsApp", () => {
       await db
         .insert(usersTable)
         .values({
+          public_id: faker.string.uuid(),
           supabase_uid: faker.string.uuid(),
           display_name: faker.person.fullName(),
         })
@@ -58,12 +60,21 @@ describe("postsApp", () => {
 
     describe("when there are some posts", () => {
       beforeEach(async () => {
-        await db
-          .insert(postsTable)
-          .values({ user_id: user.id, content: "test" });
-        await db
-          .insert(postsTable)
-          .values({ user_id: user.id, content: "test2" });
+        const now = new Date();
+        await db.insert(postsTable).values({
+          public_id: faker.string.uuid(),
+          user_id: user.id,
+          content: "test",
+          first_created_at: now,
+          created_at: now,
+        });
+        await db.insert(postsTable).values({
+          public_id: faker.string.uuid(),
+          user_id: user.id,
+          content: "test2",
+          first_created_at: now,
+          created_at: now,
+        });
       });
 
       it("should return 200 Response", async () => {
@@ -76,8 +87,8 @@ describe("postsApp", () => {
         expect(json.posts[0]).toEqual({
           public_id: expect.any(String),
           content: "test2",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
+          created_at: expect.any(String), // first_created_at → created_at に変換
+          updated_at: null,
           user: {
             public_id: user.public_id,
             display_name: user.display_name,
@@ -86,8 +97,8 @@ describe("postsApp", () => {
         expect(json.posts[1]).toEqual({
           public_id: expect.any(String),
           content: "test",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
+          created_at: expect.any(String), // first_created_at → created_at に変換
+          updated_at: null,
           user: {
             public_id: user.public_id,
             display_name: user.display_name,
@@ -126,6 +137,7 @@ describe("postsApp", () => {
         if (!res.ok) throw new Error("res is not ok");
         const json = await res.json();
         expect(json.post.content).toBe(content);
+        expect(json.post.updated_at).toBeNull();
 
         const posts = await db.select().from(postsTable);
         expect(posts).toHaveLength(1);
@@ -133,7 +145,18 @@ describe("postsApp", () => {
         const post = posts[0];
         if (!post) throw new Error("post is not found");
         expect(post.content).toBe(content);
-        expect(post.created_at).toEqual(post.updated_at);
+
+        const postLogs = await db.select().from(postLogsTable);
+        expect(postLogs).toHaveLength(1);
+        const postLog = postLogs[0];
+        if (!postLog) throw new Error("postLog is not found");
+        expect(postLog.public_id).toBe(post.public_id);
+        expect(postLog.user_id).toBe(post.user_id);
+        expect(postLog.content).toBe(content);
+
+        // first_created_atが正しく設定されていることを確認
+        expect(post.first_created_at).toBeDefined();
+        expect(post.first_created_at).toBeInstanceOf(Date);
       });
     });
 
@@ -189,10 +212,21 @@ describe("postsApp", () => {
       });
 
       describe("when post is found", () => {
+        let firstPost: typeof postsTable.$inferSelect;
+
         beforeEach(async () => {
-          await db
+          const result = await db
             .insert(postsTable)
-            .values({ public_id, user_id: user.id, content: "test" });
+            .values({
+              public_id,
+              user_id: user.id,
+              content: "test",
+              first_created_at: new Date(),
+            })
+            .returning();
+          const post = result[0];
+          if (!post) throw new Error("post is not found");
+          firstPost = post;
         });
 
         it("should return 200 Response", async () => {
@@ -209,17 +243,31 @@ describe("postsApp", () => {
           const post = posts[0];
           if (!post) throw new Error("post is not found");
           expect(post.content).toBe(content);
-          expect(post.created_at.getTime()).toBeLessThan(
-            post.updated_at.getTime(),
-          );
+          expect(post.public_id).toBe(public_id);
+          expect(json.post.updated_at).toEqual(post.created_at.toISOString());
+
+          // first_created_atが維持されていることを確認
+          expect(post.first_created_at).toEqual(firstPost.first_created_at);
+
+          const postLogs = await db.select().from(postLogsTable);
+          expect(postLogs).toHaveLength(1);
+          const postLog = postLogs[0];
+          if (!postLog) throw new Error("postLog is not found");
+          expect(postLog.id).toBe(post.id);
+          expect(postLog.public_id).toBe(post.public_id);
+          expect(postLog.user_id).toBe(post.user_id);
+          expect(postLog.content).toBe(content);
         });
       });
 
       describe("when post user is not the same as the current user", () => {
         beforeEach(async () => {
-          await db
-            .insert(postsTable)
-            .values({ public_id, user_id: anotherUser.id, content: "test" });
+          await db.insert(postsTable).values({
+            public_id,
+            user_id: anotherUser.id,
+            content: "test",
+            first_created_at: new Date(),
+          });
         });
 
         it("should return 403 Response", async () => {
@@ -289,9 +337,12 @@ describe("postsApp", () => {
 
       describe("when post is found", () => {
         beforeEach(async () => {
-          await db
-            .insert(postsTable)
-            .values({ public_id, user_id: user.id, content: "test" });
+          await db.insert(postsTable).values({
+            public_id,
+            user_id: user.id,
+            content: "test",
+            first_created_at: new Date(),
+          });
         });
 
         it("should return 200 Response", async () => {
@@ -305,9 +356,12 @@ describe("postsApp", () => {
 
       describe("when post user is not the same as the current user", () => {
         beforeEach(async () => {
-          await db
-            .insert(postsTable)
-            .values({ public_id, user_id: anotherUser.id, content: "test" });
+          await db.insert(postsTable).values({
+            public_id,
+            user_id: anotherUser.id,
+            content: "test",
+            first_created_at: new Date(),
+          });
         });
 
         it("should return 403 Response", async () => {

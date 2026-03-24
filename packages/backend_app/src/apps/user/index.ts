@@ -19,7 +19,7 @@ const routes = userApp
     const { display_name } = await c.req.valid("json");
     await db
       .insert(usersTable)
-      .values({ supabase_uid, display_name })
+      .values({ public_id: crypto.randomUUID(), supabase_uid, display_name })
       .onConflictDoNothing({ target: usersTable.supabase_uid });
     return c.json(null, 200);
   })
