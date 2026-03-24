@@ -41,9 +41,9 @@ export const createApp = () => {
   const app = new OpenAPIHono<HonoEnv>({
     defaultHook: (result, c) => {
       if (!result.success) {
-        return c.json(
+        return c.json<ErrorResponse>(
           {
-            code: 400,
+            code: "Bad Request",
             message: "Validation Error",
           },
           400,

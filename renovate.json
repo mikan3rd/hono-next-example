@@ -27,8 +27,11 @@
     },
     {
       "groupName": "bun dependencies",
-      "matchPackageNames": ["bun", "@types/bun", "oven/bun", "oven-sh/bun"],
-      "automerge": false
+      "matchPackageNames": ["bun", "@types/bun", "oven/bun", "oven-sh/bun"]
+    },
+    {
+      "groupName": "tsgo dependencies",
+      "matchPackageNames": ["@typescript/native-preview"]
     },
     {
       "groupName": "biome dependencies",
@@ -36,8 +39,7 @@
     },
     {
       "groupName": "orval dependencies",
-      "matchPackageNames": ["orval"],
-      "automerge": false
+      "matchPackageNames": ["orval"]
     },
     {
       "groupName": "Playwright dependencies",
@@ -54,9 +56,8 @@
       "matchPackageNames": ["/^@vitest//", "/^vitest$/"]
     },
     {
-      "groupName": "supabase vector",
-      "matchPackageNames": ["timberio/vector"],
-      "automerge": false
+      "groupName": "faker dependencies",
+      "matchPackageNames": ["@faker-js/faker"]
     }
   ]
 }
