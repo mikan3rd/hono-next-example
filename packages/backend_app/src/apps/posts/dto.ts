@@ -18,15 +18,12 @@ export const postSchema = z
       example: "2025-01-01T00:00:00Z",
       format: "date-time",
     }),
-    updated_at: z
-      .iso.datetime()
-      .nullable()
-      .openapi({
-        description:
-          "Last update time; null if the post has never been edited (after an edit, equals the current row's created_at)",
-        example: "2025-01-01T00:00:00Z",
-        format: "date-time",
-      }),
+    updated_at: z.iso.datetime().nullable().openapi({
+      description:
+        "Last update time; null if the post has never been edited (after an edit, equals the current row's created_at)",
+      example: "2025-01-01T00:00:00Z",
+      format: "date-time",
+    }),
   })
   .openapi("post");
 
