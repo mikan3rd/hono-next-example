@@ -1,4 +1,5 @@
 import { desc, eq } from "drizzle-orm";
+import { TransactionRollbackError } from "drizzle-orm/errors";
 import { db } from "../db";
 import { postWithUserQuery } from "../db/query";
 import { postLogsTable, postsTable } from "../db/schema";
@@ -84,57 +85,63 @@ export async function updatePostByPublicId(input: {
   actorUserId: number;
   content: string;
 }): Promise<{ ok: true } | { ok: false; error: PostApplicationError }> {
-  const txResult = await db.transaction(async (tx) => {
-    const rows = await tx
-      .select()
-      .from(postsTable)
-      .where(eq(postsTable.public_id, input.publicId));
-    const target = rows[0];
+  try {
+    const txResult = await db.transaction(async (tx) => {
+      const rows = await tx
+        .select()
+        .from(postsTable)
+        .where(eq(postsTable.public_id, input.publicId));
+      const target = rows[0];
 
-    if (target === undefined) {
-      return { kind: "abort" as const, error: "not_found" as const };
-    }
+      if (target === undefined) {
+        return { kind: "abort" as const, error: "not_found" as const };
+      }
 
-    if (input.actorUserId !== target.user_id) {
-      return { kind: "abort" as const, error: "forbidden" as const };
-    }
+      if (input.actorUserId !== target.user_id) {
+        return { kind: "abort" as const, error: "forbidden" as const };
+      }
 
-    await tx.delete(postsTable).where(eq(postsTable.public_id, input.publicId));
+      await tx
+        .delete(postsTable)
+        .where(eq(postsTable.public_id, input.publicId));
 
-    const results = await tx
-      .insert(postsTable)
-      .values({
-        public_id: target.public_id,
-        user_id: target.user_id,
-        content: input.content,
-        first_created_at: target.first_created_at,
-      })
-      .returning();
+      const results = await tx
+        .insert(postsTable)
+        .values({
+          public_id: target.public_id,
+          user_id: target.user_id,
+          content: input.content,
+          first_created_at: target.first_created_at,
+        })
+        .returning();
 
-    const row = results[0];
-    if (!row) {
-      return { kind: "fail" as const, error: "update_failed" as const };
-    }
+      const row = results[0];
+      if (!row) {
+        return tx.rollback();
+      }
 
-    await tx.insert(postLogsTable).values({
-      id: row.id,
-      public_id: row.public_id,
-      user_id: row.user_id,
-      content: row.content,
-      created_at: row.created_at,
+      await tx.insert(postLogsTable).values({
+        id: row.id,
+        public_id: row.public_id,
+        user_id: row.user_id,
+        content: row.content,
+        created_at: row.created_at,
+      });
+
+      return { kind: "success" as const };
     });
 
-    return { kind: "success" as const };
-  });
+    if (txResult.kind === "abort") {
+      return { ok: false, error: txResult.error };
+    }
 
-  if (txResult.kind === "abort") {
-    return { ok: false, error: txResult.error };
+    return { ok: true };
+  } catch (e) {
+    if (e instanceof TransactionRollbackError) {
+      return { ok: false, error: "update_failed" };
+    }
+    throw e;
   }
-  if (txResult.kind === "fail") {
-    return { ok: false, error: txResult.error };
-  }
-
-  return { ok: true };
 }
 
 export async function deletePostByPublicId(input: {
