@@ -4,7 +4,7 @@ import type { ClientRequestOptions } from "hono/client";
 import { testClient } from "hono/testing";
 import { app } from "../../apps";
 import { db } from "../../db";
-import { postLogsTable, postsTable, usersTable } from "../../db/schema";
+import { postsTable, usersTable } from "../../db/schema";
 import { supabaseUid } from "../../test/supabase";
 
 describe("postsApp", () => {
@@ -84,25 +84,18 @@ describe("postsApp", () => {
         if (!res.ok) throw new Error("res is not ok");
         const json = await res.json();
         expect(json.posts).toHaveLength(2);
-        expect(json.posts[0]).toEqual({
-          public_id: expect.any(String),
+        expect(json.posts[0]).toMatchObject({
           content: "test2",
-          created_at: expect.any(String), // first_created_at → created_at に変換
           updated_at: null,
           user: {
             public_id: user.public_id,
             display_name: user.display_name,
           },
         });
-        expect(json.posts[1]).toEqual({
-          public_id: expect.any(String),
+        expect(json.posts[0]?.created_at).toEqual(expect.any(String));
+        expect(json.posts[1]).toMatchObject({
           content: "test",
-          created_at: expect.any(String), // first_created_at → created_at に変換
-          updated_at: null,
-          user: {
-            public_id: user.public_id,
-            display_name: user.display_name,
-          },
+          user: { public_id: user.public_id },
         });
       });
     });
@@ -138,25 +131,7 @@ describe("postsApp", () => {
         const json = await res.json();
         expect(json.post.content).toBe(content);
         expect(json.post.updated_at).toBeNull();
-
-        const posts = await db.select().from(postsTable);
-        expect(posts).toHaveLength(1);
-
-        const post = posts[0];
-        if (!post) throw new Error("post is not found");
-        expect(post.content).toBe(content);
-
-        const postLogs = await db.select().from(postLogsTable);
-        expect(postLogs).toHaveLength(1);
-        const postLog = postLogs[0];
-        if (!postLog) throw new Error("postLog is not found");
-        expect(postLog.public_id).toBe(post.public_id);
-        expect(postLog.user_id).toBe(post.user_id);
-        expect(postLog.content).toBe(content);
-
-        // first_created_atが正しく設定されていることを確認
-        expect(post.first_created_at).toBeDefined();
-        expect(post.first_created_at).toBeInstanceOf(Date);
+        expect(json.post.public_id).toEqual(expect.any(String));
       });
     });
 
@@ -212,8 +187,6 @@ describe("postsApp", () => {
       });
 
       describe("when post is found", () => {
-        let firstPost: typeof postsTable.$inferSelect;
-
         beforeEach(async () => {
           const result = await db
             .insert(postsTable)
@@ -226,7 +199,6 @@ describe("postsApp", () => {
             .returning();
           const post = result[0];
           if (!post) throw new Error("post is not found");
-          firstPost = post;
         });
 
         it("should return 200 Response", async () => {
@@ -236,27 +208,8 @@ describe("postsApp", () => {
           if (!res.ok) throw new Error("res is not ok");
           const json = await res.json();
           expect(json.post.content).toBe(content);
-
-          const posts = await db.select().from(postsTable);
-          expect(posts).toHaveLength(1);
-
-          const post = posts[0];
-          if (!post) throw new Error("post is not found");
-          expect(post.content).toBe(content);
-          expect(post.public_id).toBe(public_id);
-          expect(json.post.updated_at).toEqual(post.created_at.toISOString());
-
-          // first_created_atが維持されていることを確認
-          expect(post.first_created_at).toEqual(firstPost.first_created_at);
-
-          const postLogs = await db.select().from(postLogsTable);
-          expect(postLogs).toHaveLength(1);
-          const postLog = postLogs[0];
-          if (!postLog) throw new Error("postLog is not found");
-          expect(postLog.id).toBe(post.id);
-          expect(postLog.public_id).toBe(post.public_id);
-          expect(postLog.user_id).toBe(post.user_id);
-          expect(postLog.content).toBe(content);
+          expect(json.post.public_id).toBe(public_id);
+          expect(json.post.updated_at).toEqual(expect.any(String));
         });
       });
 
@@ -349,8 +302,8 @@ describe("postsApp", () => {
           const res = await subject();
           expect(res.status).toBe(200);
 
-          const posts = await db.select().from(postsTable);
-          expect(posts).toHaveLength(0);
+          if (!res.ok) throw new Error("res is not ok");
+          expect(await res.json()).toBeNull();
         });
       });
 

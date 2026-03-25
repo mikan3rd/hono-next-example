@@ -27,7 +27,6 @@ export const postSchema = z
   })
   .openapi("post");
 
-// DB データから API レスポンス形式への変換関数
 export const transformPost = (post: {
   public_id: string;
   content: string;
@@ -36,14 +35,13 @@ export const transformPost = (post: {
 }): z.infer<typeof postSchema> => ({
   public_id: post.public_id,
   content: post.content,
-  created_at: post.first_created_at.toISOString(), // first_created_at → created_at
+  created_at: post.first_created_at.toISOString(),
   updated_at:
     post.first_created_at.getTime() === post.created_at.getTime()
       ? null
       : post.created_at.toISOString(),
 });
 
-// user 付きの変換関数
 export const transformPostWithUser = <
   T extends {
     public_id: string;

@@ -1,8 +1,13 @@
-import { desc, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
-import { db } from "../../db";
-import { postWithUserQuery } from "../../db/query";
-import { postLogsTable, postsTable } from "../../db/schema";
+import {
+  createPost,
+  deletePostByPublicId,
+  findPostWithUserById,
+  findPostWithUserByPublicId,
+  listPostsWithUser,
+  type PostAccessError,
+  updatePostByPublicId,
+} from "../../application/posts";
 import { userMiddleware } from "../../middlewares/user";
 import { createApp } from "../factory";
 import { transformPostWithUser } from "./dto";
@@ -13,6 +18,17 @@ import {
   updatePostRoute,
 } from "./route";
 
+function throwIfPostAccessDenied(error: PostAccessError): never {
+  if (error === "not_found") {
+    throw new HTTPException(404, {
+      message: "Post is not found",
+    });
+  }
+  throw new HTTPException(403, {
+    message: "Forbidden",
+  });
+}
+
 const postApp = createApp();
 
 postApp.post("/", userMiddleware);
@@ -20,50 +36,19 @@ postApp.use("/:id", userMiddleware);
 
 const routes = postApp
   .openapi(getPostsRoute, async (c) => {
-    const posts = await db.query.postsTable.findMany({
-      ...postWithUserQuery,
-      orderBy: desc(postsTable.id),
-    });
+    const posts = await listPostsWithUser();
     return c.json({ posts: posts.map(transformPostWithUser) }, 200);
   })
-
   .openapi(postPostRoute, async (c) => {
     const { content } = c.req.valid("json");
     const user = c.get("user");
-    const result = await db.transaction(async (tx) => {
-      const now = new Date();
-      const post = (
-        await tx
-          .insert(postsTable)
-          .values({
-            public_id: crypto.randomUUID(),
-            user_id: user.id,
-            content,
-            first_created_at: now, // 最初の作成日時を設定
-            created_at: now, // defaultNow との差分で未編集と誤判定しないよう揃える
-          })
-          .returning()
-      )[0];
-      if (!post)
-        throw new HTTPException(500, {
-          message: "Failed to create post",
-        });
-
-      await tx.insert(postLogsTable).values({
-        id: post.id,
-        public_id: post.public_id,
-        user_id: post.user_id,
-        content: post.content,
-        created_at: post.created_at,
+    const created = await createPost({ userId: user.id, content });
+    if (!created.ok) {
+      throw new HTTPException(500, {
+        message: "Failed to create post",
       });
-
-      return post;
-    });
-
-    const post = await db.query.postsTable.findFirst({
-      ...postWithUserQuery,
-      where: eq(postsTable.id, result.id),
-    });
+    }
+    const post = await findPostWithUserById(created.id);
     if (!post) {
       throw new HTTPException(500, {
         message: "Failed to fetch created post",
@@ -71,97 +56,47 @@ const routes = postApp
     }
     return c.json({ post: transformPostWithUser(post) }, 200);
   })
-
   .openapi(updatePostRoute, async (c) => {
     const { public_id } = c.req.valid("param");
     const { content } = c.req.valid("json");
     const user = c.get("user");
 
-    await db.transaction(async (tx) => {
-      const target = (
-        await tx
-          .select()
-          .from(postsTable)
-          .where(eq(postsTable.public_id, public_id))
-      )[0];
+    const updated = await updatePostByPublicId({
+      publicId: public_id,
+      actorUserId: user.id,
+      content,
+    });
 
-      if (target === undefined) {
-        throw new HTTPException(404, {
-          message: "Post is not found",
-        });
+    if (!updated.ok) {
+      if (updated.error === "not_found" || updated.error === "forbidden") {
+        throwIfPostAccessDenied(updated.error);
       }
-
-      if (target.user_id !== user.id) {
-        throw new HTTPException(403, {
-          message: "Forbidden",
-        });
-      }
-
-      await tx.delete(postsTable).where(eq(postsTable.public_id, public_id));
-
-      const results = await tx
-        .insert(postsTable)
-        .values({
-          public_id: target.public_id,
-          user_id: target.user_id,
-          content,
-          first_created_at: target.first_created_at, // 最初の作成日時を維持
-        })
-        .returning();
-
-      const result = results[0];
-      if (!result)
-        throw new HTTPException(500, {
-          message: "Failed to update post",
-        });
-
-      await tx.insert(postLogsTable).values({
-        id: result.id,
-        public_id: result.public_id,
-        user_id: result.user_id,
-        content: result.content,
-        created_at: result.created_at,
+      throw new HTTPException(500, {
+        message: "Failed to update post",
       });
-    });
+    }
 
-    const post = await db.query.postsTable.findFirst({
-      ...postWithUserQuery,
-      where: eq(postsTable.public_id, public_id),
-    });
+    const post = await findPostWithUserByPublicId(public_id);
     if (!post) {
       throw new HTTPException(500, {
         message: "Failed to fetch updated post",
       });
     }
+
     return c.json({ post: transformPostWithUser(post) }, 200);
   })
-
   .openapi(deletePostRoute, async (c) => {
     const { public_id } = c.req.valid("param");
     const user = c.get("user");
 
-    await db.transaction(async (tx) => {
-      const target = (
-        await tx
-          .select()
-          .from(postsTable)
-          .where(eq(postsTable.public_id, public_id))
-      )[0];
-
-      if (target === undefined) {
-        throw new HTTPException(404, {
-          message: "Post is not found",
-        });
-      }
-
-      if (target.user_id !== user.id) {
-        throw new HTTPException(403, {
-          message: "Forbidden",
-        });
-      }
-
-      await tx.delete(postsTable).where(eq(postsTable.public_id, public_id));
+    const result = await deletePostByPublicId({
+      publicId: public_id,
+      actorUserId: user.id,
     });
+
+    if (!result.ok) {
+      throwIfPostAccessDenied(result.error);
+    }
 
     return c.json(null, 200);
   });
