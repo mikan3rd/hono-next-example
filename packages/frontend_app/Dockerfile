@@ -1,7 +1,7 @@
 # ref: https://bun.sh/guides/ecosystem/docker
 # ref: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
-FROM oven/bun:1.3.10 AS base
+FROM oven/bun:1.3.11 AS base
 WORKDIR /app
 ARG NEXT_PUBLIC_BACKEND_APP_URL
 ARG NEXT_PUBLIC_SUPABASE_URL
