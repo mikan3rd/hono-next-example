@@ -11,6 +11,7 @@ import {
 } from "../../../../../client";
 import { useUserContext } from "../../../../../context/UserContext";
 import { formatDate } from "../../../../../lib/dateUtils";
+import { useI18n } from "../../../../../locales/client";
 import { Badge } from "../../../../ui/Badge";
 import { Button } from "../../../../ui/Button";
 import {
@@ -36,6 +37,7 @@ type PostCardProps = {
 };
 
 export const PostCard = ({ post }: PostCardProps) => {
+  const t = useI18n();
   const queryClient = useQueryClient();
 
   const { sessionState } = useUserContext();
@@ -69,7 +71,7 @@ export const PostCard = ({ post }: PostCardProps) => {
       toast.error(`Failed to update post: ${result.data.message}`);
       return;
     }
-    toast.success("Post updated successfully");
+    toast.success(t("toast.postUpdated"));
     setIsEditing(false);
     queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
   };
@@ -82,7 +84,7 @@ export const PostCard = ({ post }: PostCardProps) => {
       toast.error(`Failed to delete post: ${result.data.message}`);
       return;
     }
-    toast.success("Post deleted successfully");
+    toast.success(t("toast.postDeleted"));
     queryClient.invalidateQueries({ queryKey: getGetPostsQueryKey() });
   };
 
@@ -106,7 +108,9 @@ export const PostCard = ({ post }: PostCardProps) => {
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            {isUpdated && <Badge variant="secondary">Updated</Badge>}
+            {isUpdated && (
+              <Badge variant="secondary">{t("postCard.updated")}</Badge>
+            )}
             {sessionState.user?.public_id === post.user.public_id && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -114,7 +118,7 @@ export const PostCard = ({ post }: PostCardProps) => {
                     type="button"
                     variant="secondary"
                     size="icon"
-                    aria-label="Actions"
+                    aria-label={t("postCard.actionsLabel")}
                     disabled={deletePostMutation.isPending}
                   >
                     <MoreHorizontal className="size-4" />
@@ -122,13 +126,13 @@ export const PostCard = ({ post }: PostCardProps) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onSelect={handleEdit}>
-                    Edit
+                    {t("postCard.edit")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onSelect={handleDelete}
                     variant="destructive"
                   >
-                    Delete
+                    {t("postCard.delete")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -155,7 +159,9 @@ export const PostCard = ({ post }: PostCardProps) => {
                   size="sm"
                   className="bg-green-600 hover:bg-green-700 disabled:bg-green-400"
                 >
-                  {updatePostMutation.isPending ? "Saving..." : "Save"}
+                  {updatePostMutation.isPending
+                    ? t("postCard.saving")
+                    : t("postCard.save")}
                 </Button>
                 <Button
                   type="button"
@@ -164,7 +170,7 @@ export const PostCard = ({ post }: PostCardProps) => {
                   variant="secondary"
                   size="sm"
                 >
-                  Cancel
+                  {t("postCard.cancel")}
                 </Button>
               </div>
             </>
@@ -181,11 +187,11 @@ export const PostCard = ({ post }: PostCardProps) => {
         >
           <div className="flex justify-between text-xs text-gray-500">
             <span suppressHydrationWarning>
-              Created: {formatDate(post.created_at)}
+              {t("postCard.created")} {formatDate(post.created_at)}
             </span>
             {post.updated_at !== null && (
               <span suppressHydrationWarning>
-                Updated: {formatDate(post.updated_at)}
+                {t("postCard.updatedLabel")} {formatDate(post.updated_at)}
               </span>
             )}
           </div>

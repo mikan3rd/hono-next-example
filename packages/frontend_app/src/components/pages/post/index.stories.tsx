@@ -8,6 +8,7 @@ import {
   getGetUserLoginMockHandler,
 } from "../../../client/index.msw";
 import type { User } from "../../../client/index.schemas";
+import { withI18n } from "../../../lib/storybook/withI18n";
 import {
   mockSession,
   triggerAuthStateChange,
@@ -39,6 +40,7 @@ const defaultHandlers = [
 const meta = {
   component: PostIndex,
   tags: ["autodocs"],
+  decorators: [withI18n],
   parameters: {
     msw: {
       handlers: defaultHandlers,

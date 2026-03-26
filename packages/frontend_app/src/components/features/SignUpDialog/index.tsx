@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { createClient } from "#src/supabase/client";
 import { usePostUserSignup } from "../../../client";
 import { useUserContext } from "../../../context/UserContext";
+import { useI18n } from "../../../locales/client";
 import { Button } from "../../ui/Button";
 import {
   Dialog,
@@ -20,6 +21,7 @@ import { Input } from "../../ui/Input";
 import { Label } from "../../ui/Label";
 
 export const SignUpDialog = () => {
+  const t = useI18n();
   const supabase = createClient();
   const {
     isOpenLoginDialog,
@@ -58,11 +60,11 @@ export const SignUpDialog = () => {
 
       const isLoggedIn = await getLoginUser();
       if (!isLoggedIn) {
-        toast.error("Failed to login");
+        toast.error(t("toast.failedToLogin"));
         return;
       }
 
-      toast.success("Signed up successfully");
+      toast.success(t("toast.signedUp"));
       setIsOpenLoginDialog(false);
       setDisplayName("");
     });
@@ -75,23 +77,21 @@ export const SignUpDialog = () => {
   return (
     <Dialog open={isOpenLoginDialog} onOpenChange={setIsOpenLoginDialog}>
       <DialogTrigger asChild>
-        <Button variant="outline">Sign Up Dialog</Button>
+        <Button variant="outline">{t("signUp.trigger")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Sign Up</DialogTitle>
-            <DialogDescription>
-              You can sign up to the app anonymously.
-            </DialogDescription>
+            <DialogTitle>{t("signUp.title")}</DialogTitle>
+            <DialogDescription>{t("signUp.description")}</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor={displayNameId}>Your Name</Label>
+              <Label htmlFor={displayNameId}>{t("signUp.nameLabel")}</Label>
               <Input
                 id={displayNameId}
                 type="text"
-                placeholder="John Doe"
+                placeholder={t("signUp.namePlaceholder")}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 disabled={loading}
@@ -102,11 +102,11 @@ export const SignUpDialog = () => {
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline" disabled={loading}>
-                Cancel
+                {t("signUp.cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={loading || !displayName.trim()}>
-              Sign Up
+              {t("signUp.submit")}
             </Button>
           </DialogFooter>
         </form>

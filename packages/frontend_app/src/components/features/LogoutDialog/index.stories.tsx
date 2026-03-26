@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
+import { withI18n } from "../../../lib/storybook/withI18n";
 import { LogoutDialog } from ".";
 
 const meta = {
   component: LogoutDialog,
   tags: ["autodocs"],
+  decorators: [withI18n],
 } satisfies Meta<typeof LogoutDialog>;
 
 export default meta;

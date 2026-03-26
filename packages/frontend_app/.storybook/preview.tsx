@@ -31,6 +31,10 @@ const preview: Preview = {
 
     nextjs: {
       appDirectory: true,
+      navigation: {
+        pathname: "/en",
+        segments: [["locale", "en"]],
+      },
     },
 
     chromatic: {

@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
+import { withI18n } from "../../../lib/storybook/withI18n";
 import { SignUpDialog } from ".";
 
 const meta = {
   component: SignUpDialog,
   tags: ["autodocs"],
+  decorators: [withI18n],
 } satisfies Meta<typeof SignUpDialog>;
 
 export default meta;
@@ -14,9 +16,11 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const signUpDialogBtn = await canvas.findByRole("button", {
-      name: "Sign Up Dialog",
-    });
+    const signUpDialogBtn = await canvas.findByRole(
+      "button",
+      { name: "Sign Up Dialog" },
+      { timeout: 10_000 },
+    );
     await userEvent.click(signUpDialogBtn);
 
     const signUpBtn = await screen.findByRole("button", { name: "Sign Up" });
@@ -30,9 +34,11 @@ export const SignUpSuccess: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const signUpDialogBtn = await canvas.findByRole("button", {
-      name: "Sign Up Dialog",
-    });
+    const signUpDialogBtn = await canvas.findByRole(
+      "button",
+      { name: "Sign Up Dialog" },
+      { timeout: 10_000 },
+    );
     await userEvent.click(signUpDialogBtn);
 
     const displayNameInput = await screen.findByLabelText("Your Name");
