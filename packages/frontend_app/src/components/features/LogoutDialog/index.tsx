@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createClient } from "#src/supabase/client";
+import { useI18n } from "../../../locales/client";
 import { Button } from "../../ui/Button";
 import {
   Dialog,
@@ -18,6 +19,7 @@ import {
 const supabase = createClient();
 
 export const LogoutDialog = () => {
+  const t = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, startLoadingTransition] = useTransition();
 
@@ -30,7 +32,7 @@ export const LogoutDialog = () => {
         toast.error(result.error.message);
         return;
       }
-      toast.success("Signed out successfully");
+      toast.success(t("toast.signOutSuccess"));
       setIsOpen(false);
     });
   };
@@ -38,24 +40,24 @@ export const LogoutDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Sign Out Dialog</Button>
+        <Button variant="outline">{t("logout.trigger")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Sign Out</DialogTitle>
+            <DialogTitle>{t("logout.title")}</DialogTitle>
             <DialogDescription data-testid="LogoutDialog-description">
-              You are signed in
+              {t("logout.description")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline" disabled={loading}>
-                Cancel
+                {t("logout.cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={loading}>
-              Sign Out
+              {t("logout.submit")}
             </Button>
           </DialogFooter>
         </form>

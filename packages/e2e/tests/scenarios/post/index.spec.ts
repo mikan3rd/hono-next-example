@@ -1,5 +1,5 @@
-import { expect, test } from "@chromatic-com/playwright";
 import { env } from "../../env";
+import { expect, test } from "../../fixtures";
 
 test.beforeEach(async () => {
   const res = await fetch(`${env.BACKEND_APP_SERVER_URL}/initialize`, {
@@ -10,19 +10,10 @@ test.beforeEach(async () => {
 });
 
 test("post page", async ({ page }) => {
-  // TODO: 共通化
-  page.on("console", (msg) => {
-    if (msg.type() === "error") {
-      const error = new Error(msg.text());
-      error.name = "ConsoleError";
-      throw error;
-    }
-  });
-
   await test.step("visit post page", async () => {
-    await page.goto("/");
+    await page.goto("/en");
     await expect(page).toHaveTitle(/posts: 0/);
-    await expect(page.getByText("No posts yet")).toBeVisible();
+    await expect(page.getByText("No posts yet").first()).toBeVisible();
   });
 
   await test.step("login", async () => {

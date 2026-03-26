@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
 import { useUserContext } from "../../../../../context/UserContext";
+import { withI18n } from "../../../../../lib/storybook/withI18n";
 import {
   mockSession,
   triggerAuthStateChange,
@@ -11,6 +12,7 @@ import { PostForm } from ".";
 const meta = {
   component: PostForm,
   tags: ["autodocs"],
+  decorators: [withI18n],
 } satisfies Meta<typeof PostForm>;
 
 export default meta;

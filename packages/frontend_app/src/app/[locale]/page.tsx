@@ -4,8 +4,8 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import type { Metadata, ResolvingMetadata } from "next";
-import { getGetPostsQueryKey, getPosts } from "../client";
-import { PostIndex } from "../components/pages/post/index";
+import { getGetPostsQueryKey, getPosts } from "../../client";
+import { PostIndex } from "../../components/pages/post/index";
 
 export const dynamic = "force-dynamic";
 

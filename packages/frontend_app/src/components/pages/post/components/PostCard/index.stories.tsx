@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import { getGetUserLoginMockHandler } from "../../../../../client/index.msw";
 import { useUserContext } from "../../../../../context/UserContext";
+import { withI18n } from "../../../../../lib/storybook/withI18n";
 import {
   mockSession,
   triggerAuthStateChange,
@@ -26,6 +27,7 @@ const meta = {
     },
   },
   decorators: [
+    withI18n,
     (StoryFn) => {
       const { sessionState } = useUserContext();
       return (
@@ -53,8 +55,12 @@ const createMockPost = (
   ...overrides,
 });
 
-const getPostCardElements = (canvas: ReturnType<typeof within>) => {
-  const postCard = canvas.getByTestId(`PostCard`);
+const getPostCardElements = async (canvas: ReturnType<typeof within>) => {
+  const postCard = await canvas.findByTestId(
+    "PostCard",
+    {},
+    { timeout: 15_000 },
+  );
   const header = within(postCard).getByTestId("PostCard-header");
   const content = within(postCard).getByTestId("PostCard-content");
   const date = within(postCard).getByTestId("PostCard-date");
@@ -63,7 +69,7 @@ const getPostCardElements = (canvas: ReturnType<typeof within>) => {
 };
 
 const enterEditMode = async (canvas: ReturnType<typeof within>) => {
-  const { header, content } = getPostCardElements(canvas);
+  const { header, content } = await getPostCardElements(canvas);
 
   const actionsButton = within(header).getByRole("button", { name: "Actions" });
   await expect(actionsButton).toBeEnabled();
@@ -115,9 +121,8 @@ export const CreatedPost: Story = {
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    const { header, content, date } = getPostCardElements(canvas);
-
     await waitForLoggedIn(canvas);
+    const { header, content, date } = await getPostCardElements(canvas);
 
     await expect(header).toBeVisible();
     await expect(
@@ -150,9 +155,8 @@ export const UpdatedPost: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { header, date } = getPostCardElements(canvas);
-
     await waitForLoggedIn(canvas);
+    const { header, date } = await getPostCardElements(canvas);
 
     await verifyPostStatus(header, true);
     await verifyDateDisplay(date, true);
@@ -167,8 +171,8 @@ export const NotOwnerPost: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { header } = getPostCardElements(canvas);
     await waitForLoggedIn(canvas);
+    const { header } = await getPostCardElements(canvas);
     const actionsButton = within(header).queryByRole("button", {
       name: "Actions",
     });
@@ -251,9 +255,9 @@ export const DeletePost: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { header } = getPostCardElements(canvas);
 
     await waitForLoggedIn(canvas);
+    const { header } = await getPostCardElements(canvas);
 
     const actionsButton = within(header).getByRole("button", {
       name: "Actions",
