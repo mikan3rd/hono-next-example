@@ -255,9 +255,9 @@ export const DeletePost: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const { header } = await getPostCardElements(canvas);
 
     await waitForLoggedIn(canvas);
+    const { header } = await getPostCardElements(canvas);
 
     const actionsButton = within(header).getByRole("button", {
       name: "Actions",

@@ -1,6 +1,11 @@
-import type { NextRequest, NextResponse } from "next/server";
+import { NextRequest, type NextResponse } from "next/server";
 import { createI18nMiddleware } from "next-international/middleware";
-import { defaultLocale, locales } from "./locales/constants";
+import {
+  defaultLocale,
+  isLocale,
+  locales,
+  PATHNAME_LOCALE_HEADER,
+} from "./locales/constants";
 import { updateSession } from "./supabase/middleware";
 
 const I18nMiddleware = createI18nMiddleware({
@@ -13,7 +18,7 @@ function mergeIntlIntoSession(
   sessionResponse: NextResponse,
 ) {
   for (const cookie of intlResponse.cookies.getAll()) {
-    sessionResponse.cookies.set(cookie.name, cookie.value);
+    sessionResponse.cookies.set(cookie);
   }
   const localeHeader = intlResponse.headers.get("x-next-locale");
   if (localeHeader) {
@@ -22,14 +27,24 @@ function mergeIntlIntoSession(
   return sessionResponse;
 }
 
+function requestWithPathnameLocaleHeader(request: NextRequest): NextRequest {
+  const requestHeaders = new Headers(request.headers);
+  const first = request.nextUrl.pathname.split("/").filter(Boolean)[0];
+  if (first && isLocale(first)) {
+    requestHeaders.set(PATHNAME_LOCALE_HEADER, first);
+  }
+  return new NextRequest(request.url, { headers: requestHeaders });
+}
+
 export async function proxy(request: NextRequest) {
-  const intlResponse = I18nMiddleware(request);
+  const req = requestWithPathnameLocaleHeader(request);
+  const intlResponse = I18nMiddleware(req);
 
   if (intlResponse.headers.get("location")) {
     return intlResponse;
   }
 
-  const sessionResponse = await updateSession(request);
+  const sessionResponse = await updateSession(req);
   return mergeIntlIntoSession(intlResponse, sessionResponse);
 }
 

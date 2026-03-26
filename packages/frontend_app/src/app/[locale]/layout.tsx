@@ -2,7 +2,9 @@ import type { ReactNode } from "react";
 import { I18nProviderClient } from "../../locales/client";
 import { getStaticParams } from "../../locales/server";
 
-export { getStaticParams };
+export function generateStaticParams() {
+  return getStaticParams();
+}
 
 export default async function LocaleLayout({
   children,

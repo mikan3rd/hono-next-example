@@ -2,9 +2,13 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { RootProviders } from "../lib/RootProviders";
-import { defaultLocale, isLocale } from "../locales/constants";
+import {
+  defaultLocale,
+  isLocale,
+  PATHNAME_LOCALE_HEADER,
+} from "../locales/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,10 +30,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerStore = await headers();
+  const pathnameLocale = headerStore.get(PATHNAME_LOCALE_HEADER);
   const cookieStore = await cookies();
   const cookieLocale = cookieStore.get("Next-Locale")?.value;
   const lang =
-    cookieLocale && isLocale(cookieLocale) ? cookieLocale : defaultLocale;
+    pathnameLocale && isLocale(pathnameLocale)
+      ? pathnameLocale
+      : cookieLocale && isLocale(cookieLocale)
+        ? cookieLocale
+        : defaultLocale;
 
   return (
     <html lang={lang} suppressHydrationWarning>

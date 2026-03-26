@@ -22,7 +22,7 @@ test("post page", async ({ page }) => {
   await test.step("visit post page", async () => {
     await page.goto("/en");
     await expect(page).toHaveTitle(/posts: 0/);
-    await expect(page.getByText("No posts yet")).toBeVisible();
+    await expect(page.getByTestId("post-empty-state").first()).toBeVisible();
   });
 
   await test.step("login", async () => {
