@@ -6,6 +6,7 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 import { MINIMAL_VIEWPORTS } from "storybook/viewport";
 import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
 import { RootProviders } from "../src/lib/RootProviders";
+import { resolveStorybookLocale } from "../src/lib/storybook/storybookLocale";
 
 /*
  * Initializes MSW
@@ -21,6 +22,21 @@ initialize(
 );
 
 const preview: Preview = {
+  globalTypes: {
+    locale: {
+      description: "UI locale (next-international)",
+      toolbar: {
+        title: "Locale",
+        icon: "globe",
+        items: [
+          { value: "en", title: "English" },
+          { value: "ja", title: "日本語" },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+
   parameters: {
     controls: {
       matchers: {
@@ -31,6 +47,7 @@ const preview: Preview = {
 
     nextjs: {
       appDirectory: true,
+      // 既定は en。Vitest portable stories では loader が走らないため、next-international の useCurrentLocale 用に静的に必須。
       navigation: {
         pathname: "/en",
         segments: [["locale", "en"]],
@@ -50,9 +67,26 @@ const preview: Preview = {
       // Optional flag to prevent the automatic check
       manual: true,
     },
+    locale: "en",
   },
 
-  loaders: [mswLoader],
+  loaders: [
+    async ({ globals }) => {
+      const locale = resolveStorybookLocale(globals);
+      return {
+        parameters: {
+          nextjs: {
+            appDirectory: true,
+            navigation: {
+              pathname: `/${locale}`,
+              segments: [["locale", locale]],
+            },
+          },
+        },
+      };
+    },
+    mswLoader,
+  ],
 
   beforeAll: () => {
     faker.seed(123);
