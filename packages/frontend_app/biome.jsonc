@@ -6,6 +6,9 @@
       "includes": ["src/client/**/*.ts"],
       "linter": {
         "rules": {
+          "style": {
+            "useTemplate": "off"
+          },
           "suspicious": {
             "noConfusingVoidType": "off"
           }
