@@ -57,7 +57,7 @@
     "@storybook/addon-docs": "10.2.19",
     "@storybook/addon-vitest": "10.2.19",
     "@storybook/nextjs-vite": "10.2.19",
-    "@typescript/native-preview": "7.0.0-dev.20260206.1",
+    "@typescript/native-preview": "7.0.0-dev.20260320.1",
     "@vitest/browser": "4.1.0",
     "@vitest/browser-playwright": "4.1.0",
     "@vitest/coverage-v8": "4.1.0",
