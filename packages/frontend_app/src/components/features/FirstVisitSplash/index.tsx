@@ -8,7 +8,7 @@ import {
 } from "../../../lib/sessionStorage/constants";
 import { cn } from "../../../lib/utils";
 
-const SPLASH_MIN_DISPLAY_MS = 500;
+const SPLASH_MIN_DISPLAY_MS = 800;
 const SPLASH_FADE_OUT_MS = 300;
 
 type Props = {
