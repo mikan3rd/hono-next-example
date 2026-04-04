@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies, headers } from "next/headers";
+import { FirstVisitSplash } from "../components/features/FirstVisitSplash";
 import { RootProviders } from "../lib/RootProviders";
 import {
   defaultLocale,
@@ -46,6 +47,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <FirstVisitSplash appTitle="hono-next-example" />
         <RootProviders>{children}</RootProviders>
       </body>
     </html>

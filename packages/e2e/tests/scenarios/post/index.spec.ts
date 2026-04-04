@@ -1,5 +1,6 @@
 import { env } from "../../env";
 import { expect, test } from "../../fixtures";
+import { waitForFirstVisitSplashComplete } from "../../helpers/splashE2e";
 
 test.beforeEach(async () => {
   const res = await fetch(`${env.BACKEND_APP_SERVER_URL}/initialize`, {
@@ -12,6 +13,7 @@ test.beforeEach(async () => {
 test("post page", async ({ page }) => {
   await test.step("visit post page", async () => {
     await page.goto("/en");
+    await waitForFirstVisitSplashComplete(page);
     await expect(page).toHaveTitle(/posts: 0/);
     await expect(page.getByText("No posts yet").first()).toBeVisible();
   });
