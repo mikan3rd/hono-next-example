@@ -3,7 +3,7 @@ import { expect, type Page } from "@playwright/test";
 export async function waitForFirstVisitSplashComplete(
   page: Page,
 ): Promise<void> {
-  await expect(page.getByTestId("splash-screen")).not.toBeVisible({
+  await expect(page.getByTestId("splash-screen")).toBeHidden({
     timeout: 15_000,
   });
 }
