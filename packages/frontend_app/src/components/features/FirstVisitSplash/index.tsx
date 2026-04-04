@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { SESSION_STORAGE } from "../../../lib/sessionStorage/constants";
 import {
-  readSessionStorageItem,
+  readSessionStorageEntryIsSet,
   writeSessionStorageItem,
 } from "../../../lib/sessionStorage/safeSessionStorage";
 import {
@@ -24,13 +24,8 @@ export function FirstVisitSplash({ appTitle }: Props) {
 
   useLayoutEffect(() => {
     setHydrated(true);
-    const result = readSessionStorageItem(
-      SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY,
-    );
     setAlreadySeen(
-      !result.ok
-        ? true
-        : result.value === SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
+      readSessionStorageEntryIsSet(SESSION_STORAGE.FIRST_VISIT_SPLASH),
     );
   }, []);
 
@@ -43,10 +38,7 @@ export function FirstVisitSplash({ appTitle }: Props) {
   useEffect(() => {
     if (!exiting) return;
     const t = window.setTimeout(() => {
-      writeSessionStorageItem(
-        SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY,
-        SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
-      );
+      writeSessionStorageItem(SESSION_STORAGE.FIRST_VISIT_SPLASH);
       setAlreadySeen(true);
     }, SPLASH_FADE_OUT_MS);
     return () => window.clearTimeout(t);
