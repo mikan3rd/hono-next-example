@@ -54,9 +54,10 @@ export function FirstVisitSplash({ appTitle }: Props) {
   return (
     <div
       className={cn(
-        "fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 bg-background transition-opacity duration-300 ease-out",
+        "fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 bg-background transition-opacity ease-out",
         exiting ? "pointer-events-none opacity-0" : "opacity-100",
       )}
+      style={{ transitionDuration: `${SPLASH_FADE_OUT_MS}ms` }}
       data-testid="splash-screen"
       aria-hidden={exiting}
     >
