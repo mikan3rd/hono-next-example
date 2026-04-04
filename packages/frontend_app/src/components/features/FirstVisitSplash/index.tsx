@@ -1,12 +1,17 @@
 "use client";
 
-import { Loader2Icon } from "lucide-react";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { SESSION_STORAGE } from "../../../lib/sessionStorage/constants";
-import { cn } from "../../../lib/utils";
+import {
+  readSessionStorageItem,
+  writeSessionStorageItem,
+} from "../../../lib/sessionStorage/safeSessionStorage";
+import {
+  FirstVisitSplashOverlay,
+  SPLASH_FADE_OUT_MS,
+} from "./FirstVisitSplashOverlay";
 
 const SPLASH_MIN_DISPLAY_MS = 800;
-const SPLASH_FADE_OUT_MS = 300;
 
 type Props = {
   appTitle: string;
@@ -19,14 +24,14 @@ export function FirstVisitSplash({ appTitle }: Props) {
 
   useLayoutEffect(() => {
     setHydrated(true);
-    try {
-      setAlreadySeen(
-        sessionStorage.getItem(SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY) ===
-          SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
-      );
-    } catch {
-      setAlreadySeen(true);
-    }
+    const result = readSessionStorageItem(
+      SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY,
+    );
+    setAlreadySeen(
+      !result.ok
+        ? true
+        : result.value === SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
+    );
   }, []);
 
   useEffect(() => {
@@ -38,12 +43,10 @@ export function FirstVisitSplash({ appTitle }: Props) {
   useEffect(() => {
     if (!exiting) return;
     const t = window.setTimeout(() => {
-      try {
-        sessionStorage.setItem(
-          SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY,
-          SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
-        );
-      } catch {}
+      writeSessionStorageItem(
+        SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY,
+        SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
+      );
       setAlreadySeen(true);
     }, SPLASH_FADE_OUT_MS);
     return () => window.clearTimeout(t);
@@ -51,20 +54,5 @@ export function FirstVisitSplash({ appTitle }: Props) {
 
   if (!hydrated || alreadySeen) return null;
 
-  return (
-    <div
-      className={cn(
-        "fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 bg-background transition-opacity ease-out",
-        exiting ? "pointer-events-none opacity-0" : "opacity-100",
-      )}
-      style={{ transitionDuration: `${SPLASH_FADE_OUT_MS}ms` }}
-      data-testid="splash-screen"
-      aria-hidden={exiting}
-    >
-      <p className="font-sans text-2xl font-semibold tracking-tight text-foreground">
-        {appTitle}
-      </p>
-      <Loader2Icon className="size-8 animate-spin text-primary" aria-hidden />
-    </div>
-  );
+  return <FirstVisitSplashOverlay appTitle={appTitle} exiting={exiting} />;
 }

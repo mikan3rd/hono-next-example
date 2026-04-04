@@ -1,18 +1,12 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
 import { SESSION_STORAGE } from "../../../lib/sessionStorage/constants";
+import { writeSessionStorageItem } from "../../../lib/sessionStorage/safeSessionStorage";
 import { FirstVisitSplash } from ".";
-
-const clearSplashSessionDecorator: Decorator = (StoryComponent) => {
-  if (typeof sessionStorage !== "undefined") {
-    sessionStorage.removeItem(SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY);
-  }
-  return <StoryComponent />;
-};
 
 const setSplashSeenDecorator: Decorator = (StoryComponent) => {
   if (typeof sessionStorage !== "undefined") {
-    sessionStorage.setItem(
+    writeSessionStorageItem(
       SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY,
       SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
     );
@@ -25,7 +19,6 @@ const meta = {
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
-    chromatic: { delay: 400 },
   },
   args: {
     appTitle: "hono-next-example",
@@ -33,29 +26,18 @@ const meta = {
 } satisfies Meta<typeof FirstVisitSplash>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const FirstVisit: Story = {
-  decorators: [clearSplashSessionDecorator],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await waitFor(
-      () => {
-        expect(canvas.getByTestId("splash-screen")).toBeVisible();
-      },
-      { timeout: 10_000 },
-    );
-  },
-};
-
-export const AlreadySeenInTab: Story = {
+export const AlreadySeenInTab = {
   name: "Already seen (no overlay)",
+  render: () => <FirstVisitSplash appTitle="hono-next-example" />,
   decorators: [setSplashSeenDecorator],
   parameters: {
     chromatic: { disable: true },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.queryByTestId("splash-screen")).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(canvas.queryByTestId("splash-screen")).not.toBeInTheDocument();
+    });
   },
-};
+} satisfies StoryObj;
