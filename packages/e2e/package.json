@@ -16,7 +16,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.9",
     "@chromatic-com/playwright": "0.12.8",
-    "@dotenvx/dotenvx": "1.54.1",
+    "@dotenvx/dotenvx": "1.57.0",
     "@playwright/test": "1.58.2",
     "@t3-oss/env-core": "0.13.11",
     "@types/node": "24.12.0",
