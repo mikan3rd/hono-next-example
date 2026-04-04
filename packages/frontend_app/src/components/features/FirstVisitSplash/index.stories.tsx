@@ -1,5 +1,5 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/nextjs-vite";
-import { expect, within } from "storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 import {
   SPLASH_SESSION_STORAGE_KEY,
   SPLASH_STORAGE_VALUE,
@@ -39,9 +39,12 @@ export const FirstVisit: Story = {
   decorators: [clearSplashSessionDecorator],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(
-      await canvas.findByTestId("splash-screen", { timeout: 10_000 }),
-    ).toBeVisible();
+    await waitFor(
+      () => {
+        expect(canvas.getByTestId("splash-screen")).toBeVisible();
+      },
+      { timeout: 10_000 },
+    );
   },
 };
 
