@@ -1,4 +1,4 @@
-import type { SessionStorageEntry } from "./constants";
+import type { SESSION_STORAGE } from "./constants";
 
 export type ReadSessionStorageItemResult =
   | { ok: true; value: string | null }
@@ -6,7 +6,10 @@ export type ReadSessionStorageItemResult =
 
 export type MutateSessionStorageResult = { ok: true } | { ok: false };
 
-export function readSessionStorageItem<T extends SessionStorageEntry>(
+type SessionStorageMap = typeof SESSION_STORAGE;
+type Entry = SessionStorageMap[keyof SessionStorageMap];
+
+export function readSessionStorageItem<const T extends Entry>(
   entry: T,
 ): ReadSessionStorageItemResult {
   try {
@@ -16,7 +19,7 @@ export function readSessionStorageItem<T extends SessionStorageEntry>(
   }
 }
 
-export function writeSessionStorageItem<T extends SessionStorageEntry>(
+export function writeSessionStorageItem<const T extends Entry>(
   entry: T,
 ): MutateSessionStorageResult {
   try {
@@ -27,7 +30,7 @@ export function writeSessionStorageItem<T extends SessionStorageEntry>(
   }
 }
 
-export function removeSessionStorageItem<T extends SessionStorageEntry>(
+export function removeSessionStorageItem<const T extends Entry>(
   entry: T,
 ): MutateSessionStorageResult {
   try {
@@ -38,7 +41,7 @@ export function removeSessionStorageItem<T extends SessionStorageEntry>(
   }
 }
 
-export function readSessionStorageEntryIsSet<T extends SessionStorageEntry>(
+export function readSessionStorageEntryIsSet<const T extends Entry>(
   entry: T,
 ): boolean {
   const result = readSessionStorageItem(entry);
