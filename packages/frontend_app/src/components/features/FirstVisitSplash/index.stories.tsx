@@ -1,21 +1,21 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, waitFor, within } from "storybook/test";
-import {
-  SPLASH_SESSION_STORAGE_KEY,
-  SPLASH_STORAGE_VALUE,
-} from "../../../lib/sessionStorage/constants";
+import { SESSION_STORAGE } from "../../../lib/sessionStorage/constants";
 import { FirstVisitSplash } from ".";
 
 const clearSplashSessionDecorator: Decorator = (StoryComponent) => {
   if (typeof sessionStorage !== "undefined") {
-    sessionStorage.removeItem(SPLASH_SESSION_STORAGE_KEY);
+    sessionStorage.removeItem(SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY);
   }
   return <StoryComponent />;
 };
 
 const setSplashSeenDecorator: Decorator = (StoryComponent) => {
   if (typeof sessionStorage !== "undefined") {
-    sessionStorage.setItem(SPLASH_SESSION_STORAGE_KEY, SPLASH_STORAGE_VALUE);
+    sessionStorage.setItem(
+      SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY,
+      SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
+    );
   }
   return <StoryComponent />;
 };

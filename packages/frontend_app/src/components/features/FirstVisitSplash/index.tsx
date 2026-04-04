@@ -2,10 +2,7 @@
 
 import { Loader2Icon } from "lucide-react";
 import { useEffect, useLayoutEffect, useState } from "react";
-import {
-  SPLASH_SESSION_STORAGE_KEY,
-  SPLASH_STORAGE_VALUE,
-} from "../../../lib/sessionStorage/constants";
+import { SESSION_STORAGE } from "../../../lib/sessionStorage/constants";
 import { cn } from "../../../lib/utils";
 
 const SPLASH_MIN_DISPLAY_MS = 800;
@@ -24,8 +21,8 @@ export function FirstVisitSplash({ appTitle }: Props) {
     setHydrated(true);
     try {
       setAlreadySeen(
-        sessionStorage.getItem(SPLASH_SESSION_STORAGE_KEY) ===
-          SPLASH_STORAGE_VALUE,
+        sessionStorage.getItem(SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY) ===
+          SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
       );
     } catch {
       setAlreadySeen(true);
@@ -43,8 +40,8 @@ export function FirstVisitSplash({ appTitle }: Props) {
     const t = window.setTimeout(() => {
       try {
         sessionStorage.setItem(
-          SPLASH_SESSION_STORAGE_KEY,
-          SPLASH_STORAGE_VALUE,
+          SESSION_STORAGE.FIRST_VISIT_SPLASH.KEY,
+          SESSION_STORAGE.FIRST_VISIT_SPLASH.VALUE,
         );
       } catch {}
       setAlreadySeen(true);
