@@ -1,8 +1,10 @@
 import { expect, test } from "../../fixtures";
+import { waitForFirstVisitSplashComplete } from "../../helpers/splashE2e";
 
 test.describe("locale", () => {
   test("switch en to ja and back via header buttons", async ({ page }) => {
     await page.goto("/en");
+    await waitForFirstVisitSplashComplete(page);
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(
       page.getByRole("heading", { level: 1, name: "Posts" }),
@@ -24,6 +26,7 @@ test.describe("locale", () => {
 
   test("direct /ja shows Japanese UI and html lang", async ({ page }) => {
     await page.goto("/ja");
+    await waitForFirstVisitSplashComplete(page);
     await expect(
       page.getByRole("heading", { level: 1, name: "投稿" }),
     ).toBeVisible();
