@@ -14,30 +14,40 @@ export const postLogEventEnum = pgEnum("post_log_event", [
   "deleted",
 ]);
 
-const primaryKeys = () => ({
-  id: integer().primaryKey().generatedAlwaysAsIdentity(), // TODO: uuid v7 を検討
-  public_id: uuid().unique().notNull(),
-});
+const primaryKeyFactories = {
+  entity: () => ({
+    id: integer().primaryKey().generatedAlwaysAsIdentity(), // TODO: uuid v7 を検討
+    public_id: uuid().unique().notNull(),
+  }),
+  log: () => ({
+    id: integer().notNull(),
+    public_id: uuid().notNull(),
+  }),
+} as const;
 
 const timestamps = {
   created_at: timestamp().defaultNow().notNull(),
 };
 
-export const usersTable = pgTable("users", {
-  ...primaryKeys(),
-  supabase_uid: uuid().unique().notNull(),
-  display_name: text().notNull(),
-  ...timestamps,
-});
-
-export const postsTable = pgTable("posts", {
-  ...primaryKeys(),
+const postTableColumns = {
   user_id: integer()
     .notNull()
     .references(() => usersTable.id),
   content: text().notNull(),
   first_created_at: timestamp().defaultNow().notNull(),
   ...timestamps,
+};
+
+export const usersTable = pgTable("users", {
+  ...primaryKeyFactories.entity(),
+  supabase_uid: uuid().unique().notNull(),
+  display_name: text().notNull(),
+  ...timestamps,
+});
+
+export const postsTable = pgTable("posts", {
+  ...primaryKeyFactories.entity(),
+  ...postTableColumns,
 });
 
 export const postsRelations = relations(postsTable, ({ one }) => ({
@@ -49,12 +59,8 @@ export const postsRelations = relations(postsTable, ({ one }) => ({
 
 export const postLogsTable = pgTable("post_logs", {
   log_id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  id: integer().notNull(),
-  public_id: uuid().notNull(),
-  user_id: integer().notNull(),
-  content: text().notNull(),
-  first_created_at: timestamp().notNull(),
+  ...primaryKeyFactories.log(),
+  ...postTableColumns,
   event_type: postLogEventEnum("event_type").notNull(),
   occurred_at: timestamp().defaultNow().notNull(),
-  created_at: timestamp().notNull(),
 });
