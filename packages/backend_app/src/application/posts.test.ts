@@ -13,6 +13,18 @@ import {
   updatePostByPublicId,
 } from "./posts";
 
+/** 本番と同じ経路で posts + post_logs(created) を用意する */
+async function seedPostAsUser(input: { userId: number; content: string }) {
+  const result = await createPost({
+    userId: input.userId,
+    content: input.content,
+  });
+  if (!result.ok) throw new Error("seed createPost failed");
+  const row = await findPostWithUserById(result.id);
+  if (!row) throw new Error("seed post not found");
+  return { id: result.id, ...row };
+}
+
 describe("application/posts", () => {
   let user: typeof usersTable.$inferSelect;
   let anotherUser: typeof usersTable.$inferSelect;
@@ -57,21 +69,8 @@ describe("application/posts", () => {
 
     describe("when there are some posts", () => {
       beforeEach(async () => {
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: faker.string.uuid(),
-          user_id: user.id,
-          content: "older",
-          first_created_at: now,
-          created_at: now,
-        });
-        await db.insert(postsTable).values({
-          public_id: faker.string.uuid(),
-          user_id: user.id,
-          content: "newer",
-          first_created_at: now,
-          created_at: now,
-        });
+        await seedPostAsUser({ userId: user.id, content: "older" });
+        await seedPostAsUser({ userId: user.id, content: "newer" });
       });
 
       it("returns posts ordered by id descending with user relation", async () => {
@@ -105,20 +104,10 @@ describe("application/posts", () => {
 
     describe("when post exists", () => {
       beforeEach(async () => {
-        const now = new Date();
-        const inserted = (
-          await db
-            .insert(postsTable)
-            .values({
-              public_id: faker.string.uuid(),
-              user_id: user.id,
-              content: "hello",
-              first_created_at: now,
-              created_at: now,
-            })
-            .returning()
-        )[0];
-        if (!inserted) throw new Error("post is not found");
+        const inserted = await seedPostAsUser({
+          userId: user.id,
+          content: "hello",
+        });
         lookupId = inserted.id;
       });
 
@@ -148,15 +137,11 @@ describe("application/posts", () => {
 
     describe("when post exists", () => {
       beforeEach(async () => {
-        lookupPublicId = faker.string.uuid();
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: lookupPublicId,
-          user_id: user.id,
+        const inserted = await seedPostAsUser({
+          userId: user.id,
           content: "by-public",
-          first_created_at: now,
-          created_at: now,
         });
+        lookupPublicId = inserted.public_id;
       });
 
       it("returns post with user", async () => {
@@ -233,16 +218,12 @@ describe("application/posts", () => {
 
     describe("when post belongs to another user", () => {
       beforeEach(async () => {
-        publicId = faker.string.uuid();
         updateContent = "hijack";
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: publicId,
-          user_id: anotherUser.id,
+        const inserted = await seedPostAsUser({
+          userId: anotherUser.id,
           content: "theirs",
-          first_created_at: now,
-          created_at: now,
         });
+        publicId = inserted.public_id;
       });
 
       it("returns forbidden and does not change content", async () => {
@@ -262,22 +243,13 @@ describe("application/posts", () => {
       let firstAt: Date;
 
       beforeEach(async () => {
-        publicId = faker.string.uuid();
-        firstAt = new Date("2020-01-01T00:00:00.000Z");
         updateContent = "after";
-        const inserted = (
-          await db
-            .insert(postsTable)
-            .values({
-              public_id: publicId,
-              user_id: user.id,
-              content: "before",
-              first_created_at: firstAt,
-              created_at: firstAt,
-            })
-            .returning()
-        )[0];
-        if (!inserted) throw new Error("post is not found");
+        const inserted = await seedPostAsUser({
+          userId: user.id,
+          content: "before",
+        });
+        publicId = inserted.public_id;
+        firstAt = inserted.first_created_at;
       });
 
       it("returns ok and replaces content while keeping first_created_at and public_id", async () => {
@@ -294,10 +266,13 @@ describe("application/posts", () => {
           first_created_at: firstAt,
         });
 
-        const logs = await db.select().from(postLogsTable);
-        expect(logs).toHaveLength(1);
-        const log = logs[0];
-        if (!log) throw new Error("expected log");
+        const logs = await db
+          .select()
+          .from(postLogsTable)
+          .where(eq(postLogsTable.public_id, publicId));
+        expect(logs).toHaveLength(2);
+        const log = logs.find((l) => l.event_type === "updated");
+        if (!log) throw new Error("expected updated log");
         expect(log).toMatchObject({
           content: updateContent,
           id: post.id,
@@ -332,15 +307,11 @@ describe("application/posts", () => {
 
     describe("when post belongs to another user", () => {
       beforeEach(async () => {
-        publicId = faker.string.uuid();
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: publicId,
-          user_id: anotherUser.id,
+        const inserted = await seedPostAsUser({
+          userId: anotherUser.id,
           content: "keep",
-          first_created_at: now,
-          created_at: now,
         });
+        publicId = inserted.public_id;
       });
 
       it("returns forbidden and keeps the post", async () => {
@@ -356,16 +327,12 @@ describe("application/posts", () => {
       let seededCreatedAt: Date;
 
       beforeEach(async () => {
-        publicId = faker.string.uuid();
-        const now = new Date();
-        seededCreatedAt = now;
-        await db.insert(postsTable).values({
-          public_id: publicId,
-          user_id: user.id,
+        const inserted = await seedPostAsUser({
+          userId: user.id,
           content: "gone",
-          first_created_at: now,
-          created_at: now,
         });
+        publicId = inserted.public_id;
+        seededCreatedAt = inserted.first_created_at;
       });
 
       it("returns ok and removes the post and appends deleted post_log", async () => {
