@@ -1,5 +1,18 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
+
+export const postLogEventEnum = pgEnum("post_log_event", [
+  "created",
+  "updated",
+  "deleted",
+]);
 
 const primaryKeys = () => ({
   id: integer().primaryKey().generatedAlwaysAsIdentity(), // TODO: uuid v7 を検討
@@ -39,5 +52,8 @@ export const postLogsTable = pgTable("post_logs", {
   public_id: uuid().notNull(),
   user_id: integer().notNull(),
   content: text().notNull(),
-  ...timestamps,
+  first_created_at: timestamp().notNull(),
+  event_type: postLogEventEnum("event_type").notNull(),
+  occurred_at: timestamp().notNull(),
+  created_at: timestamp().notNull(),
 });

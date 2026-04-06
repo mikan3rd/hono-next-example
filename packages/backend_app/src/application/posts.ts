@@ -67,6 +67,9 @@ export async function createPost(input: {
       public_id: post.public_id,
       user_id: post.user_id,
       content: post.content,
+      first_created_at: post.first_created_at,
+      event_type: "created",
+      occurred_at: now,
       created_at: post.created_at,
     });
 
@@ -120,11 +123,15 @@ export async function updatePostByPublicId(input: {
         return tx.rollback();
       }
 
+      const occurredAt = new Date();
       await tx.insert(postLogsTable).values({
         id: row.id,
         public_id: row.public_id,
         user_id: row.user_id,
         content: row.content,
+        first_created_at: row.first_created_at,
+        event_type: "updated",
+        occurred_at: occurredAt,
         created_at: row.created_at,
       });
 
@@ -162,6 +169,18 @@ export async function deletePostByPublicId(input: {
     if (input.actorUserId !== target.user_id) {
       return { kind: "abort" as const, error: "forbidden" as const };
     }
+
+    const occurredAt = new Date();
+    await tx.insert(postLogsTable).values({
+      id: target.id,
+      public_id: target.public_id,
+      user_id: target.user_id,
+      content: target.content,
+      first_created_at: target.first_created_at,
+      event_type: "deleted",
+      occurred_at: occurredAt,
+      created_at: target.created_at,
+    });
 
     await tx.delete(postsTable).where(eq(postsTable.public_id, input.publicId));
 

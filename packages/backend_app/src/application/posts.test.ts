@@ -77,9 +77,14 @@ describe("application/posts", () => {
       it("returns posts ordered by id descending with user relation", async () => {
         const posts = await subject();
         expect(posts).toHaveLength(2);
-        expect(posts[0]?.content).toBe("newer");
-        expect(posts[1]?.content).toBe("older");
-        expect(posts[0]?.user.public_id).toBe(user.public_id);
+        expect(posts[0]).toMatchObject({
+          content: "newer",
+          user: { public_id: user.public_id },
+        });
+        expect(posts[1]).toMatchObject({
+          content: "older",
+          user: { public_id: user.public_id },
+        });
       });
     });
   });
@@ -119,9 +124,10 @@ describe("application/posts", () => {
 
       it("returns post with user", async () => {
         const row = await subject();
-        expect(row).toBeDefined();
-        expect(row?.content).toBe("hello");
-        expect(row?.user.public_id).toBe(user.public_id);
+        expect(row).toMatchObject({
+          content: "hello",
+          user: { public_id: user.public_id },
+        });
       });
     });
   });
@@ -155,9 +161,10 @@ describe("application/posts", () => {
 
       it("returns post with user", async () => {
         const row = await subject();
-        expect(row).toBeDefined();
-        expect(row?.content).toBe("by-public");
-        expect(row?.user.display_name).toBe(user.display_name);
+        expect(row).toMatchObject({
+          content: "by-public",
+          user: { display_name: user.display_name },
+        });
       });
     });
   });
@@ -179,13 +186,24 @@ describe("application/posts", () => {
         expect(typeof result.id).toBe("number");
 
         const row = await findPostWithUserById(result.id);
-        expect(row?.content).toBe(content);
-        expect(row?.user.public_id).toBe(user.public_id);
+        if (!row) throw new Error("expected post");
+        expect(row).toMatchObject({
+          content,
+          user: { public_id: user.public_id },
+        });
 
         const logs = await db.select().from(postLogsTable);
         expect(logs).toHaveLength(1);
-        expect(logs[0]?.content).toBe(content);
-        expect(logs[0]?.user_id).toBe(user.id);
+        const log = logs[0];
+        if (!log) throw new Error("expected log");
+        expect(log).toMatchObject({
+          content,
+          user_id: user.id,
+          event_type: "created",
+          first_created_at: row.first_created_at,
+          created_at: row.created_at,
+          occurred_at: row.created_at,
+        });
       });
     });
   });
@@ -233,7 +251,8 @@ describe("application/posts", () => {
           .select()
           .from(postsTable)
           .where(eq(postsTable.public_id, publicId));
-        expect(rows[0]?.content).toBe("theirs");
+        expect(rows).toHaveLength(1);
+        expect(rows[0]).toMatchObject({ content: "theirs" });
       });
     });
 
@@ -267,17 +286,29 @@ describe("application/posts", () => {
         expect(rows).toHaveLength(1);
         const post = rows[0];
         if (!post) throw new Error("post is not found");
-        expect(post.public_id).toBe(publicId);
-        expect(post.content).toBe(updateContent);
-        expect(post.first_created_at).toEqual(firstAt);
+        expect(post).toMatchObject({
+          public_id: publicId,
+          content: updateContent,
+          first_created_at: firstAt,
+        });
 
         const logs = await db.select().from(postLogsTable);
         expect(logs).toHaveLength(1);
-        expect(logs[0]?.content).toBe(updateContent);
-        expect(logs[0]?.id).toBe(post.id);
+        const log = logs[0];
+        if (!log) throw new Error("expected log");
+        expect(log).toMatchObject({
+          content: updateContent,
+          id: post.id,
+          event_type: "updated",
+          first_created_at: firstAt,
+          created_at: post.created_at,
+        });
+        expect(log.occurred_at.getTime()).toBeGreaterThanOrEqual(
+          log.created_at.getTime(),
+        );
 
         const withUser = await findPostWithUserByPublicId(publicId);
-        expect(withUser?.content).toBe(updateContent);
+        expect(withUser).toMatchObject({ content: updateContent });
       });
     });
   });
@@ -320,9 +351,12 @@ describe("application/posts", () => {
     });
 
     describe("when post belongs to current user", () => {
+      let seededCreatedAt: Date;
+
       beforeEach(async () => {
         publicId = faker.string.uuid();
         const now = new Date();
+        seededCreatedAt = now;
         await db.insert(postsTable).values({
           public_id: publicId,
           user_id: user.id,
@@ -332,11 +366,30 @@ describe("application/posts", () => {
         });
       });
 
-      it("returns ok and removes the post", async () => {
+      it("returns ok and removes the post and appends deleted post_log", async () => {
+        const beforeMs = Date.now();
         expect(await subject()).toEqual({ ok: true });
+        const afterMs = Date.now();
 
         const rows = await db.select().from(postsTable);
         expect(rows).toHaveLength(0);
+
+        const logs = await db
+          .select()
+          .from(postLogsTable)
+          .where(eq(postLogsTable.public_id, publicId));
+        expect(logs).toHaveLength(1);
+        const log = logs[0];
+        if (!log) throw new Error("expected log");
+        expect(log).toMatchObject({
+          event_type: "deleted",
+          content: "gone",
+          user_id: user.id,
+          first_created_at: seededCreatedAt,
+          created_at: seededCreatedAt,
+        });
+        expect(log.occurred_at.getTime()).toBeGreaterThanOrEqual(beforeMs);
+        expect(log.occurred_at.getTime()).toBeLessThanOrEqual(afterMs);
       });
     });
   });

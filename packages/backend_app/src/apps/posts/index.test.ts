@@ -129,9 +129,11 @@ describe("postsApp", () => {
 
         if (!res.ok) throw new Error("res is not ok");
         const json = await res.json();
-        expect(json.post.content).toBe(content);
-        expect(json.post.updated_at).toBeNull();
-        expect(json.post.public_id).toEqual(expect.any(String));
+        expect(json.post).toMatchObject({
+          content,
+          updated_at: null,
+          public_id: expect.any(String),
+        });
       });
     });
 
@@ -183,7 +185,7 @@ describe("postsApp", () => {
 
         if (res.ok) throw new Error("res is ok");
         const json = await res.json();
-        expect(json.message).toBe("Post is not found");
+        expect(json).toMatchObject({ message: "Post is not found" });
       });
 
       describe("when post is found", () => {
@@ -207,9 +209,11 @@ describe("postsApp", () => {
 
           if (!res.ok) throw new Error("res is not ok");
           const json = await res.json();
-          expect(json.post.content).toBe(content);
-          expect(json.post.public_id).toBe(public_id);
-          expect(json.post.updated_at).toEqual(expect.any(String));
+          expect(json.post).toMatchObject({
+            content,
+            public_id,
+            updated_at: expect.any(String),
+          });
         });
       });
 
@@ -285,7 +289,7 @@ describe("postsApp", () => {
 
         if (res.ok) throw new Error("res is ok");
         const json = await res.json();
-        expect(json.message).toBe("Post is not found");
+        expect(json).toMatchObject({ message: "Post is not found" });
       });
 
       describe("when post is found", () => {
