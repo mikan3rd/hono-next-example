@@ -202,8 +202,10 @@ describe("application/posts", () => {
           event_type: "created",
           first_created_at: row.first_created_at,
           created_at: row.created_at,
-          occurred_at: row.created_at,
         });
+        expect(log.occurred_at.getTime()).toBeGreaterThanOrEqual(
+          row.created_at.getTime(),
+        );
       });
     });
   });

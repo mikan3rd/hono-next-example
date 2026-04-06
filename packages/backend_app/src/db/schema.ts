@@ -36,7 +36,7 @@ export const postsTable = pgTable("posts", {
     .notNull()
     .references(() => usersTable.id),
   content: text().notNull(),
-  first_created_at: timestamp().notNull(), // 最初の作成日時を保持（delete&insert方式のため）
+  first_created_at: timestamp().defaultNow().notNull(), // 作成時は DB デフォルト。更新時は直前行から引き継ぐ
   ...timestamps,
 });
 
@@ -54,6 +54,6 @@ export const postLogsTable = pgTable("post_logs", {
   content: text().notNull(),
   first_created_at: timestamp().notNull(),
   event_type: postLogEventEnum("event_type").notNull(),
-  occurred_at: timestamp().notNull(),
+  occurred_at: timestamp().defaultNow().notNull(),
   created_at: timestamp().notNull(),
 });

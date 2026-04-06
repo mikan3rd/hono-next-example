@@ -46,7 +46,6 @@ export async function createPost(input: {
 }): Promise<
   { ok: true; id: number } | { ok: false; error: PostApplicationError }
 > {
-  const now = new Date();
   const inserted = await db.transaction(async (tx) => {
     const post = (
       await tx
@@ -55,8 +54,6 @@ export async function createPost(input: {
           public_id: crypto.randomUUID(),
           user_id: input.userId,
           content: input.content,
-          first_created_at: now,
-          created_at: now,
         })
         .returning()
     )[0];
@@ -69,7 +66,6 @@ export async function createPost(input: {
       content: post.content,
       first_created_at: post.first_created_at,
       event_type: "created",
-      occurred_at: now,
       created_at: post.created_at,
     });
 
@@ -123,7 +119,6 @@ export async function updatePostByPublicId(input: {
         return tx.rollback();
       }
 
-      const occurredAt = new Date();
       await tx.insert(postLogsTable).values({
         id: row.id,
         public_id: row.public_id,
@@ -131,7 +126,6 @@ export async function updatePostByPublicId(input: {
         content: row.content,
         first_created_at: row.first_created_at,
         event_type: "updated",
-        occurred_at: occurredAt,
         created_at: row.created_at,
       });
 
@@ -170,7 +164,6 @@ export async function deletePostByPublicId(input: {
       return { kind: "abort" as const, error: "forbidden" as const };
     }
 
-    const occurredAt = new Date();
     await tx.insert(postLogsTable).values({
       id: target.id,
       public_id: target.public_id,
@@ -178,7 +171,6 @@ export async function deletePostByPublicId(input: {
       content: target.content,
       first_created_at: target.first_created_at,
       event_type: "deleted",
-      occurred_at: occurredAt,
       created_at: target.created_at,
     });
 
