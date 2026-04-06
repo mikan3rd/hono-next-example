@@ -1,30 +1,53 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 
-const primaryKeys = () => ({
-  id: integer().primaryKey().generatedAlwaysAsIdentity(), // TODO: uuid v7 を検討
-  public_id: uuid().unique().notNull(), // uuid v4
-});
+export const postLogEventEnum = pgEnum("post_log_event", [
+  "created",
+  "updated",
+  "deleted",
+]);
+
+const primaryKeyFactories = {
+  entity: () => ({
+    id: integer().primaryKey().generatedAlwaysAsIdentity(), // TODO: uuid v7 を検討
+    public_id: uuid().unique().notNull(),
+  }),
+  log: () => ({
+    id: integer().notNull(),
+    public_id: uuid().notNull(),
+  }),
+} as const;
 
 const timestamps = {
   created_at: timestamp().defaultNow().notNull(),
 };
 
+const postTableColumns = {
+  user_id: integer()
+    .notNull()
+    .references(() => usersTable.id),
+  content: text().notNull(),
+  first_created_at: timestamp().defaultNow().notNull(),
+  ...timestamps,
+};
+
 export const usersTable = pgTable("users", {
-  ...primaryKeys(),
+  ...primaryKeyFactories.entity(),
   supabase_uid: uuid().unique().notNull(),
   display_name: text().notNull(),
   ...timestamps,
 });
 
 export const postsTable = pgTable("posts", {
-  ...primaryKeys(),
-  user_id: integer()
-    .notNull()
-    .references(() => usersTable.id),
-  content: text().notNull(),
-  first_created_at: timestamp().notNull(), // 最初の作成日時を保持（delete&insert方式のため）
-  ...timestamps,
+  ...primaryKeyFactories.entity(),
+  ...postTableColumns,
 });
 
 export const postsRelations = relations(postsTable, ({ one }) => ({
@@ -35,9 +58,9 @@ export const postsRelations = relations(postsTable, ({ one }) => ({
 }));
 
 export const postLogsTable = pgTable("post_logs", {
-  id: integer().primaryKey(),
-  public_id: uuid().notNull(),
-  user_id: integer().notNull(),
-  content: text().notNull(),
-  ...timestamps,
+  log_id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  ...primaryKeyFactories.log(),
+  ...postTableColumns,
+  event_type: postLogEventEnum("event_type").notNull(),
+  occurred_at: timestamp().defaultNow().notNull(),
 });

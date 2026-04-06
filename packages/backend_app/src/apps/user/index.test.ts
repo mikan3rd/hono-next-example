@@ -30,9 +30,9 @@ describe("userApp", () => {
       const users = await db.select().from(usersTable);
       expect(users).toHaveLength(1);
 
-      const user = users[0];
-      if (!user) throw new Error("user is not found");
-      expect(user.supabase_uid).toBe(supabaseUid);
+      const u = users[0];
+      if (!u) throw new Error("user is not found");
+      expect(u).toMatchObject({ supabase_uid: supabaseUid });
     });
 
     describe("when Authorization header is not provided", () => {
@@ -62,9 +62,9 @@ describe("userApp", () => {
         const users = await db.select().from(usersTable);
         expect(users).toHaveLength(1);
 
-        const user = users[0];
-        if (!user) throw new Error("user is not found");
-        expect(user.supabase_uid).toBe(supabaseUid);
+        const u = users[0];
+        if (!u) throw new Error("user is not found");
+        expect(u).toMatchObject({ supabase_uid: supabaseUid });
       });
     });
   });

@@ -13,6 +13,17 @@ import {
   updatePostByPublicId,
 } from "./posts";
 
+async function seedPostAsUser(input: { userId: number; content: string }) {
+  const result = await createPost({
+    userId: input.userId,
+    content: input.content,
+  });
+  if (!result.ok) throw new Error("seed createPost failed");
+  const row = await findPostWithUserById(result.id);
+  if (!row) throw new Error("seed post not found");
+  return { id: result.id, ...row };
+}
+
 describe("application/posts", () => {
   let user: typeof usersTable.$inferSelect;
   let anotherUser: typeof usersTable.$inferSelect;
@@ -57,29 +68,21 @@ describe("application/posts", () => {
 
     describe("when there are some posts", () => {
       beforeEach(async () => {
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: faker.string.uuid(),
-          user_id: user.id,
-          content: "older",
-          first_created_at: now,
-          created_at: now,
-        });
-        await db.insert(postsTable).values({
-          public_id: faker.string.uuid(),
-          user_id: user.id,
-          content: "newer",
-          first_created_at: now,
-          created_at: now,
-        });
+        await seedPostAsUser({ userId: user.id, content: "older" });
+        await seedPostAsUser({ userId: user.id, content: "newer" });
       });
 
       it("returns posts ordered by id descending with user relation", async () => {
         const posts = await subject();
         expect(posts).toHaveLength(2);
-        expect(posts[0]?.content).toBe("newer");
-        expect(posts[1]?.content).toBe("older");
-        expect(posts[0]?.user.public_id).toBe(user.public_id);
+        expect(posts[0]).toMatchObject({
+          content: "newer",
+          user: { public_id: user.public_id },
+        });
+        expect(posts[1]).toMatchObject({
+          content: "older",
+          user: { public_id: user.public_id },
+        });
       });
     });
   });
@@ -100,28 +103,19 @@ describe("application/posts", () => {
 
     describe("when post exists", () => {
       beforeEach(async () => {
-        const now = new Date();
-        const inserted = (
-          await db
-            .insert(postsTable)
-            .values({
-              public_id: faker.string.uuid(),
-              user_id: user.id,
-              content: "hello",
-              first_created_at: now,
-              created_at: now,
-            })
-            .returning()
-        )[0];
-        if (!inserted) throw new Error("post is not found");
+        const inserted = await seedPostAsUser({
+          userId: user.id,
+          content: "hello",
+        });
         lookupId = inserted.id;
       });
 
       it("returns post with user", async () => {
         const row = await subject();
-        expect(row).toBeDefined();
-        expect(row?.content).toBe("hello");
-        expect(row?.user.public_id).toBe(user.public_id);
+        expect(row).toMatchObject({
+          content: "hello",
+          user: { public_id: user.public_id },
+        });
       });
     });
   });
@@ -142,22 +136,19 @@ describe("application/posts", () => {
 
     describe("when post exists", () => {
       beforeEach(async () => {
-        lookupPublicId = faker.string.uuid();
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: lookupPublicId,
-          user_id: user.id,
+        const inserted = await seedPostAsUser({
+          userId: user.id,
           content: "by-public",
-          first_created_at: now,
-          created_at: now,
         });
+        lookupPublicId = inserted.public_id;
       });
 
       it("returns post with user", async () => {
         const row = await subject();
-        expect(row).toBeDefined();
-        expect(row?.content).toBe("by-public");
-        expect(row?.user.display_name).toBe(user.display_name);
+        expect(row).toMatchObject({
+          content: "by-public",
+          user: { display_name: user.display_name },
+        });
       });
     });
   });
@@ -179,13 +170,30 @@ describe("application/posts", () => {
         expect(typeof result.id).toBe("number");
 
         const row = await findPostWithUserById(result.id);
-        expect(row?.content).toBe(content);
-        expect(row?.user.public_id).toBe(user.public_id);
+        if (!row) throw new Error("expected post");
+        expect(row).toMatchObject({
+          content,
+          user: { public_id: user.public_id },
+        });
 
-        const logs = await db.select().from(postLogsTable);
+        const logs = await db
+          .select()
+          .from(postLogsTable)
+          .where(eq(postLogsTable.public_id, row.public_id));
         expect(logs).toHaveLength(1);
-        expect(logs[0]?.content).toBe(content);
-        expect(logs[0]?.user_id).toBe(user.id);
+        const log = logs[0];
+        if (!log) throw new Error("expected log");
+        expect(log).toMatchObject({
+          id: result.id,
+          content,
+          user_id: user.id,
+          event_type: "created",
+          first_created_at: row.first_created_at,
+          created_at: row.created_at,
+        });
+        expect(log.occurred_at.getTime()).toBeGreaterThanOrEqual(
+          row.created_at.getTime(),
+        );
       });
     });
   });
@@ -213,16 +221,12 @@ describe("application/posts", () => {
 
     describe("when post belongs to another user", () => {
       beforeEach(async () => {
-        publicId = faker.string.uuid();
         updateContent = "hijack";
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: publicId,
-          user_id: anotherUser.id,
+        const inserted = await seedPostAsUser({
+          userId: anotherUser.id,
           content: "theirs",
-          first_created_at: now,
-          created_at: now,
         });
+        publicId = inserted.public_id;
       });
 
       it("returns forbidden and does not change content", async () => {
@@ -233,7 +237,8 @@ describe("application/posts", () => {
           .select()
           .from(postsTable)
           .where(eq(postsTable.public_id, publicId));
-        expect(rows[0]?.content).toBe("theirs");
+        expect(rows).toHaveLength(1);
+        expect(rows[0]).toMatchObject({ content: "theirs" });
       });
     });
 
@@ -241,22 +246,13 @@ describe("application/posts", () => {
       let firstAt: Date;
 
       beforeEach(async () => {
-        publicId = faker.string.uuid();
-        firstAt = new Date("2020-01-01T00:00:00.000Z");
         updateContent = "after";
-        const inserted = (
-          await db
-            .insert(postsTable)
-            .values({
-              public_id: publicId,
-              user_id: user.id,
-              content: "before",
-              first_created_at: firstAt,
-              created_at: firstAt,
-            })
-            .returning()
-        )[0];
-        if (!inserted) throw new Error("post is not found");
+        const inserted = await seedPostAsUser({
+          userId: user.id,
+          content: "before",
+        });
+        publicId = inserted.public_id;
+        firstAt = inserted.first_created_at;
       });
 
       it("returns ok and replaces content while keeping first_created_at and public_id", async () => {
@@ -267,17 +263,32 @@ describe("application/posts", () => {
         expect(rows).toHaveLength(1);
         const post = rows[0];
         if (!post) throw new Error("post is not found");
-        expect(post.public_id).toBe(publicId);
-        expect(post.content).toBe(updateContent);
-        expect(post.first_created_at).toEqual(firstAt);
+        expect(post).toMatchObject({
+          public_id: publicId,
+          content: updateContent,
+          first_created_at: firstAt,
+        });
 
-        const logs = await db.select().from(postLogsTable);
-        expect(logs).toHaveLength(1);
-        expect(logs[0]?.content).toBe(updateContent);
-        expect(logs[0]?.id).toBe(post.id);
+        const logs = await db
+          .select()
+          .from(postLogsTable)
+          .where(eq(postLogsTable.public_id, publicId));
+        expect(logs).toHaveLength(2);
+        const log = logs.find((l) => l.event_type === "updated");
+        if (!log) throw new Error("expected updated log");
+        expect(log).toMatchObject({
+          content: updateContent,
+          id: post.id,
+          event_type: "updated",
+          first_created_at: firstAt,
+          created_at: post.created_at,
+        });
+        expect(log.occurred_at.getTime()).toBeGreaterThanOrEqual(
+          log.created_at.getTime(),
+        );
 
         const withUser = await findPostWithUserByPublicId(publicId);
-        expect(withUser?.content).toBe(updateContent);
+        expect(withUser).toMatchObject({ content: updateContent });
       });
     });
   });
@@ -299,15 +310,11 @@ describe("application/posts", () => {
 
     describe("when post belongs to another user", () => {
       beforeEach(async () => {
-        publicId = faker.string.uuid();
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: publicId,
-          user_id: anotherUser.id,
+        const inserted = await seedPostAsUser({
+          userId: anotherUser.id,
           content: "keep",
-          first_created_at: now,
-          created_at: now,
         });
+        publicId = inserted.public_id;
       });
 
       it("returns forbidden and keeps the post", async () => {
@@ -320,23 +327,44 @@ describe("application/posts", () => {
     });
 
     describe("when post belongs to current user", () => {
+      let seededCreatedAt: Date;
+      let seededPostId: number;
+
       beforeEach(async () => {
-        publicId = faker.string.uuid();
-        const now = new Date();
-        await db.insert(postsTable).values({
-          public_id: publicId,
-          user_id: user.id,
+        const inserted = await seedPostAsUser({
+          userId: user.id,
           content: "gone",
-          first_created_at: now,
-          created_at: now,
         });
+        publicId = inserted.public_id;
+        seededCreatedAt = inserted.first_created_at;
+        seededPostId = inserted.id;
       });
 
-      it("returns ok and removes the post", async () => {
+      it("returns ok and removes the post and appends deleted post_log", async () => {
+        const beforeMs = Date.now();
         expect(await subject()).toEqual({ ok: true });
+        const afterMs = Date.now();
 
         const rows = await db.select().from(postsTable);
         expect(rows).toHaveLength(0);
+
+        const logs = await db
+          .select()
+          .from(postLogsTable)
+          .where(eq(postLogsTable.public_id, publicId));
+        expect(logs).toHaveLength(2);
+        const log = logs.find((l) => l.event_type === "deleted");
+        if (!log) throw new Error("expected deleted log");
+        expect(log).toMatchObject({
+          id: seededPostId,
+          event_type: "deleted",
+          content: "gone",
+          user_id: user.id,
+          first_created_at: seededCreatedAt,
+          created_at: seededCreatedAt,
+        });
+        expect(log.occurred_at.getTime()).toBeGreaterThanOrEqual(beforeMs);
+        expect(log.occurred_at.getTime()).toBeLessThanOrEqual(afterMs);
       });
     });
   });
