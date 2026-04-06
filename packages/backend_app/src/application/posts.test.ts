@@ -13,7 +13,6 @@ import {
   updatePostByPublicId,
 } from "./posts";
 
-/** 本番と同じ経路で posts + post_logs(created) を用意する */
 async function seedPostAsUser(input: { userId: number; content: string }) {
   const result = await createPost({
     userId: input.userId,
@@ -177,11 +176,15 @@ describe("application/posts", () => {
           user: { public_id: user.public_id },
         });
 
-        const logs = await db.select().from(postLogsTable);
+        const logs = await db
+          .select()
+          .from(postLogsTable)
+          .where(eq(postLogsTable.public_id, row.public_id));
         expect(logs).toHaveLength(1);
         const log = logs[0];
         if (!log) throw new Error("expected log");
         expect(log).toMatchObject({
+          id: result.id,
           content,
           user_id: user.id,
           event_type: "created",
@@ -325,6 +328,7 @@ describe("application/posts", () => {
 
     describe("when post belongs to current user", () => {
       let seededCreatedAt: Date;
+      let seededPostId: number;
 
       beforeEach(async () => {
         const inserted = await seedPostAsUser({
@@ -333,6 +337,7 @@ describe("application/posts", () => {
         });
         publicId = inserted.public_id;
         seededCreatedAt = inserted.first_created_at;
+        seededPostId = inserted.id;
       });
 
       it("returns ok and removes the post and appends deleted post_log", async () => {
@@ -347,10 +352,11 @@ describe("application/posts", () => {
           .select()
           .from(postLogsTable)
           .where(eq(postLogsTable.public_id, publicId));
-        expect(logs).toHaveLength(1);
-        const log = logs[0];
-        if (!log) throw new Error("expected log");
+        expect(logs).toHaveLength(2);
+        const log = logs.find((l) => l.event_type === "deleted");
+        if (!log) throw new Error("expected deleted log");
         expect(log).toMatchObject({
+          id: seededPostId,
           event_type: "deleted",
           content: "gone",
           user_id: user.id,

@@ -16,7 +16,7 @@ export const postLogEventEnum = pgEnum("post_log_event", [
 
 const primaryKeys = () => ({
   id: integer().primaryKey().generatedAlwaysAsIdentity(), // TODO: uuid v7 を検討
-  public_id: uuid().unique().notNull(), // uuid v4
+  public_id: uuid().unique().notNull(),
 });
 
 const timestamps = {
@@ -36,7 +36,7 @@ export const postsTable = pgTable("posts", {
     .notNull()
     .references(() => usersTable.id),
   content: text().notNull(),
-  first_created_at: timestamp().defaultNow().notNull(), // 作成時は DB デフォルト。更新時は直前行から引き継ぐ
+  first_created_at: timestamp().defaultNow().notNull(),
   ...timestamps,
 });
 
@@ -48,7 +48,8 @@ export const postsRelations = relations(postsTable, ({ one }) => ({
 }));
 
 export const postLogsTable = pgTable("post_logs", {
-  id: integer().primaryKey(),
+  log_id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().notNull(),
   public_id: uuid().notNull(),
   user_id: integer().notNull(),
   content: text().notNull(),
