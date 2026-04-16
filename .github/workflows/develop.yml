@@ -21,9 +21,9 @@ jobs:
     runs-on: ubuntu-slim
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@v3.0.3
         id: filter
         with:
           filters: |
@@ -72,9 +72,9 @@ jobs:
       SUPABASE_URL: https://example.supabase.com
       SUPABASE_KEY: example-key
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2.2.0
         with:
           bun-version-file: .tool-versions
 
@@ -119,9 +119,9 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2.2.0
         with:
           bun-version-file: .tool-versions
 
@@ -140,9 +140,9 @@ jobs:
       run:
         working-directory: ./packages/frontend_app
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2.2.0
         with:
           bun-version-file: .tool-versions
 
@@ -171,14 +171,14 @@ jobs:
       # https://playwright.dev/docs/docker#pull-the-image
       image: mcr.microsoft.com/playwright:v1.58.2-noble
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
       - name: Install required tools
         run: |
           apt-get update
           apt-get install -y unzip
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2.2.0
         with:
           bun-version-file: .tool-versions
 
@@ -203,7 +203,7 @@ jobs:
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: test
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
@@ -212,7 +212,7 @@ jobs:
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.ref }}
           CHROMATIC_SLUG: ${{ github.repository }}
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2.2.0
         with:
           bun-version-file: .tool-versions
 
@@ -225,7 +225,7 @@ jobs:
         run: bun run build-storybook --stats-json
 
       - name: Run Chromatic
-        uses: chromaui/action@v13
+        uses: chromaui/action@v13.3.5
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/frontend_app
@@ -243,9 +243,9 @@ jobs:
       run:
         working-directory: ./packages/e2e
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2.2.0
         with:
           bun-version-file: .tool-versions
 
@@ -276,7 +276,7 @@ jobs:
       FRONTEND_APP_PORT: 4400
       HOSTNAME: localhost
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
       - run: cp .env.example .env
         working-directory: ./docker
@@ -303,7 +303,7 @@ jobs:
         working-directory: ./docker
 
       # NOTE: npx playwright show-report name-of-my-extracted-playwright-report
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v7.0.1
         if: failure()
         with:
           name: "playwright-report-${{ github.sha }}"
