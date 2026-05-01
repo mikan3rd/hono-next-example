@@ -1,7 +1,7 @@
-import { test as base, expect } from "@chromatic-com/playwright";
+import { test as base, expect } from "@playwright/test";
 import { attachConsoleErrorThrow } from "./helpers/attachConsoleErrorThrow";
 
-/** Chromatic の `test` を拡張し、すべてのテストでブラウザの console error を検知する */
+/** `test` を拡張し、すべてのテストでブラウザの console error を検知する */
 export const test = base.extend({
   page: async ({ page }, use) => {
     attachConsoleErrorThrow(page);
