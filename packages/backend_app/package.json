@@ -24,8 +24,8 @@
     "drizzle-orm": "0.45.2",
     "drizzle-zod": "0.8.3",
     "es-toolkit": "1.45.1",
-    "hono": "4.12.10",
-    "postgres": "3.4.8"
+    "hono": "4.12.14",
+    "postgres": "3.4.9"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.10",
