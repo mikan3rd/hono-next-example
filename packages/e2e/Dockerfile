@@ -1,4 +1,4 @@
-FROM oven/bun:1.3.11 AS base
+FROM oven/bun:1.3.13 AS base
 
 FROM mcr.microsoft.com/playwright:v1.59.1-noble
 WORKDIR /app
