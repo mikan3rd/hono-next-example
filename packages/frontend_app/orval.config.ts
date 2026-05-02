@@ -12,7 +12,7 @@ export default defineConfig({
         type: "msw",
         delay: false,
       },
-      biome: true,
+      formatter: "biome",
       override: {
         query: {
           useSuspenseQuery: true,
