@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "bun run --bun tsgo --noEmit",
     "lint": "biome check . --error-on-warnings",
     "lint:fix": "biome check . --write --unsafe",
     "check:all": "bun install && bun run lint:fix && bun run typecheck",
@@ -19,7 +19,7 @@
     "@playwright/test": "1.59.1",
     "@t3-oss/env-core": "0.13.11",
     "@types/node": "24.12.2",
-    "typescript": "5.9.3",
+    "@typescript/native-preview": "7.0.0-dev.20260424.2",
     "zod": "4.3.6"
   }
 }
