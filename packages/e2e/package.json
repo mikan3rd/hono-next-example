@@ -15,11 +15,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.13",
-    "@dotenvx/dotenvx": "1.61.6",
+    "@dotenvx/dotenvx": "1.66.0",
     "@playwright/test": "1.59.1",
     "@t3-oss/env-core": "0.13.11",
     "@types/node": "24.12.3",
     "@typescript/native-preview": "7.0.0-dev.20260424.2",
-    "zod": "4.3.6"
+    "zod": "4.4.3"
   }
 }
