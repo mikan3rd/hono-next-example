@@ -19,7 +19,7 @@
     "@playwright/test": "1.59.1",
     "@t3-oss/env-core": "0.13.11",
     "@types/node": "24.12.3",
-    "@typescript/native-preview": "7.0.0-dev.20260424.2",
+    "@typescript/native-preview": "7.0.0-dev.20260524.1",
     "zod": "4.4.3"
   }
 }
