@@ -9,8 +9,7 @@ export default defineConfig({
       httpClient: "fetch",
       mode: "split",
       mock: {
-        type: "msw",
-        delay: false,
+        generators: [{ type: "msw", delay: false }],
       },
       formatter: "biome",
       override: {
