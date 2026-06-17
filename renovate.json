@@ -53,7 +53,6 @@
     },
     {
       "groupName": "vitest dependencies",
-      "automerge": false,
       "matchPackageNames": ["/^@vitest//", "/^vitest$/"]
     },
     {
