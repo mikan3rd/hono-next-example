@@ -49,7 +49,7 @@
         "mcr.microsoft.com/playwright"
       ],
       "automerge": false,
-      "minimumReleaseAgeBehaviour": "timestamp-optional"
+      "minimumReleaseAge": null
     },
     {
       "groupName": "vitest dependencies",
