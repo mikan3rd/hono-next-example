@@ -48,7 +48,6 @@
         "playwright",
         "mcr.microsoft.com/playwright"
       ],
-      "automerge": false,
       "minimumReleaseAge": null
     },
     {
