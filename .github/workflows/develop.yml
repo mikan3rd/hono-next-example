@@ -225,7 +225,7 @@ jobs:
         run: bun run build-storybook --stats-json
 
       - name: Run Chromatic
-        uses: chromaui/action@v16.10.1
+        uses: chromaui/action@v17.2.0
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/frontend_app
