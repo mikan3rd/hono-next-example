@@ -21,7 +21,7 @@
       },
       "devDependencies": {
         "@biomejs/biome": "2.4.16",
-        "@faker-js/faker": "10.4.0",
+        "@faker-js/faker": "10.5.0",
         "@types/bun": "1.3.14",
         "@types/node": "24.13.0",
         "@typescript/native-preview": "7.0.0-dev.20260624.1",
@@ -75,7 +75,7 @@
       "devDependencies": {
         "@biomejs/biome": "2.4.16",
         "@chromatic-com/storybook": "5.2.1",
-        "@faker-js/faker": "10.4.0",
+        "@faker-js/faker": "10.5.0",
         "@storybook/addon-docs": "10.4.2",
         "@storybook/addon-vitest": "10.4.2",
         "@storybook/nextjs-vite": "10.4.2",
@@ -226,7 +226,7 @@
 
     "@esbuild/win32-x64": ["@esbuild/win32-x64@0.25.11", "", { "os": "win32", "cpu": "x64" }, "sha512-D7Hpz6A2L4hzsRpPaCYkQnGOotdUpDzSGRIv9I+1ITdHROSFUWW95ZPZWQmGka1Fg7W3zFJowyn9WGwMJ0+KPA=="],
 
-    "@faker-js/faker": ["@faker-js/faker@10.4.0", "", {}, "sha512-sDBWI3yLy8EcDzgobvJTWq1MJYzAkQdpjXuPukga9wXonhpMRvd1Izuo2Qgwey2OiEoRIBr35RMU9HJRoOHzpw=="],
+    "@faker-js/faker": ["@faker-js/faker@10.5.0", "", {}, "sha512-bsxD8WLS5lIj7aaoCx1YJkktqYj5vlBUE6HWzu2Q51ksrGJ0H737ECCKlFU7Yf8Br45z9t99frBp/J7kzbMPAg=="],
 
     "@floating-ui/core": ["@floating-ui/core@1.7.3", "", { "dependencies": { "@floating-ui/utils": "^0.2.10" } }, "sha512-sGnvb5dmrJaKEZ+LDIpguvdX3bDlEllmv4/ClQ9awcmCZrlx5jQyyMWFM5kBI+EyNOCDDiKk8il0zeuX3Zlg/w=="],
 
