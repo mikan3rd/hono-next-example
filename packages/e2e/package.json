@@ -18,7 +18,7 @@
     "@dotenvx/dotenvx": "1.73.1",
     "@playwright/test": "1.61.1",
     "@t3-oss/env-core": "0.13.11",
-    "@types/node": "24.13.0",
+    "@types/node": "24.13.2",
     "@typescript/native-preview": "7.0.0-dev.20260624.1",
     "zod": "4.4.3"
   }
