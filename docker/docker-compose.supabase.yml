@@ -27,7 +27,7 @@ services:
 
   auth:
     container_name: supabase-auth
-    image: supabase/gotrue:v2.189.0
+    image: supabase/gotrue:v2.190.0
     restart: unless-stopped
     healthcheck:
       test:

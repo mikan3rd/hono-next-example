@@ -1,6 +1,6 @@
 FROM oven/bun:1.3.14 AS base
 
-FROM mcr.microsoft.com/playwright:v1.61.0-noble
+FROM mcr.microsoft.com/playwright:v1.61.1-noble
 WORKDIR /app
 
 COPY --from=base /usr/local/bin/bun /usr/local/bin/bun
