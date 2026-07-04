@@ -20,7 +20,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "correctness": {
         "noUnusedImports": "error"
       },
@@ -30,11 +30,11 @@
           "options": {
             "allow": ["error", "info", "warn"]
           }
-        }
+        },
+        "noShadow": "error"
       },
       "nursery": {
-        "noFloatingPromises": "error",
-        "noShadow": "error"
+        "noFloatingPromises": "error"
       }
     }
   },
