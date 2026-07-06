@@ -1,6 +1,5 @@
 import "../src/app/globals.css";
 
-import { faker } from "@faker-js/faker";
 import type { Preview } from "@storybook/nextjs-vite";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import { MINIMAL_VIEWPORTS } from "storybook/viewport";
@@ -87,11 +86,6 @@ const preview: Preview = {
     },
     mswLoader,
   ],
-
-  beforeAll: () => {
-    faker.seed(123);
-    faker.setDefaultRefDate(new Date("2025-01-01"));
-  },
 
   decorators: [
     (Story) => (

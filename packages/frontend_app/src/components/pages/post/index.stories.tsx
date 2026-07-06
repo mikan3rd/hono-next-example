@@ -1,13 +1,14 @@
-import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import {
   getBackendAppOpenAPIMock,
   getGetPostsMockHandler,
-  getGetPostsResponseMock,
   getGetUserLoginMockHandler,
 } from "../../../client/index.msw";
-import type { User } from "../../../client/index.schemas";
+import {
+  createStoryPosts,
+  createStoryUser,
+} from "../../../lib/storybook/mockData";
 import { withI18n } from "../../../lib/storybook/withI18n";
 import {
   mockSession,
@@ -16,20 +17,8 @@ import {
 } from "../../../supabase/client/mockFunc";
 import { PostIndex } from ".";
 
-const user: User = {
-  public_id: faker.string.uuid(),
-  display_name: faker.person.fullName(),
-};
-
-const anotherUser: User = {
-  public_id: faker.string.uuid(),
-  display_name: faker.person.fullName(),
-};
-
-const posts = getGetPostsResponseMock().posts.map((post, i) => ({
-  ...post,
-  user: i % 2 === 0 ? user : anotherUser,
-}));
+const user = createStoryUser();
+const posts = createStoryPosts(4);
 
 const defaultHandlers = [
   getGetUserLoginMockHandler(user),
@@ -100,15 +89,7 @@ export const OnePost: Story = {
     msw: {
       handlers: [
         getGetPostsMockHandler({
-          posts: [
-            (() => {
-              const post = getGetPostsResponseMock().posts[0];
-              if (!post) {
-                throw new Error("Post not found");
-              }
-              return post;
-            })(),
-          ],
+          posts: createStoryPosts(1),
         }),
         ...defaultHandlers,
       ],

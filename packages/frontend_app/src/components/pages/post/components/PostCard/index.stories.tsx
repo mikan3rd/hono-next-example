@@ -1,9 +1,15 @@
-import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { ComponentProps } from "react";
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import { getGetUserLoginMockHandler } from "../../../../../client/index.msw";
 import { useUserContext } from "../../../../../context/UserContext";
+import {
+  createStoryPost,
+  createStoryUser,
+  STORY_POST_CONTENT,
+  STORY_UPDATED_AT,
+  storyNotOwnerUser,
+} from "../../../../../lib/storybook/mockData";
 import { withI18n } from "../../../../../lib/storybook/withI18n";
 import {
   mockSession,
@@ -13,10 +19,7 @@ import {
 import { PostCard } from ".";
 
 type Props = ComponentProps<typeof PostCard>;
-const user: Props["post"]["user"] = {
-  public_id: faker.string.uuid(),
-  display_name: faker.person.fullName(),
-};
+const user = createStoryUser();
 
 const meta = {
   component: PostCard,
@@ -43,17 +46,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const postContent: Props["post"]["content"] = faker.lorem.paragraph();
 const createMockPost = (
   overrides: Partial<Props["post"]> = {},
-): Props["post"] => ({
-  public_id: faker.string.uuid(),
-  content: postContent,
-  created_at: "2025-01-01T00:00:00.000Z",
-  updated_at: null,
-  user,
-  ...overrides,
-});
+): Props["post"] => createStoryPost({ user, ...overrides });
 
 const getPostCardElements = async (canvas: ReturnType<typeof within>) => {
   const postCard = await canvas.findByTestId(
@@ -85,7 +80,7 @@ const enterEditMode = async (canvas: ReturnType<typeof within>) => {
 
   const textarea = await within(content).findByRole("textbox");
   await expect(textarea).toBeVisible();
-  await expect(textarea).toHaveValue(postContent);
+  await expect(textarea).toHaveValue(STORY_POST_CONTENT);
 
   return { header, content, textarea };
 };
@@ -150,7 +145,7 @@ export const CreatedPost: Story = {
 export const UpdatedPost: Story = {
   args: {
     post: createMockPost({
-      updated_at: "2025-01-02T12:00:00.000Z",
+      updated_at: STORY_UPDATED_AT,
     }),
   },
   play: async ({ canvasElement }) => {
@@ -166,7 +161,7 @@ export const UpdatedPost: Story = {
 export const NotOwnerPost: Story = {
   args: {
     post: createMockPost({
-      user: { ...user, public_id: faker.string.uuid() },
+      user: storyNotOwnerUser,
     }),
   },
   play: async ({ canvasElement }) => {
