@@ -59,14 +59,14 @@
     "@storybook/addon-vitest": "10.5.5",
     "@storybook/nextjs-vite": "10.5.5",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
-    "@vitest/browser": "4.1.10",
-    "@vitest/browser-playwright": "4.1.10",
-    "@vitest/coverage-v8": "4.1.10",
+    "@vitest/browser": "4.1.11",
+    "@vitest/browser-playwright": "4.1.11",
+    "@vitest/coverage-v8": "4.1.11",
     "msw": "2.15.0",
     "msw-storybook-addon": "2.0.7",
     "playwright": "1.62.1",
     "storybook": "10.5.5",
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   },
   "msw": {
     "workerDirectory": [
