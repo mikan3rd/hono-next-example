@@ -3,5 +3,5 @@
   "eslint.enable": false,
   "biome.enabled": true,
   "editor.defaultFormatter": "biomejs.biome",
-  "typescript.experimental.useTsgo": true
+  "js/ts.experimental.useTsgo": true
 }

@@ -5,7 +5,7 @@
     "db:studio": "drizzle-kit studio",
     "db:migrate": "bun run --bun drizzle-kit migrate",
     "db:push": "bun run --bun drizzle-kit push --force",
-    "typecheck": "bun run --bun tsgo --noEmit",
+    "typecheck": "bun run --bun tsc --noEmit",
     "lint": "bun run --bun biome check . --error-on-warnings",
     "lint:fix": "bun run lint --write --unsafe",
     "test:db:push": "bun --env-file=.env.test run --bun drizzle-kit push --force",
@@ -32,6 +32,6 @@
     "@faker-js/faker": "10.6.0",
     "@types/bun": "1.4.2",
     "@types/node": "24.13.5",
-    "@typescript/native-preview": "7.0.0-dev.20260707.2"
+    "typescript": "7.0.2"
   }
 }
