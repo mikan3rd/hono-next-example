@@ -57,6 +57,11 @@
     {
       "groupName": "faker dependencies",
       "matchPackageNames": ["@faker-js/faker"]
+    },
+    {
+      "groupName": "sonner skip 2.0.8",
+      "matchPackageNames": ["sonner"],
+      "allowedVersions": "<2.0.8 || >=2.0.9"
     }
   ]
 }
