@@ -4,7 +4,7 @@
   "configMigration": true,
   "rebaseWhen": "automerging",
   "timezone": "Asia/Tokyo",
-  "schedule": ["* * * * 5"],
+  "schedule": ["* * 1-7 * 5"],
   "automergeSchedule": ["* * * * 0-4,6"],
   "extends": ["config:js-app", ":automergeMinor"],
   "major": {
