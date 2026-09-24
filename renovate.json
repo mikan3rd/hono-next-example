@@ -34,10 +34,6 @@
       "matchPackageNames": ["node", "nodejs", "@types/node"]
     },
     {
-      "groupName": "tsgo dependencies",
-      "matchPackageNames": ["@typescript/native-preview"]
-    },
-    {
       "groupName": "biome dependencies",
       "matchPackageNames": ["@biomejs/biome"]
     },
