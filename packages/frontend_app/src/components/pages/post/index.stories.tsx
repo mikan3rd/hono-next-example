@@ -41,10 +41,8 @@ const meta = {
   component: PostIndex,
   tags: ["autodocs"],
   decorators: [withI18n],
-  parameters: {
-    msw: {
-      handlers: defaultHandlers,
-    },
+  beforeEach({ msw }) {
+    msw.use(...defaultHandlers);
   },
 } satisfies Meta<typeof PostIndex>;
 
@@ -83,10 +81,8 @@ export const WithLoggedIn: Story = {
 };
 
 export const NoPosts: Story = {
-  parameters: {
-    msw: {
-      handlers: [getGetPostsMockHandler({ posts: [] }), ...defaultHandlers],
-    },
+  beforeEach({ msw }) {
+    msw.use(getGetPostsMockHandler({ posts: [] }), ...defaultHandlers);
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -96,23 +92,21 @@ export const NoPosts: Story = {
 };
 
 export const OnePost: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        getGetPostsMockHandler({
-          posts: [
-            (() => {
-              const post = getGetPostsResponseMock().posts[0];
-              if (!post) {
-                throw new Error("Post not found");
-              }
-              return post;
-            })(),
-          ],
-        }),
-        ...defaultHandlers,
-      ],
-    },
+  beforeEach({ msw }) {
+    msw.use(
+      getGetPostsMockHandler({
+        posts: [
+          (() => {
+            const post = getGetPostsResponseMock().posts[0];
+            if (!post) {
+              throw new Error("Post not found");
+            }
+            return post;
+          })(),
+        ],
+      }),
+      ...defaultHandlers,
+    );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
