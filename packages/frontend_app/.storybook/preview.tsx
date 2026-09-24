@@ -2,24 +2,12 @@ import "../src/app/globals.css";
 
 import { faker } from "@faker-js/faker";
 import type { Preview } from "@storybook/nextjs-vite";
-import { initialize, mswLoader } from "msw-storybook-addon";
+import { setupWorker } from "msw/browser";
+import { mswLoader } from "msw-storybook-addon/csf3";
 import { MINIMAL_VIEWPORTS } from "storybook/viewport";
 import { getBackendAppOpenAPIMock } from "../src/client/index.msw";
 import { RootProviders } from "../src/lib/RootProviders";
 import { resolveStorybookLocale } from "../src/lib/storybook/storybookLocale";
-
-/*
- * Initializes MSW
- * See https://github.com/mswjs/msw-storybook-addon#configuring-msw
- * to learn how to customize it
- */
-initialize(
-  {
-    onUnhandledRequest: "bypass",
-    quiet: true,
-  },
-  getBackendAppOpenAPIMock(),
-);
 
 const preview: Preview = {
   globalTypes: {
@@ -85,7 +73,16 @@ const preview: Preview = {
         },
       };
     },
-    mswLoader,
+    mswLoader(async () => {
+      const worker = setupWorker(...getBackendAppOpenAPIMock());
+
+      await worker.start({
+        onUnhandledRequest: "bypass",
+        quiet: true,
+      });
+
+      return worker;
+    }),
   ],
 
   beforeAll: () => {

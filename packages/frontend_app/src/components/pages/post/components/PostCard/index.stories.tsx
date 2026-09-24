@@ -21,10 +21,8 @@ const user: Props["post"]["user"] = {
 const meta = {
   component: PostCard,
   tags: ["autodocs"],
-  parameters: {
-    msw: {
-      handlers: [getGetUserLoginMockHandler(user)],
-    },
+  beforeEach({ msw }) {
+    msw.use(getGetUserLoginMockHandler(user));
   },
   decorators: [
     withI18n,
