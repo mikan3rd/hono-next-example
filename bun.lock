@@ -23,7 +23,7 @@
         "@biomejs/biome": "2.5.0",
         "@faker-js/faker": "10.6.0",
         "@types/bun": "1.4.2",
-        "@types/node": "24.13.6",
+        "@types/node": "26.4.1",
         "typescript": "7.0.2",
       },
     },
@@ -35,7 +35,7 @@
         "@dotenvx/dotenvx": "2.28.2",
         "@playwright/test": "1.63.0",
         "@t3-oss/env-core": "0.13.11",
-        "@types/node": "24.13.6",
+        "@types/node": "26.4.1",
         "typescript": "7.0.2",
         "zod": "4.6.5",
       },
@@ -54,7 +54,7 @@
         "@t3-oss/env-nextjs": "0.13.11",
         "@tailwindcss/postcss": "4.3.3",
         "@tanstack/react-query": "5.103.2",
-        "@types/node": "24.13.6",
+        "@types/node": "26.4.1",
         "@types/react": "19.3.0",
         "@types/react-dom": "19.3.0",
         "class-variance-authority": "0.7.1",
@@ -709,7 +709,7 @@
 
     "@types/mdx": ["@types/mdx@2.0.13", "", {}, "sha512-+OWZQfAYyio6YkJb3HLxDrvnx6SWWDbC0zVPfBRzUk0/nqoDyf6dNxQi3eArPe8rJ473nobTMQ/8Zk+LxJ+Yuw=="],
 
-    "@types/node": ["@types/node@24.13.6", "", { "dependencies": { "undici-types": "~7.18.0" } }, "sha512-SGrw/h3KPFshy3OE6ZL53LMBG5vGQQ8/gIpiqz/kRZhPJ7HgwCEs8LBuNtWLa8dvGZVpSF7+Bf+c11HUrCb/yg=="],
+    "@types/node": ["@types/node@26.4.1", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-k97ENvZWtvA6yqz5/FS6a7duDgOPEeOQOc2iKS/nY6mX6qJUKtLnWzQS+Xj6tXweyj6ZcTAK2Qecetnvi9nCLA=="],
 
     "@types/react": ["@types/react@19.3.0", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg=="],
 
@@ -1373,7 +1373,7 @@
 
     "undici": ["undici@6.29.0", "", {}, "sha512-R+RODBqp6i2pPflGdq+xIOUkl+RNfGgHwoinecKu/JCuf2uO06cOKoDbI2P7Dn6KcswdKwrczbU6IYJ6K8X+wg=="],
 
-    "undici-types": ["undici-types@7.18.2", "", {}, "sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w=="],
+    "undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
 
     "unicorn-magic": ["unicorn-magic@0.3.0", "", {}, "sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA=="],
 
