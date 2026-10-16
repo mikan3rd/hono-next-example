@@ -6,7 +6,11 @@
   "timezone": "Asia/Tokyo",
   "schedule": ["* * 1-7 * 5"],
   "automergeSchedule": ["* * * * 0-4,6"],
-  "extends": ["config:js-app", ":automergeMinor"],
+  "extends": [
+    "config:js-app",
+    ":automergeMinor",
+    "helpers:disableTypesNodeMajor"
+  ],
   "major": {
     "minimumReleaseAge": "28 days"
   },
